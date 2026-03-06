@@ -1,4 +1,4 @@
-package com.example.mesos;
+package it.polimi.ingsw;
 
 public abstract class Tile {
 }

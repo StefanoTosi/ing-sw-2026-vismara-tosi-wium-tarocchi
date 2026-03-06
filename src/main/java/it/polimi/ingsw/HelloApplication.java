@@ -1,4 +1,4 @@
-package com.example.mesos;
+package it.polimi.ingsw;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
-    <artifactId>Mesos</artifactId>
+    <groupId>it.polimi.ingsw</groupId>
+    <artifactId>GC13</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Mesos</name>
 
@@ -64,7 +64,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.mesos/com.example.mesos.HelloApplication</mainClass>
+                            <mainClass>com.example.mesos/it.polimi.ingsw.HelloApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

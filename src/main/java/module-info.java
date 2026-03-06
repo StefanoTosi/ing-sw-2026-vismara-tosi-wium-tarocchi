@@ -4,6 +4,6 @@ module com.example.mesos {
 
     requires org.controlsfx.controls;
 
-    opens com.example.mesos to javafx.fxml;
-    exports com.example.mesos;
+    opens it.polimi.ingsw to javafx.fxml;
+    exports it.polimi.ingsw;
 }

@@ -1,4 +1,4 @@
-package com.example.mesos;
+package it.polimi.ingsw;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
