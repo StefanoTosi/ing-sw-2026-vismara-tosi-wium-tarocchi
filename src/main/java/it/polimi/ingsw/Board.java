@@ -3,11 +3,46 @@ package it.polimi.ingsw;
 import java.util.List;
 
 public class Board {
-    private List<Tile> tiles;
     private List<Card> topRow;
     private List<Card> bottomRow;
 
-    private List<Card> rowDeck;
-    private List<Card> buildingIIDeck;
-    private List<Card> buildingIIIDeck;
+    private Deck deckTribe;
+    private Deck deckE2Building;
+    private Deck deckE3Building;
+
+    private List<Tile> tiles;
+
+    public Board(int numPlayers) {}
+
+    public List<Card> getTopRow() {
+        return topRow;
+    }
+
+    public Card pickFromTopRow(int pos) {
+        return null;
+    }
+
+    public List<Card> getBotomRow() {
+        return topRow;
+    }
+
+    public Card pickFromBottomRow(int pos) {
+        return null;
+    }
+
+    public Deck getDeckTribe() {
+        return deckTribe;
+    }
+
+    public Deck getDeckE2Building() {
+        return deckE2Building;
+    }
+
+    public Deck getDeckE3Building() {
+        return deckE3Building;
+    }
+
+    public List<Tile> getTiles() {
+        return tiles;
+    }
 }
