@@ -1,19 +1,29 @@
 package it.polimi.ingsw;
 
-import java.util.List;
+import java.util.*;
 
 public class Deck {
     private List<Card> deck;
 
-    public Deck(List<Card> deck) {}
+    private List<Card> getDeck() {
+        return deck;
+    }
 
-    public void shuffle() {}
+    public Deck(List<Card> deck) {
+        this.deck = deck;
+    }
+
+    public void shuffle() {
+        Collections.shuffle(deck);
+    }
 
     public Card pick() {
-        return null;
+        return deck.removeFirst();
     }
 
     public Deck stack(Deck topDeck) {
-        return null;
+        List<Card> d = new ArrayList<Card>(deck);
+        d.addAll(0, topDeck.getDeck());
+        return new Deck(d);
     }
 }

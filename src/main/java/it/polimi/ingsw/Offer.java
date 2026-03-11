@@ -2,10 +2,10 @@ package it.polimi.ingsw;
 
 import java.util.List;
 
-public class Offer extends Tile {
-    private List<Integer> foodBonus;
-    private List<Integer> ppBonus;
-    private int numPlayers;
+public class Offer implements Tile {
+    private final List<Integer> foodBonus;
+    private final List<Integer> ppBonus;
+    private final int numPlayers;
 
     public Offer(int numPlayers, List<Integer> ppBonus, List<Integer> foodBonus) {
         this.numPlayers = numPlayers;

@@ -1,4 +1,4 @@
 package it.polimi.ingsw;
 
-public abstract class Tile {
+public interface Tile {
 }

@@ -19,7 +19,7 @@ public class Board {
     }
 
     public Card pickFromTopRow(int pos) {
-        return null;
+        return topRow.remove(pos);
     }
 
     public List<Card> getBotomRow() {
@@ -27,7 +27,7 @@ public class Board {
     }
 
     public Card pickFromBottomRow(int pos) {
-        return null;
+        return bottomRow.remove(pos);
     }
 
     public Deck getDeckTribe() {
