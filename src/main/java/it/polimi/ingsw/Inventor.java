@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
 public class Inventor extends Character {
-    private int inventionIcon;
+    private Icon inventionIcon;
 
-    public Inventor(int inventionIcon) {
+    public Inventor(Icon inventionIcon) {
         this.inventionIcon = inventionIcon;
         this.name = "Inventor";
     }
@@ -12,12 +12,8 @@ public class Inventor extends Character {
         this.name = "Inventor";
     }
 
-    public int getInventionIcon() {
+    public Icon getInventionIcon() {
         return inventionIcon;
-    }
-
-    public void setInventionIcon(int inventionIcon) {
-        this.inventionIcon = inventionIcon;
     }
 
     @Override
