@@ -12,7 +12,7 @@ public class Gatherer extends Character {
 
     @Override
     public String getName() {
-        return "";
+        return name;
     }
 
     @Override
