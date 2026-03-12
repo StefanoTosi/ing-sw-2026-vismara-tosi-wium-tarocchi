@@ -15,4 +15,7 @@ public class Game {
 
     public int getNumPlayers() { return numPlayers; }
 
+    public List<Player> getPlayers() { return players; }
+
+    public Board getBoard() { return board; }
 }

@@ -10,4 +10,5 @@ public abstract class Building implements Card {
         return TYPE;
     }
 
+    public int getPp() { return pp; }
 }
