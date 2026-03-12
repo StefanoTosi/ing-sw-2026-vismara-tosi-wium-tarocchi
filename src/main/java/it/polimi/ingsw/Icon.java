@@ -9,6 +9,6 @@ public enum Icon {
     ROPE,
     SCULPTURE,
     FLUTE,
-    LETHER,
+    LEATHER,
     BREAD
 }

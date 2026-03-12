@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static java.util.Collections.min;
 
 public class Player {
     private String name;
@@ -35,7 +34,7 @@ public class Player {
 
     public void addFood(int food) { this.food += food; }
 
-    //aggiungere Hunter food bonus
+    //da aggiungere Hunter food bonus
     public void addCharacter(Character card) {
         this.characters.add(card);
         if(card instanceof Hunter){
@@ -153,7 +152,6 @@ public class Player {
         points += this.getNumArtists() * 2;
         points += this.countBuildersPp();
 
-        //manca conteggio icone distinte
         for (Card card : characters) {
             if (card instanceof Inventor) {
                 found = false;
@@ -165,7 +163,7 @@ public class Player {
                     }
                 }
 
-                if(found == false){
+                if(!found){
                     seenIcons.add(currIcon);
                     numIcons++;
                 }
