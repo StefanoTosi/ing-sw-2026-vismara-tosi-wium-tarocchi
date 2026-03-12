@@ -39,9 +39,4 @@ public class Builder extends Character {
     public String getName() {
         return name;
     }
-
-    @Override
-    public void applyEffect(Player p) {
-
-    }
 }

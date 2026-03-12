@@ -12,11 +12,6 @@ public class Gatherer extends Character {
 
     @Override
     public String getName() {
-        return "";
-    }
-
-    @Override
-    public void applyEffect(Player p) {
-
+        return name;
     }
 }

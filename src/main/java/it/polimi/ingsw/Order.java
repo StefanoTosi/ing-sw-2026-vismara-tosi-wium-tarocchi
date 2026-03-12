@@ -1,11 +1,11 @@
 package it.polimi.ingsw;
 
-public class Order extends Tile {
+public class Order implements Tile {
     private char order;
     private int numPlayers;
     private int foodBonus;
-    private int pickTop;
-    private int pickBottom;
+    private final int pickTop;
+    private final int pickBottom;
 
     public Order(char order, int numPlayers, int foodBonus, int pickTop, int pickBottom) {
         this.order = order;
