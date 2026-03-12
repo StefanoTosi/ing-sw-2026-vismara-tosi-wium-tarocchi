@@ -12,4 +12,6 @@ public abstract class Character implements Card {
     public String toString() {
         return "name: " + name + "\ntype: " + TYPE;
     }
+
+    public void applyEffect(Player p){};
 }

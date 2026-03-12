@@ -31,6 +31,5 @@ public class Shaman extends Character {
 
     @Override
     public void applyEffect(Player p) {
-
     }
 }
