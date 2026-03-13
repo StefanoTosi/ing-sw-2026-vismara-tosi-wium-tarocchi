@@ -19,8 +19,4 @@ public class CavePaintings extends Event {
         return NAME;
     }
 
-    @Override
-    public void applyEffect(Player p){
-
-    }
 }

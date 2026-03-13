@@ -10,8 +10,5 @@ public class Hunt extends Event {
     public String getName(){
         return NAME;
     }
-    @Override
-    public void applyEffect(Player p){
 
-    }
 }
