@@ -1,10 +1,11 @@
 package it.polimi.ingsw;
 
 public abstract class Building implements Card {
-    public int cost;
-    public int pp;
+    protected int cost;
+    protected int pp;
 
-    public String TYPE = "Building";
+    private String TYPE = "Building";
+
     @Override
     public String getType (){
         return TYPE;

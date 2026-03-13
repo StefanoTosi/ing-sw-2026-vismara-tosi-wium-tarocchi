@@ -1,7 +1,8 @@
 package it.polimi.ingsw;
 
 public class Hunt extends Event {
-    public String NAME = "Hunt";
+    private String NAME = "Hunt";
+    private int pp;
 
     @Override
     public Era getEra(){return null;}
@@ -11,4 +12,7 @@ public class Hunt extends Event {
         return NAME;
     }
 
+    public int getPp(){
+        return this.pp;
+    }
 }

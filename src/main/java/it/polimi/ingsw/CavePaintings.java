@@ -1,15 +1,15 @@
 package it.polimi.ingsw;
 
 public class CavePaintings extends Event {
-    public String NAME = "CavePaintings";
+    private String NAME = "CavePaintings";
     // se si hanno un numero di carte artista pari a quelli segnati sopra si ottengono i punti sopra,
     // altimenti se si hanno quelli sotto si tolgono i punti sotto
-    public int topNumArtist;
-    public int topPp;
-    public int bottomNumArtist;
-    public int bottomPp;
+    private int topNumArtist;
+    private int topPp;
+    private int bottomNumArtist;
+    private int bottomPp;
     // per essere usata la carta CavePaintings il giocatore deve avere in mano minimo tot Artisti
-    public int minArtist;
+    private int minArtist;
 
     @Override
     public Era getEra(){return null;}

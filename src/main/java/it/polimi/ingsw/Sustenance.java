@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 public class Sustenance extends Event {
-    public String NAME = "Sustenance";
+    private String NAME = "Sustenance";
 
     @Override
     public Era getEra(){return null;}

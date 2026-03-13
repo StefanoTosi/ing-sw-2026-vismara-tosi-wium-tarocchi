@@ -1,14 +1,13 @@
 package it.polimi.ingsw;
 
 public abstract class Effect {
-    protected int Pp;
-    protected int Food;
-    protected int Stars;
+    protected int pp;
+    protected int food;
+    protected int stars;
 
-    public void resolveEffect(){};
-    public void applyEffectDraw (Player p){};
-    public void applyEffectEvent (Player p){};
-    public void applyEffectEndGame (Player p){};
-    public void applyEffectEndTurn (Player p){};
-    public void applyEffectTileBonus (Player p){};
+    public void applyEffectDraw (Player player){};
+    public void applyEffectEvent (Player player){};
+    public void applyEffectEndGame (Player player){};
+    public void applyEffectEndTurn (Player player){};
+    public void applyEffectTileBonus (Player player){};
 }

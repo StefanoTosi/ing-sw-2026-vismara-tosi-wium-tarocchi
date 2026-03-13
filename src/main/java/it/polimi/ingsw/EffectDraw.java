@@ -1,14 +1,16 @@
 package it.polimi.ingsw;
 
 public class EffectDraw extends Effect{
-    @Override
-    public boolean checkEndGame() {
-        return false;
+
+    public EffectDraw(int food){
+        this.food = food;
     }
 
-    @Override
-    public boolean checkEndRound(){
-        return false;
+    public void applyEffectDraw(Player player){
+        //todo
     }
 
+    public int getFood(){
+        return this.food;
+    }
 }

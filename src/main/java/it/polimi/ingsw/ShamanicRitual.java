@@ -1,7 +1,8 @@
 package it.polimi.ingsw;
 
 public class ShamanicRitual extends Event {
-    public String NAME = "ShamanicRitual";
+    private String NAME = "ShamanicRitual";
+    private int pp;
 
     @Override
     public Era getEra(){return null;}
