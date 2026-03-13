@@ -1,5 +1,10 @@
 package it.polimi.ingsw;
 
+/**
+ * Represents the Builder character.
+ * Each Builder reduces the Food
+ * cost of every Building card, and at the end of the game provides the prestige points stated
+ */
 public class Builder extends Character {
     private int foodDiscount;
     private int pp;
@@ -29,7 +34,10 @@ public class Builder extends Character {
     public void setPp(int pp) {
         this.pp = pp;
     }
-
+    /**
+     * Characters doesn't have an era
+     * @return null
+     */
     @Override
     public Era getEra() {
         return null;

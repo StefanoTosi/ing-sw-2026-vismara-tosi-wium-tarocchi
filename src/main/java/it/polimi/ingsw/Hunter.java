@@ -1,5 +1,9 @@
 package it.polimi.ingsw;
 
+/**
+ * Represents the Hunter character.
+ * Each Hunter can have an icon that will eventually provide you extra food
+ */
 public class Hunter extends Character {
     private boolean icon;
 
@@ -21,6 +25,10 @@ public class Hunter extends Character {
         this.icon = icon;
     }
 
+    /**
+     * Characters doesn't have an era
+     * @return null
+     */
     @Override
     public Era getEra() {
         return null;

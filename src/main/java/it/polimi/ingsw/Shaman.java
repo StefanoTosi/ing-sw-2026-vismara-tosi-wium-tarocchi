@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+/**
+ * Represents the Shaman character
+ */
 public class Shaman extends Character {
     private int stars;
 
@@ -18,7 +21,10 @@ public class Shaman extends Character {
     public void setStars(int stars) {
         this.stars = stars;
     }
-
+    /**
+     * Characters doesn't have an era
+     * @return null
+     */
     @Override
     public Era getEra() {
         return null;
