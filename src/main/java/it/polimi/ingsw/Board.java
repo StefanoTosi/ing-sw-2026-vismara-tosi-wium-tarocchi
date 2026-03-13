@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class Board {
     private List<Card> topRow;
     private List<Card> bottomRow;
@@ -18,6 +21,11 @@ public class Board {
         return topRow;
     }
 
+    /**
+     * Picks the card in the top row at position pos
+     * @param pos
+     * @return
+     */
     public Card pickFromTopRow(int pos) {
         return topRow.remove(pos);
     }
