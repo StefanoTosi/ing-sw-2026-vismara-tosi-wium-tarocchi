@@ -15,9 +15,4 @@ public class Artist extends Character {
     public String getName() {
         return name;
     }
-
-    @Override
-    public void applyEffect(Player p) {
-
-    }
 }

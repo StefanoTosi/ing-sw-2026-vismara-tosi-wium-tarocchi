@@ -25,9 +25,4 @@ public class Inventor extends Character {
     public String getName() {
         return name;
     }
-
-    @Override
-    public void applyEffect(Player p) {
-
-    }
 }

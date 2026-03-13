@@ -30,9 +30,4 @@ public class Hunter extends Character {
     public String getName() {
         return name;
     }
-
-    @Override
-    public void applyEffect(Player p) {
-
-    }
 }
