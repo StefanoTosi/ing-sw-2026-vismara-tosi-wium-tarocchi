@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+/**
+ *Describes the possible icon for the inventor's card
+ */
 public enum Icon {
     BOAT,
     ARROW,

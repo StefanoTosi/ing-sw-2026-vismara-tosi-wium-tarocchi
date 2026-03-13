@@ -16,6 +16,10 @@ public class Inventor extends Character {
         return inventionIcon;
     }
 
+    /**
+     * Characters doesn't have an era
+     * @return null
+     */
     @Override
     public Era getEra() {
         return null;
