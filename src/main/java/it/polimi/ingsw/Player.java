@@ -63,7 +63,7 @@ public class Player {
      * @return int
      */
     public int countSets() {
-        int[] numCharacters = {getNumBuilders(), getNumHunters(), getNumShaman(), getNumInventors(), getNumGatherers(), getNumArtists()};
+        int[] numCharacters = {getNumBuilders(), getNumHunters(), getNumShamans(), getNumInventors(), getNumGatherers(), getNumArtists()};
         return Arrays.stream(numCharacters).min().getAsInt();
     }
 
@@ -149,7 +149,7 @@ public class Player {
      * Counts the number of shamans in the tribe.
      * @return int
      */
-    public int getNumShaman() {
+    public int getNumShamans() {
         int count = 0;
 
         for (Card card : characters) {
