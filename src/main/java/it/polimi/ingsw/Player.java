@@ -188,10 +188,8 @@ public class Player {
     public int getNumStars() {
         int count = 0;
 
-        for (Card card : characters) {
-            if (card instanceof Shaman) {
-                count += ((Shaman) card).getStars();
-            }
+        for (Shaman shaman : shamans) {
+                count += shaman.getStars();
         }
         return count;
     }
@@ -202,10 +200,8 @@ public class Player {
      */
     public int countBuildersPp() {
         int points = 0;
-        for (Card card : characters) {
-            if (card instanceof Builder) {
-                points += ((Builder) card).getPp();
-            }
+        for (Builder builder : builders) {
+                points += builder.getPp();
         }
         return points;
     }
@@ -224,10 +220,9 @@ public class Player {
         points += this.getNumArtists() * 2;
         points += this.countBuildersPp();
 
-        for (Card card : characters) {
-            if (card instanceof Inventor) {
+        for (Inventor inventor : inventors) {
                 found = false;
-                currIcon = ((Inventor) card).getInventionIcon();
+                currIcon = inventor.getInventionIcon();
 
                 for(Icon icon : seenIcons){
                     if (currIcon == icon){
@@ -240,7 +235,7 @@ public class Player {
                     numIcons++;
                 }
             }
-        }
+
         points += numIcons * this.getNumInventors();
 
         for(Building building : buildings) {
