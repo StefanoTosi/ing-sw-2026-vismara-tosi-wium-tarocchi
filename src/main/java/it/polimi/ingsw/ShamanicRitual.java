@@ -9,9 +9,11 @@ import java.util.List;
 public class ShamanicRitual extends Event {
     private String NAME = "ShamanicRitual";
     private int pp;
+    private Era era;
 
     public ShamanicRitual(int pp){
-
+        this.pp = pp;
+        this.era = era;
     }
 
     public void applyEffect(List<Player> players){
@@ -53,12 +55,8 @@ public class ShamanicRitual extends Event {
         return this.pp;
     }
 
-    /**
-     * Event doesn't have an era
-     * @return null
-     */
     @Override
-    public Era getEra(){return null;}
+    public Era getEra(){return era;}
 
     @Override
     public String getName(){

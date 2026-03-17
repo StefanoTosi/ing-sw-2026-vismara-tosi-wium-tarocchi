@@ -2,8 +2,8 @@ package it.polimi.ingsw;
 
 public class CavePaintings extends Event {
     private final String NAME = "CavePaintings";
-    // se si hanno un numero di carte artista pari a quelli segnati sopra si ottengono i punti sopra,
-    // altimenti se si hanno quelli sotto si tolgono i punti sotto
+    private Era era;
+
     private int topNumArtist;
     private int topPp;
     private int bottomNumArtist;
@@ -16,6 +16,7 @@ public class CavePaintings extends Event {
         this.bottomNumArtist = bottomNumArtist;
         this.bottomPp = bottomPp;
         this.minArtist = minArtist;
+        this.era = era;
     }
 
     public void applyeffect(Player player){
@@ -34,11 +35,11 @@ public class CavePaintings extends Event {
     }
 
     @Override
-    public Era getEra(){return null;}
+    public Era getEra(){
+        return era;
+    }
 
     @Override
-    public String getName(){
-        return NAME;
-    }
+    public String getName(){return NAME;}
 
 }

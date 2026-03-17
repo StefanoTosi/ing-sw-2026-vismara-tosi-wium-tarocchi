@@ -7,9 +7,11 @@ package it.polimi.ingsw;
 public class Hunt extends Event {
     private String NAME = "Hunt";
     private int pp;
+    private Era era;
 
     public Hunt(int pp){
         this.pp = pp;
+        this.era = era;
     }
 
     public void applyeffect(Player player){
@@ -26,12 +28,9 @@ public class Hunt extends Event {
     public void applyEffect(Player player){
 
     }
-    /**
-     * Event doesn't have an era
-     * @return null
-     */
+
     @Override
-    public Era getEra(){return null;}
+    public Era getEra(){return era;}
 
     @Override
     public String getName(){
