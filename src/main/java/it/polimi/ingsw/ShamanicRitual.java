@@ -35,6 +35,7 @@ public class ShamanicRitual extends Event {
             int stars = player.getNumStars();
 
             if(stars == maxStar){
+                //check se ha building con effetto3 shamanic ritual -> metto 2pp
                 player.addPp(pp);
             }
 

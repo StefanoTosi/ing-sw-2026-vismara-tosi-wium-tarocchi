@@ -8,11 +8,14 @@ public class CavePaintings extends Event {
     private int topPp;
     private int bottomNumArtist;
     private int bottomPp;
-    // per essere usata la carta CavePaintings il giocatore deve avere in mano minimo tot Artisti
     private int minArtist;
 
     public CavePaintings(int topNumArtist, int topPp, int bottomNumArtist, int bottomPp, int minArtist){
-
+        this.topPp = topPp;
+        this.topNumArtist = topNumArtist;
+        this.bottomNumArtist = bottomNumArtist;
+        this.bottomPp = bottomPp;
+        this.minArtist = minArtist;
     }
 
     public void applyeffect(Player player){
