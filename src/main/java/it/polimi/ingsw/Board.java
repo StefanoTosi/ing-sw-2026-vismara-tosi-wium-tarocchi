@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 import java.util.List;
 
 /**
- *
+ * Game board, holds information about all elements present on the board
  */
 public class Board {
     private List<Card> topRow;
@@ -15,6 +15,10 @@ public class Board {
 
     private List<Tile> tiles;
 
+    /**
+     * Generates a starting board given the number of players
+     * @param numPlayers
+     */
     public Board(int numPlayers) {}
 
     public List<Card> getTopRow() {
@@ -26,7 +30,7 @@ public class Board {
      * @param pos
      * @return
      */
-    public Card pickFromTopRow(int pos) {
+    public Card drawFromTopRow(int pos) {
         return topRow.remove(pos);
     }
 
@@ -34,7 +38,12 @@ public class Board {
         return topRow;
     }
 
-    public Card pickFromBottomRow(int pos) {
+    /**
+     * Picks the card in the bottom row at position pos
+     * @param pos
+     * @return
+     */
+    public Card drawFromBottomRow(int pos) {
         return bottomRow.remove(pos);
     }
 
