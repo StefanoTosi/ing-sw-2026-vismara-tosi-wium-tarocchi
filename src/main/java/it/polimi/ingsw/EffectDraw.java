@@ -7,8 +7,15 @@ public class EffectDraw extends Effect{
     }
 
     public void applyEffectDraw(Player player){
-        //todo
+        int set = player.countSets();
+        if (set > 0){
+            player.addFood(food);
+        }
+        if(player.getNumInventors() > 1){
+            //to do:
+        }
     }
+
 
     public int getFood(){
         return this.food;
