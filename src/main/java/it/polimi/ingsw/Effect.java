@@ -4,6 +4,7 @@ public abstract class Effect {
     protected int pp;
     protected int food;
     protected int stars;
+    protected String ID;
 
     public void applyEffectDraw (Player player){};
     public void applyEffectEvent (Player player, Event event){};
