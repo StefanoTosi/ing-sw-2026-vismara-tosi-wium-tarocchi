@@ -5,17 +5,14 @@ package it.polimi.ingsw;
  */
 public class Artist extends Character {
 
-    public Artist() {
+    public Artist(Era era) {
         this.name = "Artist";
+        this.era = era;
     }
 
-    /**
-     * Characters doesn't have an era
-     * @return null
-     */
     @Override
     public Era getEra() {
-        return null;
+        return era;
     }
 
     @Override

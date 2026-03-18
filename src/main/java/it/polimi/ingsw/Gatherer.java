@@ -4,17 +4,14 @@ package it.polimi.ingsw;
  * Represents the Gatherer character
  */
 public class Gatherer extends Character {
-    public Gatherer() {
+    public Gatherer(Era era) {
         this.name = "Gatherer";
+        this.era = era;
     }
 
-    /**
-     * Characters doesn't have an era
-     * @return null
-     */
     @Override
     public Era getEra() {
-        return null;
+        return era;
     }
 
     @Override

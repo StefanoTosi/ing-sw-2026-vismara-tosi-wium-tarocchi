@@ -6,28 +6,22 @@ package it.polimi.ingsw;
 public class Shaman extends Character {
     private int stars;
 
-    public Shaman(int stars) {
+    public Shaman(int stars, Era era) {
         this.stars = stars;
-        this.name = "Shaman";
-    }
-
-    public Shaman() {
         this.name = "Shaman";
     }
 
     public int getStars() {
         return stars;
     }
-    public void setStars(int stars) {
-        this.stars = stars;
-    }
+
     /**
      * Characters doesn't have an era
      * @return null
      */
     @Override
     public Era getEra() {
-        return null;
+        return era;
     }
 
     @Override
