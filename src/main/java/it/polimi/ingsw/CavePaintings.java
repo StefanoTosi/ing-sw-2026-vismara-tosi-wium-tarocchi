@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
 public class CavePaintings extends Event {
-    private final String NAME = "CavePaintings";
     private Era era;
+    private final String NAME = "CavePaintings";
 
     private int topNumArtist;
     private int topPp;

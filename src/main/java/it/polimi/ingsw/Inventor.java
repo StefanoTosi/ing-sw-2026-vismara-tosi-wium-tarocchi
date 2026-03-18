@@ -29,4 +29,13 @@ public class Inventor extends Character {
     public String getName() {
         return name;
     }
+
+    /**
+     * Add an Inventor to the tribe of the specified player
+     * @param player
+     */
+    @Override
+    public void addToPlayer(Player player) {
+        player.addInventor(this);
+    }
 }

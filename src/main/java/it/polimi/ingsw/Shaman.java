@@ -34,4 +34,13 @@ public class Shaman extends Character {
     public String getName() {
         return name;
     }
+
+    /**
+     * Add a Shaman to the tribe of the specified player
+     * @param player
+     */
+    @Override
+    public void addToPlayer(Player player) {
+        player.addShaman(this);
+    }
 }

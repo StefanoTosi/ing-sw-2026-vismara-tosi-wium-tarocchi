@@ -22,4 +22,10 @@ public interface Card {
      * @return type
      */
     public String getType();
+
+    /**
+     * Add the card to the tribe of the specified player
+     * @param player
+     */
+    public void addToPlayer (Player player);
 }
