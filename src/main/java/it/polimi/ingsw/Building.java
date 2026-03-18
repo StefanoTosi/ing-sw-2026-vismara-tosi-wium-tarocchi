@@ -1,8 +1,15 @@
 package it.polimi.ingsw;
 
 public abstract class Building implements Card {
-    protected int cost;
-    protected int pp;
+    private int cost;
+    private int pp;
+    private Effect effect;
+
+    public Building(int cost, int pp, Effect effect){
+        this.cost = cost;
+        this.pp = pp;
+        this.effect = effect;
+    }
 
     private String TYPE = "Building";
 
