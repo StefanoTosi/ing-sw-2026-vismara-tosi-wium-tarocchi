@@ -62,4 +62,6 @@ public class Board {
     public List<Tile> getTiles() {
         return tiles;
     }
+    
+    private List<Card> loadCards() {}
 }
