@@ -5,13 +5,14 @@ package it.polimi.ingsw;
  */
 
 public class Hunt extends Event {
-    private String NAME = "Hunt";
+
     private int pp;
     private Era era;
 
-    public Hunt(int pp){
+    public Hunt(int pp, Era era){
         this.pp = pp;
         this.era = era;
+        this.name = "Hunt";
     }
 
     public void applyeffect(Player player){
@@ -34,7 +35,7 @@ public class Hunt extends Event {
 
     @Override
     public String getName(){
-        return NAME;
+        return name;
     }
 
 }

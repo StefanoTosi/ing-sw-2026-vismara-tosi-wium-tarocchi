@@ -6,14 +6,14 @@ package it.polimi.ingsw;
  */
 
 public class Sustenance extends Event {
-    private String NAME = "Sustenance";
     private int pp;
     private int numCharacter;
     private Era era;
 
-    public Sustenance(int pp){
+    public Sustenance(int pp, Era era){
         this.pp = pp;
         this.era = era;
+        this.name = "Sunstenance";
     }
 
     public void applyeffect(Player player){
@@ -39,7 +39,6 @@ public class Sustenance extends Event {
 
     @Override
     public String getName(){
-        return NAME;
+        return name;
     }
-
 }

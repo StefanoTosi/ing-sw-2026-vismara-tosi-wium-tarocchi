@@ -3,17 +3,18 @@ package it.polimi.ingsw;
 import java.util.List;
 
 /**
- * 
+ * The player with the most stars wins the pps, the one with less loose them
  */
 
 public class ShamanicRitual extends Event {
-    private String NAME = "ShamanicRitual";
+
     private int pp;
     private Era era;
 
-    public ShamanicRitual(int pp){
+    public ShamanicRitual(int pp, Era era){
         this.pp = pp;
         this.era = era;
+        this.name = "ShamanicRitual";
     }
 
     public void applyEffect(List<Player> players){
@@ -60,6 +61,6 @@ public class ShamanicRitual extends Event {
 
     @Override
     public String getName(){
-        return NAME;
+        return name;
     }
 }
