@@ -21,4 +21,13 @@ public class Gatherer extends Character {
     public String getName() {
         return name;
     }
+
+    /**
+     * Add a Gatherer to the tribe of the specified player
+     * @param player
+     */
+    @Override
+    public void addToPlayer(Player player) {
+        player.addGatherer(this);
+    }
 }

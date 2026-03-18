@@ -38,4 +38,13 @@ public class Hunter extends Character {
     public String getName() {
         return name;
     }
+
+    /**
+     * Add a Hunter to the tribe of the specified player
+     * @param player
+     */
+    @Override
+    public void addToPlayer(Player player) {
+        player.addHunter(this);
+    }
 }

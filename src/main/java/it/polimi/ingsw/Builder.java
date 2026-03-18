@@ -47,4 +47,13 @@ public class Builder extends Character {
     public String getName() {
         return name;
     }
+
+    /**
+     * Add a Builder to the tribe of the specified player
+     * @param player
+     */
+    @Override
+    public void addToPlayer(Player player) {
+        player.addBuilder(this);
+    }
 }
