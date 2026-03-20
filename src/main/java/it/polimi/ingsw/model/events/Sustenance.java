@@ -45,10 +45,4 @@ public class Sustenance extends Event {
     public String getName(){
         return NAME;
     }
-
-    // TODO: questa funzione dovrebbe lanciare un'eccezione
-    @Override
-    public void addToPlayer(Player player) {
-        return;
-    }
 }

@@ -4,9 +4,9 @@ package it.polimi.ingsw.model.board;
  * Offer tile
  */
 public class Offer implements Tile {
-    private char order;
-    private int numPlayers;
-    private int foodBonus;
+    private final char order;
+    private final int numPlayers;
+    private final int foodBonus;
     private final int drawTop;
     private final int drawBottom;
 
@@ -15,15 +15,23 @@ public class Offer implements Tile {
      * @param order ordering letter
      * @param numPlayers at least how many players can it be used with
      * @param foodBonus how much food does the player get
-     * @param pickTop how many cards can be drawn from the top row
-     * @param pickBottom how many cards can be drawn from the top row
+     * @param drawTop how many cards can be drawn from the top row
+     * @param drawBottom how many cards can be drawn from the top row
      */
-    public Offer(char order, int numPlayers, int foodBonus, int pickTop, int pickBottom) {
+    public Offer(char order, int numPlayers, int foodBonus, int drawTop, int drawBottom) throws IllegalArgumentException {
+        if (order < 'A' || order > 'G') {
+            throw new IllegalArgumentException("'order' is not a valid letter");
+        }
+
+        if (numPlayers < 0 || drawTop < 0 || drawBottom < 0) {
+            throw new IllegalArgumentException("Invalid negative argument");
+        }
+
         this.order = order;
         this.numPlayers = numPlayers;
         this.foodBonus = foodBonus;
-        this.drawTop = pickTop;
-        this.drawBottom = pickBottom;
+        this.drawTop = drawTop;
+        this.drawBottom = drawBottom;
     }
 
     public char getOrder() {

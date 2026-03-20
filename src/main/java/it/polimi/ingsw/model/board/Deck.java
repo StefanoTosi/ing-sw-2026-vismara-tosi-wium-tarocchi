@@ -8,13 +8,16 @@ import java.util.*;
  * Models a covered deck of cards
  */
 public class Deck {
-    private List<Card> deck;
+    private final List<Card> deck;
 
     private List<Card> getDeck() {
         return deck;
     }
 
-    public Deck(List<Card> deck) {
+    public Deck(List<Card> deck) throws IllegalArgumentException {
+        if (deck == null) {
+            throw new IllegalArgumentException("'deck' is null");
+        }
         this.deck = deck;
     }
 
@@ -27,18 +30,19 @@ public class Deck {
 
     /**
      * Draws the first card of the deck
-     * @return
      */
-    public Card draw() {
+    public Card draw() throws NoSuchElementException {
         return deck.removeFirst();
     }
 
     /**
      * Generates a new deck where this is at the bottom and topDeck is at the ´top´
-     * @param topDeck
-     * @return
      */
-    public Deck stack(Deck topDeck) {
+    public Deck stack(Deck topDeck) throws IllegalArgumentException {
+        if (topDeck == null) {
+            throw new IllegalArgumentException("'topDeck' is null");
+        }
+
         List<Card> d = new ArrayList<Card>(deck);
         d.addAll(0, topDeck.getDeck());
         return new Deck(d);

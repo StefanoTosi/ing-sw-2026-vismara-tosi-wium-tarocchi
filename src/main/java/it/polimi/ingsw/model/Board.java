@@ -30,10 +30,11 @@ public class Board {
 
     /**
      * Picks the card in the top row at position pos
-     * @param pos
-     * @return
      */
-    public Card drawFromTopRow(int pos) {
+    public Card drawFromTopRow(int pos) throws IllegalArgumentException {
+        if (pos < 0 || pos >= topRow.size()) {
+            throw new IllegalArgumentException("'pos' is not a valid index");
+        }
         return topRow.remove(pos);
     }
 
@@ -43,10 +44,11 @@ public class Board {
 
     /**
      * Picks the card in the bottom row at position pos
-     * @param pos
-     * @return
      */
-    public Card drawFromBottomRow(int pos) {
+    public Card drawFromBottomRow(int pos) throws IllegalArgumentException {
+        if (pos < 0 || pos >= topRow.size()) {
+            throw new IllegalArgumentException("'pos' is not a valid index");
+        }
         return bottomRow.remove(pos);
     }
 
