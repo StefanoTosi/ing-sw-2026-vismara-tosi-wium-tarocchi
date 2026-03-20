@@ -2,9 +2,7 @@ package it.polimi.ingsw.model.effects;
 
 
 import it.polimi.ingsw.model.Building;
-import it.polimi.ingsw.model.Effect;
 import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
 
 /**

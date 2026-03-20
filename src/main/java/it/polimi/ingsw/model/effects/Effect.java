@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.effects;
+
+import it.polimi.ingsw.model.events.Event;
+import it.polimi.ingsw.model.Player;
 
 public abstract class Effect {
     protected int pp;

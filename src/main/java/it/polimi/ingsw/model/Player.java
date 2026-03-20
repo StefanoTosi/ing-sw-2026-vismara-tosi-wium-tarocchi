@@ -21,8 +21,9 @@ public class Player {
     private List<Building> buildings;
     private int pp;
     private int food;
+    private Game game;
 
-    public Player(String name) {
+    public Player(String name, Game game) {
         this.name = name;
 
         this.artists = new ArrayList<>();
@@ -35,6 +36,8 @@ public class Player {
         this.buildings = new ArrayList<>();
         this.pp = 0;
         this.food = 0;
+
+        this.game = game;
     }
 
     public String getName() {
@@ -246,4 +249,7 @@ public class Player {
         return points;
     }
 
+    public Game getGame() {
+        return game;
+    }
 }

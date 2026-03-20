@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.characters;
 
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Character;
 
 public class Inventor extends Character {
     private Icon inventionIcon;

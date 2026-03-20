@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.effects;
 
-import it.polimi.ingsw.model.Effect;
 import it.polimi.ingsw.model.Player;
 
 public class EffectEndGame extends Effect {

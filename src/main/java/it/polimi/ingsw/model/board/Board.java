@@ -1,7 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.model.board.Deck;
-import it.polimi.ingsw.model.board.Tile;
+import it.polimi.ingsw.model.Card;
 
 import java.util.List;
 

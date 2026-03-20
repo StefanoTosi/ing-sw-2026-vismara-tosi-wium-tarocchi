@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.effects;
 
-import it.polimi.ingsw.model.Effect;
-import it.polimi.ingsw.model.Event;
+import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.Player;
 
 import java.util.function.*;

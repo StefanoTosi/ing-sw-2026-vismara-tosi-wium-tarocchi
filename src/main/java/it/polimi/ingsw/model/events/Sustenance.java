@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.events;
 
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Event;
 
 /**
  * pay 1 food for every Character in your clan. If you finish your rations

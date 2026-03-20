@@ -1,4 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.events;
+
+import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.Player;
 
 public abstract class Event implements Card {
     protected String TYPE = "Event";
