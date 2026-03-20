@@ -1,0 +1,16 @@
+package it.polimi.ingsw.model;
+
+public abstract class Effect {
+    protected int pp;
+    protected int food;
+    protected int stars;
+
+    public void applyEffectDraw (Player player){};
+    public void applyEffectEvent (Player player, Event event){};
+    public void applyEffectEndGame (Player player){};
+    public void applyEffectEndTurn (Player player){};
+    public void applyEffectTileBonus (Player player){};
+    public int getAdditionalStarts() {
+        return 0;
+    }
+}

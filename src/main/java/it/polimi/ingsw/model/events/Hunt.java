@@ -1,0 +1,43 @@
+package it.polimi.ingsw.model.events;
+
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Event;
+
+/**
+ * Get +1 food and the Pps on the card for every Hunter in your clan
+ */
+
+public class Hunt extends Event {
+    private String NAME = "Hunt";
+    private int pp;
+    private Era era;
+
+    public Hunt(int pp){
+        this.pp = pp;
+        this.era = era;
+    }
+
+    public void applyeffect(Player player){
+        int numHunter = player.getNumHunters();
+        player.addFood(numHunter);
+        int ppToAdd = numHunter * getPp();
+        player.addPp(ppToAdd);
+    }
+
+    public int getPp(){
+        return this.pp;
+    }
+
+    public void applyEffect(Player player){
+
+    }
+
+    @Override
+    public Era getEra(){return era;}
+
+    @Override
+    public String getName(){
+        return NAME;
+    }
+}

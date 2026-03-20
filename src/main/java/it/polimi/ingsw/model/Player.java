@@ -1,0 +1,249 @@
+package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.model.characters.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Represents a player in the game.
+ * Each player has a name, a tribe composed by a list of character cards and a list of building cards, an amount of prestige points and food tokens.
+ */
+public class Player {
+    private final String name;
+    private List<Artist> artists;
+    private List<Gatherer> gatherers;
+    private List<Hunter> hunters;
+    private List<Inventor> inventors;
+    private List<Shaman> shamans;
+    private List<Builder> builders;
+    private List<Building> buildings;
+    private int pp;
+    private int food;
+
+    public Player(String name) {
+        this.name = name;
+
+        this.artists = new ArrayList<>();
+        this.gatherers = new ArrayList<>();
+        this.hunters = new ArrayList<>();
+        this.inventors = new ArrayList<>();
+        this.shamans = new ArrayList<>();
+        this.builders = new ArrayList<>();
+
+        this.buildings = new ArrayList<>();
+        this.pp = 0;
+        this.food = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPp() {
+        return pp;
+    }
+
+    public void setPp(int pp) {
+        this.pp = pp;
+    }
+
+    /**
+     * Adds the specified amount of prestige points, negative parameters allowed.
+     * @param pp number of prestige points to add (or subtract if negative)
+     */
+    public void addPp(int pp) {
+        this.pp += pp;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public void setFood(int food) {
+        this.food = food;
+    }
+
+    /**
+     * Adds the specified amount of food, negative parameters allowed.
+     * @param food amount of food to add (or subtract if negative)
+     */
+    public void addFood(int food) {
+        this.food += food;
+    }
+
+    public void addCard(Card card) {
+        card.addToPlayer(this);
+    }
+
+    public void addArtist(Artist artist) {
+        this.artists.add(artist);
+    }
+
+    public void addGatherer(Gatherer gatherer) {
+        this.gatherers.add(gatherer);
+    }
+
+    public void addHunter(Hunter hunter) {
+        this.hunters.add(hunter);
+    }
+
+    public void addInventor(Inventor inventor) {
+        this.inventors.add(inventor);
+    }
+
+    public void addShaman(Shaman shaman) {
+        this.shamans.add(shaman);
+    }
+
+    public void addBuilder(Builder builder) {
+        this.builders.add(builder);
+    }
+
+    /**
+     * Counts the number of complete sets of six different character cards in the tribe.
+     * @return int
+     */
+    public int countSets() {
+        int[] numCharacters = {getNumBuilders(), getNumHunters(), getNumShamans(), getNumInventors(), getNumGatherers(), getNumArtists()};
+        return Arrays.stream(numCharacters).min().getAsInt();
+    }
+
+    /**
+     * Adds a new building card to the list of buildings in the tribe.
+     * @param card new building to be added to the tribe
+     */
+    public void addBuilding(Building card) {
+        this.buildings.add(card);
+    }
+
+    /**
+     * Counts the total number of character cards in the tribe.
+     * @return int
+     */
+    public int countNumCharacters() {
+        return getNumArtists() + getNumGatherers() + getNumHunters() + getNumShamans() + getNumInventors() + getNumBuilders();
+    }
+
+    /**
+     * Counts the total number of building cards in the tribe.
+     * @return int
+     */
+    public int countNumBuildings() {
+        return buildings.size();
+    }
+
+    /**
+     * Counts the number of artists in the tribe.
+     * @return int
+     */
+    public int getNumArtists() {
+        return artists.size();
+    }
+
+    /**
+     * Counts the number of gatherers in the tribe.
+     * @return int
+     */
+    public int getNumGatherers() {
+        return gatherers.size();
+    }
+
+    /**
+     * Counts the number of inventors in the tribe.
+     * @return int
+     */
+    public int getNumInventors() {
+        return inventors.size();
+    }
+
+    /**
+     * Counts the number of hunters in the tribe.
+     * @return int
+     */
+    public int getNumHunters() {
+        return hunters.size();
+    }
+
+    /**
+     * Counts the number of shamans in the tribe.
+     * @return int
+     */
+    public int getNumShamans() {
+        return shamans.size();
+    }
+
+    /**
+     * Counts the number of builders in the tribe.
+     * @return int
+     */
+    public int getNumBuilders() {
+        return builders.size();
+    }
+
+    /**
+     * Counts the total number of stars provided by shamans in the tribe.
+     * @return int
+     */
+    public int getNumStars() {
+        int count = 0;
+
+        for (Shaman shaman : shamans) {
+                count += shaman.getStars();
+        }
+        return count;
+    }
+
+    /**
+     * Calculates the amount of prestige points provided by builders in the tribe at the end of the game.
+     * @return int
+     */
+    public int countBuildersPp() {
+        int points = 0;
+        for (Builder builder : builders) {
+                points += builder.getPp();
+        }
+        return points;
+    }
+
+    /**
+     * Returns total prestige points of the tribe, including both characters and buildings, without calculating any building effect.
+     * @return int
+     */
+    public int countTribePp() {
+        int points = 0;
+        int numIcons = 0;
+        Icon currIcon = null;
+        List<Icon> seenIcons = new ArrayList<>();
+        boolean found = false;
+
+        points += this.getNumArtists() * 2;
+        points += this.countBuildersPp();
+
+        for (Inventor inventor : inventors) {
+                found = false;
+                currIcon = inventor.getInventionIcon();
+
+                for(Icon icon : seenIcons){
+                    if (currIcon == icon){
+                        found = true;
+                    }
+                }
+
+                if(!found){
+                    seenIcons.add(currIcon);
+                    numIcons++;
+                }
+            }
+
+        points += numIcons * this.getNumInventors();
+
+        for(Building building : buildings) {
+            points += building.getPp();
+        }
+
+        return points;
+    }
+
+}
