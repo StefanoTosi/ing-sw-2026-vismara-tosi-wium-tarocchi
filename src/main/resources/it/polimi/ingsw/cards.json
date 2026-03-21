@@ -312,8 +312,8 @@
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "female",
-      "pp": "4",
-      "discount": "1"
+      "pp": 4,
+      "discount": 1
     },
 
     {
@@ -322,8 +322,8 @@
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
-      "pp": "1",
-      "discount": "2"
+      "pp": 1,
+      "discount": 2
     },
 
     {
@@ -332,8 +332,8 @@
       "minNumPlayers": 3,
       "type": "Builder",
       "gender": "female",
-      "pp": "2",
-      "discount": "1"
+      "pp": 2,
+      "discount": 1
     },
 
     {
@@ -342,8 +342,8 @@
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
-      "pp": "3",
-      "discount": "2"
+      "pp": 3,
+      "discount": 2
     },
 
     {
@@ -469,7 +469,7 @@
       "era": 2,
       "minNumPlayers": 2,
       "type": "Shaman",
-      "stars": "2"
+      "stars": 2
     },
 
     {
@@ -477,7 +477,7 @@
       "era": 2,
       "minNumPlayers": 2,
       "type": "Shaman",
-      "stars": "2"
+      "stars": 2
     },
 
     {
@@ -485,7 +485,7 @@
       "era": 2,
       "minNumPlayers": 5,
       "type": "Shaman",
-      "stars": "1"
+      "stars": 1
     },
 
     {
@@ -493,7 +493,7 @@
       "era": 2,
       "minNumPlayers": 5,
       "type": "Shaman",
-      "stars": "2"
+      "stars": 2
     },
 
     {
@@ -536,8 +536,8 @@
       "era": 3,
       "type": "Builder",
       "gender": "female",
-      "pp": "5",
-      "discount": "1"
+      "pp": 5,
+      "discount": 1
     },
 
     {
@@ -545,8 +545,8 @@
       "era": 3,
       "type": "Builder",
       "gender": "male",
-      "pp": "3",
-      "discount": "2"
+      "pp": 3,
+      "discount": 2
     },
 
     {
@@ -555,8 +555,8 @@
       "minNumPlayers": 5,
       "type": "Builder",
       "gender": "female",
-      "pp": "4",
-      "discount": "1"
+      "pp": 4,
+      "discount": 1
     },
 
     {
@@ -564,8 +564,8 @@
       "era": 3,
       "type": "Builder",
       "gender": "male",
-      "pp": "2",
-      "discount": "2"
+      "pp": 2,
+      "discount": 2
     },
 
     {
@@ -574,7 +574,7 @@
       "minNumPlayers": 5,
       "type": "Gatherer",
       "gender": "female",
-      "discount": "3"
+      "discount": 3
     },
 
     {
@@ -583,7 +583,7 @@
       "minNumPlayers": 4,
       "type": "Gatherer",
       "gender": "male",
-      "discount": "3"
+      "discount": 3
     },
 
     {
@@ -592,7 +592,7 @@
       "minNumPlayers": 5,
       "type": "Gatherer",
       "gender": "female",
-      "discount": "3"
+      "discount": 3
     },
 
     {
