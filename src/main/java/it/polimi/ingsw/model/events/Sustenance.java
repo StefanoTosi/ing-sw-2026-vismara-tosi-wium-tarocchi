@@ -20,7 +20,7 @@ public class Sustenance extends Event {
 
     public void applyeffect(Player player){
         numCharacter = player.countNumCharacters();
-        int food = player.getFood();
+        int food = player.getFood() + player.getNumGatherers()*3; //da capire se può causare problemi nel senso che uno si ritrova a guadagnare cibo
         if(food >= numCharacter){
             player.setFood(food - numCharacter);
         }

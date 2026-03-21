@@ -2,7 +2,7 @@
   "cards": [
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "male",
@@ -11,7 +11,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "female",
@@ -20,7 +20,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "male",
@@ -29,7 +29,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "female",
@@ -38,7 +38,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "male",
@@ -47,7 +47,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "female",
@@ -57,7 +57,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
@@ -67,7 +67,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 5,
       "type": "Builder",
       "gender": "female",
@@ -77,7 +77,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
@@ -87,7 +87,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Gatherer",
       "gender": "female"
@@ -95,7 +95,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Gatherer",
       "gender": "male"
@@ -103,7 +103,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 3,
       "type": "Gatherer",
       "gender": "female"
@@ -111,7 +111,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 5,
       "type": "Gatherer",
       "gender": "male"
@@ -119,7 +119,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Artist",
       "gender": "female"
@@ -127,7 +127,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Artist",
       "gender": "male"
@@ -135,7 +135,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Artist",
       "gender": "female"
@@ -143,7 +143,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 3,
       "type": "Artist",
       "gender": "male"
@@ -151,7 +151,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 4,
       "type": "Artist",
       "gender": "female"
@@ -159,7 +159,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "male",
@@ -168,7 +168,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
@@ -177,7 +177,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "male",
@@ -186,7 +186,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
@@ -195,7 +195,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "male",
@@ -204,7 +204,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "female",
@@ -213,7 +213,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "male",
@@ -222,7 +222,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 5,
       "type": "Shaman",
       "stars": 2
@@ -230,7 +230,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Shaman",
       "stars": 2
@@ -238,7 +238,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 2,
       "type": "Shaman",
       "stars": 1
@@ -246,7 +246,7 @@
 
     {
       "role": "Character",
-      "era": 1,
+      "era": "I",
       "minNumPlayers": 4,
       "type": "Shaman",
       "stars": 1
@@ -254,7 +254,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "female",
@@ -263,7 +263,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "Male",
@@ -272,7 +272,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "female",
@@ -281,7 +281,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "male",
@@ -290,7 +290,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 4,
       "type": "Hunter",
       "gender": "female",
@@ -299,7 +299,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 5,
       "type": "Hunter",
       "gender": "male",
@@ -308,7 +308,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "female",
@@ -318,7 +318,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
@@ -328,7 +328,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 3,
       "type": "Builder",
       "gender": "female",
@@ -338,7 +338,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
@@ -348,7 +348,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Gatherer",
       "gender": "female"
@@ -356,7 +356,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Gatherer",
       "gender": "male"
@@ -364,7 +364,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 4,
       "type": "Gatherer",
       "gender": "female"
@@ -372,7 +372,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 5,
       "type": "Gatherer",
       "gender": "male"
@@ -380,7 +380,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 3,
       "type": "Artist",
       "gender": "female"
@@ -388,7 +388,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Artist",
       "gender": "male"
@@ -396,7 +396,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Artist",
       "gender": "female"
@@ -404,7 +404,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Artist",
       "gender": "male"
@@ -412,7 +412,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
@@ -421,7 +421,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "male",
@@ -430,7 +430,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
@@ -439,7 +439,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "male",
@@ -448,7 +448,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
@@ -457,7 +457,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "male",
@@ -466,7 +466,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Shaman",
       "stars": 2
@@ -474,7 +474,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 2,
       "type": "Shaman",
       "stars": 2
@@ -482,7 +482,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 5,
       "type": "Shaman",
       "stars": 1
@@ -490,7 +490,7 @@
 
     {
       "role": "Character",
-      "era": 2,
+      "era": "II",
       "minNumPlayers": 5,
       "type": "Shaman",
       "stars": 2
@@ -498,7 +498,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 5,
       "type": "Hunter",
       "gender": "female",
@@ -507,7 +507,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "male",
@@ -516,7 +516,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "female",
@@ -525,7 +525,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Hunter",
       "gender": "male",
       "foodIcon": true
@@ -533,7 +533,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Builder",
       "gender": "female",
       "pp": 5,
@@ -542,7 +542,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Builder",
       "gender": "male",
       "pp": 3,
@@ -551,7 +551,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 5,
       "type": "Builder",
       "gender": "female",
@@ -561,7 +561,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Builder",
       "gender": "male",
       "pp": 2,
@@ -570,7 +570,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 5,
       "type": "Gatherer",
       "gender": "female",
@@ -579,7 +579,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 4,
       "type": "Gatherer",
       "gender": "male",
@@ -588,7 +588,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 5,
       "type": "Gatherer",
       "gender": "female",
@@ -597,7 +597,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 5,
       "type": "Artist",
       "gender": "male"
@@ -605,28 +605,28 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Artist",
       "gender": "female"
     },
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Artist",
       "gender": "male"
     },
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Artist",
       "gender": "female"
     },
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "male",
@@ -635,7 +635,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 3,
       "type": "Inventor",
       "gender": "female",
@@ -644,7 +644,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 3,
       "type": "Inventor",
       "gender": "male",
@@ -653,7 +653,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Inventor",
       "gender": "female",
       "icon": "sculpture"
@@ -661,7 +661,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Inventor",
       "gender": "male",
       "icon": "hook"
@@ -669,7 +669,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Inventor",
       "gender": "female",
       "icon": "necklace"
@@ -677,7 +677,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Inventor",
       "gender": "male",
       "icon": "bread"
@@ -685,7 +685,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 3,
       "type": "Shaman",
       "gender": "female",
@@ -694,7 +694,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Shaman",
       "gender": "male",
       "stars": 3
@@ -702,7 +702,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Shaman",
       "gender": "female",
       "stars": 2
@@ -710,7 +710,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "type": "Shaman",
       "gender": "male",
       "stars": 3
@@ -718,7 +718,7 @@
 
     {
       "role": "Character",
-      "era": 3,
+      "era": "III",
       "minNumPlayers": 4,
       "type": "Shaman",
       "gender": "female",
@@ -727,21 +727,21 @@
 
     {
       "role": "Event",
-      "era": 1,
+      "era": "I",
       "type": "Hunt",
       "pp": 1
     },
 
     {
       "role": "Event",
-      "era": 1,
+      "era": "I",
       "type": "Sustenance",
       "pp": 1
     },
 
     {
       "role": "Event",
-      "era": 1,
+      "era": "I",
       "type": "ShamanicRitual",
       "loserPp": 5,
       "winnerPp": -3
@@ -749,7 +749,7 @@
 
     {
       "role": "Event",
-      "era": 1,
+      "era": "I",
       "type": "CavePaintings",
       "TopPp": 2,
       "BottomPp": 1
@@ -757,14 +757,14 @@
 
     {
       "role": "Event",
-      "era": 2,
+      "era": "II",
       "type": "Hunt",
       "pp": 2
     },
 
     {
       "role": "Event",
-      "era": 2,
+      "era": "II",
       "type": "Sustenance",
       "pp": 2
     }
