@@ -4,18 +4,13 @@ import it.polimi.ingsw.model.Player;
 
 public class EffectDraw extends Effect {
 
-    public EffectDraw(int food){
+    public EffectDraw(int food, IDEffect id){
         this.food = food;
+        this.id = id;
     }
 
     public void applyEffectDraw(Player player){
-        int set = player.countSets();
-        if (set > 0){
-            player.addFood(food);
-        }
-        if(player.getNumInventors() > 1){
-            //to do:
-        }
+        id.applyEffectDraw(player, food);
     }
 
     public int getFood(){

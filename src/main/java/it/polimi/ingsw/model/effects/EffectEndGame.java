@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.Player;
 public class EffectEndGame extends Effect {
     private int pp;
 
+    public EffectEndGame(int pp, IDEffect id) {
+        this.pp = pp;
+        this.id = id;
+    }
+
     public void applyEffectEndGame(Player player){
         //effetto 1 generico
         player.addPp(pp);

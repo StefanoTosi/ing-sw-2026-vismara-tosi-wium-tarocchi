@@ -4,6 +4,10 @@ import it.polimi.ingsw.model.Player;
 
 public class EffectTileBonus extends Effect {
 
+    public EffectTileBonus(IDEffect id) {
+        this.id = id;
+    }
+
     public void applyEffectTileBonus(Player player){
         player.addFood(1);
     }

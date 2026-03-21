@@ -10,9 +10,10 @@ public class EffectEvent extends Effect {
     private int additionalStars;
     private BiConsumer<Player, Event> effect;
 
-    EffectEvent(int additionalStars, BiConsumer<Player, Event> effect) {
+    EffectEvent(int additionalStars, BiConsumer<Player, Event> effect, IDEffect id) {
         this.additionalStars = additionalStars;
         this.effect = effect;
+        this.id = id;
     }
 
     @Override

@@ -10,7 +10,9 @@ import it.polimi.ingsw.model.Player;
  */
 public class EffectEndTurn extends Effect {
 
-    public EffectEndTurn(){}
+    public EffectEndTurn(IDEffect id){
+        this.id=id;
+    }
 
     /**
      * Add the drawn card to the player's deck

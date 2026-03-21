@@ -7,7 +7,7 @@ public abstract class Effect {
     protected int pp;
     protected int food;
     protected int stars;
-    protected String ID;
+    protected IDEffect id;
 
     public void applyEffectDraw (Player player){};
     public void applyEffectEvent (Player player, Event event){};
