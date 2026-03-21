@@ -23,7 +23,7 @@ public class Player {
     private int food;
     private Game game;
 
-    public Player(String name, Game game) {
+    public Player(String name) {
         this.name = name;
 
         this.artists = new ArrayList<>();
@@ -36,7 +36,10 @@ public class Player {
         this.buildings = new ArrayList<>();
         this.pp = 0;
         this.food = 0;
+        this.game = null;
+    }
 
+    public void setGame(Game game) {
         this.game = game;
     }
 
@@ -64,7 +67,10 @@ public class Player {
         return food;
     }
 
-    public void setFood(int food) {
+    public void setFood(int food) throws IllegalArgumentException {
+        if(food < 0){
+            throw new IllegalArgumentException("trying to set food to a negative value");
+        }
         this.food = food;
     }
 
@@ -72,7 +78,10 @@ public class Player {
      * Adds the specified amount of food, negative parameters allowed.
      * @param food amount of food to add (or subtract if negative)
      */
-    public void addFood(int food) {
+    public void addFood(int food) throws IllegalArgumentException {
+        if(food < 0){
+            throw new IllegalArgumentException("trying to set food to a negative value");
+        }
         this.food += food;
     }
 

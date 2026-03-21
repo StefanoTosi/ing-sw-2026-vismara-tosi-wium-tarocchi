@@ -6,10 +6,10 @@ import it.polimi.ingsw.model.states.GameState;
 import java.util.*;
 
 public class Game {
-    private List<Player> players;
+    private final List<Player> players;
     private Map<Character, Integer> playerPositions;
-    private int numPlayers;
-    private Board board;
+    private final int numPlayers;
+    private final Board board;
     private GameState state;
 
     public Game (List<Player> players) {
@@ -17,6 +17,9 @@ public class Game {
         this.playerPositions = new HashMap<Character, Integer>();
         this.numPlayers = players.size();
         this.board = new Board(players.size());
+        for(int i = 0; i < numPlayers; i++){
+            players.get(i).setGame(this);
+        }
     }
 
     public int getNumPlayers() { return numPlayers; }
