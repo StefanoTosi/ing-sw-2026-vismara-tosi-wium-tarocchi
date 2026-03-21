@@ -18,7 +18,6 @@ public class EffectDraw extends Effect {
         }
     }
 
-
     public int getFood(){
         return this.food;
     }

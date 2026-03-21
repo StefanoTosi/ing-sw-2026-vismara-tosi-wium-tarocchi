@@ -14,7 +14,7 @@ public abstract class Effect {
     public void applyEffectEndGame (Player player){};
     public void applyEffectEndTurn (Player player){};
     public void applyEffectTileBonus (Player player){};
-    public int getAdditionalStarts() {
+    public int getAdditionalStars() {
         return 0;
     }
 }
