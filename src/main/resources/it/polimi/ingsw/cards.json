@@ -723,6 +723,51 @@
       "type": "Shaman",
       "gender": "female",
       "stars": 2
+    },
+
+    {
+      "role": "Event",
+      "era": 1,
+      "type": "Hunt",
+      "pp": 1
+    },
+
+    {
+      "role": "Event",
+      "era": 1,
+      "type": "Sustenance",
+      "pp": 1
+    },
+
+    {
+      "role": "Event",
+      "era": 1,
+      "type": "ShamanicRitual",
+      "loserPp": 5,
+      "winnerPp": -3
+    },
+
+    {
+      "role": "Event",
+      "era": 1,
+      "type": "CavePaintings",
+      "TopPp": 2,
+      "BottomPp": 1
+    },
+
+    {
+      "role": "Event",
+      "era": 2,
+      "type": "Hunt",
+      "pp": 2
+    },
+
+    {
+      "role": "Event",
+      "era": 2,
+      "type": "Sustenance",
+      "pp": 2
     }
+
   ]
 }
