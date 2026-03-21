@@ -29,7 +29,7 @@ class PlayerTest {
     @Test
     void setPp() {
         Game game = new Game(new ArrayList<>());
-        Player player = new Player("Elisa", game);
+        Player player = new Player("Elisa");
         player.setPp(42);
         assertEquals(42, player.getPp());
     }
@@ -37,7 +37,7 @@ class PlayerTest {
     @Test
     void addPp() {
         Game game = new Game(new ArrayList<>());
-        Player player = new Player("Elisa", game);
+        Player player = new Player("Elisa");
         player.addPp(42);
         assertEquals(42, player.getPp());
         player.addPp(-3);
@@ -49,7 +49,7 @@ class PlayerTest {
     @Test
     void getFood() {
         Game game = new Game(new ArrayList<>());
-        Player player = new Player("Elisa", game);
+        Player player = new Player("Elisa");
         player.setFood(42);
         assertEquals(42, player.getFood());
     }
@@ -57,7 +57,7 @@ class PlayerTest {
     @Test
     void setFood() {
         Game game = new Game(new ArrayList<>());
-        Player player = new Player("Elisa", game);
+        Player player = new Player("Elisa");
         player.setFood(42);
         assertEquals(42, player.getFood());
         assertThrows(IllegalArgumentException.class, ()->player.setFood(-4));
@@ -67,7 +67,7 @@ class PlayerTest {
     @Test
     void addFood() {
         Game game = new Game(new ArrayList<>());
-        Player player = new Player("Elisa", game);
+        Player player = new Player("Elisa");
         player.addFood(42);
         assertEquals(42, player.getFood());
         assertThrows(IllegalArgumentException.class, ()->player.addFood(-43));

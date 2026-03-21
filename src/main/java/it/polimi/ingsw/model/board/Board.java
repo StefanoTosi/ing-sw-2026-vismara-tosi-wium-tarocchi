@@ -37,8 +37,8 @@ public class Board {
         return topRow.remove(pos);
     }
 
-    public List<Card> getBotomRow() {
-        return topRow;
+    public List<Card> getBottomRow() {
+        return bottomRow;
     }
 
     /**
