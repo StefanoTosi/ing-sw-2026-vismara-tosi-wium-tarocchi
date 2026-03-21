@@ -521,7 +521,208 @@
       "type": "Hunter",
       "gender": "female",
       "foodIcon": false
-    }
+    },
 
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Hunter",
+      "gender": "male",
+      "foodIcon": true
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Builder",
+      "gender": "female",
+      "pp": "5",
+      "discount": "1"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Builder",
+      "gender": "male",
+      "pp": "3",
+      "discount": "2"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 5,
+      "type": "Builder",
+      "gender": "female",
+      "pp": "4",
+      "discount": "1"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Builder",
+      "gender": "male",
+      "pp": "2",
+      "discount": "2"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 5,
+      "type": "Gatherer",
+      "gender": "female",
+      "discount": "3"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 4,
+      "type": "Gatherer",
+      "gender": "male",
+      "discount": "3"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 5,
+      "type": "Gatherer",
+      "gender": "female",
+      "discount": "3"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 5,
+      "type": "Artist",
+      "gender": "male"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Artist",
+      "gender": "female"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Artist",
+      "gender": "male"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Artist",
+      "gender": "female"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 4,
+      "type": "Inventor",
+      "gender": "male",
+      "icon": "necklace"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 3,
+      "type": "Inventor",
+      "gender": "female",
+      "icon": "boat"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 3,
+      "type": "Inventor",
+      "gender": "male",
+      "icon": "arrow"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Inventor",
+      "gender": "female",
+      "icon": "sculpture"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Inventor",
+      "gender": "male",
+      "icon": "hook"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Inventor",
+      "gender": "female",
+      "icon": "necklace"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Inventor",
+      "gender": "male",
+      "icon": "bread"
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 3,
+      "type": "Shaman",
+      "gender": "female",
+      "stars": 2
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Shaman",
+      "gender": "male",
+      "stars": 3
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Shaman",
+      "gender": "female",
+      "stars": 2
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "type": "Shaman",
+      "gender": "male",
+      "stars": 3
+    },
+
+    {
+      "role": "Character",
+      "era": 3,
+      "minNumPlayers": 4,
+      "type": "Shaman",
+      "gender": "female",
+      "stars": 2
+    }
   ]
 }
