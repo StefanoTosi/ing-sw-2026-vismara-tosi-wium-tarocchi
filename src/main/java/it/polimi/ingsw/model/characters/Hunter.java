@@ -11,23 +11,13 @@ public class Hunter extends Character {
     private boolean icon;
 
     public Hunter(boolean icon, Era era) {
+        super(era);
         this.name = "Hunter";
         this.icon = icon;
-        this.era = era;
     }
 
     public boolean getIcon() {
         return icon;
-    }
-
-    @Override
-    public Era getEra() {
-        return era;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**

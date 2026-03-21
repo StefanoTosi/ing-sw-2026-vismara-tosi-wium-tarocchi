@@ -11,11 +11,10 @@ import it.polimi.ingsw.model.Player;
 public class Sustenance extends Event {
     private int pp;
     private int numCharacter;
-    private Era era;
 
     public Sustenance(int pp, Era era){
+        super(era);
         this.pp = pp;
-        this.era = era;
         this.name = "Sunstenance";
     }
 
@@ -36,9 +35,6 @@ public class Sustenance extends Event {
     public int getPp(){
         return this.pp;
     }
-
-    @Override
-    public Era getEra(){return era;}
 
     @Override
     public String getName(){

@@ -7,27 +7,13 @@ public class Inventor extends Character {
     private Icon inventionIcon;
 
     public Inventor(Icon inventionIcon, Era era) {
+        super(era);
         this.inventionIcon = inventionIcon;
         this.name = "Inventor";
-        this.era = era;
     }
 
     public Icon getInventionIcon() {
         return inventionIcon;
-    }
-
-    /**
-     * Characters doesn't have an era
-     * @return null
-     */
-    @Override
-    public Era getEra() {
-        return era;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**

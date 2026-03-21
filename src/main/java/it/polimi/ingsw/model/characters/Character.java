@@ -6,14 +6,17 @@ import it.polimi.ingsw.model.Era;
 /**
  * Represent all the common elements of the characters.
  */
-public abstract class Character implements Card {
+public abstract class Character extends Card {
     protected String name;
-    protected String TYPE="Character";
-    protected Era era;
+
+    public Character(Era era) {
+        super(era);
+        this.TYPE="Character";
+    }
 
     @Override
-    public String getType() {
-        return TYPE;
+    public String getName() {
+        return name;
     }
 
     public String toString() {

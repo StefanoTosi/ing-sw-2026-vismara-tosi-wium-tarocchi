@@ -4,14 +4,12 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
-public abstract class Event implements Card {
-    protected String TYPE = "Event";
+public abstract class Event extends Card {
     protected String name;
-    protected Era era;
 
-    @Override
-    public String getType (){
-        return TYPE;
+    public Event(Era era) {
+        super(era);
+        this.TYPE = "Event";
     }
 
     public String toString() {

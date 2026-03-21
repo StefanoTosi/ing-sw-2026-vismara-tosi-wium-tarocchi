@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model.events;
+
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.Player;
 
 import java.util.List;
 
@@ -9,11 +12,10 @@ import java.util.List;
 public class ShamanicRitual extends Event {
 
     private int pp;
-    private Era era;
 
     public ShamanicRitual(int pp, Era era){
+        super(era);
         this.pp = pp;
-        this.era = era;
         this.name = "ShamanicRitual";
     }
 

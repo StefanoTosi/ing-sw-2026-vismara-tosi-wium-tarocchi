@@ -10,11 +10,10 @@ import it.polimi.ingsw.model.Player;
 public class Hunt extends Event {
 
     private int pp;
-    private Era era;
 
     public Hunt(int pp, Era era){
+        super(era);
         this.pp = pp;
-        this.era = era;
         this.name = "Hunt";
     }
 
@@ -32,9 +31,6 @@ public class Hunt extends Event {
     public void applyEffect(Player player){
 
     }
-
-    @Override
-    public Era getEra(){return era;}
 
     @Override
     public String getName(){
