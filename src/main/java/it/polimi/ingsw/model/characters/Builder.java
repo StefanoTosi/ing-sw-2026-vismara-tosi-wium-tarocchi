@@ -13,10 +13,10 @@ public class Builder extends Character {
     private int pp;
 
     public Builder(int foodDiscount, int pp, Era era) {
+        super(era);
         this.foodDiscount = foodDiscount;
         this.pp = pp;
         this.name = "Builder";
-        this.era = era;
     }
 
     public int getFoodDiscount() {
@@ -25,16 +25,6 @@ public class Builder extends Character {
 
     public int getPp() {
         return pp;
-    }
-
-    @Override
-    public Era getEra() {
-        return era;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**

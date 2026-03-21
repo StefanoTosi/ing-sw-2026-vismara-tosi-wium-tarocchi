@@ -9,18 +9,8 @@ import it.polimi.ingsw.model.Player;
 public class Artist extends Character {
 
     public Artist(Era era) {
+        super(era);
         this.name = "Artist";
-        this.era = era;
-    }
-
-    @Override
-    public Era getEra() {
-        return era;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**

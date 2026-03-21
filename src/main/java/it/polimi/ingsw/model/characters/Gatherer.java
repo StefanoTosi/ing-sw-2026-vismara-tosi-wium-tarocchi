@@ -8,18 +8,8 @@ import it.polimi.ingsw.model.Player;
  */
 public class Gatherer extends Character {
     public Gatherer(Era era) {
+        super(era);
         this.name = "Gatherer";
-        this.era = era;
-    }
-
-    @Override
-    public Era getEra() {
-        return era;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**

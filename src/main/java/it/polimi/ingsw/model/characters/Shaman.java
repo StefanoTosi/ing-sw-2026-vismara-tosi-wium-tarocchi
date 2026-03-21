@@ -10,26 +10,13 @@ public class Shaman extends Character {
     private int stars;
 
     public Shaman(int stars, Era era) {
+        super(era);
         this.stars = stars;
         this.name = "Shaman";
     }
 
     public int getStars() {
         return stars;
-    }
-
-    /**
-     * Characters doesn't have an era
-     * @return null
-     */
-    @Override
-    public Era getEra() {
-        return era;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**
