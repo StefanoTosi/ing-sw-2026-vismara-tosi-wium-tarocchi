@@ -1,4 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.events.Event;
 
 /**
  * If you have less then x Artists you loose x pps,

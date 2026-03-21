@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.effects.Effect;
+
 public abstract class Building implements Card {
     private int cost;
     private int pp;
