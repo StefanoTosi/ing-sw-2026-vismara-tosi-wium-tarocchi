@@ -23,7 +23,7 @@ public class EffectEvent extends Effect {
     // Ci sono casi in cui si contano le stelle senza quelle aggiuntive dei building?
     // Altrimenti questo metodo si può rimuovere
     @Override
-    public int getAdditionalStarts() {
+    public int getAdditionalStars() {
         return additionalStars;
     }
 }
