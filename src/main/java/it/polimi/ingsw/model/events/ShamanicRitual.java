@@ -35,7 +35,6 @@ public class ShamanicRitual extends Event {
             }
 
         }
-
         for(Player player : players){
             int stars = player.getNumStars();
 
