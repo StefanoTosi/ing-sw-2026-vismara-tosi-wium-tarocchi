@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.states.DrawCardState;
 
 public class DrawCardFromTopAction implements Action {
@@ -11,7 +12,7 @@ public class DrawCardFromTopAction implements Action {
     }
 
     @Override
-    public void execute(Player player) throws IllegalArgumentException {
+    public void execute(Player player) throws IllegalActionException {
         player.getGame().getState().drawCardFromTop(player, pos);
     }
 }

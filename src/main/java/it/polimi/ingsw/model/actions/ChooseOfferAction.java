@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.states.ChooseOfferState;
 
 public class ChooseOfferAction implements Action {
@@ -11,7 +12,7 @@ public class ChooseOfferAction implements Action {
     }
 
     @Override
-    public void execute(Player player) throws IllegalArgumentException {
+    public void execute(Player player) throws IllegalActionException {
         player.getGame().getState().chooseOffer(player, order);
     }
 }
