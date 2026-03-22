@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
 /**
- * If you have less then x Artists you loose x pps,
+ * If you have less than x Artists you loose x pps,
  * otherwise if you have more or equal than x Artists you gain x pps
  */
 

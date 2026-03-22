@@ -11,11 +11,13 @@ import java.util.List;
 
 public class ShamanicRitual extends Event {
 
-    private int pp;
+    private int winnerPp;
+    private int loserPp;
 
-    public ShamanicRitual(int pp, Era era){
+    public ShamanicRitual(int winnerPp, int loserPp, Era era){
         super(era);
-        this.pp = pp;
+        this.winnerPp = winnerPp;
+        this.loserPp = loserPp;
         this.name = "ShamanicRitual";
     }
 
@@ -40,21 +42,17 @@ public class ShamanicRitual extends Event {
 
             if(stars == maxStar){
                 //check se ha building con effetto3 shamanic ritual -> metto 2pp
-                player.addPp(pp);
+                player.addPp(winnerPp);
             }
 
             if(stars == minStar){
-                player.addPp(-pp);
+                player.addPp(-loserPp);
             }
         }
     }
 
     public int getStars(Player player){
         return player.getNumStars();
-    }
-
-    public int getPp(){
-        return this.pp;
     }
 
     @Override
