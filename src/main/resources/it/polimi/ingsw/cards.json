@@ -743,6 +743,7 @@
     {
       "role": "Event",
       "era": "I",
+      "final": false,
       "type": "Hunt",
       "pp": 1
     },
@@ -750,6 +751,7 @@
     {
       "role": "Event",
       "era": "I",
+      "final": false,
       "type": "Sustenance",
       "pp": 1
     },
@@ -757,6 +759,7 @@
     {
       "role": "Event",
       "era": "I",
+      "final": false,
       "type": "ShamanicRitual",
       "loserPp": 5,
       "winnerPp": -3
@@ -765,6 +768,7 @@
     {
       "role": "Event",
       "era": "I",
+      "final": false,
       "type": "CavePaintings",
       "TopPp": 2,
       "BottomPp": 1,
@@ -774,6 +778,7 @@
     {
       "role": "Event",
       "era": "II",
+      "final": false,
       "type": "Hunt",
       "pp": 2
     },
@@ -781,6 +786,7 @@
     {
       "role": "Event",
       "era": "II",
+      "final": false,
       "type": "Sustenance",
       "pp": 2
     },
@@ -788,6 +794,7 @@
     {
       "role": "Event",
       "era": "II",
+      "final": false,
       "type": "ShamanicRitual",
       "loserPp": 10,
       "winnerPp": -5
@@ -796,6 +803,7 @@
     {
       "role": "Event",
       "era": "II",
+      "final": false,
       "type": "CavePaintings",
       "TopPp": 2,
       "BottomPp": 2,
@@ -805,6 +813,7 @@
     {
       "role": "Event",
       "era": "III",
+      "final": false,
       "type": "Hunt",
       "pp": 3
     },
@@ -812,6 +821,7 @@
     {
       "role": "Event",
       "era": "III",
+      "final": false,
       "type": "CavePaintings",
       "TopPp": 2,
       "BottomPp": 3,
@@ -821,6 +831,7 @@
     {
       "role": "Event",
       "era": "III",
+      "final": true,
       "type": "Sustenance",
       "pp": 3
     },
@@ -828,6 +839,7 @@
     {
       "role": "Event",
       "era": "III",
+      "final": true,
       "type": "ShamanicRitual",
       "loserPp": 15,
       "winnerPp": -7

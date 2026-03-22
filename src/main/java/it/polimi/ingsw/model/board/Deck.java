@@ -47,4 +47,8 @@ public class Deck {
         d.addAll(0, topDeck.getDeck());
         return new Deck(d);
     }
+
+    public int size() {
+        return deck.size();
+    }
 }
