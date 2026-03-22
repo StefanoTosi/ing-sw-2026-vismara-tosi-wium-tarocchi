@@ -22,5 +22,7 @@ class EffectDrawTest {
 
     @Test
     void getFood() {
+        EffectDraw effect = new EffectDraw(3, IDEffect.D1);
+        assertEquals(3, effect.getFood());
     }
 }

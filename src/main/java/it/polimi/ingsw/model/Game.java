@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.states.GameState;
 
 import java.util.*;
@@ -13,7 +12,7 @@ public class Game {
     private final Board board;
     private GameState state;
 
-    public Game (List<Player> players) throws IllegalActionException {
+    public Game (List<Player> players) {
         this.players = players;
         this.playerPositions = new HashMap<Character, Integer>();
         this.numPlayers = players.size();

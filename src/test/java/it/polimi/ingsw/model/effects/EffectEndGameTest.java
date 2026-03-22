@@ -22,5 +22,7 @@ class EffectEndGameTest {
 
     @Test
     void getPp() {
+        EffectEndGame effect = new EffectEndGame(3, IDEffect.EG1);
+        assertEquals(3, effect.getPp());
     }
 }
