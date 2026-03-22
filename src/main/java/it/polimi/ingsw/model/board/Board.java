@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.DataFormatException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,80 +82,85 @@ public class Board {
         return tiles;
     }
     
-    private List<Card> loadCards(int numPlayers) {
+    public List<Card> loadCards(int numPlayers) {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            JsonNode root = mapper.readTree(new File("cards.json"));
+            JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/cards.json"));
             JsonNode cardsNode = root.get("cards");
             List<Card> cards = new ArrayList<>();
 
             for (JsonNode node : cardsNode) {
-                if (node.get("minNumPlayers").asInt() <= numPlayers) {
-
-                    switch (node.get("role").asText()) {
-                        case "Character":
-                            switch ((node.get("type").asText()).toLowerCase()) {
-                                case "artist":
+                switch (node.get("role").asText()) {
+                    case "Character":
+                        if (node.get("minNumPlayers").asInt() <= numPlayers) {
+                            switch (node.get("type").asText()) {
+                                case "Artist":
                                     Artist artist = new Artist(Era.valueOf(node.get("era").asText()));
                                     cards.add(artist);
                                     break;
-                                case "builder":
+                                case "Builder":
                                     Builder builder = new Builder(node.get("discount").asInt(), node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
                                     cards.add(builder);
                                     break;
-                                case "gatherer":
+                                case "Gatherer":
                                     Gatherer gatherer = new Gatherer(Era.valueOf(node.get("era").asText()));
                                     cards.add(gatherer);
                                     break;
-                                case "hunter":
+                                case "Hunter":
                                     Hunter hunter = new Hunter(node.get("foodIcon").asBoolean(), Era.valueOf(node.get("era").asText()));
                                     cards.add(hunter);
                                     break;
-                                case "inventor":
+                                case "Inventor":
                                     Inventor inventor = new Inventor(Icon.valueOf((node.get("icon").asText().toUpperCase())), Era.valueOf(node.get("era").asText()));
                                     cards.add(inventor);
                                     break;
-                                case "shaman":
+                                case "Shaman":
                                     Shaman shaman = new Shaman(node.get("stars").asInt(), Era.valueOf(node.get("era").asText()));
                                     cards.add(shaman);
                                     break;
+                                default:
+                                    throw new DataFormatException("Unrecognized character '" + node.get("type").asText() + "' while parsing cards.json");
                             }
-                            break;
-                        case "Event":
-                            switch ((node.get("type").asText())) {
-                                case "CavePaintings":
-                                    CavePaintings cavePainting = new CavePaintings(node.get("minNumArtists").asInt(), Era.valueOf(node.get("era").asText()));
-                                    cards.add(cavePainting);
-                                    break;
-                                case "ShamanicRitual":
-                                    ShamanicRitual shamanicRitual = new ShamanicRitual(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
-                                    cards.add(shamanicRitual);
-                                    break;
-                                case "Hunt":
-                                    Hunt hunt = new Hunt(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
-                                    cards.add(hunt);
-                                    break;
-                                case "Sustenance":
-                                    Sustenance sustenance = new Sustenance(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
-                                    cards.add(sustenance);
-                                    break;
-                            }
-                            break;
-                        case "Building":
-                            //manca il passaggio di effect nel costruttore di building
-                            Building building = new Building(node.get("cost").asInt(), node.get("pp").asInt(), null, Era.valueOf(node.get("era").asText()));
-                            cards.add(building);
-                            break;
-                    }
+                        }
+                        break;
+                    case "Event":
+                        switch ((node.get("type").asText())) {
+                            case "CavePaintings":
+                                CavePaintings cavePainting = new CavePaintings(node.get("minNumArtists").asInt(), Era.valueOf(node.get("era").asText()));
+                                cards.add(cavePainting);
+                                break;
+                            case "ShamanicRitual":
+                                ShamanicRitual shamanicRitual = new ShamanicRitual(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
+                                cards.add(shamanicRitual);
+                                break;
+                            case "Hunt":
+                                Hunt hunt = new Hunt(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
+                                cards.add(hunt);
+                                break;
+                            case "Sustenance":
+                                Sustenance sustenance = new Sustenance(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
+                                cards.add(sustenance);
+                                break;
+                            default:
+                                throw new DataFormatException("Unrecognized event '" + node.get("type").asText() + "' while parsing cards.json");
+                        }
+                        break;
+                    case "Building":
+                        //manca il passaggio di effect nel costruttore di building
+                        Building building = new Building(node.get("cost").asInt(), node.get("pp").asInt(), null, Era.valueOf(node.get("era").asText()));
+                        cards.add(building);
+                        break;
+                    default:
+                        throw new DataFormatException("Unrecognized role '" + node.get("role").asText() + "' while parsing cards.json");
                 }
             }
             return cards;
-
         } catch (Exception e) {
             System.out.println("Error in loading cards from json file");
             e.printStackTrace();
         }
+
         return null;
     }
 }

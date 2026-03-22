@@ -526,6 +526,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Hunter",
       "gender": "male",
       "foodIcon": true
@@ -534,6 +535,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Builder",
       "gender": "female",
       "pp": 5,
@@ -543,6 +545,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
       "pp": 3,
@@ -562,6 +565,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Builder",
       "gender": "male",
       "pp": 2,
@@ -606,6 +610,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Artist",
       "gender": "female"
     },
@@ -613,6 +618,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Artist",
       "gender": "male"
     },
@@ -620,6 +626,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Artist",
       "gender": "female"
     },
@@ -627,6 +634,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "male",
@@ -654,6 +662,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
       "icon": "sculpture"
@@ -662,6 +671,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "male",
       "icon": "hook"
@@ -670,6 +680,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "female",
       "icon": "necklace"
@@ -678,6 +689,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Inventor",
       "gender": "male",
       "icon": "bread"
@@ -695,6 +707,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Shaman",
       "gender": "male",
       "stars": 3
@@ -703,6 +716,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Shaman",
       "gender": "female",
       "stars": 2
@@ -711,6 +725,7 @@
     {
       "role": "Character",
       "era": "III",
+      "minNumPlayers": 2,
       "type": "Shaman",
       "gender": "male",
       "stars": 3
@@ -767,7 +782,277 @@
       "era": "II",
       "type": "Sustenance",
       "pp": 2
-    }
+    },
 
+    {
+      "role": "Event",
+      "era": "II",
+      "type": "ShamanicRitual",
+      "loserPp": 10,
+      "winnerPp": -5
+    },
+
+    {
+      "role": "Event",
+      "era": "II",
+      "type": "CavePaintings",
+      "TopPp": 2,
+      "BottomPp": 2,
+      "minNumArtists": 2
+    },
+
+    {
+      "role": "Event",
+      "era": "III",
+      "type": "Hunt",
+      "pp": 3
+    },
+
+    {
+      "role": "Event",
+      "era": "III",
+      "type": "CavePaintings",
+      "TopPp": 2,
+      "BottomPp": 3,
+      "minNumArtists": 3
+    },
+
+    {
+      "role": "Event",
+      "era": "III",
+      "type": "Sustenance",
+      "pp": 3
+    },
+
+    {
+      "role": "Event",
+      "era": "III",
+      "type": "ShamanicRitual",
+      "loserPp": 15,
+      "winnerPp": -7
+    },
+
+    {
+      "role": "Building",
+      "era": "I",
+      "cost": 4,
+      "pp": 3,
+      "effect": {
+        "effectId": "D1"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "I",
+      "cost": 4,
+      "pp": 4,
+      "effect": {
+        "effectId": "ES1",
+        "character": "Gatherer"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "I",
+      "cost": 5,
+      "pp": 3,
+      "effect": {
+        "effectId": "ES1",
+        "character": "Artist"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "I",
+      "cost": 5,
+      "pp": 2,
+      "effect": {
+        "effectId": "ESC1"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "I",
+      "cost": 3,
+      "pp": 3,
+      "effect": {
+        "effectId": "ET1"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "I",
+      "cost": 3,
+      "pp": 4,
+      "effect": {
+        "effectId": "D2"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 7,
+      "pp": 0,
+      "effect": {
+        "effectId": "ESC3"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 6,
+      "pp": 4,
+      "effect": {
+        "effectId": "ESC2"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 7,
+      "pp": 4,
+      "effect": {
+        "effectId": "ES1",
+        "character": "Inventor"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 7,
+      "pp": 2,
+      "effect": {
+        "effectId": "EH"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 6,
+      "pp": 4,
+      "effect": {
+        "effectId": "EG1"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 5,
+      "pp": 6,
+      "effect": {
+        "effectId": "ECP"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "II",
+      "cost": 5,
+      "pp": 6,
+      "effect": {
+        "effectId": "EG2"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 8,
+      "pp": 8,
+      "effect": {
+        "effectId": "EG3",
+        "character": "Hunter",
+        "pp": 3
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 7,
+      "pp": 4,
+      "effect": {
+        "effectId": "EG3",
+        "character": "Shaman",
+        "pp": 4
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 6,
+      "pp": 3,
+      "effect": {
+        "effectId": "EG3",
+        "character": "Builder",
+        "pp": 4
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 7,
+      "pp": 4,
+      "effect": {
+        "effectId": "EG3",
+        "character": "Artist",
+        "pp": 4
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 6,
+      "pp": 6,
+      "effect": {
+        "effectId": "EG3",
+        "character": "Inventor",
+        "pp": 2
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 9,
+      "pp": 3,
+      "effect": {
+        "effectId": "ET2"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 10,
+      "pp": 0,
+      "effect": {
+        "effectId": "EG4"
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 10,
+      "pp": 0,
+      "effect": {
+        "effectId": "EG4"
+      }
+    }
   ]
 }
