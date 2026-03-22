@@ -10,7 +10,7 @@ public class EffectDraw extends Effect {
     }
 
     public void applyEffectDraw(Player player){
-        id.applyEffectDraw(player, food);
+        id.applyEffect(player, food, 0, 0);
     }
 
     public int getFood(){

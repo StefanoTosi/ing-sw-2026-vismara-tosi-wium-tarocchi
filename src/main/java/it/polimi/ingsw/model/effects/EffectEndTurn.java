@@ -20,11 +20,7 @@ public class EffectEndTurn extends Effect {
      * @param card the card draw from the top row, it has to be of type character or building
      */
     public void applyEffectEndTurn(Player player, Card card){
-        if(card.getType().equals("Character")){
-            player.addCard(card);
-        }else{
-            player.addBuilding((Building) card);
-        }
+        player.addCard(card);
     }
 
 }

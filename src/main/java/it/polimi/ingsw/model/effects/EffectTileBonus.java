@@ -9,6 +9,6 @@ public class EffectTileBonus extends Effect {
     }
 
     public void applyEffectTileBonus(Player player){
-        player.addFood(1);
+        id.applyEffect(player, 1, 0, 0);
     }
 }

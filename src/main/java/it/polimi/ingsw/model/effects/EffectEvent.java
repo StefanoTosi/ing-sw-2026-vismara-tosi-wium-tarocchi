@@ -7,17 +7,17 @@ import java.util.function.*;
 
 public class EffectEvent extends Effect {
 
-    private int additionalStars;
     private BiConsumer<Player, Event> effect;
 
-    EffectEvent(int additionalStars, BiConsumer<Player, Event> effect, IDEffect id) {
-        this.additionalStars = additionalStars;
+    EffectEvent(int stars, BiConsumer<Player, Event> effect, IDEffect id) {
+        this.stars = stars;
         this.effect = effect;
         this.id = id;
     }
 
     @Override
     public void applyEffectEvent(Player player, Event event){
+        id.applyEffect(player, 0,0, stars);
         effect.accept(player, event);
     }
 
@@ -25,7 +25,7 @@ public class EffectEvent extends Effect {
     // Altrimenti questo metodo si può rimuovere
     @Override
     public int getAdditionalStars() {
-        return additionalStars;
+        return stars;
     }
 }
 
