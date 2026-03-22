@@ -131,7 +131,7 @@ public class Board {
                                 cards.add(cavePainting);
                                 break;
                             case "ShamanicRitual":
-                                ShamanicRitual shamanicRitual = new ShamanicRitual(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
+                                ShamanicRitual shamanicRitual = new ShamanicRitual(node.get("winnerPp").asInt(), node.get("loserPp").asInt(), Era.valueOf(node.get("era").asText()));
                                 cards.add(shamanicRitual);
                                 break;
                             case "Hunt":

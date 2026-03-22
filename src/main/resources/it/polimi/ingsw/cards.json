@@ -767,7 +767,8 @@
       "era": "I",
       "type": "CavePaintings",
       "TopPp": 2,
-      "BottomPp": 1
+      "BottomPp": 1,
+      "minNumArtists": 1
     },
 
     {
