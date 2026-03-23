@@ -58,7 +58,7 @@ public enum IDEffect {
     },
     EG2{
         public void applyEffect (Player player, int food, int pp, int stars){
-            player.addPp(6 * player.countSets());
+            player.addPp(pp * player.countSets());
         };
     },
     EG3{
