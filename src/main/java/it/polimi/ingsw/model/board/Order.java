@@ -18,7 +18,7 @@ public class Order implements Tile {
      */
     public Order(int numPlayers, List<Integer> ppBonus, List<Integer> foodBonus) throws IllegalArgumentException {
         if (numPlayers != ppBonus.size() || numPlayers != foodBonus.size()) {
-            throw new IllegalArgumentException("'numPlayers' does not correspond with the size of ppBonus or foodBonus");
+            throw new IllegalArgumentException("'numPlayers' does not correspond with the size of ppBonus or foodBonus: " + numPlayers + ", " + ppBonus.size() + ", " + foodBonus.size());
         }
 
         this.numPlayers = numPlayers;

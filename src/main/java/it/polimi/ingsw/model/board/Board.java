@@ -30,18 +30,17 @@ public class Board {
     private Deck deckE2Building;
     private Deck deckE3Building;
 
-    private List<Tile> tiles;
+    private Order order;
+    private List<Offer> offerPath;
 
     /**
      * Generates a starting board given the number of players
      * @param numPlayers
      */
-    public Board(int numPlayers) throws IllegalActionException {
+    public Board(int numPlayers) throws IllegalArgumentException {
         if (numPlayers < 2 || numPlayers > 5) {
             throw new IllegalArgumentException("'numPlayers' must be in the range 2 - 5");
         }
-        // Load cards
-        List<Card> cards = loadCards(numPlayers);
 
         // Create decks
         List<Card> tribeI = new ArrayList<>();
@@ -193,8 +192,44 @@ public class Board {
         this.deckE2Building = deckE2Building;
         this.deckE3Building = deckE2Building;
 
-        // Arrange tiles
-        // TODO: we need to load tiles
+        // Parse tiles.json to load tiles
+        this.offerPath = new ArrayList<>();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/tiles.json"));
+            JsonNode tilesNode = root.get("tiles");
+
+            for (JsonNode node : tilesNode) {
+                switch (node.get("type").asText()) {
+                    case "Order":
+                        if (node.get("numPlayers").asInt() == numPlayers) {
+                            List<Integer> ppBonus = new ArrayList<>();
+                            for (JsonNode pp : node.get("ppBonus")) {
+                                ppBonus.add(pp.asInt());
+                            }
+
+                            List<Integer> foodBonus = new ArrayList<>();
+                            for (JsonNode food : node.get("foodBonus")) {
+                                foodBonus.add(food.asInt());
+                            }
+
+                            this.order = new Order(numPlayers, ppBonus, foodBonus);
+                        }
+                        break;
+                    case "Offer":
+                        if (node.get("minNumPlayers").asInt() <= numPlayers) {
+                            this.offerPath.add(new Offer(node.get("order").asText().charAt(0), node.get("foodBonus").asInt(), node.get("drawTop").asInt(), node.get("drawBottom").asInt()));
+                        }
+                        break;
+                    default:
+                        throw new DataFormatException("Unrecognized type '" + node.get("type").asText() + "' while parsing tiles.json");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in loading tiles from json file");
+            e.printStackTrace();
+        }
 
         // Filling top and bottom rows is done in a GameState
     }
@@ -243,12 +278,11 @@ public class Board {
         return deckE3Building;
     }
 
-    public List<Tile> getTiles() {
-        return tiles;
+    public Order getOrder() {
+        return order;
     }
-    
-    public List<Card> loadCards(int numPlayers) {
 
-        return null;
+    public List<Offer> getOfferPath() {
+        return offerPath;
     }
 }
