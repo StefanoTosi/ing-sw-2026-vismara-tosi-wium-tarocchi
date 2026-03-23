@@ -1,0 +1,94 @@
+{
+  "tiles": [
+    {
+      "type": "Order",
+      "numPlayers": 5,
+      "foodBonus": [3, 1, 0, 0, -1],
+      "ppBonus": [0, 0, 0, 0, -2]
+    },
+
+    {
+      "type": "Order",
+      "numPlayers": 4,
+      "foodBonus": [2, 1, 0, -1],
+      "ppBonus": [0, 0, 0, -2]
+    },
+
+    {
+      "type": "Order",
+      "numPlayers": 3,
+      "foodBonus": [2, 0, -1],
+      "ppBonus": [0, 0, -2]
+    },
+
+    {
+      "type": "Order",
+      "numPlayers": 2,
+      "foodBonus": [1,-1],
+      "ppBonus": [0, -2]
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 5,
+      "order": "A",
+      "foodBonus": 3,
+      "drawTop": 0,
+      "drawBottom": 0
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 2,
+      "order": "B",
+      "foodBonus": 0,
+      "drawTop": 0,
+      "drawBottom": 1
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 2,
+      "order": "C",
+      "foodBonus": 0,
+      "drawTop": 1,
+      "drawBottom": 0
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 3,
+      "order": "D",
+      "foodBonus": 0,
+      "drawTop": 0,
+      "drawBottom": 2
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 2,
+      "order": "E",
+      "foodBonus": 0,
+      "drawTop": 1,
+      "drawBottom": 1
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 2,
+      "order": "F",
+      "foodBonus": 0,
+      "drawTop": 2,
+      "drawBottom": 0
+    },
+
+    {
+      "type": "Offer",
+      "minNumPlayers": 4,
+      "order": "G",
+      "foodBonus": 0,
+      "drawTop": 2,
+      "drawBottom": 1
+    }
+  ]
+}
