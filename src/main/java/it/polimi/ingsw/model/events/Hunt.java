@@ -24,12 +24,6 @@ public class Hunt extends Event {
         player.addFood(numHunter);
         int ppToAdd = numHunter * getPp();
         player.addPp(ppToAdd);
-        for(Building building : player.getBuildings()){
-            if(building.getId() == IDEffect.EH){
-                player.addFood(numHunter);
-                player.addPp(ppToAdd);
-            }
-         }
     }
 
     public int getPp(){
