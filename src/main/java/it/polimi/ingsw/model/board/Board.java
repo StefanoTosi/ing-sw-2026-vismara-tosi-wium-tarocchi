@@ -110,7 +110,7 @@ public class Board {
                         Event event;
                         switch (node.get("type").asText()) {
                             case "CavePaintings":
-                                event = new CavePaintings(node.get("minNumArtists").asInt(), era);
+                                event = new CavePaintings(node.get("minNumArtists").asInt(), era, node.get("topPp").asInt(), node.get("bottomPp").asInt());
                                 break;
                             case "ShamanicRitual":
                                 event = new ShamanicRitual(node.get("winnerPp").asInt(), node.get("loserPp").asInt(), era);
