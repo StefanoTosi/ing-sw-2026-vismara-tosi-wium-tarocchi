@@ -21,7 +21,31 @@ class DeckTest {
 
     @Test
     void shuffle() {
-        //stessa dim, tutte le carte contenute
+        Card card1 = new Hunter(true, Era.II);
+        Card card2 = new Builder(1, 2, Era.I);
+        Card card3 = new Inventor(Icon.ARROW, Era.III);
+        Card card4 = new Artist(Era.II);
+        Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)));
+        ArrayList<Card> originalDeck = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)));
+
+        deck.shuffle();
+        assertEquals(4, deck.size());
+
+        for(int i = 0; i < deck.size(); i++) {
+            Card card = deck.draw();
+            boolean found = false;
+            for(int j = 0; j < deck.size(); j++) {
+                if(originalDeck.get(j).equals(deck.draw())) {
+                    found = true;
+                }
+            }
+            assertTrue(found);
+        }
+        assertEquals(0, deck.size());
+
+        Deck emptyDeck = new Deck(new ArrayList<>());
+        emptyDeck.shuffle();
+        assertThrows(NoSuchElementException.class, emptyDeck::draw);
     }
 
     @Test
@@ -33,7 +57,7 @@ class DeckTest {
         assertEquals(card1, deck.draw());
         assertEquals(card2, deck.draw());
         assertEquals(card3, deck.draw());
-        assertThrows(NoSuchElementException.class, ()->deck.draw());
+        assertThrows(NoSuchElementException.class, deck::draw);
     }
 
     @Test

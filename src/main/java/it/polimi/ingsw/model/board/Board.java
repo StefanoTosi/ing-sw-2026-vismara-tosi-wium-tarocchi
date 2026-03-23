@@ -110,7 +110,7 @@ public class Board {
                         Event event;
                         switch (node.get("type").asText()) {
                             case "CavePaintings":
-                                event = new CavePaintings(node.get("minNumArtists").asInt(), era);
+                                event = new CavePaintings(node.get("minNumArtists").asInt(), era, node.get("topPp").asInt(), node.get("bottomPp").asInt());
                                 break;
                             case "ShamanicRitual":
                                 event = new ShamanicRitual(node.get("winnerPp").asInt(), node.get("loserPp").asInt(), era);
@@ -143,7 +143,7 @@ public class Board {
 
                         break;
                     case "Building":
-                        //manca il passaggio di effect nel costruttore di building
+                        //manca istanziazione di effect draw e event
                         Effect effect = null;
                         IDEffect id = IDEffect.valueOf(node.get("effect").get("effectId").asText());
                         switch (id) {
