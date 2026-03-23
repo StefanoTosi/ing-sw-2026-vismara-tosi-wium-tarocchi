@@ -27,7 +27,6 @@ public class ShamanicRitual extends Event {
     public void applyEffect(List<Player> players){
         int maxStar = Integer.MIN_VALUE;
         int minStar = Integer.MAX_VALUE;
-        int equal = 0;
         for(Player player : players){
             int stars = player.getNumStars();
 
@@ -41,17 +40,10 @@ public class ShamanicRitual extends Event {
 
         }
         for(Player player : players){
-
-            int stars = player.getNumStars();
-            if(stars == maxStar){
-                equal++;
-            }
-        }
-        for(Player player : players){
             int stars = player.getNumStars();
             int multiple = 0;
 
-            if(stars == maxStar && equal == 1){
+            if(stars == maxStar){
                 //check se ha building con effetto3 shamanic ritual -> metto 2pp
                 player.addPp(winnerPp);
                 player.addPp(multiple);
@@ -61,10 +53,6 @@ public class ShamanicRitual extends Event {
                 player.addPp(-loserPp);
             }
         }
-    }
-
-    public int getStars(Player player){
-        return player.getNumStars();
     }
 
     @Override
