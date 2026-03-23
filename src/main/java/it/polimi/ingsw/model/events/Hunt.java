@@ -19,7 +19,7 @@ public class Hunt extends Event {
         this.name = "Hunt";
     }
 
-    public void applyeffect(Player player){
+    public void applyEffect(Player player){
         int numHunter = player.getNumHunters();
         player.addFood(numHunter);
         int ppToAdd = numHunter * getPp();
