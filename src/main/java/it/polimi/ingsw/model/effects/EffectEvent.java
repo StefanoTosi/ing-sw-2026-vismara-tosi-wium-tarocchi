@@ -9,7 +9,7 @@ public class EffectEvent extends Effect {
 
     private BiConsumer<Player, Event> effect;
 
-    EffectEvent(int stars, BiConsumer<Player, Event> effect, IDEffect id) {
+    public EffectEvent(int stars, BiConsumer<Player, Event> effect, IDEffect id) {
         this.stars = stars;
         this.effect = effect;
         this.id = id;
