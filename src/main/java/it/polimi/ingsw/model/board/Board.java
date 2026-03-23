@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.Character;
-import it.polimi.ingsw.model.effects.Effect;
+import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.events.*;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
@@ -143,7 +143,29 @@ public class Board {
                         break;
                     case "Building":
                         //manca il passaggio di effect nel costruttore di building
-                        Building building = new Building(node.get("cost").asInt(), node.get("pp").asInt(), null, Era.valueOf(node.get("era").asText()));
+                        Effect effect = null;
+                        IDEffect id = IDEffect.valueOf(node.get("effectId").asText());
+                        switch (id) {
+                            case D1, D2:
+                                //effect = new EffectDraw();
+                                break;
+                            case ES1, ESC1, ESC2, ESC3, EH, ECP:
+                                //effect = new EffectEvent();
+                                break;
+                            case ET1:
+                                effect = new EffectTileBonus(id);
+                                break;
+                            case ET2:
+                                effect = new EffectEndTurn(id);
+                                break;
+                            case EG1, EG2, EG3, EG4:
+                                effect = new EffectEndGame(node.get("pp").asInt(), id);
+                                break;
+                            default:
+                                throw new DataFormatException("Unrecognized effect Id '" + node.get("effectId").asText() + "' while parsing cards.json");
+                        }
+
+                        Building building = new Building(node.get("cost").asInt(), node.get("pp").asInt(), effect, Era.valueOf(node.get("era").asText()));
 
                         switch (era) {
                             case I:
