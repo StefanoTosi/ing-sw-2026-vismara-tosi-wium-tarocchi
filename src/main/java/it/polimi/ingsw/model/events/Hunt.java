@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.events;
 
+import it.polimi.ingsw.model.Building;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.effects.IDEffect;
 
 /**
  * Get +1 food and the Pps on the card for every Hunter in your clan
@@ -22,14 +24,16 @@ public class Hunt extends Event {
         player.addFood(numHunter);
         int ppToAdd = numHunter * getPp();
         player.addPp(ppToAdd);
+        for(Building building : player.getBuildings()){
+            if(building.getId() == IDEffect.EH){
+                player.addFood(numHunter);
+                player.addPp(ppToAdd);
+            }
+         }
     }
 
     public int getPp(){
         return this.pp;
-    }
-
-    public void applyEffect(Player player){
-
     }
 
     @Override

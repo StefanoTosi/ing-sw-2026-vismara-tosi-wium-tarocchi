@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.effects;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.characters.Inventor;
 
 public enum IDEffect {
     D1{
@@ -12,10 +13,14 @@ public enum IDEffect {
         };
     },
     ES1{
-        public void applyEffect (Player player, int food, int pp, int stars){};
+        public void applyEffect (Player player, int food, int pp, int stars){
+            //da capire in base a come vogliamo gestire l'opzione di più personaggi
+        };
     },
     ESC1{
-        public void applyEffect (Player player, int food, int pp, int stars){};
+        public void applyEffect (Player player, int food, int pp, int stars){
+            //gestito a livello evento sciamanico
+        };
     },
     ET1{
         public void applyEffect (Player player, int food, int pp, int stars){
@@ -24,23 +29,28 @@ public enum IDEffect {
     },
     D2{
         public void applyEffect (Player player, int food, int pp, int stars){
-            if(player.getNumInventors() > 1){
-                //to do:
+            if(player.getNumInventors() % 2 == 0){
             }
         };
     },
     ESC2{
-        public void applyEffect (Player player, int food, int pp, int stars){};
+        public void applyEffect (Player player, int food, int pp, int stars){
+            // gestito a livello evento Shamanico
+        };
     },
     ESC3{
-        public void applyEffect (Player player, int food, int pp, int stars){};
+        public void applyEffect (Player player, int food, int pp, int stars){
+            // gestito a livello evento Shamanico
+        };
     },
     EH{
-        public void applyEffect (Player player, int food, int pp, int stars){};
+        public void applyEffect (Player player, int food, int pp, int stars){
+            // gestito a livello Hunt
+        };
     },
     EG1{
         public void applyEffect (Player player, int food, int pp, int stars){
-            //effetto 3 per costruttori -> lo implemento a livello di costruttore?
+            player.addPp(player.countBuildersPp());
         };
     },
     ECP{
@@ -53,7 +63,7 @@ public enum IDEffect {
     },
     EG3{
         public void applyEffect (Player player, int food, int pp, int stars){
-            //effetto 4 -> guadagno tot pp in base a numchar - a livello controller?
+            //Se creassi un ID per ogni personaggio? o sembra uno switch gigante dopo
         };
     },
     ET2{

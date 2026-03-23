@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.model.effects.Effect;
+import it.polimi.ingsw.model.effects.IDEffect;
 
 public class Building extends Card {
     private int cost;
@@ -18,6 +20,10 @@ public class Building extends Card {
     @Override
     public void addToPlayer(Player player) {
         player.addBuilding(this);
+    }
+
+    public IDEffect getId(){
+        return effect.getId();
     }
 
     public int getPp() { return pp; }

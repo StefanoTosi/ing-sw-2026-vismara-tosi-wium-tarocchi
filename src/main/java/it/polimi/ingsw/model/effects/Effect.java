@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.effects;
 
+import it.polimi.ingsw.model.Building;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.Player;
 
@@ -17,4 +18,5 @@ public abstract class Effect {
     public int getAdditionalStars() {
         return 0;
     }
+    public IDEffect getId(){ return id; }
 }
