@@ -634,7 +634,6 @@
     {
       "role": "Character",
       "era": "III",
-      "minNumPlayers": 2,
       "minNumPlayers": 4,
       "type": "Inventor",
       "gender": "male",

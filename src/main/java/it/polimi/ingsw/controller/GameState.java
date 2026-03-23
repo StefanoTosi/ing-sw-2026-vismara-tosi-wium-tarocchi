@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
@@ -15,6 +16,11 @@ public abstract class GameState {
     }
 
     public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
+        throw new IllegalActionException("Illegal action");
+    }
+
+    // FillBoardState
+    public void refillBoard(Game game) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 }

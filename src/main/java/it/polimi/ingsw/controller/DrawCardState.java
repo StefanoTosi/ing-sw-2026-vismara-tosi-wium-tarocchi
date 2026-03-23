@@ -12,10 +12,12 @@ public class DrawCardState extends GameState {
     }
 
     public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
-        player.addCard(game.getBoard().drawFromTopRow(pos));
+        // TODO: gestire pescate da builing
+        player.addCard(game.getBoard().drawFromTopRowTribe(pos));
     }
 
     public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
-        player.addCard(game.getBoard().drawFromBottomRow(pos));
+        // TODO: gestire pescate da builing
+        player.addCard(game.getBoard().drawFromBottomRowTribe(pos));
     }
 }

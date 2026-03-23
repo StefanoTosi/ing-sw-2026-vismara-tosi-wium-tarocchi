@@ -22,8 +22,10 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
  * Game board, holds information about all elements present on the board
  */
 public class Board {
-    private List<Card> topRow;
-    private List<Card> bottomRow;
+    private List<Card> topRowTribe;
+    private List<Building> topRowBuilding;
+    private List<Card> bottomRowTribe;
+    private List<Building> bottomRowBuilding;
 
     private Deck deckTribe;
     private Deck deckE1Building;
@@ -186,11 +188,52 @@ public class Board {
 
         deckFinalEvents.shuffle();
 
+        // Remove cards from building decks
+        int lim1 = 0;
+        int lim2 = 0;
+        int lim3 = 0;
+
+        switch (numPlayers) {
+            case 2:
+                lim1 = deckE1Building.size() - 1;
+                lim2 = deckE2Building.size() - 2;
+                lim3 = deckE3Building.size() - 3;
+                break;
+
+            case 3:
+                lim1 = deckE1Building.size() - 2;
+                lim2 = deckE2Building.size() - 2;
+                lim3 = deckE3Building.size() - 4;
+                break;
+
+            case 4:
+                lim1 = deckE1Building.size() - 2;
+                lim2 = deckE2Building.size() - 3;
+                lim3 = deckE3Building.size() - 4;
+                break;
+
+            case 5:
+                lim1 = deckE1Building.size() - 2;
+                lim2 = deckE2Building.size() - 3;
+                lim3 = deckE3Building.size() - 5;
+                break;
+        }
+
+        for (int i = 0; i < lim1; i++) {
+            deckE1Building.draw();
+        }
+        for (int i = 0; i < lim2; i++) {
+            deckE2Building.draw();
+        }
+        for (int i = 0; i < lim3; i++) {
+            deckE3Building.draw();
+        }
+
         // Stack tribe deck
         this.deckTribe = deckFinalEvents.stack(deckTribeIII.stack(deckTribeII.stack(deckTribeI)));
-        this.deckE1Building = deckE2Building;
+        this.deckE1Building = deckE1Building;
         this.deckE2Building = deckE2Building;
-        this.deckE3Building = deckE2Building;
+        this.deckE3Building = deckE3Building;
 
         // Parse tiles.json to load tiles
         this.offerPath = new ArrayList<>();
@@ -234,32 +277,76 @@ public class Board {
         // Filling top and bottom rows is done in a GameState
     }
 
-    public List<Card> getTopRow() {
-        return topRow;
+    public List<Card> getTopRowTribe() {
+        return topRowTribe;
+    }
+
+    public List<Building> getTopRowBuilding() {
+        return topRowBuilding;
+    }
+
+    public List<Card> getBottomRowTribe() {
+        return bottomRowTribe;
+    }
+
+    public List<Building> getBottomRowBuilding() {
+        return bottomRowBuilding;
+    }
+
+    public void setTopRowTribe(List<Card> topRowTribe) {
+        this.topRowTribe = topRowTribe;
+    }
+
+    public void setTopRowBuilding(List<Building> topRowBuilding) {
+        this.topRowBuilding = topRowBuilding;
+    }
+
+    public void setBottomRowTribe(List<Card> bottomRowTribe) {
+        this.bottomRowTribe = bottomRowTribe;
+    }
+
+    public void setBottomRowBuilding(List<Building> bottomRowBuilding) {
+        this.bottomRowBuilding = bottomRowBuilding;
     }
 
     /**
-     * Picks the card in the top row at position pos
+     * Picks the card in the top tribe row at position pos
      */
-    public Card drawFromTopRow(int pos) throws IllegalArgumentException {
-        if (pos < 0 || pos >= topRow.size()) {
+    public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException {
+        if (pos < 0 || pos >= topRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         }
-        return topRow.remove(pos);
-    }
-
-    public List<Card> getBottomRow() {
-        return bottomRow;
+        return topRowTribe.remove(pos);
     }
 
     /**
-     * Picks the card in the bottom row at position pos
+     * Picks the card in the top building row at position pos
      */
-    public Card drawFromBottomRow(int pos) throws IllegalArgumentException {
-        if (pos < 0 || pos >= topRow.size()) {
+    public Building drawFromTopRowBuilding(int pos) throws IllegalArgumentException {
+        if (pos < 0 || pos >= topRowBuilding.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         }
-        return bottomRow.remove(pos);
+        return topRowBuilding.remove(pos);
+    }
+
+    /**
+     * Picks the card in the bottom tribe row at position pos
+     */
+    public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException {
+        if (pos < 0 || pos >= bottomRowTribe.size()) {
+            throw new IllegalArgumentException("'pos' is not a valid index");
+        }
+        return bottomRowTribe.remove(pos);
+    }
+
+    /**
+     * Picks the card in the bottom building row at position pos
+     */
+    public Building drawFromBottomRowBuilding(int pos) throws IllegalArgumentException {
+        if (pos < 0 || pos >= bottomRowBuilding.size()) {
+            throw new IllegalArgumentException("'pos' is not a valid index");
+        }
+        return bottomRowBuilding.remove(pos);
     }
 
     public Deck getDeckTribe() {
