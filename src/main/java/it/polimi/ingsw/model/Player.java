@@ -130,6 +130,34 @@ public class Player {
         this.buildings.add(card);
     }
 
+    public List<Artist> getArtists() {
+        return artists;
+    }
+
+    public List<Gatherer> getGatherers() {
+        return gatherers;
+    }
+
+    public List<Hunter> getHunters() {
+        return hunters;
+    }
+
+    public List<Inventor> getInventors() {
+        return inventors;
+    }
+
+    public List<Shaman> getShamans() {
+        return shamans;
+    }
+
+    public List<Builder> getBuilders() {
+        return builders;
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
+    }
+
     /**
      * Counts the total number of character cards in the tribe.
      * @return int
