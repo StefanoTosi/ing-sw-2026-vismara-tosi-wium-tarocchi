@@ -145,7 +145,7 @@ public class Board {
                     case "Building":
                         //manca il passaggio di effect nel costruttore di building
                         Effect effect = null;
-                        IDEffect id = IDEffect.valueOf(node.get("effectId").asText());
+                        IDEffect id = IDEffect.valueOf(node.get("effect").get("effectId").asText());
                         switch (id) {
                             case D1, D2:
                                 //effect = new EffectDraw();
@@ -163,7 +163,7 @@ public class Board {
                                 effect = new EffectEndGame(node.get("pp").asInt(), id);
                                 break;
                             default:
-                                throw new DataFormatException("Unrecognized effect Id '" + node.get("effectId").asText() + "' while parsing cards.json");
+                                throw new DataFormatException("Unrecognized effect Id '" + node.get("effect").get("effectId").asText() + "' while parsing cards.json");
                         }
 
                         Building building = new Building(node.get("cost").asInt(), node.get("pp").asInt(), effect, Era.valueOf(node.get("era").asText()));

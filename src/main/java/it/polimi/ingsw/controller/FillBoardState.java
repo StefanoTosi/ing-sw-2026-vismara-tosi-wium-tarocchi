@@ -92,5 +92,8 @@ public class FillBoardState extends GameState {
                 b.getTopRowBuilding().add((Building) b.getDeckE1Building().draw());
             }
         }
+
+        // Once done filling, switch to ChooseOfferState
+        game.setState(new ChooseOfferState(game));
     }
 }
