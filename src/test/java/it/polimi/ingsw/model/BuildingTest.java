@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.Effect;
-import it.polimi.ingsw.model.effects.EffectDraw;
-import it.polimi.ingsw.model.effects.IDEffect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.actions;
+package it.polimi.ingsw.controller.actions;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;

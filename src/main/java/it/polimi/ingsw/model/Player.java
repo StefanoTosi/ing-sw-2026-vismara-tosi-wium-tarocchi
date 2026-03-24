@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
+import it.polimi.ingsw.model.effects.Building;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.states;
 
-import it.polimi.ingsw.model.Building;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Game;
