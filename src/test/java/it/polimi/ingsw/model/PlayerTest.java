@@ -2,9 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.Character;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.Effect;
-import it.polimi.ingsw.model.effects.EffectDraw;
-import it.polimi.ingsw.model.effects.IDEffect;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.events.ShamanicRitual;
 import org.junit.jupiter.api.Test;
@@ -108,11 +107,11 @@ class PlayerTest {
         //player.addCard(card); me lo dà non valido come è giusto che sia
         assertEquals(0,player.countNumBuildings());
         assertEquals(0, player.countNumCharacters());
-        Effect effect = new EffectDraw(1, IDEffect.D1);
-        Card card = new Building(2,2, effect, Era.II);
+        Effect effect = Effect.EG2;
+        Card card = new Building(Era.II,2,2, 2, effect);
         player.addCard(card);
         assertEquals(1,player.countNumBuildings());
-        Card card3 = new Building(2,2, effect, Era.II);
+        Card card3 = new Building(Era.II,2,2, 2, effect);
         player.addCard(card3);
         assertEquals(2,player.countNumBuildings());
         Card card1 = new Artist(Era.II);
@@ -239,8 +238,8 @@ class PlayerTest {
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
         assertEquals(0, player.countNumBuildings());
-        Effect effect = new EffectDraw(2, IDEffect.D1);
-        Building building = new Building(2, 3,effect, Era.II);
+        Effect effect = Effect.EG2;
+        Building building = new Building(Era.II,2,2, 2, effect);
         building.era = Era.I;
         player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
@@ -267,8 +266,8 @@ class PlayerTest {
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
-        Effect effect = new EffectDraw(2, IDEffect.D1);
-        Building building = new Building(2, 3,effect, Era.II);
+        Effect effect = Effect.EG2;
+        Building building = new Building(Era.II,2,2, 2, effect);
         player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
     }
@@ -391,8 +390,8 @@ class PlayerTest {
         Inventor card2 = new Inventor(Icon.ARROW, Era.II);
         player.addInventor(card2);
         assertEquals(5, player.countTribePp());
-        Effect effect = new EffectDraw(2, IDEffect.D1);
-        Building building = new Building(2, 3,effect, Era.II);
+        Effect effect = Effect.EG2;
+        Building building = new Building(Era.II,2,2, 2, effect);
         building.era = Era.I;
         player.addBuilding(building);
         assertEquals(8, player.countTribePp());
