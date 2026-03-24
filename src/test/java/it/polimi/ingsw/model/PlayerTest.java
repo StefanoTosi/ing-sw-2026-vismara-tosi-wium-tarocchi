@@ -3,8 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.effects.Effect;
-import it.polimi.ingsw.model.effects.EffectDraw;
-import it.polimi.ingsw.model.effects.IDEffect;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.events.ShamanicRitual;
 import org.junit.jupiter.api.Test;
