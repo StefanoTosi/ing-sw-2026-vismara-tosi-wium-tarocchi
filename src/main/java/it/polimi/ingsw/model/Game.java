@@ -13,7 +13,7 @@ public class Game {
     private final Board board;
     private GameState state;
 
-    public Game (List<Player> players) throws IllegalActionException {
+    public Game (List<Player> players) throws IllegalArgumentException {
         this.players = players;
         this.playerPositions = new HashMap<Character, Integer>();
         this.numPlayers = players.size();
