@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.model.Building;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Card;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.zip.DataFormatException;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,7 +15,6 @@ import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.events.*;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 /**
  * Game board, holds information about all elements present on the board
@@ -144,29 +142,28 @@ public class Board {
                         break;
                     case "Building":
                         //manca il passaggio di effect nel costruttore di building
-                        Effect effect = null;
-                        IDEffect id = IDEffect.valueOf(node.get("effect").get("effectId").asText());
-                        switch (id) {
+                        Effect effect = Effect.valueOf(node.get("effect").get("effectId").asText());
+                        int effectPp = 0;
+                        // TODO: Character character;
+                        switch (effect) {
                             case D1, D2:
-                                //effect = new EffectDraw();
                                 break;
                             case ES1, ESC1, ESC2, ESC3, EH, ECP:
-                                //effect = new EffectEvent();
                                 break;
                             case ET1:
-                                effect = new EffectTileBonus(id);
                                 break;
                             case ET2:
-                                effect = new EffectEndTurn(id);
                                 break;
-                            case EG1, EG2, EG3, EG4:
-                                effect = new EffectEndGame(node.get("pp").asInt(), id);
+                            case EG1, EG2, EG4:
+                                break;
+                            case EG3:
+                                effectPp = node.get("effect").get("pp").asInt();
                                 break;
                             default:
                                 throw new DataFormatException("Unrecognized effect Id '" + node.get("effect").get("effectId").asText() + "' while parsing cards.json");
                         }
 
-                        Building building = new Building(node.get("cost").asInt(), node.get("pp").asInt(), effect, Era.valueOf(node.get("era").asText()));
+                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, effect);
 
                         switch (era) {
                             case I:

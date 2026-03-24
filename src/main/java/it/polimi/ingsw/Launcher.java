@@ -10,10 +10,16 @@ import java.util.List;
 
 public class Launcher {
     public static void main(String[] args) throws IllegalActionException {
-        Board b = new Board(4);
+        Board b = new Board(5);
         System.out.println(b.getDeckE1Building().size());
         System.out.println(b.getDeckE2Building().size());
         System.out.println(b.getDeckE3Building().size());
+        System.out.println(b.getDeckTribe().size() +
+                b.getDeckE1Building().size() +
+                b.getDeckE2Building().size() +
+                        b.getDeckE3Building().size()
+
+                );
         // Application.launch(HelloApplication.class, args);
     }
 }

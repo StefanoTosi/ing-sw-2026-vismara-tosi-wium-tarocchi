@@ -993,6 +993,18 @@
       "role": "Building",
       "era": "III",
       "cost": 7,
+      "pp": 6,
+      "effect": {
+        "effectId": "EG3",
+        "character": "Gatherer",
+        "pp": 4
+      }
+    },
+
+    {
+      "role": "Building",
+      "era": "III",
+      "cost": 7,
       "pp": 4,
       "effect": {
         "effectId": "EG3",
@@ -1044,16 +1056,6 @@
       "pp": 3,
       "effect": {
         "effectId": "ET2"
-      }
-    },
-
-    {
-      "role": "Building",
-      "era": "III",
-      "cost": 10,
-      "pp": 0,
-      "effect": {
-        "effectId": "EG4"
       }
     },
 

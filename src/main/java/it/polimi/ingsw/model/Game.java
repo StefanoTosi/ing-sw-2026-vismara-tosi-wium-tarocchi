@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.util.*;

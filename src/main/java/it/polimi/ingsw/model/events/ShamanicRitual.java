@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model.events;
 
-import it.polimi.ingsw.model.Building;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.effects.IDEffect;
 
 import java.util.List;
 

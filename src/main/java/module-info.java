@@ -20,6 +20,8 @@ module com.example.mesos {
     opens it.polimi.ingsw.model.effects to javafx.fxml;
     exports it.polimi.ingsw.controller;
     opens it.polimi.ingsw.controller to javafx.fxml;
-    exports it.polimi.ingsw.model.actions;
-    opens it.polimi.ingsw.model.actions to javafx.fxml;
+    exports it.polimi.ingsw.controller.actions;
+    opens it.polimi.ingsw.controller.actions to javafx.fxml;
+    exports it.polimi.ingsw.controller.states;
+    opens it.polimi.ingsw.controller.states to javafx.fxml;
 }

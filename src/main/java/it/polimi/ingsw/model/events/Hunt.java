@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model.events;
 
-import it.polimi.ingsw.model.Building;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.effects.IDEffect;
 
 /**
  * Get +1 food and the Pps on the card for every Hunter in your clan
