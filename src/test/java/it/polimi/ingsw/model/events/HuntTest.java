@@ -1,13 +1,10 @@
 package it.polimi.ingsw.model.events;
 
-import it.polimi.ingsw.model.Building;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Effect;
-import it.polimi.ingsw.model.effects.EffectDraw;
-import it.polimi.ingsw.model.effects.EffectEvent;
-import it.polimi.ingsw.model.effects.IDEffect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
