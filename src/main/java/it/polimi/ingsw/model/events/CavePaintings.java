@@ -10,26 +10,25 @@ import it.polimi.ingsw.model.Player;
 
 public class CavePaintings extends Event {
 
-    private Era era;
     private int topPp;
     private int bottomPp;
     private int minArtist;
 
-    public CavePaintings(int minArtist, Era era){
+    public CavePaintings(int minArtist, Era era, int topPp, int bottomPp){
         super(era);
         this.minArtist = minArtist;
+        this.topPp = topPp;
+        this.bottomPp = bottomPp;
         this.name = "CavePaintings";
     }
 
     public void applyeffect(Player player){
         int numArtist = player.getNumArtists();
-        if(numArtist > minArtist){
             if(numArtist < minArtist){
                 player.addPp(-topPp);
-            }else if(numArtist >= minArtist){
+            }else if(numArtist >= minArtist) {
                 player.addPp(bottomPp);
             }
-        }
     }
 
     @Override

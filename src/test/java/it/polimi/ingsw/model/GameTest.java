@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
 
     @Test
-    void getNumPlayers() {
+    void getNumPlayers() throws IllegalArgumentException {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
@@ -19,26 +19,26 @@ class GameTest {
     }
 
     @Test
-    void getPlayers() {
+    void getPlayers() throws IllegalArgumentException{
     }
 
     @Test
-    void getPlayerPositions() {
+    void getPlayerPositions() throws IllegalArgumentException{
     }
 
     @Test
-    void putPlayerPosition() {
+    void putPlayerPosition() throws IllegalArgumentException {
     }
 
     @Test
-    void getBoard() {
+    void getBoard() throws IllegalArgumentException{
     }
 
     @Test
-    void getState() {
+    void getState() throws IllegalArgumentException {
     }
 
     @Test
-    void setState() {
+    void setState()throws IllegalArgumentException {
     }
 }

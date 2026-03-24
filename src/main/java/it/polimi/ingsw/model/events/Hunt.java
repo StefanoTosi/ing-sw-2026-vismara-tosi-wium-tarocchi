@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.events;
 
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
@@ -17,7 +18,7 @@ public class Hunt extends Event {
         this.name = "Hunt";
     }
 
-    public void applyeffect(Player player){
+    public void applyEffect(Player player){
         int numHunter = player.getNumHunters();
         player.addFood(numHunter);
         int ppToAdd = numHunter * getPp();
@@ -26,10 +27,6 @@ public class Hunt extends Event {
 
     public int getPp(){
         return this.pp;
-    }
-
-    public void applyEffect(Player player){
-
     }
 
     @Override

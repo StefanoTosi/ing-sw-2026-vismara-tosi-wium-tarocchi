@@ -15,16 +15,15 @@ public class Sustenance extends Event {
     public Sustenance(int pp, Era era){
         super(era);
         this.pp = pp;
-        this.name = "Sunstenance";
+        this.name = "Sustenance";
     }
 
-    public void applyeffect(Player player){
+    public void applyEffect(Player player){
         numCharacter = player.countNumCharacters();
-        int food = player.getFood() + player.getNumGatherers()*3; //da capire se può causare problemi nel senso che uno si ritrova a guadagnare cibo
-        if(food >= numCharacter){
+        int food = player.getFood() + player.getNumGatherers()*3;
+        if(food >= numCharacter && player.getNumGatherers()*3 < numCharacter){
             player.setFood(food - numCharacter);
-        }
-        else{
+        } else{
             player.setFood(0);
             int unfedCharacter = numCharacter - food;
             int ppLoss = - unfedCharacter * pp;

@@ -769,8 +769,8 @@
       "era": "I",
       "final": false,
       "type": "CavePaintings",
-      "TopPp": 2,
-      "BottomPp": 1,
+      "topPp": 2,
+      "bottomPp": 1,
       "minNumArtists": 1
     },
 
@@ -804,8 +804,8 @@
       "era": "II",
       "final": false,
       "type": "CavePaintings",
-      "TopPp": 2,
-      "BottomPp": 2,
+      "topPp": 2,
+      "bottomPp": 2,
       "minNumArtists": 2
     },
 
@@ -822,8 +822,8 @@
       "era": "III",
       "final": false,
       "type": "CavePaintings",
-      "TopPp": 2,
-      "BottomPp": 3,
+      "topPp": 2,
+      "bottomPp": 3,
       "minNumArtists": 3
     },
 
