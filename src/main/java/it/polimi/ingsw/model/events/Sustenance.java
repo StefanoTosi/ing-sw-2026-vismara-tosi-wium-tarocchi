@@ -15,7 +15,7 @@ public class Sustenance extends Event {
     public Sustenance(int pp, Era era){
         super(era);
         this.pp = pp;
-        this.name = "Sunstenance";
+        this.name = "Sustenance";
     }
 
     public void applyEffect(Player player){

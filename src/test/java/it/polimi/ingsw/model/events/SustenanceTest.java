@@ -72,7 +72,7 @@ class SustenanceTest {
     @Test
     void getPp() {
         Sustenance s = new Sustenance(5, Era.I);
-        assertEquals(5, s.getEra());
+        assertEquals(5, s.getPp());
     }
 
     @Test
