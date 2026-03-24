@@ -102,12 +102,12 @@ class PlayerTest {
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
-        Card card = null;
-        player.addCard(card);
+        //Card card = null;
+        //player.addCard(card); me lo dà non valido come è giusto che sia
         assertEquals(0,player.countNumBuildings());
         assertEquals(0, player.countNumCharacters());
         Effect effect = new EffectDraw(1, IDEffect.D1);
-        card = new Building(2,2, effect, Era.II);
+        Card card = new Building(2,2, effect, Era.II);
         player.addCard(card);
         assertEquals(1,player.countNumBuildings());
         Card card3 = new Building(2,2, effect, Era.II);
@@ -267,7 +267,7 @@ class PlayerTest {
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
         Effect effect = new EffectDraw(2, IDEffect.D1);
         Building building = new Building(2, 3,effect, Era.II);
-        building.era = Era.I;
+        player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
     }
 
@@ -345,8 +345,10 @@ class PlayerTest {
 
     @Test
     void getNumStars() {
-        Game game = new Game(new ArrayList<>());
         Player player = new Player("Elisa");
+        Player player2 = new Player("Stefano");
+        Player player3 = new Player("Gilles");
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
         assertEquals(0, player.getNumStars());
         Shaman card = new Shaman(3, Era.I);
         player.addShaman(card);
@@ -380,17 +382,18 @@ class PlayerTest {
         assertEquals(0, player.countBuildersPp());
         Builder card = new Builder(1, 2, Era.I);
         player.addBuilder(card);
-        assertEquals(2, player.countBuildersPp());
-        Artist artist = new Artist(Era.II);
+        assertEquals(2, player.countTribePp());
+        Artist artist = new Artist(Era.I);
         player.addArtist(artist);
-        assertEquals(4, player.countBuildersPp());
+        assertEquals(4, player.countTribePp());
         Inventor card2 = new Inventor(Icon.ARROW, Era.II);
         player.addInventor(card2);
-        assertEquals(5, player.countBuildersPp());
+        assertEquals(5, player.countTribePp());
         Effect effect = new EffectDraw(2, IDEffect.D1);
         Building building = new Building(2, 3,effect, Era.II);
         building.era = Era.I;
-        assertEquals(7, player.countBuildersPp());
+        player.addBuilding(building);
+        assertEquals(8, player.countTribePp());
     }
 
     @Test
