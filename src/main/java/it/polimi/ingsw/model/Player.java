@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class Player {
     private final String name;
+
     private List<Artist> artists;
     private List<Gatherer> gatherers;
     private List<Hunter> hunters;
@@ -20,8 +21,13 @@ public class Player {
     private List<Shaman> shamans;
     private List<Builder> builders;
     private List<Building> buildings;
+
     private int pp;
     private int food;
+    private int foodDiscount;
+    private int additionalStars;
+    private boolean dontLosePp;
+
     private Game game;
 
     public Player(String name) {
@@ -285,6 +291,38 @@ public class Player {
         }
 
         return points;
+    }
+
+    public boolean getDontLosePp() {
+        return dontLosePp;
+    }
+
+    public void setDontLosePp(boolean dontLosePp) {
+        this.dontLosePp = dontLosePp;
+    }
+
+    public int getAdditionalStars() {
+        return additionalStars;
+    }
+
+    public void setAdditionalStars(int additionalStars) {
+        this.additionalStars = additionalStars;
+    }
+
+    public void addAdditionalStars(int additionalStars) {
+        this.additionalStars += additionalStars;
+    }
+
+    public int getFoodDiscount() {
+        return foodDiscount;
+    }
+
+    public void setFoodDiscount(int foodDiscount) {
+        this.foodDiscount = foodDiscount;
+    }
+
+    public void addFoodDiscount(int foodDiscount) {
+        this.foodDiscount += foodDiscount;
     }
 
     public Game getGame() {

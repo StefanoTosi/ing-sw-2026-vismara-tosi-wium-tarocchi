@@ -34,10 +34,8 @@ public enum Effect {
      */
     ESC1 {
         @Override
-        public void applyEffectEventShamanicRitual (Player player, Building building) {
-            // Assuming this is a shamanic event
-            // Add a flag to the player that makes it so it doesn't lose the stars?
-            // The flag will be cleared after the event
+        public void whenDrawn (Player player) {
+            player.setSo = true;
         }
     },
 
