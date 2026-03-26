@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Card;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.zip.DataFormatException;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -144,6 +146,7 @@ public class Board {
                         //manca il passaggio di effect nel costruttore di building
                         Effect effect = Effect.valueOf(node.get("effect").get("effectId").asText());
                         int effectPp = 0;
+                        Function<Player, Integer> getNumCharacter = (p) -> 0;
                         // TODO: Character character;
                         switch (effect) {
                             case D1, D2:
@@ -163,7 +166,32 @@ public class Board {
                                 throw new DataFormatException("Unrecognized effect Id '" + node.get("effect").get("effectId").asText() + "' while parsing cards.json");
                         }
 
-                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, effect);
+                        if (node.get("effect").get("character") == null) {
+                            switch (node.get("effect").get("character").asText()) {
+                                case "Artist":
+                                    getNumCharacter = (p) -> p.getNumArtists();
+                                    break;
+                                case "Builder":
+                                    getNumCharacter = (p) -> p.getNumBuilders();
+                                    break;
+                                case "Gatherer":
+                                    getNumCharacter = (p) -> p.getNumGatherers();
+                                    break;
+                                case "Hunter":
+                                    getNumCharacter = (p) -> p.getNumHunters();
+                                    break;
+                                case "Inventor":
+                                    getNumCharacter = (p) -> p.getNumInventors();
+                                    break;
+                                case "Shaman":
+                                    getNumCharacter = (p) -> p.getNumShamans();
+                                    break;
+                                default:
+                                    throw new DataFormatException("Unrecognized character '" + node.get("type").asText() + "' while parsing cards.json");
+                            }
+                        }
+
+                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, getNumCharacter, effect);
 
                         switch (era) {
                             case I:

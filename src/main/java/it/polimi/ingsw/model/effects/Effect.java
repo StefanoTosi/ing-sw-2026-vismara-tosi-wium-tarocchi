@@ -21,9 +21,7 @@ public enum Effect {
     ES1 {
         @Override
         public void applyEffectEventSustenance (Player player, Building building) {
-            // Assuming this is a sustenance event
-            // This needs a Character attribute
-
+            player.setFoodDiscount(building.getNumCharacter.apply(player));
         }
     },
 
@@ -35,7 +33,7 @@ public enum Effect {
     ESC1 {
         @Override
         public void whenDrawn (Player player) {
-            player.setSo = true;
+            player.setDontLosePp(true);
         }
     },
 
@@ -71,10 +69,8 @@ public enum Effect {
      */
     ESC2 {
         @Override
-        public void applyEffectEventShamanicRitual (Player player, Building building) {
-            // Assuming this is a shamanic event
-            // Add a parameter to player that counts the additional stars it has given by the builign?
-            // This can either be caluclated at each turn or incremented only when the building is added. This would leave this function empty
+        public void whenDrawn (Player player) {
+            player.addAdditionalStars(3);
         }
     },
 
@@ -100,7 +96,6 @@ public enum Effect {
     EH {
         @Override
         public void applyEffectEventHunt (Player player, Building building) {
-            // Assuming this is a hunt event
             player.addFood(player.getNumHunters());
             player.addPp(player.getNumHunters());
         }
@@ -120,7 +115,6 @@ public enum Effect {
     ECP {
         @Override
         public void applyEffectEventCavePaintings (Player player, Building building) {
-            // Assuming this is a cave paintings event
             player.addFood(player.getNumArtists());
         }
     },
