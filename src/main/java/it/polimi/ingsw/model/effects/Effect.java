@@ -4,6 +4,12 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.events.Event;
 
 public enum Effect {
+    /**
+     * On draw:
+     * Starting from when you have this Building, every time you complete a set of 6 different
+     * Character cards, you take 5 Food tokens. You do not receive Food tokens for sets
+     * already completed at the time of acquiring the Building.
+     */
     D1 {
         @Override
         public void applyEffectDraw (Player player, Building building) {
@@ -54,6 +60,12 @@ public enum Effect {
         }
     },
 
+    /**
+     * On draw:
+     * Starting from when you have this Building, every time you obtain a pair of identical
+     * Inventors (with the same Invention icon), you take 3 Food tokens. You do not take Food for
+     * pairs already owned at the time of acquiring the Building
+     */
     D2 {
         @Override
         public void applyEffectDraw (Player player, Building building) {
@@ -82,9 +94,16 @@ public enum Effect {
     ESC3 {
         @Override
         public void applyEffectEventShamanicRitual (Player player, Building building) {
-            // Assuming this is a shamanic event
-            // This needs to be handled only by the controller. Add a counter like above?
+            boolean doublePp = true;
+            int stars = player.getNumStars() + player.getAdditionalStars();
+            for (Player p : player.getGame().getPlayers()) {
+                if (p.getNumStars() + p.getAdditionalStars() > stars) {
+                    doublePp = false;
+                    break;
+                }
+            }
 
+            player.setDoublePp(doublePp);
         }
     },
 
@@ -101,6 +120,11 @@ public enum Effect {
         }
     },
 
+    /**
+     * End game:
+     * At the end of the game, you gain double the Prestige Points indicated on the Builder cards
+     * in your tribe.
+     */
     EG1 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
@@ -119,6 +143,11 @@ public enum Effect {
         }
     },
 
+    /**
+     * End game:
+     * At the end of the game, you gain 6 Prestige Points for each set of 6 different Character
+     * cards in your tribe
+     */
     EG2 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
@@ -126,6 +155,11 @@ public enum Effect {
         }
     },
 
+    /**
+     * End game:
+     * At the end of the game, you gain the indicated amount of Prestige Points for each Character
+     * card of the indicated type in your tribe.
+     */
     EG3 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
@@ -133,6 +167,12 @@ public enum Effect {
         }
     },
 
+    /**
+     * End turn:
+     * After resolving all actions (once all Totems have been moved back to the Turn Order tile)
+     * and before the End of the Round phase, you can take 1 Character or 1 Building card (paying
+     * its cost) from the top row
+     */
     ET2 {
         @Override
         public void applyEffectEndTurn (Player player, Building building) {
@@ -141,6 +181,10 @@ public enum Effect {
         }
     },
 
+    /**
+     * End game:
+     * At the end of the game, you gain 25 Prestige Points.
+     */
     EG4 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
