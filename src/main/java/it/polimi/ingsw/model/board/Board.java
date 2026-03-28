@@ -147,8 +147,7 @@ public class Board {
                         Effect effect = Effect.valueOf(node.get("effect").get("effectId").asText());
                         int effectPp = 0;
                         Function<Player, Integer> getNumCharacter = (p) -> 0;
-                        // TODO: Character character;
-                        switch (effect) {
+                        /* switch (effect) {
                             case D1, D2:
                                 break;
                             case ES1, ESC1, ESC2, ESC3, EH, ECP:
@@ -164,9 +163,15 @@ public class Board {
                                 break;
                             default:
                                 throw new DataFormatException("Unrecognized effect Id '" + node.get("effect").get("effectId").asText() + "' while parsing cards.json");
+                        }*/
+
+                        // Get pp bouns when present
+                        if (node.get("effect").get("pp") != null) {
+                            effectPp = node.get("effect").get("pp").asInt();
                         }
 
-                        if (node.get("effect").get("character") == null) {
+                        // Get character when present
+                        if (node.get("effect").get("character") != null) {
                             switch (node.get("effect").get("character").asText()) {
                                 case "Artist":
                                     getNumCharacter = (p) -> p.getNumArtists();

@@ -108,10 +108,10 @@ class PlayerTest {
         assertEquals(0,player.countNumBuildings());
         assertEquals(0, player.countNumCharacters());
         Effect effect = Effect.EG2;
-        Card card = new Building(Era.II,2,2, 2, effect);
+        Card card = new Building(Era.II,2,2, 2, (p) -> null, effect);
         player.addCard(card);
         assertEquals(1,player.countNumBuildings());
-        Card card3 = new Building(Era.II,2,2, 2, effect);
+        Card card3 = new Building(Era.II,2,2, 2, (p) -> null, effect);
         player.addCard(card3);
         assertEquals(2,player.countNumBuildings());
         Card card1 = new Artist(Era.II);
@@ -239,7 +239,7 @@ class PlayerTest {
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
         assertEquals(0, player.countNumBuildings());
         Effect effect = Effect.EG2;
-        Building building = new Building(Era.II,2,2, 2, effect);
+        Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
         building.era = Era.I;
         player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
@@ -267,7 +267,7 @@ class PlayerTest {
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
         Effect effect = Effect.EG2;
-        Building building = new Building(Era.II,2,2, 2, effect);
+        Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
         player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
     }
@@ -391,7 +391,7 @@ class PlayerTest {
         player.addInventor(card2);
         assertEquals(5, player.countTribePp());
         Effect effect = Effect.EG2;
-        Building building = new Building(Era.II,2,2, 2, effect);
+        Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
         building.era = Era.I;
         player.addBuilding(building);
         assertEquals(8, player.countTribePp());

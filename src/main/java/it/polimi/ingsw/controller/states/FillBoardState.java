@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class FillBoardState extends GameState {
 
     /**
-     * Refills the top and bottom rows until they are full again
+     * Refills the top and bottom rows until they are full again. It also moves players back to the order tile and resolves the associated effects
      * @param game the game for which it refills the board
      * @throws IllegalActionException
      */

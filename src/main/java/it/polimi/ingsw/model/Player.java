@@ -27,6 +27,7 @@ public class Player {
     private int foodDiscount;
     private int additionalStars;
     private boolean dontLosePp;
+    private boolean doublePp;
 
     private Game game;
 
@@ -237,7 +238,7 @@ public class Player {
         int count = 0;
 
         for (Shaman shaman : shamans) {
-                count += shaman.getStars();
+            count += shaman.getStars();
         }
         return count;
     }
@@ -249,7 +250,7 @@ public class Player {
     public int countBuildersPp() {
         int points = 0;
         for (Builder builder : builders) {
-                points += builder.getPp();
+            points += builder.getPp();
         }
         return points;
     }
@@ -269,20 +270,20 @@ public class Player {
         points += this.countBuildersPp();
 
         for (Inventor inventor : inventors) {
-                found = false;
-                currIcon = inventor.getInventionIcon();
+            found = false;
+            currIcon = inventor.getInventionIcon();
 
-                for(Icon icon : seenIcons){
-                    if (currIcon == icon){
-                        found = true;
-                    }
-                }
-
-                if(!found){
-                    seenIcons.add(currIcon);
-                    numIcons++;
+            for(Icon icon : seenIcons){
+                if (currIcon == icon){
+                    found = true;
                 }
             }
+
+            if(!found){
+                seenIcons.add(currIcon);
+                numIcons++;
+            }
+        }
 
         points += numIcons * this.getNumInventors();
 
@@ -324,6 +325,15 @@ public class Player {
     public void addFoodDiscount(int foodDiscount) {
         this.foodDiscount += foodDiscount;
     }
+
+    public boolean getDoublePp() {
+        return doublePp;
+    }
+
+    public void setDoublePp(boolean doublePp) {
+        this.doublePp = doublePp;
+    }
+
 
     public Game getGame() {
         return game;
