@@ -31,7 +31,7 @@ class DeckTest {
         deck.shuffle();
         assertEquals(4, deck.size());
 
-        for(int i = 0; i < deck.size(); i++) {
+        while (deck.size() > 0) {
             Card card = deck.draw();
             boolean found = false;
             for(int j = 0; j < deck.size(); j++) {

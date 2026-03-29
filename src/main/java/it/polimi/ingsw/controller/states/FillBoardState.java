@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.states;
 
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
@@ -7,8 +8,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FillBoardState extends GameState {
 
@@ -18,63 +22,63 @@ public class FillBoardState extends GameState {
      * @throws IllegalActionException
      */
     public void refillBoard(Game game) throws IllegalActionException {
-        Board b = game.getBoard();
+        Board board = game.getBoard();
 
         // Used to initially insert buildings from era I
-        boolean boardUninitialized =    b.getTopRowTribe().size() == 0 &&
-                                        b.getBottomRowTribe().size() == 0 &&
-                                        b.getTopRowBuilding().size() == 0 &&
-                                        b.getBottomRowBuilding().size() == 0;
+        boolean boardUninitialized =    board.getTopRowTribe().size() == 0 &&
+                                        board.getBottomRowTribe().size() == 0 &&
+                                        board.getTopRowBuilding().size() == 0 &&
+                                        board.getBottomRowBuilding().size() == 0;
 
         // Find current era
         Era currentEra;
         if (boardUninitialized) {
             currentEra = Era.I;
         } else {
-            currentEra = b.getTopRowTribe().get(b.getTopRowTribe().size() - 1).getEra();
+            currentEra = board.getTopRowTribe().get(board.getTopRowTribe().size() - 1).getEra();
         }
 
         // Clear and move rows
-        b.getBottomRowTribe().clear();
-        b.setBottomRowTribe(new ArrayList<>(b.getTopRowTribe()));
+        board.getBottomRowTribe().clear();
+        board.setBottomRowTribe(new ArrayList<>(board.getTopRowTribe()));
 
-        b.getTopRowTribe().clear();
+        board.getTopRowTribe().clear();
 
         // Fill bottom row if board is uninitialized
         if (boardUninitialized) {
-            while (b.getDeckTribe().size() > 0 && b.getBottomRowTribe().size() < game.getNumPlayers() + 1) {
-                Card c = b.getDeckTribe().draw();
+            while (board.getDeckTribe().size() > 0 && board.getBottomRowTribe().size() < game.getNumPlayers() + 1) {
+                Card c = board.getDeckTribe().draw();
 
                 if (c instanceof Event) {
-                    b.getTopRowTribe().add(c);
+                    board.getTopRowTribe().add(c);
                 } else {
-                    b.getBottomRowTribe().add(c);
+                    board.getBottomRowTribe().add(c);
                 }
             }
         }
 
         // Fill top row
-        while (b.getDeckTribe().size() > 0 && b.getTopRowTribe().size() < game.getNumPlayers() + 4) {
-            Card c = b.getDeckTribe().draw();
+        while (board.getDeckTribe().size() > 0 && board.getTopRowTribe().size() < game.getNumPlayers() + 4) {
+            Card c = board.getDeckTribe().draw();
 
             // Begin new era
             if (c.getEra() != currentEra) {
                 currentEra = c.getEra();
 
-                b.getBottomRowBuilding().clear();
-                b.setBottomRowBuilding(new ArrayList<>(b.getTopRowBuilding()));
+                board.getBottomRowBuilding().clear();
+                board.setBottomRowBuilding(new ArrayList<>(board.getTopRowBuilding()));
 
-                b.getTopRowBuilding().clear();
+                board.getTopRowBuilding().clear();
                 switch (currentEra) {
                     case Era.II:
-                        while (b.getDeckE2Building().size() > 0) {
-                            b.getTopRowBuilding().add((Building) b.getDeckE2Building().draw());
+                        while (board.getDeckE2Building().size() > 0) {
+                            board.getTopRowBuilding().add((Building) board.getDeckE2Building().draw());
                         }
                         break;
 
                     case Era.III:
-                        while (b.getDeckE3Building().size() > 0) {
-                            b.getTopRowBuilding().add((Building) b.getDeckE3Building().draw());
+                        while (board.getDeckE3Building().size() > 0) {
+                            board.getTopRowBuilding().add((Building) board.getDeckE3Building().draw());
                         }
                         break;
 
@@ -83,14 +87,40 @@ public class FillBoardState extends GameState {
                 }
             }
 
-            b.getTopRowTribe().add(c);
+            board.getTopRowTribe().add(c);
         }
 
         if (boardUninitialized) {
             // Place all buildings from era I
-            while (b.getDeckE1Building().size() > 0) {
-                b.getTopRowBuilding().add((Building) b.getDeckE1Building().draw());
+            while (board.getDeckE1Building().size() > 0) {
+                board.getTopRowBuilding().add((Building) board.getDeckE1Building().draw());
             }
+        }
+
+        // Resolve end turn effects
+        for (Player p : game.getPlayers()) {
+            for (Building b : p.getBuildings()) {
+                b.getEffect().applyEffectEndTurn(p, b);
+            }
+        }
+
+        // Arrange players on the order tile
+        List<Player> ordered;
+        if (boardUninitialized) {
+            // Randomly put layers on the order tile
+            ordered = new ArrayList<>(game.getPlayers());
+            Collections.shuffle(ordered);
+        } else {
+            // Move players back to the order tile
+            ordered = game.getPlayers()
+                    .stream()
+                    .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
+                    .toList();
+        }
+
+        for (int i = 0; i < ordered.size(); i++) {
+            ordered.get(i).setOrder(i);
+            ordered.get(i).setOffer('\0');
         }
 
         // Once done filling, switch to ChooseOfferState
