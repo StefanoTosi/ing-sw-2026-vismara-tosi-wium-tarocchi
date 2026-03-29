@@ -39,4 +39,9 @@ class BuildingTest {
         Building b = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ECP);
         assertEquals(Effect.ECP, b.getEffect());
     }
+
+    @Test
+    void getGetNumCharacter() {
+    }
+
 }

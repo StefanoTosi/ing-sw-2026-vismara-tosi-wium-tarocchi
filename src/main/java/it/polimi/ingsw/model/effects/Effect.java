@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.effects;
 
+import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.events.Event;
 
@@ -39,7 +40,16 @@ public enum Effect {
     ESC1 {
         @Override
         public void whenDrawn (Player player) {
-            player.setDontLosePp(true);
+            boolean dontLosePp = true;
+            int stars = player.getNumStars() + player.getAdditionalStars();
+            for (Player p : player.getGame().getPlayers()) {
+                if (p.getNumStars() + p.getAdditionalStars() <= stars && !p.equals(player)) {
+                    dontLosePp = false;
+                    break;
+                }
+            }
+
+            player.setDontLosePp(dontLosePp);
         }
     },
 
@@ -89,7 +99,7 @@ public enum Effect {
     /**
      * Event shamanic:
      * During the Shamanic Ritual Event, if you have more  icons than any of the other players,
-     * you gain double the indicated Prestige Points. You still gain Prestige Points in case of a tie.
+     * you gain double the indicated Prestige Points. You don't gain double Prestige Points in case of a tie.
      */
     ESC3 {
         @Override
@@ -97,7 +107,7 @@ public enum Effect {
             boolean doublePp = true;
             int stars = player.getNumStars() + player.getAdditionalStars();
             for (Player p : player.getGame().getPlayers()) {
-                if (p.getNumStars() + p.getAdditionalStars() > stars) {
+                if (p.getNumStars() + p.getAdditionalStars() >= stars && !p.equals(player)) {
                     doublePp = false;
                     break;
                 }
@@ -175,9 +185,8 @@ public enum Effect {
      */
     ET2 {
         @Override
-        public void applyEffectEndTurn (Player player, Building building) {
-            //the only method in EffectEndTurn, no need for enumeration
-            //will never call it
+        public void applyEffectEndTurn (Player player, Card card) {
+            player.addCard(card);
         }
     },
 
@@ -199,7 +208,7 @@ public enum Effect {
 
     public void applyEffectDraw (Player player, Building building) {}
     public void applyEffectEndGame (Player player, Building building) {}
-    public void applyEffectEndTurn (Player player, Building building) {}
+    public void applyEffectEndTurn (Player player, Card card) {}
     public void applyEffectTileBonus (Player player, Building building) {}
 
     public void whenDrawn (Player player) {}
