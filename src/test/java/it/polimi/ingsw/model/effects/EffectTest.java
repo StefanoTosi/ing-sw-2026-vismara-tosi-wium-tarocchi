@@ -89,6 +89,26 @@ class EffectTest {
 
         b.getEffect().applyEffectEventShamanicRitual(p1, b);
         assertEquals(false, p1.getDoublePp());
+
+        //ESC1
+        Building b1 = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ESC1);
+        Player p3 = new Player("Elisa");
+        Player p4 = new Player("Lisa");
+
+        game = new Game(new ArrayList<Player>(Arrays.asList(p3, p4)));
+
+        b1.getEffect().whenDrawn(p1);
+        assertEquals(false, p1.getDontLosePp());
+
+        p3.addCard(s1);
+        p3.addCard(s2);
+        p4.addCard(s3);
+
+        b1.getEffect().applyEffectEventShamanicRitual(p3, b1);
+        assertEquals(false, p3.getDontLosePp());
+        b1.getEffect().applyEffectEventShamanicRitual(p4, b1);
+        assertEquals(true, p4.getDontLosePp());
+
     }
 
     @Test
@@ -312,18 +332,9 @@ class EffectTest {
         Shaman s2 = new Shaman(3, Era.I);
         Shaman s3 = new Shaman(3, Era.I);
 
-        b.getEffect().whenDrawn(p1);
-        assertEquals(false, p1.getDontLosePp());
-
         p1.addCard(s1);
         p1.addCard(s2);
         p2.addCard(s3);
-
-        b.getEffect().whenDrawn(p1);
-        assertEquals(false, p1.getDontLosePp());
-        b.getEffect().whenDrawn(p2);
-        assertEquals(true, p2.getDontLosePp());
-
 
         //ESC2
         Building b2 = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ESC2);

@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.effects;
 
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.characters.Inventor;
 import it.polimi.ingsw.model.events.Event;
+import it.polimi.ingsw.model.characters.Character;
 
 public enum Effect {
     /**
@@ -13,9 +15,8 @@ public enum Effect {
      */
     D1 {
         @Override
-        public void applyEffectDraw (Player player, Building building) {
-            int set = player.countSets();
-            if (set > 0){
+        public void applyEffectDraw (Player player, int numSets, Character character) {
+            if(player.countSets() != numSets){
                 player.addFood(5);
             }
         }
@@ -39,7 +40,7 @@ public enum Effect {
      */
     ESC1 {
         @Override
-        public void whenDrawn (Player player) {
+        public void applyEffectEventShamanicRitual (Player player, Building building) {
             boolean dontLosePp = true;
             int stars = player.getNumStars() + player.getAdditionalStars();
             for (Player p : player.getGame().getPlayers()) {
@@ -78,9 +79,14 @@ public enum Effect {
      */
     D2 {
         @Override
-        public void applyEffectDraw (Player player, Building building) {
-            if (player.getNumInventors() > 1){
-                //to do:
+        public void applyEffectDraw (Player player, int countSets, Character character) {
+            if(character.getName().equals("Inventor")){
+                Inventor inventor = (Inventor) character;
+                for(Inventor i : player.getInventors()){
+                    if(i.getInventionIcon().equals(inventor.getInventionIcon()) && !i.equals(inventor)){
+                        player.addFood(3);
+                    }
+                }
             }
         }
     },
@@ -206,7 +212,7 @@ public enum Effect {
     public void applyEffectEventShamanicRitual (Player player, Building building) {}
     public void applyEffectEventSustenance (Player player, Building building) {}
 
-    public void applyEffectDraw (Player player, Building building) {}
+    public void applyEffectDraw (Player player, int numSets, Character character) {}
     public void applyEffectEndGame (Player player, Building building) {}
     public void applyEffectEndTurn (Player player, Card card) {}
     public void applyEffectTileBonus (Player player, Building building) {}
