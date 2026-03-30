@@ -21,6 +21,10 @@ public class Offer implements Tile {
             throw new IllegalArgumentException("'order' is not a valid letter");
         }
 
+        if (drawTop < 0 || drawBottom < 0) {
+            throw new IllegalArgumentException("'drawTop' and 'drawBottom' must be not negative");
+        }
+
         this.order = order;
         this.foodBonus = foodBonus;
         this.drawTop = drawTop;

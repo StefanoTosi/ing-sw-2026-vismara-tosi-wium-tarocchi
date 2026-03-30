@@ -11,7 +11,6 @@ class OfferTest {
         assertThrows(IllegalArgumentException.class, () -> new Offer('H', -1, 1, 2));
         assertThrows(IllegalArgumentException.class, () -> new Offer('A', 5, 1, -2));
         assertThrows(IllegalArgumentException.class, () -> new Offer('\0', 5, 1, 2));
-        assertThrows(IllegalArgumentException.class, () -> new Offer('A', 5, 1, 2));
     }
 
     @Test
@@ -23,18 +22,18 @@ class OfferTest {
     @Test
     void getFoodBonus() {
         Offer offer = new Offer('A', 5, 1, 2);
-        assertEquals(1, offer.getFoodBonus());
+        assertEquals(5, offer.getFoodBonus());
     }
 
     @Test
     void getDrawTop() {
         Offer offer = new Offer('A', 5, 1, 2);
-        assertEquals(2, offer.getDrawTop());
+        assertEquals(1, offer.getDrawTop());
     }
 
     @Test
     void getDrawBottom() {
         Offer offer = new Offer('A', 5, 1, 2);
-        assertEquals(3, offer.getDrawBottom());
+        assertEquals(2, offer.getDrawBottom());
     }
 }

@@ -27,17 +27,16 @@ public class Board {
     private List<Card> bottomRowTribe;
     private List<Building> bottomRowBuilding;
 
-    private Deck deckTribe;
-    private Deck deckE1Building;
-    private Deck deckE2Building;
-    private Deck deckE3Building;
+    private final Deck deckTribe;
+    private final Deck deckE1Building;
+    private final Deck deckE2Building;
+    private final Deck deckE3Building;
 
     private Order order;
     private List<Offer> offerPath;
 
     /**
      * Generates a starting board given the number of players
-     * @param numPlayers
      */
     public Board(int numPlayers) throws IllegalArgumentException {
         if (numPlayers < 2 || numPlayers > 5) {
