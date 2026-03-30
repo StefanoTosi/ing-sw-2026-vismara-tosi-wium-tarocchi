@@ -33,13 +33,7 @@ class DeckTest {
 
         while (deck.size() > 0) {
             Card card = deck.draw();
-            boolean found = false;
-            for(int j = 0; j < deck.size(); j++) {
-                if(originalDeck.get(j).equals(deck.draw())) {
-                    found = true;
-                }
-            }
-            assertTrue(found);
+            assertTrue(originalDeck.contains(card));
         }
         assertEquals(0, deck.size());
 
