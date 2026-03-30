@@ -35,6 +35,7 @@ public class DrawCardState extends GameState {
         }else{
             Building building = game.getBoard().drawFromBottomRowBuilding(pos-index);
             player.addCard(building);
+            building.getEffect().whenDrawn(player);
         }
     }
 
