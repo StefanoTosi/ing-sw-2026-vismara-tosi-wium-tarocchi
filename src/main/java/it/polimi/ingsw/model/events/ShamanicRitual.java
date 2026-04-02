@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.Player;
 import java.util.List;
 
 /**
- * The player with the most stars wins the pps, the one with less loose them
+ * The player with the most stars wins the pps, the one with the least loses them
  */
 
 public class ShamanicRitual extends Event {
@@ -23,9 +23,17 @@ public class ShamanicRitual extends Event {
         this.name = "ShamanicRitual";
     }
 
+    @Override
     public void applyEffect(List<Player> players){
         int maxStar = Integer.MIN_VALUE;
         int minStar = Integer.MAX_VALUE;
+
+        for (Player player : players){
+            for (Building building : player.getBuildings()){
+                building.getEffect().applyEffectEventShamanicRitual(player, building);
+            }
+        }
+
         for(Player player : players){
             int stars = player.getNumStars();
 
@@ -53,9 +61,6 @@ public class ShamanicRitual extends Event {
             }
         }
     }
-
-    @Override
-    public Era getEra(){return era;}
 
     @Override
     public String getName(){

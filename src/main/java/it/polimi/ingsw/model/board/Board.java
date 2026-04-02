@@ -164,7 +164,7 @@ public class Board {
                                 throw new DataFormatException("Unrecognized effect Id '" + node.get("effect").get("effectId").asText() + "' while parsing cards.json");
                         }*/
 
-                        // Get pp bouns when present
+                        // Get pp bonus when present
                         if (node.get("effect").get("pp") != null) {
                             effectPp = node.get("effect").get("pp").asInt();
                         }

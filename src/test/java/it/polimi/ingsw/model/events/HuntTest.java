@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Effect;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class HuntTest {
@@ -15,24 +18,26 @@ class HuntTest {
     void applyEffect() {
         Hunt h = new Hunt(1, Era.I);
         Player p1 = new Player("Elisa");
+        List<Player> players = new ArrayList<Player>();
+        players.add(p1);
         Hunter h1 = new Hunter(true, Era.I);
         Hunter h2 = new Hunter(true, Era.I);
         Hunter h3 = new Hunter(true, Era.I);
         Hunter h4 = new Hunter(true, Era.I);
 
-        h.applyEffect(p1);
+        h.applyEffect(players);
         assertEquals(0, p1.getFood());
         assertEquals(0, p1.getPp());
 
         p1.addCard(h1);
-        h.applyEffect(p1);
+        h.applyEffect(players);
         assertEquals(1, p1.getFood());
         assertEquals(1, p1.getPp());
 
         p1.addCard(h2);
         p1.addCard(h3);
         p1.addCard(h4);
-        h.applyEffect(p1);
+        h.applyEffect(players);
         assertEquals(5, p1.getFood());
         assertEquals(5, p1.getPp());
         //0 cacciatori

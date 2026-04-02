@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
+import java.util.List;
+
 public abstract class Event extends Card {
     protected String name;
 
@@ -15,6 +17,8 @@ public abstract class Event extends Card {
     public String toString() {
         return "name: " + name + "\ntype: " + TYPE;
     }
+
+    public void applyEffect(List<Player> players){}
 
     // TODO: questa funzione dovrebbe lanciare un'eccezione
     @Override

@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.events;
 
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.effects.Building;
+
+import java.util.List;
 
 /**
  * pay 1 food for every Character in your clan. If you finish your rations
@@ -18,16 +21,25 @@ public class Sustenance extends Event {
         this.name = "Sustenance";
     }
 
-    public void applyEffect(Player player){
-        numCharacter = player.countNumCharacters();
-        int food = player.getFood() + player.getNumGatherers()*3;
-        if(food >= numCharacter && player.getNumGatherers()*3 < numCharacter){
-            player.setFood(food - numCharacter);
-        } else{
-            player.setFood(0);
-            int unfedCharacter = numCharacter - food;
-            int ppLoss = - unfedCharacter * pp;
-            player.addPp(ppLoss);
+    @Override
+    public void applyEffect(List<Player> players){
+        for (Player player : players){
+            for (Building building : player.getBuildings()){
+                building.getEffect().applyEffectEventSustenance(player, building);
+            }
+        }
+
+        for(Player player : players){
+            numCharacter = player.countNumCharacters();
+            int food = player.getFood() + player.getNumGatherers()*3;
+            if(food >= numCharacter && player.getNumGatherers()*3 < numCharacter){
+                player.setFood(food - numCharacter);
+            } else{
+                player.setFood(0);
+                int unfedCharacter = numCharacter - food;
+                int ppLoss = - unfedCharacter * pp;
+                player.addPp(ppLoss);
+            }
         }
     }
 
