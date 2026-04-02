@@ -4,8 +4,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
 /**
- * If you have less than x Artists you loose x pps,
- * otherwise if you have more or equal than x Artists you gain x pps
+ * Represents the Event CavePaintings
  */
 
 public class CavePaintings extends Event {
@@ -21,6 +20,13 @@ public class CavePaintings extends Event {
         this.bottomPp = bottomPp;
         this.name = "CavePaintings";
     }
+
+    /**
+     * Apply the effect of the event CavePaintings.
+     * If you have less than x Artists you loose x pps,
+     * otherwise if you have more or equal than x Artists you gain x pps
+     * @param player
+     */
 
     public void applyeffect(Player player){
         int numArtist = player.getNumArtists();

@@ -4,8 +4,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
 /**
- * pay 1 food for every Character in your clan. If you finish your rations
- * before feeding all your characters you will lose Pps for every unfed Character.
+ * Represents the Event Sustenance
  */
 
 public class Sustenance extends Event {
@@ -17,6 +16,13 @@ public class Sustenance extends Event {
         this.pp = pp;
         this.name = "Sustenance";
     }
+
+    /**
+     * Apply the effect of the event Sustenance.
+     * Pay 1 food for every Character in your clan. If you finish your rations
+     * before feeding all your characters you will lose Pps for every unfed Character.
+     * @param player
+     */
 
     public void applyEffect(Player player){
         numCharacter = player.countNumCharacters();

@@ -6,6 +6,10 @@ import it.polimi.ingsw.model.Player;
 
 import java.util.function.Function;
 
+/**
+ * Represents the elements of the Building card
+ */
+
 public class Building extends Card {
     // Building properties
     private int cost;
@@ -26,6 +30,10 @@ public class Building extends Card {
         this.TYPE = "Building";
     }
 
+    /**
+     * Adds Building card to player
+     * @param player
+     */
     @Override
     public void addToPlayer(Player player) {
         player.addBuilding(this);

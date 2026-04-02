@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.Player;
 import java.util.List;
 
 /**
- * The player with the most stars wins the pps, the one with less loose them
+ * Represents the Event ShamanicRitual
  */
 
 public class ShamanicRitual extends Event {
@@ -22,6 +22,13 @@ public class ShamanicRitual extends Event {
         this.loserPp = loserPp;
         this.name = "ShamanicRitual";
     }
+
+    /**
+     * Applies the effect of the event ShamanicRitual.
+     * The player with the most stars wins the pps, the one with less loose them.
+     * If two or more players have the same stars both win/loose.
+     * @param players a list of players
+     */
 
     public void applyEffect(List<Player> players){
         int maxStar = Integer.MIN_VALUE;
