@@ -144,7 +144,7 @@ public enum Effect {
     EG1 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
-            //effetto 3 per costruttori -> lo implemento a livello di costruttore?
+            player.addPp(player.countBuildersPp());
         }
     },
 
@@ -179,7 +179,7 @@ public enum Effect {
     EG3 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
-            //effetto 4 -> guadagno tot pp in base a numchar - a livello controller?
+            player.addPp(building.getNumCharacter.apply(player));
         }
     },
 
