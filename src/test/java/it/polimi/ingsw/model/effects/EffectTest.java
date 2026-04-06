@@ -111,6 +111,7 @@ class EffectTest {
 
     }
 
+    // TODO:
     @Test
     void applyEffectEventSustenance() {
         //ES1
@@ -141,7 +142,7 @@ class EffectTest {
 
         assertEquals(0, player.getFood());
         assertEquals(0, player.countSets());
-        building.getEffect().applyEffectDraw(player, building);
+        building.getEffect().applyEffectDraw(player, 0, s2);
         assertEquals(0, player.getFood());
 
         player.addCard(a);
@@ -151,7 +152,7 @@ class EffectTest {
         player.addCard(inv);
         player.addCard(s);
 
-        building.getEffect().applyEffectDraw(player, building);
+        building.getEffect().applyEffectDraw(player, 0, s2);
         assertEquals(5, player.getFood());
 
         player.addCard(s2);
@@ -161,7 +162,7 @@ class EffectTest {
         player.addCard(h2);
         player.addCard(inv2);
 
-        building.getEffect().applyEffectDraw(player, building);
+        building.getEffect().applyEffectDraw(player, 0, s2);
         assertEquals(10, player.getFood());
     }
 
@@ -176,38 +177,46 @@ class EffectTest {
         player.addCard(inv3);
         player.addCard(inv5);
 
-        building.getEffect().applyEffectDraw(player, building);
+        building.getEffect().applyEffectDraw(player, 0, inv4);
         assertEquals(0, player.getFood());
 
         player.addCard(inv4);
+        building.getEffect().applyEffectDraw(player, 1, inv4);
         assertEquals(3, player.getFood());
     }
 
     @Test
     void applyEffectEndGameEG1() {
+        // Instantiate player and building
         Player player3 = new Player("Gilles");
         Building building = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.EG1);
+        building.addToPlayer(player3);
 
+        // A player without any builders should not see any effect
         building.getEffect().applyEffectEndGame(player3, building);
         assertEquals(0, player3.getPp());
 
+        // A player with builders should see double the number of pp the builder gives
+        // We test only half of it, since the other half is granted by the EndGameState
         Builder b3 = new Builder(2,4,Era.I);
         player3.addCard(b3);
         building.getEffect().applyEffectEndGame(player3, building);
-
-        assertEquals(8, player3.getPp());
+        assertEquals(4, player3.getPp());
 
     }
 
     @Test
     void applyEffectEndGameEG2() {
-        Player player2 = new Player("Lisa");
+        // Instantiate players and building
         Player player = new Player("Elisa");
         Building building = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.EG2);
+        building.addToPlayer(player);
 
-        building.getEffect().applyEffectEndGame(player2, building);
-        assertEquals(0, player2.getPp());
+        // Without any cards, player2 shouldn't gain any pp
+        building.getEffect().applyEffectEndGame(player, building);
+        assertEquals(0, player.getPp());
 
+        // With 1 set, the player should gain 6 pp
         Artist a = new Artist(Era.I);
         Builder b = new Builder(2,2,Era.I);
         Gatherer g = new Gatherer(Era.I);
@@ -222,9 +231,10 @@ class EffectTest {
         player.addCard(s);
         player.addCard(h);
 
-        building.getEffect().applyEffectEndGame(player2, building);
+        building.getEffect().applyEffectEndGame(player, building);
         assertEquals(6, player.getPp());
 
+        // With 2 set, the player should gain 12 pp
         Artist a1 = new Artist(Era.I);
         Builder b1 = new Builder(2,2,Era.I);
         Gatherer g1 = new Gatherer(Era.I);
@@ -239,9 +249,10 @@ class EffectTest {
         player.addCard(s1);
         player.addCard(h1);
 
-        building.getEffect().applyEffectEndGame(player2, building);
-        assertEquals(12, player.getPp());
+        building.getEffect().applyEffectEndGame(player, building);
+        assertEquals( 6 + 12, player.getPp());
 
+        // With 3 set, the player should gain 18 pp
         Artist a2 = new Artist(Era.I);
         Builder b2 = new Builder(2,2,Era.I);
         Gatherer g2 = new Gatherer(Era.I);
@@ -256,10 +267,11 @@ class EffectTest {
         player.addCard(s2);
         player.addCard(h2);
 
-        building.getEffect().applyEffectEndGame(player2, building);
-        assertEquals(18, player.getPp());
+        building.getEffect().applyEffectEndGame(player, building);
+        assertEquals(6 + 12 + 18, player.getPp());
     }
 
+    // TODO:
     @Test
     void applyEffectEndGameEG3() {
 

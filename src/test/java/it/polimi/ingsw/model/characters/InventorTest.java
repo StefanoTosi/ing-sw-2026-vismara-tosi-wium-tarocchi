@@ -17,12 +17,16 @@ class InventorTest {
 
     @Test
     void addToPlayer() {
+        // Instantiate a player and a card
         Player p = new Player("Gilles");
         Inventor i = new Inventor(Icon.HOOK, Era.I);
 
+        // Check it gets added correctly
         assertEquals(0, p.getInventors().size());
         i.addToPlayer(p);
         assertEquals(1, p.getInventors().size());
+
+        // Check it gets counted correctly
         assertEquals(i, p.getInventors().get(0));
     }
 }

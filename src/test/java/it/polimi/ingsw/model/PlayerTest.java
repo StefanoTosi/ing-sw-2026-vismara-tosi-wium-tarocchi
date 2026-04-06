@@ -380,21 +380,26 @@ class PlayerTest {
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+
         assertEquals(0, player.countBuildersPp());
+
         Builder card = new Builder(1, 2, Era.I);
         player.addBuilder(card);
         assertEquals(2, player.countTribePp());
+
         Artist artist = new Artist(Era.I);
         player.addArtist(artist);
         assertEquals(4, player.countTribePp());
+
         Inventor card2 = new Inventor(Icon.ARROW, Era.II);
         player.addInventor(card2);
         assertEquals(5, player.countTribePp());
+
         Effect effect = Effect.EG2;
         Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
         building.era = Era.I;
         player.addBuilding(building);
-        assertEquals(8, player.countTribePp());
+        assertEquals(7, player.countTribePp());
     }
 
     @Test

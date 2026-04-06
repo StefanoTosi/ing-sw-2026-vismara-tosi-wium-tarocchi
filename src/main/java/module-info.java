@@ -5,8 +5,7 @@ module com.example.mesos {
     requires org.controlsfx.controls;
     requires java.desktop;
     requires com.fasterxml.jackson.databind;
-    requires java.rmi;
-    requires java.naming;
+    requires com.example.mesos;
 
     opens it.polimi.ingsw to javafx.fxml;
     exports it.polimi.ingsw;
@@ -26,5 +25,4 @@ module com.example.mesos {
     opens it.polimi.ingsw.controller.actions to javafx.fxml;
     exports it.polimi.ingsw.controller.states;
     opens it.polimi.ingsw.controller.states to javafx.fxml;
-    exports it.polimi.ingsw.networking;
 }

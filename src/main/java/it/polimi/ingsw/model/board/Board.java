@@ -27,10 +27,10 @@ public class Board {
     private List<Card> bottomRowTribe;
     private List<Building> bottomRowBuilding;
 
-    private final Deck deckTribe;
-    private final Deck deckE1Building;
-    private final Deck deckE2Building;
-    private final Deck deckE3Building;
+    private Deck deckTribe;
+    private Deck deckE1Building;
+    private Deck deckE2Building;
+    private Deck deckE3Building;
 
     private Order order;
     private List<Offer> offerPath;
@@ -38,7 +38,22 @@ public class Board {
     /**
      * Generates a starting board given the number of players
      */
-    public Board(int numPlayers) throws IllegalArgumentException {
+    public Board() {
+        this.topRowTribe = null;
+        this.topRowBuilding = null;
+        this.bottomRowTribe = null;
+        this.bottomRowBuilding = null;
+
+        this.deckTribe = null;
+        this.deckE1Building = null;
+        this.deckE2Building = null;
+        this.deckE3Building = null;
+
+        this.order = null;
+        this.offerPath = null;
+    }
+
+    public void initialize(int numPlayers) throws IllegalArgumentException {
         if (numPlayers < 2 || numPlayers > 5) {
             throw new IllegalArgumentException("'numPlayers' must be in the range 2 - 5");
         }

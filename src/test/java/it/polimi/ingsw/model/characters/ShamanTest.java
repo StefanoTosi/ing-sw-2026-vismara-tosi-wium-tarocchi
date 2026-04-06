@@ -17,12 +17,16 @@ class ShamanTest {
 
     @Test
     void addToPlayer() {
+        // Instantiate a player and a card
         Player p = new Player("Gilles");
         Shaman s = new Shaman(42, Era.I);
 
+        // Check it gets added correctly
         assertEquals(0, p.getShamans().size());
         s.addToPlayer(p);
         assertEquals(1, p.getShamans().size());
+
+        // Check it gets counted correctly
         assertEquals(s, p.getShamans().get(0));
     }
 }
