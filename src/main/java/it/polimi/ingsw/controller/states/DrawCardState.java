@@ -19,7 +19,8 @@ public class DrawCardState extends GameState {
     }
 
     /**
-     *
+     * Draw a card from the top row,
+     * not the Event one
      * @param player
      * @param pos
      * @throws IllegalActionException
@@ -37,7 +38,8 @@ public class DrawCardState extends GameState {
     }
 
     /**
-     *
+     * Draw a card from the bottom row,
+     * not the Event one
      * @param player
      * @param pos
      * @throws IllegalActionException
@@ -55,7 +57,7 @@ public class DrawCardState extends GameState {
     }
 
     /**
-     *
+     *  Manage the effect applied just after the drawn
      * @param player
      * @param character
      */
@@ -73,7 +75,7 @@ public class DrawCardState extends GameState {
     }
 
     /**
-     *
+     * Manage the hunters effect
      * @param player
      * @param hunter
      */
