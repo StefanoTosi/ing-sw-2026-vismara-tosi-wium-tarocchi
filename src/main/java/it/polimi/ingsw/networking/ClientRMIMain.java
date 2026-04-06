@@ -1,6 +1,5 @@
 package it.polimi.ingsw.networking;
 
-import javax.naming.NamingException;
 import java.io.PrintWriter;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -69,7 +68,7 @@ public class ClientRMIMain extends UnicastRemoteObject implements ClientCallBack
         System.out.println("Received message: " + message + "\n");
     }
 
-    public static void main(String[] args) throws NamingException, RemoteException, NotBoundException {
+    public static void main(String[] args) throws RemoteException, NotBoundException {
         // Getting the registry
         Registry registry = LocateRegistry.getRegistry("127.0.0.1", PORT);
         String remoteObjectName = "ServerRMI";
