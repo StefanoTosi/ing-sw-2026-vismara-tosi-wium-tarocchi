@@ -15,11 +15,11 @@ class CavePaintingsTest {
     @Test
     void applyEffect() {
         Player p1 = new Player("Elisa");
-        List<Player> players = new ArrayList<Player>();
+        List<Player> players = new ArrayList<>();
         players.add(p1);
         p1.setPp(20);
 
-        CavePaintings ef = new CavePaintings(2, Era.I, 5, 4);
+        CavePaintings ef = new CavePaintings(2, Era.I, 4, 5);
 
         Artist a1 = new Artist(Era.I);
         Artist a2 = new Artist(Era.I);
