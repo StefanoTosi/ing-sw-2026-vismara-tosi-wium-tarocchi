@@ -6,6 +6,10 @@ import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.characters.Gatherer;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SustenanceTest {
@@ -28,6 +32,7 @@ class SustenanceTest {
         Player p2 = new Player("Lisa");
         Player p3 = new Player("Gilles");
         Player p4 = new Player("Stefano");
+        List<Player> players = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
 
         //pago tutto senza gatherer
         p1.setFood(5);

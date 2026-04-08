@@ -60,7 +60,8 @@ class GameTest {
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
-        Board board = new Board(3);
+        Board board = new Board();
+        board.initialize(3);
         Card card = new Artist(Era.II);
         Card card2 = new Artist(Era.II);
         Card card3 = new Artist(Era.II);

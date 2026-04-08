@@ -2,9 +2,13 @@ package it.polimi.ingsw.model.events;
 
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.effects.Building;
+
+import java.util.List;
 
 /**
- * Represents the Event CavePaintings
+ * If you have less than x Artists you lose x pps,
+ * otherwise if you have more or equal than x Artists you gain x pps
  */
 
 public class CavePaintings extends Event {
@@ -21,23 +25,26 @@ public class CavePaintings extends Event {
         this.name = "CavePaintings";
     }
 
-    /**
-     * Apply the effect of the event CavePaintings.
-     * If you have less than x Artists you loose x pps,
-     * otherwise if you have more or equal than x Artists you gain x pps
-     * @param player
-     */
+    @Override
+    public void applyEffect(List<Player> players){
+        for (Player player : players){
+            for (Building building : player.getBuildings()){
+                building.getEffect().applyEffectEventCavePaintings(player, building);
+            }
+        }
 
-    public void applyeffect(Player player){
-        int numArtist = player.getNumArtists();
-            if(numArtist < minArtist){
+        for(Player player : players) {
+            if(player.getNumArtists() < minArtist){
                 player.addPp(-topPp);
-            }else if(numArtist >= minArtist) {
+            }else {
                 player.addPp(bottomPp);
             }
+        }
     }
 
     @Override
-    public String getName(){return name;}
+    public String getName(){
+        return name;
+    }
 
 }

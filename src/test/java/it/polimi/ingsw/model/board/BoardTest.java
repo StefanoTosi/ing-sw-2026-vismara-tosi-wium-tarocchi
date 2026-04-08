@@ -15,22 +15,26 @@ class BoardTest {
 
     @Test
     void getTopRowTribe() {
-        Board board = new Board(5);
+        Board board = new Board();
+        board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new ShamanicRitual(1, 3, Era.II);
-        ArrayList<Card> row = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3)));
-        assertEquals(row, board.getTopRowTribe());
+        ArrayList<Card> row = new ArrayList<>(Arrays.asList(card1, card2, card3));
+        board.setTopRowTribe(row);
+
+        assertTrue(row.containsAll(board.getTopRowTribe()) && row.size() == board.getTopRowTribe().size());
     }
 
     @Test
     void drawFromTopRowTribe() {
-        Board board = new Board(5);
+        Board board = new Board();
+        board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new ShamanicRitual(1, 3, Era.II);
         Card card4 = new Builder(5, 3, Era.I);
-        ArrayList<Card> row = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3)));
+        ArrayList<Card> row = new ArrayList<>(Arrays.asList(card1, card2, card3, card4));
         board.setTopRowTribe(row);
 
         assertThrows(IllegalArgumentException.class, ()->{board.drawFromTopRowTribe(-3);});
@@ -40,6 +44,7 @@ class BoardTest {
         assertEquals(3, board.getTopRowTribe().size());
         assertEquals(card1, board.drawFromTopRowTribe(0));
         assertEquals(card2, board.drawFromTopRowTribe(0));
+        assertEquals(card3, board.drawFromTopRowTribe(0));
 
         //not allowed to draw events
         assertThrows(IllegalArgumentException.class, ()->{board.drawFromTopRowTribe(0);});
@@ -52,22 +57,26 @@ class BoardTest {
 
     @Test
     void getBottomRowTribe() {
-        Board board = new Board(5);
+        Board board = new Board();
+        board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new ShamanicRitual(1, 3, Era.II);
-        ArrayList<Card> row = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3)));
-        assertEquals(row, board.getBottomRowTribe());
+        ArrayList<Card> row = new ArrayList<>(Arrays.asList(card1, card2, card3));
+        board.setBottomRowTribe(row);
+
+        assertTrue(row.containsAll(board.getBottomRowTribe()) && row.size() == board.getBottomRowTribe().size());
     }
 
     @Test
     void drawFromBottomRowTribe() {
-        Board board = new Board(5);
+        Board board = new Board();
+        board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new ShamanicRitual(1, 3, Era.II);
         Card card4 = new Builder(5, 3, Era.I);
-        ArrayList<Card> row = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3)));
+        ArrayList<Card> row = new ArrayList<>(Arrays.asList(card1, card2, card3, card4));
         board.setBottomRowTribe(row);
 
         assertThrows(IllegalArgumentException.class, ()->{board.drawFromBottomRowTribe(-3);});
@@ -77,6 +86,7 @@ class BoardTest {
         assertEquals(3, board.getBottomRowTribe().size());
         assertEquals(card1, board.drawFromBottomRowTribe(0));
         assertEquals(card2, board.drawFromBottomRowTribe(0));
+        assertEquals(card3, board.drawFromBottomRowTribe(0));
 
         //not allowed to draw events
         assertThrows(IllegalArgumentException.class, ()->{board.drawFromBottomRowTribe(0);});

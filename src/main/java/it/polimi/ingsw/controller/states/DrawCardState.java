@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+/**
+ *
+ */
 public class DrawCardState extends GameState {
     private final Game game;
 
@@ -15,6 +18,13 @@ public class DrawCardState extends GameState {
         this.game = game;
     }
 
+    /**
+     * Draw a card from the top row,
+     * not the Event one
+     * @param player
+     * @param pos
+     * @throws IllegalActionException
+     */
     public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
         int index = game.getBoard().getBottomRowTribe().size();
         if (pos < index) {
@@ -27,6 +37,13 @@ public class DrawCardState extends GameState {
         }
     }
 
+    /**
+     * Draw a card from the bottom row,
+     * not the Event one
+     * @param player
+     * @param pos
+     * @throws IllegalActionException
+     */
     public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
         int index = game.getBoard().getBottomRowTribe().size();
         if (pos < index) {
@@ -39,6 +56,11 @@ public class DrawCardState extends GameState {
         }
     }
 
+    /**
+     *  Manage the effect applied just after the drawn
+     * @param player
+     * @param character
+     */
     private void afterDrawn(Player player, Card character){
         if(!character.getType().equals("Event")) {
             int tmp_numSets = player.countSets();
@@ -52,6 +74,11 @@ public class DrawCardState extends GameState {
         }
     }
 
+    /**
+     * Manage the hunters effect
+     * @param player
+     * @param hunter
+     */
     private void huntersDraft(Player player, Hunter hunter) {
         if(hunter.getIcon()){
             player.addFood(player.getNumHunters());

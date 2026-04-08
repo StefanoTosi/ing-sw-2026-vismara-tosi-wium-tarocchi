@@ -116,6 +116,14 @@ public class FillBoardState extends GameState {
                     .stream()
                     .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
                     .toList();
+
+            // Execute the ET1 effect
+            game.getPlayers()
+                    .stream()
+                    .forEach(p -> p.getBuildings()
+                            .stream()
+                            .forEach(b -> b.getEffect().applyEffectTileBonus(p, b))
+                    );
         }
 
         for (int i = 0; i < ordered.size(); i++) {
