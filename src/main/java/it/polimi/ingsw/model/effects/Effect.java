@@ -16,7 +16,7 @@ public enum Effect {
     D1 {
         @Override
         public void applyEffectDraw (Player player, int numSets, Character character) {
-            if(player.countSets() != numSets){
+            if (player.countSets() != numSets) {
                 player.addFood(5);
             }
         }
@@ -29,7 +29,7 @@ public enum Effect {
     ES1 {
         @Override
         public void applyEffectEventSustenance (Player player, Building building) {
-            player.setFoodDiscount(building.getNumCharacter.apply(player));
+            player.setFoodDiscount(player.getFoodDiscount() + building.getNumCharacter.apply(player));
         }
     },
 
@@ -65,7 +65,7 @@ public enum Effect {
         // Must be executed after players have moved back to the order tile
         @Override
         public void applyEffectTileBonus (Player player, Building building) {
-            if (player.getGame().getBoard().getOrder().getFoodBonus(/*TODO: player position on the ordr tile*/ 0) > 0) {
+            if (player.getGame().getBoard().getOrder().getFoodBonus(player.getOrder()) > 0) {
                 player.addFood(1);
             }
         }
@@ -79,7 +79,7 @@ public enum Effect {
      */
     D2 {
         @Override
-        public void applyEffectDraw (Player player, int countSets, Character character) {
+        public void applyEffectDraw (Player player, int numSets, Character character) {
             if(character.getName().equals("Inventor")){
                 Inventor inventor = (Inventor) character;
                 for(Inventor i : player.getInventors()){
@@ -179,7 +179,7 @@ public enum Effect {
     EG3 {
         @Override
         public void applyEffectEndGame (Player player, Building building) {
-            player.addPp(building.getNumCharacter.apply(player));
+            player.addPp(building.getEffectPp() * building.getNumCharacter.apply(player));
         }
     },
 

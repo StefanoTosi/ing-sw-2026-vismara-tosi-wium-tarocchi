@@ -39,10 +39,10 @@ public class Board {
      * Generates a starting board given the number of players
      */
     public Board() {
-        this.topRowTribe = null;
-        this.topRowBuilding = null;
-        this.bottomRowTribe = null;
-        this.bottomRowBuilding = null;
+        this.topRowTribe = new ArrayList<>();
+        this.topRowBuilding = new ArrayList<>();
+        this.bottomRowTribe = new ArrayList<>();
+        this.bottomRowBuilding = new ArrayList<>();
 
         this.deckTribe = null;
         this.deckE1Building = null;
