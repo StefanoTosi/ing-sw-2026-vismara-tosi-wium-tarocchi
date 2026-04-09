@@ -13,6 +13,7 @@ public class Game {
     private final int numPlayers;
     private final Board board;
     private GameState state;
+    private List<Player> rankings;
 
     public Game (List<Player> players) throws IllegalArgumentException {
         this.players = players;
@@ -24,6 +25,14 @@ public class Game {
         }
 
         this.state = new SetupGameState();
+    }
+
+    public List<Player> getRankings() {
+        return rankings;
+    }
+
+    public void setRankings(List<Player> rankings) {
+        this.rankings = rankings;
     }
 
     public int getNumPlayers() { return numPlayers; }

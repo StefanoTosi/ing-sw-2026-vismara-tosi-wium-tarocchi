@@ -18,7 +18,7 @@ public class EndGameState extends GameState {
      * Calculates the final PP scores for each player and orders them to form the rankings.
      * @return the players' rankings, as a list where the first element is the winning player.
      */
-    public List<Player> calculateRankings() {
+    public void calculateRankings() {
         List<Player> rankings = game.getPlayers();
         for (Player player : rankings) {
             player.addPp(player.countTribePp());
@@ -29,6 +29,6 @@ public class EndGameState extends GameState {
         }
 
         rankings.sort(Comparator.comparingInt(Player::getPp).reversed());
-        return rankings;
+        game.setRankings(rankings);
     }
 }
