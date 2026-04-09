@@ -15,8 +15,8 @@ public class EndGameState extends GameState {
     }
 
     /**
-     * Calculates the final PP scores for each player and orders them to form the rankings.
-     * @return the players' rankings, as a list where the first element is the winning player.
+     * Calculates the final PP scores for each player and orders them to form the rankings,
+     * in a list where the first element is the winning player.
      */
     public void calculateRankings() {
         List<Player> rankings = game.getPlayers();
