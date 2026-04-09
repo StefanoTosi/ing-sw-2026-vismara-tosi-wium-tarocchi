@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class GameState {
     // SetupGameState
-    public void registerPlayer(Game game, String name) throws IllegalActionException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 

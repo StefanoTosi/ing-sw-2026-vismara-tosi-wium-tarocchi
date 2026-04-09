@@ -4,27 +4,48 @@ import it.polimi.ingsw.controller.states.SetupGameState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.GameObserver;
 
 import java.util.*;
 
 public class Game {
     private final List<Player> players;
     private Map<Character, Integer> playerPositions;
-    private final int numPlayers;
+    private int numPlayers;
     private final Board board;
     private GameState state;
     private List<Player> rankings;
+    private List<GameObserver> observers;
 
     public Game (List<Player> players) throws IllegalArgumentException {
         this.players = players;
         this.playerPositions = new HashMap<Character, Integer>();
-        this.numPlayers = players.size();
+        this.numPlayers = 0;
         this.board = new Board();
         for(int i = 0; i < numPlayers; i++){
             players.get(i).setGame(this);
         }
 
         this.state = new SetupGameState();
+        this.observers = new ArrayList<>();
+    }
+
+    public void addObserver(GameObserver observer){
+        this.observers.add(observer);
+    }
+
+    public void removeObserver(GameObserver observer){
+        this.observers.remove(observer);
+    }
+
+    public void notifyObserver(){
+        for(GameObserver observer : observers){
+            observer.update(this);
+        }
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
     }
 
     public List<Player> getRankings() {
