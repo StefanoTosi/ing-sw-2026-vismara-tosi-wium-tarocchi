@@ -4,11 +4,10 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import it.polimi.ingsw.networking.ClientRMI;
+import it.polimi.ingsw.networking.ClientCallBack;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameController {
@@ -34,7 +33,7 @@ public class GameController {
         games.remove(game);
     }
 
-    public boolean joinGame(Player player, ClientRMI client) throws RemoteException, IllegalActionException {
+    public boolean joinGame(Player player, ClientCallBack client) throws RemoteException, IllegalActionException {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
                 game.addObserver(client);
@@ -45,7 +44,7 @@ public class GameController {
         return false;
     }
 
-    public void createGame(Player player, int num, ClientRMI client) throws RemoteException, IllegalActionException {
+    public void createGame(Player player, int num, ClientCallBack client) throws RemoteException, IllegalActionException {
         Game newGame = new Game(new ArrayList<Player>());
         addGame(newGame);
         newGame.setNumPlayers(num);

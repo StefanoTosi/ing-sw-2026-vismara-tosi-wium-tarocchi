@@ -6,10 +6,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
 
 
-public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, GameObserver{
+public class ClientRMI extends UnicastRemoteObject implements ClientCallBack {
     private static final int PORT = 1099;
     private String nickname;
     private Game game;
@@ -24,7 +23,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Ga
 
     @Override
     public void receiveMessage(String message) throws RemoteException {
-        System.out.println("Received message: " + message + "\n");
+        System.out.println(message + "\n");
     }
 
     public void setNickname(String nickname){

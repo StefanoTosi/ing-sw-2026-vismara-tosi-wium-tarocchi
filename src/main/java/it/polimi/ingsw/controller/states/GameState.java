@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 public abstract class GameState {
@@ -17,7 +18,7 @@ public abstract class GameState {
     }
 
     // FillBoardState
-    public void refillBoard(Game game) throws IllegalActionException {
+    public void refillBoard(Game game) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 

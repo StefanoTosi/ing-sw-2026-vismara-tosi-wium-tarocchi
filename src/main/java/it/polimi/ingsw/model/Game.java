@@ -3,9 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.states.SetupGameState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.controller.states.GameState;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import it.polimi.ingsw.networking.GameObserver;
+import it.polimi.ingsw.networking.ClientCallBack;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class Game {
@@ -15,7 +15,7 @@ public class Game {
     private final Board board;
     private GameState state;
     private List<Player> rankings;
-    private List<GameObserver> observers;
+    private List<ClientCallBack> observers;
 
     public Game (List<Player> players) throws IllegalArgumentException {
         this.players = players;
@@ -30,17 +30,17 @@ public class Game {
         this.observers = new ArrayList<>();
     }
 
-    public void addObserver(GameObserver observer){
+    public void addObserver(ClientCallBack observer){
         this.observers.add(observer);
     }
 
-    public void removeObserver(GameObserver observer){
+    public void removeObserver(ClientCallBack observer){
         this.observers.remove(observer);
     }
 
-    public void notifyObserver(){
-        for(GameObserver observer : observers){
-            observer.update(this);
+    public void notifyObserver() throws RemoteException {
+        for(ClientCallBack observer : observers){
+           observer.update(this);
         }
     }
 

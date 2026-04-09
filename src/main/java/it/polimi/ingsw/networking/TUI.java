@@ -1,9 +1,9 @@
 package it.polimi.ingsw.networking;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public class TUI{
@@ -41,13 +41,15 @@ public class TUI{
                     String password = in.nextLine();
                     if(controller.addUser(password, username, client) == 0) flag = false;
                 }
-                if(!controller.joinGame(client)){
+                if(!controller.joinGame(client.getNickname())){
                     int num;
+                    System.out.println("No game found, let's create a new one!\n");
                     do {
                         System.out.println("How many players do you want?");
+                        System.out.println("\n2 to 5 players");
                         num = in.nextInt();
                     }while(num < 2 || num > 5);
-                    controller.createGame(client, num);
+                    controller.createGame(client.getNickname(), num);
                 }
                 break;
             case 2:
