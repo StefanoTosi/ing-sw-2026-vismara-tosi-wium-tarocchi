@@ -2,20 +2,20 @@ package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerRMI extends UnicastRemoteObject implements Controller {
-    private GameController game;
-    private final Map<String, ClientRMIMain> clients = new ConcurrentHashMap<>();
+    private GameController gamesController;
+    private final Map<String, ClientRMIMain> clients;
+    private Map<String, String> nicknames;
 
     protected ServerRMI() throws RemoteException {
+        clients = new ConcurrentHashMap<>();
+        nicknames = new ConcurrentHashMap<>();
     }
 
     /**
@@ -29,29 +29,40 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
      * @throws RemoteException
      */
     @Override
-    public int addUser(String uuid, String nickname, ClientRMIMain client) throws RemoteException {
-        if(clients.containsKey(uuid)){
-            if(clients.containsValue(client)){
-                if(!clients.get(uuid).getNickname().equals(nickname)){
-                    client.receiveMessage("Invalid nickname");
-                    return -1;
-                }
-            } else {
-                client.setNickname(nickname);
+    public synchronized int addUser(String uuid, String nickname, ClientRMIMain client) throws RemoteException {
+        ClientRMIMain exixstingClient = clients.get(uuid);
+
+        //Already existing client
+        if (exixstingClient != null) {
+            String oldNickname = exixstingClient.getNickname();
+            //same nickname
+            if (oldNickname.equals(nickname)) {
                 clients.put(uuid, client);
                 return 0;
             }
-        } else {
-            if(!clients.containsValue(client)){
-                client.setNickname(nickname);
-                clients.put(uuid, client);
-                return 0;
-            }else{
-                client.receiveMessage("Invalid nickname");
+            //already used nickname
+            if (nicknames.containsKey(oldNickname)) {
+                client.receiveMessage("Nickname already exists");
                 return -1;
             }
+            //valid nickname
+            //oldNickname free again
+            nicknames.remove(oldNickname);
+            nicknames.put(nickname, uuid);
+            client.setNickname(nickname);
+            clients.put(uuid, client);
+        }else{ //new client
+            //already used nickname
+            if (nicknames.containsKey(nickname)) {
+                client.receiveMessage("Nickname already exists");
+                return -1;
+            }
+            //valid nickname
+            nicknames.put(nickname, uuid);
+            client.setNickname(nickname);
+            clients.put(uuid, client);
+            return 0;
         }
-        //you should never reach this point
         return 1;
     }
 
@@ -66,17 +77,13 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public boolean joinGame() throws RemoteException {
+    public boolean joinGame(ClientRMIMain client) throws RemoteException {
+        //TODO something in the gameController class
         return false;
     }
 
     @Override
     public void executeAction(Action action) throws RemoteException {
-        game.executeAction(action);
-    }
-
-    @Override
-    public void test(String testo) throws RemoteException {
-        System.out.println("Siamo connesssi boyyyssss" + testo);
+        gamesController.executeAction(action);
     }
 }

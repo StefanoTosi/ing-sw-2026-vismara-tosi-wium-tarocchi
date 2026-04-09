@@ -58,8 +58,6 @@ public class ClientRMIMain extends UnicastRemoteObject implements ClientCallBack
         while(!sc.equals("quit")){
             System.out.println("Welcome to ServerRMI, write something");
             String testo = sc.nextLine();
-
-            controller.test(testo);
         }
     }
 
@@ -92,7 +90,7 @@ public class ClientRMIMain extends UnicastRemoteObject implements ClientCallBack
         } while (flag);
 
         //join or create a game
-        boolean tmp = controller.joinGame();
+        boolean tmp = controller.joinGame(client);
         if(!tmp){
             int numPlayers = sc.nextInt();
             controller.createGame(numPlayers);
