@@ -42,7 +42,7 @@ public class Game {
 
     public void notifyObserver(String msg) throws RemoteException, IllegalActionException {
         for(ClientCallBack observer : observers){
-           observer.update(msg);
+           observer.update(msg, this.toDTO());
         }
     }
 
@@ -80,5 +80,10 @@ public class Game {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public GameDTO toDTO(){
+        return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
+                getBoard().toDTO(), getRankings().stream().map(Player::toDTO).toList());
     }
 }

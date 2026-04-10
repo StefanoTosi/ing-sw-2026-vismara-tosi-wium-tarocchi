@@ -63,9 +63,4 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     public void executeAction(Action action) throws RemoteException {
         gamesController.executeAction(action);
     }
-
-    @Override
-    public Game getGame(String nickname) throws RemoteException, IllegalActionException {
-        return gamesController.getGame(nickname);
-    }
 }

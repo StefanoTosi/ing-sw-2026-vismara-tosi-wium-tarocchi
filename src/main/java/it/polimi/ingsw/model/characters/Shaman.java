@@ -27,4 +27,8 @@ public class Shaman extends Character {
     public void addToPlayer(Player player) {
         player.addShaman(this);
     }
+
+    public ShamanDTO toDTO(){
+        return new ShamanDTO(getEra().name(), getStars());
+    }
 }

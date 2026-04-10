@@ -11,5 +11,4 @@ public interface Controller extends Remote{
     public void leaveGame() throws RemoteException;
     public boolean joinGame(String name) throws RemoteException, IllegalActionException;
     public void executeAction(Action action) throws RemoteException;
-    public Game getGame(String nickname) throws RemoteException, IllegalActionException;
 }
