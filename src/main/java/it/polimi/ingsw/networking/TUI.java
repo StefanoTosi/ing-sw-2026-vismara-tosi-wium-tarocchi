@@ -1,5 +1,8 @@
 package it.polimi.ingsw.networking;
+import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.NotBoundException;
@@ -62,10 +65,47 @@ public class TUI implements UIObserver {
         }
     }
 
-    public static void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
+    public void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
         TUI tui = new TUI();
         tui.start();
     }
+
+
+    public void printBoard(Board board){
+        printRowTribe(board.getTopRowTribe());
+        printRowTribe(board.getBottomRowTribe());
+        printRowBuilding(board.getTopRowBuilding());
+        printRowBuilding(board.getBottomRowBuilding());
+    }
+    public String[] type = {"Event", "Chara", "Build"};
+    public void printRowTribe(List<Card> cards){
+        for(Card card : cards) {
+            System.out.println("+-------+" +
+                    "\n|" + Character.getName() + "|" +
+                    "\n|  " + card.getEra() + "  |" +
+                    "\n| idk   |" +
+                    "\n+-------+");
+        }
+    }
+
+    public void printRowBuilding(List<Building> buildings){
+        for(Building building : buildings) {
+            System.out.println("+-------+" +
+                    "\n| Build |" +
+                    "\n|  " + card.getEra() + "  |" +
+                    "\n|effetto|" +
+                    "\n+-------+");
+        }
+    }
+
+}
+public void printEvent(){
+    System.out.println("________" +
+            "\n| type   |" +
+            "\n| pp     |" +
+            "\n| idk    |" +
+            "\n|________|");
+}
 
     @Override
     public void update() throws RemoteException, IllegalActionException {
