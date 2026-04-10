@@ -5,25 +5,12 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 public class SetupGameState extends GameState {
-    public void registerPlayer(Game game, String name) throws IllegalActionException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException {
         // Check it's a valid action
-        boolean found = false;
-        for (Player p : game.getPlayers()) {
-            if (p.getName().equals(name)) {
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            // Add the player
-            game.getPlayers().add(new Player(name));
-        } else {
-            // TODO: Return an error
-        }
+        game.getPlayers().add(player);
 
         // Start the game
-        if (game.getPlayers().size() == 5) {
+        if (game.getPlayers().size() == game.getNumPlayers()) {
             game.getState().startGame(game);
         }
     }

@@ -13,6 +13,6 @@ public class RegisterPlayerAction implements Action {
     @Override
     public void execute(Player player) throws IllegalActionException {
         // TODO: dobbiamo passare game perché player non esiste
-        player.getGame().getState().registerPlayer(player.getGame(), this.name);
+        player.getGame().getState().registerPlayer(player.getGame(), player);
     }
 }

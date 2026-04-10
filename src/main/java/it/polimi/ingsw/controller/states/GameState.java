@@ -4,9 +4,12 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 public abstract class GameState {
     // SetupGameState
-    public void registerPlayer(Game game, String name) throws IllegalActionException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -15,7 +18,7 @@ public abstract class GameState {
     }
 
     // FillBoardState
-    public void refillBoard(Game game) throws IllegalActionException {
+    public void refillBoard(Game game) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -33,4 +36,11 @@ public abstract class GameState {
         throw new IllegalActionException("Illegal action");
     }
 
+    public void calculateRankings() throws IllegalActionException {
+        throw new IllegalActionException("Illegal action");
+    }
+
+    public void resolveEvents() throws IllegalActionException {
+        throw new IllegalActionException("Illegal action");
+    }
 }
