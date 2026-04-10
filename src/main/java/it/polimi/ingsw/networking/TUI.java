@@ -1,4 +1,5 @@
 package it.polimi.ingsw.networking;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.NotBoundException;
@@ -6,22 +7,22 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-public class TUI{
+public class TUI implements UIObserver {
     private Scanner in = new Scanner(System.in);
+    private Game game;
     private final ClientRMI client;
     private final Controller controller;
 
     public TUI () throws RemoteException, NotBoundException {
-        this.client = new ClientRMI();
+        this.client = new ClientRMI(this);
         this.controller = client.connectToServer();
+        this.game = null;
     }
 
     public void start() throws RemoteException, IllegalActionException {
-        while(true){
-            showMenu();
-            int input = Integer.parseInt(in.nextLine());
-            handleInput(input);
-        }
+        showMenu();
+        int input = Integer.parseInt(in.nextLine());
+        handleInput(input);
     }
 
     public void showMenu(){
@@ -48,6 +49,8 @@ public class TUI{
                         System.out.println("How many players do you want?");
                         System.out.println("\n2 to 5 players");
                         num = in.nextInt();
+                        //free the buffer
+                        in.nextLine();
                     }while(num < 2 || num > 5);
                     controller.createGame(client.getNickname(), num);
                 }
@@ -62,5 +65,11 @@ public class TUI{
     public static void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
         TUI tui = new TUI();
         tui.start();
+    }
+
+    @Override
+    public void update() throws RemoteException, IllegalActionException {
+        System.out.println("Ricevuto aggiornamento");
+        //this.game = controller.getGame(client.getNickname());
     }
 }

@@ -3,8 +3,10 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.states.SetupGameState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.controller.states.GameState;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.ClientCallBack;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -38,9 +40,9 @@ public class Game {
         this.observers.remove(observer);
     }
 
-    public void notifyObserver() throws RemoteException {
+    public void notifyObserver(String msg) throws RemoteException, IllegalActionException {
         for(ClientCallBack observer : observers){
-           observer.update(this);
+           observer.update(msg);
         }
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.networking;
 import it.polimi.ingsw.controller.actions.Action;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.*;
@@ -10,5 +11,5 @@ public interface Controller extends Remote{
     public void leaveGame() throws RemoteException;
     public boolean joinGame(String name) throws RemoteException, IllegalActionException;
     public void executeAction(Action action) throws RemoteException;
-    public void test() throws RemoteException;
+    public Game getGame(String nickname) throws RemoteException, IllegalActionException;
 }

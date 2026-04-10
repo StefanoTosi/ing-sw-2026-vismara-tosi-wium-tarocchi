@@ -39,6 +39,7 @@ public class FillBoardState extends GameState {
             currentEra = board.getTopRowTribe().get(board.getTopRowTribe().size() - 1).getEra();
         }
 
+
         // Clear and move rows
         board.getBottomRowTribe().clear();
         board.setBottomRowTribe(new ArrayList<>(board.getTopRowTribe()));
@@ -133,7 +134,7 @@ public class FillBoardState extends GameState {
         }
 
         // Once done filling, switch to ChooseOfferState
-        game.notifyObserver();
+        game.notifyObserver("");
         game.setState(new ChooseOfferState(game));
     }
 }
