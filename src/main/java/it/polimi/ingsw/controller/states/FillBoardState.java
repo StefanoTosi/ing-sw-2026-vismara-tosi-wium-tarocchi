@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import javafx.util.Pair;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ public class FillBoardState extends GameState {
      * @param game the game for which it refills the board
      * @throws IllegalActionException
      */
-    public void refillBoard(Game game) throws IllegalActionException {
+    public void refillBoard(Game game) throws IllegalActionException, RemoteException {
         Board board = game.getBoard();
 
         // Used to initially insert buildings from era I
@@ -37,6 +38,7 @@ public class FillBoardState extends GameState {
         } else {
             currentEra = board.getTopRowTribe().get(board.getTopRowTribe().size() - 1).getEra();
         }
+
 
         // Clear and move rows
         board.getBottomRowTribe().clear();
@@ -132,6 +134,7 @@ public class FillBoardState extends GameState {
         }
 
         // Once done filling, switch to ChooseOfferState
+        game.notifyObserver("");
         game.setState(new ChooseOfferState(game));
     }
 }
