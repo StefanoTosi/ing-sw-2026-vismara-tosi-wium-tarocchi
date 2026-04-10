@@ -1,6 +1,6 @@
 package it.polimi.ingsw.networking;
 import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.characters.Artist;
@@ -81,7 +81,6 @@ public class TUI implements UIObserver {
         System.out.println("Ricevuto aggiornamento");
         this.game = game;
     }
-}
 
     public void printBoard(Board board){
         printRowTribe(board.getTopRowTribe());
