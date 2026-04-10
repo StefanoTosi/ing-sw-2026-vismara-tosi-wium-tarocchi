@@ -6,14 +6,15 @@ import it.polimi.ingsw.model.effects.Building;
 
 import java.util.List;
 
-/**
- * pay 1 food for every Character in your clan. If you finish your rations
- * before feeding all your characters you will lose Pps for every unfed Character.
- */
+import static java.lang.Math.max;
 
+/**
+ * Pay 1 Food token for each Character card in your tribe (Building cards do not count). If, after
+ * paying all the Food you have, you couldn’t feed all your Characters, you lose the amount of Prestige
+ * Points indicated on the Event card for each Character card you couldn’t feed
+ */
 public class Sustenance extends Event {
     private int pp;
-    private int numCharacter;
 
     public Sustenance(int pp, Era era){
         super(era);
@@ -23,21 +24,26 @@ public class Sustenance extends Event {
 
     @Override
     public void applyEffect(List<Player> players){
+        // Apply building effects for sustenance
         for (Player player : players){
             for (Building building : player.getBuildings()){
                 building.getEffect().applyEffectEventSustenance(player, building);
             }
         }
 
+        // Take food from players
         for(Player player : players){
-            numCharacter = player.countNumCharacters();
-            int food = player.getFood() + player.getNumGatherers()*3;
-            if(food >= numCharacter && player.getNumGatherers()*3 < numCharacter){
-                player.setFood(food - numCharacter);
+            // Required food
+            int numCharacter = player.countNumCharacters();
+            int reqFood = max(numCharacter - player.getNumGatherers() * 3 - player.getFoodDiscount(), 0);
+
+            // Verify they can pay
+            if (player.getFood() >= reqFood) {
+                player.addFood(-reqFood);
             } else{
+                int unfedCharacters = reqFood - player.getFood();
                 player.setFood(0);
-                int unfedCharacter = numCharacter - food;
-                int ppLoss = - unfedCharacter * pp;
+                int ppLoss = - unfedCharacters * pp;
                 player.addPp(ppLoss);
             }
         }

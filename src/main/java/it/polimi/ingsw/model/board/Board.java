@@ -36,7 +36,7 @@ public class Board {
     private List<Offer> offerPath;
 
     /**
-     * Generates a starting board given the number of players
+     * Generates an empty board. Decks will be filled by initialize() and the rows will be arranged in the RefillBoardState
      */
     public Board() {
         this.topRowTribe = new ArrayList<>();
@@ -53,6 +53,9 @@ public class Board {
         this.offerPath = null;
     }
 
+    /**
+     * Initializes a starting board given the number of players
+     */
     public void initialize(int numPlayers) throws IllegalArgumentException {
         if (numPlayers < 2 || numPlayers > 5) {
             throw new IllegalArgumentException("'numPlayers' must be in the range 2 - 5");

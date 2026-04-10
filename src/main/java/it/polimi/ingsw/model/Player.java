@@ -78,7 +78,7 @@ public class Player {
     }
 
     public void setFood(int food) throws IllegalArgumentException {
-        if(food < 0){
+        if (food < 0) {
             throw new IllegalArgumentException("trying to set food to a negative value");
         }
         this.food = food;
@@ -89,7 +89,7 @@ public class Player {
      * @param food amount of food to add (or subtract if negative)
      */
     public void addFood(int food) throws IllegalArgumentException {
-        if(food < 0){
+        if (this.food + food < 0) {
             throw new IllegalArgumentException("trying to set food to a negative value");
         }
         this.food += food;
