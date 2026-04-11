@@ -22,4 +22,8 @@ public abstract class Character extends Card {
     public String toString() {
         return "name: " + name + "\ntype: " + TYPE;
     }
+
+    public CharacterDTO allToDTO(){
+        return new CharacterDTO(getEra().name());
+    }
 }

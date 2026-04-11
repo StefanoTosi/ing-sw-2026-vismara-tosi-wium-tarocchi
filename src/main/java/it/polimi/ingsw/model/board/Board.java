@@ -441,4 +441,17 @@ public class Board {
     public List<Offer> getOfferPath() {
         return offerPath;
     }
+
+    public BoardDTO toDTO(){
+        return new BoardDTO(getTopRowTribe().size(),
+                getTopRowBuilding().stream().map(Building::toDTO).toList(),
+                getBottomRowTribe().size(),
+                getBottomRowBuilding().stream().map(Building::toDTO).toList(),
+                getDeckTribe().size(),
+                getDeckE1Building().size(),
+                getDeckE2Building().size(),
+                getDeckE3Building().size(),
+                getOrder().toDTO(),
+                getOfferPath().stream().map(Offer::toDTO).toList());
+    }
 }

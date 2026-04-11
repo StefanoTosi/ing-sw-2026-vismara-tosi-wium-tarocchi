@@ -2,6 +2,7 @@ package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
@@ -45,7 +46,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public synchronized void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
         ClientCallBack client = clients.get(name);
-        gamesController.createGame(new Player(client.getNickname()), numPlayers, client);
+        gamesController.createGame(new Player(name), numPlayers, client);
     }
 
     @Override
@@ -55,16 +56,11 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public synchronized boolean joinGame(String name) throws RemoteException, IllegalActionException {
         ClientCallBack client = clients.get(name);
-        return gamesController.joinGame(new Player(client.getNickname()), client);
+        return gamesController.joinGame(new Player(name), client);
     }
 
     @Override
     public void executeAction(Action action) throws RemoteException {
         gamesController.executeAction(action);
-    }
-
-    @Override
-    public void test() throws RemoteException {
-        System.out.println("[ServerRMI] test");
     }
 }

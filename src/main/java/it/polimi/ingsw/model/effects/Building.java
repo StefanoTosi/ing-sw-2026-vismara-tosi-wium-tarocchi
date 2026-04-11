@@ -58,4 +58,8 @@ public class Building extends Card {
     public Effect getEffect() {
         return effect;
     }
+
+    public BuildingDTO toDTO() {
+        return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffect().name(), getEra().name());
+    }
 }

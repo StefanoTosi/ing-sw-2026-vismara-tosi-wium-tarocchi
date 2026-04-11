@@ -28,4 +28,8 @@ public class Hunter extends Character {
     public void addToPlayer(Player player) {
         player.addHunter(this);
     }
+
+    public HunterDTO toDTO(){
+        return new HunterDTO(getIcon(), getEra().name());
+    }
 }

@@ -1,0 +1,39 @@
+package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.controller.states.GameState;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.BoardDTO;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+public class GameDTO implements Serializable {
+    private  List<PlayerDTO> players;
+    private int numPlayers;
+    private BoardDTO board;
+    private List<PlayerDTO> rankings;
+
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, List<PlayerDTO> rankings) {
+        this.players = List.copyOf(players);
+        this.numPlayers = numPlayers;
+        this.board = board;
+        this.rankings = List.copyOf(rankings);
+    }
+
+    public List<PlayerDTO> getPlayers() {
+        return players;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public BoardDTO getBoard() {
+        return board;
+    }
+
+    public List<PlayerDTO> getRankings() {
+        return rankings;
+    }
+}

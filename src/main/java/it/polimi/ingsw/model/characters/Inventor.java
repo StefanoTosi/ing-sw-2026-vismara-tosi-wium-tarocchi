@@ -24,4 +24,8 @@ public class Inventor extends Character {
     public void addToPlayer(Player player) {
         player.addInventor(this);
     }
+
+    public InventorDTO toDTO(){
+        return new InventorDTO(getEra().name(), getInventionIcon().name());
+    }
 }

@@ -355,4 +355,15 @@ public class Player {
     public Game getGame() {
         return game;
     }
+
+    public PlayerDTO toDTO(){
+        return new PlayerDTO(getName(), getArtists().stream().map(Artist::allToDTO).toList(),
+                getGatherers().stream().map(Gatherer::allToDTO).toList(),
+                getHunters().stream().map(Hunter::toDTO).toList(),
+                getInventors().stream().map(Inventor::toDTO).toList(),
+                getShamans().stream().map(Shaman::toDTO).toList(),
+                getBuilders().stream().map(Builder::toDTO).toList(),
+                getBuildings().stream().map(Building::toDTO).toList(),
+                getPp(), getFood(), getOrder(), getOffer());
+    }
 }

@@ -46,4 +46,8 @@ public class Offer implements Tile {
     public int getDrawBottom() {
         return drawBottom;
     }
+
+    public OfferDTO toDTO(){
+        return new OfferDTO(getOrder(), getFoodBonus(), getDrawTop(), getDrawBottom());
+    }
 }

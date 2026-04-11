@@ -1,6 +1,8 @@
 package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameDTO;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -11,14 +13,10 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientRMI extends UnicastRemoteObject implements ClientCallBack {
     private static final int PORT = 1099;
     private String nickname;
-    private Game game;
+    private UIObserver  observer;
 
-    protected ClientRMI() throws RemoteException {
-        this.game = null;
-    }
-
-    public Game getGame() {
-        return game;
+    protected ClientRMI(UIObserver observer) throws RemoteException {
+        this.observer = observer;
     }
 
     @Override
@@ -43,7 +41,10 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack {
     }
 
     @Override
-    public void update(Game game) {
-        this.game = game;
+    public void update(String message, GameDTO game) throws RemoteException, IllegalActionException {
+        System.out.println(message + "\n");
+        if(message.equals("")){
+            observer.update(game);
+        }
     }
 }

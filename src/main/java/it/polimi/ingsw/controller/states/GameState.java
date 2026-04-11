@@ -9,11 +9,11 @@ import java.util.List;
 
 public abstract class GameState {
     // SetupGameState
-    public void registerPlayer(Game game, Player player) throws IllegalActionException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void startGame(Game game) throws IllegalActionException {
+    public void startGame(Game game) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 

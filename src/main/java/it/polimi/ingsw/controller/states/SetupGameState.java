@@ -4,22 +4,27 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
+
 public class SetupGameState extends GameState {
-    public void registerPlayer(Game game, Player player) throws IllegalActionException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException, RemoteException {
         // Check it's a valid action
         game.getPlayers().add(player);
 
         // Start the game
+        game.notifyObserver("Player " + player.getName() + " join the game");
         if (game.getPlayers().size() == game.getNumPlayers()) {
             game.getState().startGame(game);
         }
     }
 
-    public void startGame(Game game) throws IllegalActionException {
+    public void startGame(Game game) throws IllegalActionException, RemoteException {
         // Initialize board
         game.getBoard().initialize(game.getPlayers().size());
 
         // Transition
+        game.notifyObserver("The game has started");
         game.setState(new FillBoardState());
+        game.getState().refillBoard(game);
     }
 }

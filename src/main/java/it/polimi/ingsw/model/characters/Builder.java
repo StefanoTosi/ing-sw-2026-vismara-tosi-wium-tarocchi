@@ -35,4 +35,8 @@ public class Builder extends Character {
     public void addToPlayer(Player player) {
         player.addBuilder(this);
     }
+
+    public BuilderDTO toDTO(){
+        return new BuilderDTO(getFoodDiscount(), getPp(), getEra().name());
+    }
 }

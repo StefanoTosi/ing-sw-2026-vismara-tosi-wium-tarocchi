@@ -43,4 +43,8 @@ public class Order implements Tile {
     public int getNumPlayers() {
         return numPlayers;
     }
+
+    public OrderDTO toDTO(){
+        return new OrderDTO(this.foodBonus, this.ppBonus, this.numPlayers);
+    }
 }

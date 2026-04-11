@@ -25,6 +25,17 @@ public class GameController {
         return games;
     }
 
+    public Game getGame(String nickname) throws RemoteException {
+        for(Game game : games){
+            for(Player player : game.getPlayers()){
+                if(player.getName().equals(nickname)){
+                    return game;
+                }
+            }
+        }
+        return null;
+    }
+
     public void addGame(Game game) throws IllegalActionException {
         games.add(game);
     }
