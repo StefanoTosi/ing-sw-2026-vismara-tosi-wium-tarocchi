@@ -1,5 +1,6 @@
 package it.polimi.ingsw.networking;
 
+import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -42,9 +43,14 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack {
 
     @Override
     public void update(String message, GameDTO game) throws RemoteException, IllegalActionException {
-        System.out.println(message + "\n");
-        if(message.equals("")){
+        if(game != null){
             observer.update(game);
         }
+        System.out.println(message + "\n");
+    }
+
+    @Override
+    public void myTurn(int state) throws RemoteException, IllegalActionException {
+        observer.myTurn(state);
     }
 }

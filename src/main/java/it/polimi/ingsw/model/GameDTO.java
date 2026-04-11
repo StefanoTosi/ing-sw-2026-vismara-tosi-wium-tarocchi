@@ -12,13 +12,13 @@ public class GameDTO implements Serializable {
     private  List<PlayerDTO> players;
     private int numPlayers;
     private BoardDTO board;
-    private List<PlayerDTO> rankings;
+    //private List<PlayerDTO> rankings;
 
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, List<PlayerDTO> rankings) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board/*, List<PlayerDTO> rankings*/) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
-        this.rankings = List.copyOf(rankings);
+        //this.rankings = List.copyOf(rankings);
     }
 
     public List<PlayerDTO> getPlayers() {
@@ -32,8 +32,9 @@ public class GameDTO implements Serializable {
     public BoardDTO getBoard() {
         return board;
     }
-
+    /*
     public List<PlayerDTO> getRankings() {
         return rankings;
     }
+    */
 }

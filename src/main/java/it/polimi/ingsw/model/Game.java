@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.states.ChooseOfferState;
 import it.polimi.ingsw.controller.states.SetupGameState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.controller.states.GameState;
@@ -46,6 +47,20 @@ public class Game {
         }
     }
 
+    public void notifyPlayer(String nickname)  throws RemoteException, IllegalActionException {
+        for(ClientCallBack observer : observers){
+            if(observer.getNickname().equals(nickname)){
+                int stateNum;
+                if(getState() instanceof ChooseOfferState){
+                    stateNum = 1;
+                } else {
+                    stateNum = 2;
+                }
+                observer.myTurn(stateNum);
+            }
+        }
+    }
+
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
@@ -83,7 +98,10 @@ public class Game {
     }
 
     public GameDTO toDTO(){
+        if(getState() instanceof SetupGameState){
+            return null;
+        }
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO(), getRankings().stream().map(Player::toDTO).toList());
+                getBoard().toDTO()/*, getRankings().stream().map(Player::toDTO).toList()*/);
     }
 }

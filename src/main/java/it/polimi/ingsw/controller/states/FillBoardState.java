@@ -136,5 +136,10 @@ public class FillBoardState extends GameState {
         // Once done filling, switch to ChooseOfferState
         game.notifyObserver("");
         game.setState(new ChooseOfferState(game));
+        for(Player p : ordered) {
+            game.notifyObserver("Turn of " + p.getName());
+            game.notifyPlayer(p.getName());
+        }
+        game.notifyObserver("Tutti i player si sono mossi");
     }
 }
