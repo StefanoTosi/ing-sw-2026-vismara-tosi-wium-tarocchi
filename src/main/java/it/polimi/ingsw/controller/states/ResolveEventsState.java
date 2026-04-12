@@ -23,7 +23,7 @@ public class ResolveEventsState extends GameState {
             }
         }
 
-        //Move Sustenance events to solve them last
+        // Move Sustenance events to solve them last
         for(Event event : events) {
             if (event instanceof Sustenance) {
                 events.remove(event);
@@ -31,9 +31,7 @@ public class ResolveEventsState extends GameState {
             }
         }
 
-        //La risoluzione in ordine di era a parità di tipologia può essere data per scontata visto l'ordine delle carte nel mazzo?
-
-        for(Event event : events) {
+        for (Event event : events) {
             event.applyEffect(game.getPlayers());
         }
     }

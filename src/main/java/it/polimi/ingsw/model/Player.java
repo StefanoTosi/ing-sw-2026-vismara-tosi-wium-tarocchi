@@ -24,10 +24,13 @@ public class Player {
 
     private int pp;
     private int food;
+
     private int foodDiscount;
     private int additionalStars;
     private boolean dontLosePp;
     private boolean doublePp;
+    private boolean canPickFromTop;
+
     private int order; // Indicates the position of player on the order tile
     private char offer; // Indicates the position of player on the offer path
 
@@ -42,10 +45,21 @@ public class Player {
         this.inventors = new ArrayList<>();
         this.shamans = new ArrayList<>();
         this.builders = new ArrayList<>();
-
         this.buildings = new ArrayList<>();
+
         this.pp = 0;
         this.food = 0;
+
+
+        this.foodDiscount = 0;
+        this.additionalStars = 0;
+        this.dontLosePp = false;
+        this.doublePp = false;
+        this.canPickFromTop = false;
+
+        this.order = 0;
+        this.offer = '\0';
+
         this.game = null;
     }
 
@@ -365,5 +379,13 @@ public class Player {
                 getBuilders().stream().map(Builder::toDTO).toList(),
                 getBuildings().stream().map(Building::toDTO).toList(),
                 getPp(), getFood(), getOrder(), getOffer());
+    }
+
+    public void setCanPickFromTop(boolean canPickFromTop) {
+        this.canPickFromTop = canPickFromTop;
+    }
+
+    public boolean getCanPickFromTop() {
+        return canPickFromTop;
     }
 }

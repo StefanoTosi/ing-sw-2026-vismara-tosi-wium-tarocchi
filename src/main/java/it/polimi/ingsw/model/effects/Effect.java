@@ -191,8 +191,8 @@ public enum Effect {
      */
     ET2 {
         @Override
-        public void applyEffectEndTurn (Player player, Card card) {
-            player.addCard(card);
+        public void applyEffectEndTurn (Player player) {
+            player.setCanPickFromTop(true);
         }
     },
 
@@ -214,7 +214,7 @@ public enum Effect {
 
     public void applyEffectDraw (Player player, int numSets, Character character) {}
     public void applyEffectEndGame (Player player, Building building) {}
-    public void applyEffectEndTurn (Player player, Card card) {}
+    public void applyEffectEndTurn (Player player) {}
     public void applyEffectTileBonus (Player player, Building building) {}
 
     public void whenDrawn (Player player) {}

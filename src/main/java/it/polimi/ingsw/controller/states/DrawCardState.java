@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.states;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.board.Offer;
 import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
@@ -13,9 +14,13 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
  */
 public class DrawCardState extends GameState {
     private final Game game;
+    private int drawTopCount;
+    private int drawBottomCount;
 
     public DrawCardState(Game game) {
         this.game = game;
+        this.drawTopCount = 0;
+        this.drawBottomCount = 0;
     }
 
     /**
@@ -26,14 +31,32 @@ public class DrawCardState extends GameState {
      * @throws IllegalActionException
      */
     public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
-        int index = game.getBoard().getBottomRowTribe().size();
-        if (pos < index) {
-            Card character= game.getBoard().drawFromTopRowTribe(pos);
-            afterDrawn(player, character);
-        }else{
-            Building building = game.getBoard().drawFromTopRowBuilding(pos-index);
-            player.addCard(building);
-            building.getEffect().whenDrawn(player);
+        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
+        if (player.equals(game.getPlayers().get(game.getPlayerTurn())) && drawTopCount < offer.getDrawTop()) {
+            int index = game.getBoard().getBottomRowTribe().size();
+            if (pos < index) {
+                Card character= game.getBoard().drawFromTopRowTribe(pos);
+                afterDrawn(player, character);
+            } else {
+                Building building = game.getBoard().drawFromTopRowBuilding(pos-index);
+                player.addCard(building);
+                building.getEffect().whenDrawn(player);
+            }
+
+            // When all cards have been drawn, go to the next player
+            drawTopCount += 1;
+            if (drawTopCount == offer.getDrawTop() && drawBottomCount == offer.getDrawBottom()) {
+                drawTopCount = 0;
+                drawBottomCount = 0;
+                game.incPlayerTurn();
+            }
+
+            // When all players have draw, transition to ResolveEventsState
+            if (game.getPlayerTurn() >= game.getNumPlayers()) {
+                game.setState(new ResolveEventsState(game));
+            }
+        } else {
+            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
         }
     }
 
@@ -45,14 +68,32 @@ public class DrawCardState extends GameState {
      * @throws IllegalActionException
      */
     public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
-        int index = game.getBoard().getBottomRowTribe().size();
-        if (pos < index) {
-            Card character =  game.getBoard().drawFromBottomRowTribe(pos);
-            afterDrawn(player, character);
-        }else{
-            Building building = game.getBoard().drawFromBottomRowBuilding(pos-index);
-            player.addCard(building);
-            building.getEffect().whenDrawn(player);
+        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
+        if (player.equals(game.getPlayers().get(game.getPlayerTurn())) && drawBottomCount < offer.getDrawBottom()) {
+            int index = game.getBoard().getBottomRowTribe().size();
+            if (pos < index) {
+                Card character =  game.getBoard().drawFromBottomRowTribe(pos);
+                afterDrawn(player, character);
+            } else {
+                Building building = game.getBoard().drawFromBottomRowBuilding(pos-index);
+                player.addCard(building);
+                building.getEffect().whenDrawn(player);
+            }
+
+            // When all cards have been drawn, go to the next player
+            drawBottomCount += 1;
+            if (drawTopCount == offer.getDrawTop() && drawBottomCount == offer.getDrawBottom()) {
+                game.incPlayerTurn();
+                drawTopCount = 0;
+                drawBottomCount = 0;
+            }
+
+            // When all players have draw, transition to ResolveEventsState
+            if (game.getPlayerTurn() >= game.getNumPlayers()) {
+                game.setState(new ResolveEventsState(game));
+            }
+        } else {
+            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
         }
     }
 
@@ -61,11 +102,11 @@ public class DrawCardState extends GameState {
      * @param player
      * @param character
      */
-    private void afterDrawn(Player player, Card character){
-        if(!character.getType().equals("Event")) {
+    private void afterDrawn(Player player, Card character) {
+        if (!character.getType().equals("Event")) {
             int tmp_numSets = player.countSets();
             player.addCard(character);
-            for(Building building : player.getBuildings()){
+            for (Building building : player.getBuildings()) {
                 building.getEffect().applyEffectDraw(player, tmp_numSets, (Character)character);
             }
             if (character.getName().equals("Hunter")) {
@@ -80,7 +121,7 @@ public class DrawCardState extends GameState {
      * @param hunter
      */
     private void huntersDraft(Player player, Hunter hunter) {
-        if(hunter.getIcon()){
+        if (hunter.getIcon()) {
             player.addFood(player.getNumHunters());
         }
     }

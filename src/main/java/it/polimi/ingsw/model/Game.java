@@ -12,16 +12,15 @@ import java.util.*;
 
 public class Game {
     private final List<Player> players;
-    private Map<Character, Integer> playerPositions;
     private int numPlayers;
     private final Board board;
     private GameState state;
     private List<Player> rankings;
     private List<ClientCallBack> observers;
+    private int playerTurn;
 
     public Game (List<Player> players) throws IllegalArgumentException {
         this.players = players;
-        this.playerPositions = new HashMap<Character, Integer>();
         this.numPlayers = 0;
         this.board = new Board();
         for(int i = 0; i < numPlayers; i++){
@@ -30,6 +29,7 @@ public class Game {
 
         this.state = new SetupGameState();
         this.observers = new ArrayList<>();
+        this.playerTurn = numPlayers;
     }
 
     public void addObserver(ClientCallBack observer){
@@ -62,14 +62,6 @@ public class Game {
 
     public List<Player> getPlayers() { return players; }
 
-    public Map<Character, Integer> getPlayerPositions() {
-        return playerPositions;
-    }
-
-    public void putPlayerPosition(Player player, char order) {
-        playerPositions.put(order, players.indexOf(player));
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -86,4 +78,17 @@ public class Game {
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
                 getBoard().toDTO(), getRankings().stream().map(Player::toDTO).toList());
     }
+
+    public int getPlayerTurn() {
+        return playerTurn;
+    }
+
+    public void setPlayerTurn(int playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
+    public void incPlayerTurn() {
+        this.playerTurn += 1;
+    }
+
 }

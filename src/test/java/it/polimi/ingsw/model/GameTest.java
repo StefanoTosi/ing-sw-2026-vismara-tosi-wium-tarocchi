@@ -38,9 +38,6 @@ class GameTest {
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
-        game.putPlayerPosition(player1, 'A');
-        game.putPlayerPosition(player2, 'B');
-        game.putPlayerPosition(player3, 'C');
     }
 
     @Test
@@ -49,9 +46,6 @@ class GameTest {
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
-        game.putPlayerPosition(player1, 'A');
-        game.putPlayerPosition(player2, 'B');
-        game.putPlayerPosition(player3, 'C');
     }
 
     @Test

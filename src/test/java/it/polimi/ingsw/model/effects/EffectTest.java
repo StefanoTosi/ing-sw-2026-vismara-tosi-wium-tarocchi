@@ -82,6 +82,9 @@ class EffectTest {
 
         Game game = new Game(new ArrayList<Player>(Arrays.asList(p3, p4)));
 
+        p3.setGame(game);
+        p4.setGame(game);
+
         Shaman s1 = new Shaman(3, Era.I);
         Shaman s2 = new Shaman(3, Era.I);
         Shaman s3 = new Shaman(3, Era.I);
@@ -109,6 +112,9 @@ class EffectTest {
         Player p2 = new Player("Lisa");
 
         Game game = new Game(new ArrayList<Player>(Arrays.asList(p1, p2)));
+
+        p1.setGame(game);
+        p2.setGame(game);
 
         Shaman s1 = new Shaman(3, Era.I);
         Shaman s2 = new Shaman(3, Era.I);
@@ -384,8 +390,12 @@ class EffectTest {
         Game game = new Game(Arrays.asList(p1, p2));
         game.getBoard().initialize(2);
         game.setState(new FillBoardState());
+
+        p1.setGame(game);
+        p2.setGame(game);
+
         try {
-            game.getState().refillBoard(game);
+            game.getState().movePlayersBackToOrder(game);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -413,34 +423,10 @@ class EffectTest {
     void applyEffectEndTurn() {
         Building building = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ET2);
         Player player = new Player("Elisa");
-        Artist a = new Artist(Era.I);
-        Builder b = new Builder(2,2,Era.I);
-        Gatherer g = new Gatherer(Era.I);
-        Hunter h = new Hunter(true, Era.I);
-        Inventor inv = new Inventor(Icon.ARROW, Era.I);
-        Shaman s = new Shaman(2, Era.I);
-        Shaman s2 = new Shaman(2, Era.I);
-        Shaman s3 = new Shaman(2, Era.I);
-        Building b2 = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ET2);
 
-        //building.getEffect().applyEffectEndGame(player, b2);
-        //assertEquals(1, player.getBuildings().size());
-        building.getEffect().applyEffectEndTurn(player,a);
-        assertEquals(1, player.getNumArtists());
-        building.getEffect().applyEffectEndTurn(player,b);
-        assertEquals(1, player.getNumBuilders());
-        building.getEffect().applyEffectEndTurn(player,g);
-        assertEquals(1, player.getNumGatherers());
-        building.getEffect().applyEffectEndTurn(player,s);
-        assertEquals(1, player.getNumShamans());
-        building.getEffect().applyEffectEndTurn(player,h);
-        assertEquals(1, player.getNumHunters());
-        building.getEffect().applyEffectEndTurn(player,inv);
-        assertEquals(1, player.getNumInventors());
-        building.getEffect().applyEffectEndTurn(player,s2);
-        assertEquals(2, player.getNumShamans());
-        building.getEffect().applyEffectEndTurn(player,s3);
-        assertEquals(3, player.getNumShamans());
+        assertEquals(false, player.getCanPickFromTop());
+        building.getEffect().applyEffectEndTurn(player);
+        assertEquals(true, player.getCanPickFromTop());
     }
 
     /**
