@@ -2,6 +2,9 @@ package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
+import it.polimi.ingsw.controller.actions.ChooseOfferAction;
+import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
+import it.polimi.ingsw.controller.states.ChooseOfferState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -60,7 +63,13 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public void executeAction(Action action) throws RemoteException {
-        gamesController.executeAction(action);
+    public void executeAction(int pos, int state, String nickname) throws RemoteException, IllegalActionException {
+        Action action;
+        if(state == 1){
+            action = new ChooseOfferAction((char)pos);
+        }
+        //temporary always state 1
+        action = new ChooseOfferAction((char)pos);
+        gamesController.executeAction(action, nickname);
     }
 }

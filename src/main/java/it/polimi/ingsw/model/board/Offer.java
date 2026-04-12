@@ -14,7 +14,7 @@ public class Offer implements Tile {
      * @param order ordering letter
      * @param foodBonus how much food does the player get
      * @param drawTop how many cards can be drawn from the top row
-     * @param drawBottom how many cards can be drawn from the top row
+     * @param drawBottom how many cards can be drawn from the bottom row
      */
     public Offer(char order, int foodBonus, int drawTop, int drawBottom) throws IllegalArgumentException {
         if (order < 'A' || order > 'G') {

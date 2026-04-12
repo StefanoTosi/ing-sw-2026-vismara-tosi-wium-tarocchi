@@ -1,4 +1,6 @@
 package it.polimi.ingsw.networking;
+import it.polimi.ingsw.controller.states.ChooseOfferState;
+import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
@@ -78,8 +80,25 @@ public class TUI implements UIObserver {
 
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
-        System.out.println("Ricevuto aggiornamento");
+        System.out.println("Wonderfull GameBoard");
         this.game = game;
+    }
+
+    @Override
+    public void myTurn(int state) throws RemoteException, IllegalActionException {
+        System.out.println("It's your turn");
+        if(state == 1){
+            String offer;
+            System.out.println("Choose the Offer Tiles\n");
+            do {
+                System.out.println("A - G");
+                offer = in.nextLine();
+            }while(offer.length() != 1);
+            offer.toUpperCase();
+            controller.executeAction((int)offer.charAt(0), 1, client.getNickname());
+        }else{
+            //draw card
+        }
     }
 
     public void printBoard(Board board){

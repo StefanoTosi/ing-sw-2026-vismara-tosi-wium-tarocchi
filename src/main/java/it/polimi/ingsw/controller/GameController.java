@@ -25,11 +25,11 @@ public class GameController {
         return games;
     }
 
-    public Game getGame(String nickname) throws RemoteException {
+    public Player getPlayer(String nickname) throws RemoteException {
         for(Game game : games){
             for(Player player : game.getPlayers()){
                 if(player.getName().equals(nickname)){
-                    return game;
+                    return player;
                 }
             }
         }
@@ -48,6 +48,7 @@ public class GameController {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
                 game.addObserver(client);
+                player.setGame(game);
                 game.getState().registerPlayer(game, player);
                 return true;
             }
@@ -60,8 +61,11 @@ public class GameController {
         addGame(newGame);
         newGame.setNumPlayers(num);
         newGame.addObserver(client);
+        player.setGame(newGame);
         newGame.getState().registerPlayer(newGame, player);
     }
 
-    public void executeAction(Action action) throws IllegalArgumentException {}
+    public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, RemoteException {
+        action. execute(getPlayer(player));
+    }
 }

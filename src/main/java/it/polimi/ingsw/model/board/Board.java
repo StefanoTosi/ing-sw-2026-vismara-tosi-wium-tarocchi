@@ -447,11 +447,11 @@ public class Board {
                 getTopRowBuilding().stream().map(Building::toDTO).toList(),
                 getBottomRowTribe().size(),
                 getBottomRowBuilding().stream().map(Building::toDTO).toList(),
-                getDeckTribe().size(),
-                getDeckE1Building().size(),
-                getDeckE2Building().size(),
-                getDeckE3Building().size(),
-                getOrder().toDTO(),
-                getOfferPath().stream().map(Offer::toDTO).toList());
+                (getDeckTribe() != null)? getDeckTribe().size() : 0,
+                (getDeckE1Building() != null)?getDeckE1Building().size():0,
+                (getDeckE2Building() != null)?getDeckE2Building().size():0,
+                (getDeckE3Building() != null)?getDeckE3Building().size():0,
+                (getOrder() != null)?getOrder().toDTO():null,
+                (getOfferPath() != null)?getOfferPath().stream().map(Offer::toDTO).toList():null);
     }
 }
