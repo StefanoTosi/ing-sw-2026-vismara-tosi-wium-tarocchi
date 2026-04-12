@@ -9,7 +9,6 @@ import java.util.function.Function;
 /**
  * Represents the elements of the Building card
  */
-
 public class Building extends Card {
     // Building properties
     private int cost;
@@ -20,6 +19,15 @@ public class Building extends Card {
     protected Function<Player, Integer> getNumCharacter;
     protected Effect effect;
 
+    /**
+     * Represents the elements of the Building card
+     * @param era
+     * @param cost
+     * @param pp
+     * @param effectPp
+     * @param getNumCharacter
+     * @param effect
+     */
     public Building(Era era, int cost, int pp, int effectPp, Function<Player, Integer> getNumCharacter, Effect effect) {
         super(era);
         this.cost = cost;
@@ -39,26 +47,51 @@ public class Building extends Card {
         player.addBuilding(this);
     }
 
+    /**
+     * Returns the cost of the card
+      * @return cost
+     */
+
     public int getCost() {
         return cost;
     }
 
+    /**
+     * Returns the pp of the card
+     * @return pp
+     */
     public int getPp() {
         return pp;
     }
 
+    /**
+     * Returns the pp of the effect of the card
+     * @return effectPp
+     */
     public int getEffectPp() {
         return effectPp;
     }
 
+    /**
+     * Returns the number of the character needed for the effect
+     * @return getNumCharacter
+     */
     public Function<Player, Integer> getGetNumCharacter() {
         return getNumCharacter;
     }
 
+    /**
+     * Returns the effect associated to the card
+     * @return effect
+     */
     public Effect getEffect() {
         return effect;
     }
 
+    /**
+     * Gets the building class and converts it to a DTO class, so that we can pass the data to the client
+     * @return BuildingDTO
+     */
     public BuildingDTO toDTO() {
         return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffect().name(), getEra().name());
     }
