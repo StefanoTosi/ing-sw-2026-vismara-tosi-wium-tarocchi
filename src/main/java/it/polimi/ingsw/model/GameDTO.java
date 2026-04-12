@@ -12,12 +12,16 @@ public class GameDTO implements Serializable {
     private  List<PlayerDTO> players;
     private int numPlayers;
     private BoardDTO board;
+    private int state; // TODO: temporaneo, possiamo serializzare i GameState?
+    private String playerTurn;
     //private List<PlayerDTO> rankings;
 
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board/*, List<PlayerDTO> rankings*/) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, int state, String playerTurn/*, List<PlayerDTO> rankings*/) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
+        this.state = state;
+        this.playerTurn = playerTurn;
         //this.rankings = List.copyOf(rankings);
     }
 
@@ -32,6 +36,15 @@ public class GameDTO implements Serializable {
     public BoardDTO getBoard() {
         return board;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public String getPlayerTurn() {
+        return playerTurn;
+    }
+
     /*
     public List<PlayerDTO> getRankings() {
         return rankings;

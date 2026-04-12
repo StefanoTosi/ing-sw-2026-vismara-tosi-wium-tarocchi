@@ -1,13 +1,10 @@
 package it.polimi.ingsw.controller.states;
 
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Offer;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Building;
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Era;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -26,7 +23,7 @@ public class FillBoardState extends GameState {
         this.canPick = new ArrayList<>();
     }
 
-    public void movePlayersBackToOrder(Game game) throws IllegalActionException, RemoteException {
+    /*public void movePlayersBackToOrder(Game game) throws IllegalActionException, RemoteException {
         Board board = game.getBoard();
 
         // Used to initially insert buildings from era I
@@ -81,7 +78,7 @@ public class FillBoardState extends GameState {
         } else {
             game.setPlayerTurn(game.getNumPlayers());
         }
-    }
+    }*/
 
     /**
      * Refills the top and bottom rows until they are full again. It also moves players back to the order tile and resolves the associated effects
@@ -96,6 +93,18 @@ public class FillBoardState extends GameState {
                 board.getBottomRowTribe().size() == 0 &&
                 board.getTopRowBuilding().size() == 0 &&
                 board.getBottomRowBuilding().size() == 0;
+
+        // At the beginning of the game, randomly put layers on the order tile
+        List<Player> ordered;
+        if (boardUninitialized) {
+            ordered = new ArrayList<>(game.getPlayers());
+            Collections.shuffle(ordered);
+
+            for (int i = 0; i < ordered.size(); i++) {
+                ordered.get(i).setOrder(i);
+                ordered.get(i).setOffer('\0');
+            }
+        }
 
         // Find current era
         Era currentEra;
@@ -165,13 +174,7 @@ public class FillBoardState extends GameState {
         }
 
         // Once done filling, switch to ChooseOfferState
-        game.notifyObserver("");
         game.setState(new ChooseOfferState(game));
-        for(Player p : ordered) {
-            game.notifyObserver("Turn of " + p.getName());
-            game.notifyPlayer(p.getName());
-        }
-        game.notifyObserver("Tutti i player si sono mossi");
     }
 
     /**
@@ -180,7 +183,7 @@ public class FillBoardState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
+    /*public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
         Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
         Game game = player.getGame();
 
@@ -207,14 +210,14 @@ public class FillBoardState extends GameState {
         } else {
             throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
         }
-    }
+    }*/
 
     /**
      *  Manage the effect applied just after the drawn
      * @param player
      * @param character
      */
-    private void afterDrawn(Player player, Card character) {
+    /*private void afterDrawn(Player player, Card character) {
         if (!character.getType().equals("Event")) {
             int tmp_numSets = player.countSets();
             player.addCard(character);
@@ -225,16 +228,16 @@ public class FillBoardState extends GameState {
                 huntersDraft(player, (Hunter) character);
             }
         }
-    }
+    }*/
 
     /**
      * Manage the hunters effect
      * @param player
      * @param hunter
      */
-    private void huntersDraft(Player player, Hunter hunter) {
+    /*private void huntersDraft(Player player, Hunter hunter) {
         if (hunter.getIcon()) {
             player.addFood(player.getNumHunters());
         }
-    }
+    }*/
 }

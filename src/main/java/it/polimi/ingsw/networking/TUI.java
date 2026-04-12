@@ -1,9 +1,11 @@
 package it.polimi.ingsw.networking;
+import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.states.ChooseOfferState;
 import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerDTO;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.characters.Hunter;
@@ -31,38 +33,32 @@ public class TUI implements UIObserver {
     }
 
     public void start() throws RemoteException, IllegalActionException {
-        showMenu();
-        int input = Integer.parseInt(in.nextLine());
-        handleInput(input);
-    }
-
-    public void showMenu(){
         System.out.println("MENU:");
         System.out.println("1. Login");
         System.out.println("2. Exit");
-    }
 
-    public void handleInput(int input) throws RemoteException, IllegalActionException {
-        switch (input){
+        int input = Integer.parseInt(in.nextLine());
+
+        switch (input) {
             case 1:
                 boolean flag = true;
-                while(flag){
-                    System.out.println("Username:");
+                while (flag) {
+                    System.out.print("Username: ");
                     String username = in.nextLine();
-                    System.out.println("Password:");
+                    System.out.print("Password: ");
                     String password = in.nextLine();
                     if(controller.addUser(password, username, client) == 0) flag = false;
                 }
-                if(!controller.joinGame(client.getNickname())){
+                if (!controller.joinGame(client.getNickname())) {
                     int num;
                     System.out.println("No game found, let's create a new one!\n");
+                    System.out.print("How many players do you want ");
                     do {
-                        System.out.println("How many players do you want?");
-                        System.out.println("\n2 to 5 players");
+                        System.out.print("(2 to 5 players): ");
                         num = in.nextInt();
                         //free the buffer
                         in.nextLine();
-                    }while(num < 2 || num > 5);
+                    } while(num < 2 || num > 5);
                     controller.createGame(client.getNickname(), num);
                 }
                 break;
@@ -80,24 +76,46 @@ public class TUI implements UIObserver {
 
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
-        System.out.println("Wonderfull GameBoard");
+        System.out.println("Rendering of the wonderfull GameBoard");
         this.game = game;
-    }
 
-    @Override
-    public void myTurn(int state) throws RemoteException, IllegalActionException {
-        System.out.println("It's your turn");
-        if(state == 1){
-            String offer;
-            System.out.println("Choose the Offer Tiles\n");
-            do {
-                System.out.println("A - G");
-                offer = in.nextLine();
-            }while(offer.length() != 1);
-            offer.toUpperCase();
-            controller.executeAction((int)offer.charAt(0), 1, client.getNickname());
-        }else{
-            //draw card
+        // If its this players turn, query the player for the action, otherwise do nothing
+        if (client.getNickname().equals(game.getPlayerTurn())) {
+            System.out.println("It's your turn");
+            // TODO: sostituire con lo strategy pattern?
+            switch (game.getState()) {
+                case 0:
+                    // SetupGameState
+                    System.out.print("Connected players: ");
+                    for (PlayerDTO p : game.getPlayers()) {
+                        System.out.print(p.getName());
+                    }
+                    System.out.println();
+                    break;
+                case 1:
+                    // FillBoardState
+                    System.out.print("Filling board - this message should never be printed...");
+                    break;
+                case 2:
+                    // ChooseOfferState
+                    String offer;
+                    System.out.println("Choose the on which offer tile to go ");
+                    do {
+                        System.out.print("(from A to G): ");
+                        offer = in.nextLine();
+                    } while(offer.length() != 1);
+                    offer.toUpperCase();
+                    controller.executeAction(new ChooseOfferAction(offer.charAt(0)), client.getNickname());
+                    break;
+                case 3:
+                    // DrawCardsState
+                    System.out.println("Choose which card to draw - TODO");
+                    break;
+                default:
+                    System.out.println("Unhandled state id " + game.getState());
+            }
+        } else {
+            System.out.println("Current player turn: " + game.getPlayerTurn());
         }
     }
 

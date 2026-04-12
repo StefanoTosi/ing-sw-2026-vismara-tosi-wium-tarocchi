@@ -12,7 +12,7 @@ public class SetupGameState extends GameState {
         game.getPlayers().add(player);
 
         // Start the game
-        game.notifyObserver("Player " + player.getName() + " join the game");
+        // game.notifyObserver();
         if (game.getPlayers().size() == game.getNumPlayers()) {
             game.getState().startGame(game);
         }
@@ -23,7 +23,6 @@ public class SetupGameState extends GameState {
         game.getBoard().initialize(game.getPlayers().size());
 
         // Transition
-        game.notifyObserver("The game has started");
         game.setState(new FillBoardState());
         game.getState().refillBoard(game);
     }

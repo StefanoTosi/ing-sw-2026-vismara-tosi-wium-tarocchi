@@ -8,5 +8,4 @@ import java.rmi.RemoteException;
 
 public interface UIObserver {
     void update(GameDTO game) throws RemoteException, IllegalActionException;
-    void myTurn(int state) throws RemoteException, IllegalActionException;
 }

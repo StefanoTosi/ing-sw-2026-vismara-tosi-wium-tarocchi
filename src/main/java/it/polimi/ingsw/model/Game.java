@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.states.ChooseOfferState;
-import it.polimi.ingsw.controller.states.SetupGameState;
+import it.polimi.ingsw.controller.states.*;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.ClientCallBack;
+import jdk.jfr.consumer.RecordingFile;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -18,7 +17,8 @@ public class Game {
     private GameState state;
     private List<Player> rankings;
     private List<ClientCallBack> observers;
-    private int playerTurn;
+    private Player playerTurn;
+    private String errorFlag;
 
     public Game (List<Player> players) throws IllegalArgumentException {
         this.players = players;
@@ -30,7 +30,8 @@ public class Game {
 
         this.state = new SetupGameState();
         this.observers = new ArrayList<>();
-        this.playerTurn = numPlayers;
+        this.playerTurn = null;
+        this.errorFlag = "";
     }
 
     public void addObserver(ClientCallBack observer){
@@ -41,23 +42,9 @@ public class Game {
         this.observers.remove(observer);
     }
 
-    public void notifyObserver(String msg) throws RemoteException, IllegalActionException {
-        for(ClientCallBack observer : observers){
-           observer.update(msg, this.toDTO());
-        }
-    }
-
-    public void notifyPlayer(String nickname)  throws RemoteException, IllegalActionException {
-        for(ClientCallBack observer : observers){
-            if(observer.getNickname().equals(nickname)){
-                int stateNum;
-                if(getState() instanceof ChooseOfferState){
-                    stateNum = 1;
-                } else {
-                    stateNum = 2;
-                }
-                observer.myTurn(stateNum);
-            }
+    public void notifyObserver() throws RemoteException, IllegalActionException {
+        for (ClientCallBack observer : observers) {
+           observer.update(this.toDTO());
         }
     }
 
@@ -93,20 +80,42 @@ public class Game {
         if(getState() instanceof SetupGameState){
             return null;
         }
+        int state = 0;
+        if (this.state instanceof FillBoardState) {
+            state = 1;
+        }
+
+        if (this.state instanceof ChooseOfferState) {
+            state = 2;
+        }
+
+        if (this.state instanceof DrawCardState) {
+            state = 3;
+        }
+
+        String turn = "";
+        if (playerTurn != null) {
+            turn = playerTurn.getName();
+        }
+
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO()/*, getRankings().stream().map(Player::toDTO).toList()*/);
+                getBoard().toDTO(), state, turn/*, getRankings().stream().map(Player::toDTO).toList()*/);
     }
 
-    public int getPlayerTurn() {
+    public Player getPlayerTurn() {
         return playerTurn;
     }
 
-    public void setPlayerTurn(int playerTurn) {
+    public void setPlayerTurn(Player playerTurn) {
         this.playerTurn = playerTurn;
     }
 
-    public void incPlayerTurn() {
-        this.playerTurn += 1;
+    public String getErrorFlag() {
+        return errorFlag;
+    }
+
+    public void setErrorFlag(String errorFlag) {
+        this.errorFlag = errorFlag;
     }
 
 }

@@ -42,15 +42,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack {
     }
 
     @Override
-    public void update(String message, GameDTO game) throws RemoteException, IllegalActionException {
-        if(game != null){
+    public void update(GameDTO game) throws RemoteException, IllegalActionException {
+        if (game != null) {
             observer.update(game);
         }
-        System.out.println(message + "\n");
-    }
-
-    @Override
-    public void myTurn(int state) throws RemoteException, IllegalActionException {
-        observer.myTurn(state);
     }
 }

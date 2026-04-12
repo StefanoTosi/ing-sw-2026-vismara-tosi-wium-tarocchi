@@ -50,6 +50,7 @@ public class GameController {
                 game.addObserver(client);
                 player.setGame(game);
                 game.getState().registerPlayer(game, player);
+                game.notifyObserver();
                 return true;
             }
         }
@@ -66,6 +67,12 @@ public class GameController {
     }
 
     public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, RemoteException {
-        action. execute(getPlayer(player));
+        // TODO: il game controller dovrebbe controllare le notifiche ai client? O lo facciamo dentro gli stati?
+        try {
+            action.execute(getPlayer(player));
+        } catch (IllegalActionException e) {
+            getPlayer(player).getGame().setErrorFlag(e.getReason());
+        }
+        getPlayer(player).getGame().notifyObserver();
     }
 }

@@ -4,28 +4,48 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ChooseOfferState extends GameState {
     private final Game game;
+    private List<Player> drawOrder;
 
-    public ChooseOfferState(Game game) {
+    /**
+     * Initialize the state by building the order in which players will be required to choose an offer tile and setting
+     * the playerTurn to the first of them
+     * @param game
+     */
+    public ChooseOfferState(Game game) throws IllegalActionException, RemoteException {
         this.game = game;
-        game.setPlayerTurn(0);
+        drawOrder = new ArrayList<>(game.getPlayers()
+                        .stream()
+                        .sorted((p1, p2) -> p1.getOrder() - p2.getOrder())
+                        .toList());
+
+        game.setPlayerTurn(drawOrder.remove(0));
     }
 
-    public void chooseOffer(Player player, char order)  throws IllegalActionException {
-        if (order >= 'A' && order <= 'G') {
-            if (player.equals(game.getPlayers().get(game.getPlayerTurn()))) {
+    public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
+        if (player.equals(game.getPlayerTurn())) {
+            if (order >= 'A' && order <= 'G') {
                 player.setOrder(order);
-                game.setPlayerTurn(0);
-                game.incPlayerTurn();
-                if (game.getPlayerTurn() >= game.getNumPlayers()) {
+
+                // Increment player turn or got to DrawCardsState
+                if (drawOrder.size() > 0) {
+                    game.setPlayerTurn(drawOrder.remove(0));
+                    // game.notifyObserver("Turn of " + game.getPlayerTurn().getName());
+                } else {
+                    game.setPlayerTurn(null);
                     game.setState(new DrawCardState(game));
                 }
             } else {
-                throw new IllegalActionException("Player tried to choose offer tile out of order");
+                throw new IllegalActionException("'order' was out of bounds");
             }
         } else {
-            throw new IllegalActionException("'order' was out of bounds");
+            throw new IllegalActionException("Player tried to choose offer tile out of order");
         }
     }
 }

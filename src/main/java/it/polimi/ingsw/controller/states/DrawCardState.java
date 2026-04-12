@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  */
@@ -16,11 +20,19 @@ public class DrawCardState extends GameState {
     private final Game game;
     private int drawTopCount;
     private int drawBottomCount;
+    private List<Player> drawOrder;
 
-    public DrawCardState(Game game) {
+    public DrawCardState(Game game) throws IllegalActionException, RemoteException {
         this.game = game;
         this.drawTopCount = 0;
         this.drawBottomCount = 0;
+
+        drawOrder = new ArrayList<>(game.getPlayers()
+                .stream()
+                .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
+                .toList());
+
+        game.setPlayerTurn(drawOrder.remove(0));
     }
 
     /**
@@ -32,7 +44,7 @@ public class DrawCardState extends GameState {
      */
     public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
         Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
-        if (player.equals(game.getPlayers().get(game.getPlayerTurn())) && drawTopCount < offer.getDrawTop()) {
+        if (player.equals(game.getPlayerTurn()) && drawTopCount < offer.getDrawTop()) {
             int index = game.getBoard().getBottomRowTribe().size();
             if (pos < index) {
                 Card character= game.getBoard().drawFromTopRowTribe(pos);
@@ -48,13 +60,16 @@ public class DrawCardState extends GameState {
             if (drawTopCount == offer.getDrawTop() && drawBottomCount == offer.getDrawBottom()) {
                 drawTopCount = 0;
                 drawBottomCount = 0;
-                game.incPlayerTurn();
+
+                if (drawOrder.size() > 0) {
+                    game.setPlayerTurn(drawOrder.remove(0));
+                } else {
+                    // When all players have draw, transition to ResolveEventsState
+                    game.setPlayerTurn(null);
+                    game.setState(new ResolveEventsState(game));
+                }
             }
 
-            // When all players have draw, transition to ResolveEventsState
-            if (game.getPlayerTurn() >= game.getNumPlayers()) {
-                game.setState(new ResolveEventsState(game));
-            }
         } else {
             throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
         }
@@ -69,7 +84,7 @@ public class DrawCardState extends GameState {
      */
     public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
         Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
-        if (player.equals(game.getPlayers().get(game.getPlayerTurn())) && drawBottomCount < offer.getDrawBottom()) {
+        if (player.equals(game.getPlayerTurn()) && drawBottomCount < offer.getDrawBottom()) {
             int index = game.getBoard().getBottomRowTribe().size();
             if (pos < index) {
                 Card character =  game.getBoard().drawFromBottomRowTribe(pos);
@@ -83,14 +98,16 @@ public class DrawCardState extends GameState {
             // When all cards have been drawn, go to the next player
             drawBottomCount += 1;
             if (drawTopCount == offer.getDrawTop() && drawBottomCount == offer.getDrawBottom()) {
-                game.incPlayerTurn();
                 drawTopCount = 0;
                 drawBottomCount = 0;
-            }
 
-            // When all players have draw, transition to ResolveEventsState
-            if (game.getPlayerTurn() >= game.getNumPlayers()) {
-                game.setState(new ResolveEventsState(game));
+                if (drawOrder.size() > 0) {
+                    game.setPlayerTurn(drawOrder.remove(0));
+                } else {
+                    // When all players have draw, transition to ResolveEventsState
+                    game.setPlayerTurn(null);
+                    game.setState(new ResolveEventsState(game));
+                }
             }
         } else {
             throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");

@@ -27,7 +27,7 @@ public abstract class GameState {
     }
 
     // ChooseOfferState
-    public void chooseOffer(Player player, char order) throws IllegalActionException {
+    public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 

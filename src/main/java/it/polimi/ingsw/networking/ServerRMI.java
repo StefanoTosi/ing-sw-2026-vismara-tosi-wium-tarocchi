@@ -27,17 +27,17 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
 
     @Override
     public synchronized int addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
-        if(nicknames.containsKey(nickname)){
-            if(nicknames.get(nickname).equals(psw)){
+        if (nicknames.containsKey(nickname)) {
+            if (nicknames.get(nickname).equals(psw)) {
                 client.setNickname(nickname);
                 clients.put(nickname, client);
                 client.receiveMessage("Welcome back " + nickname);
                 return 0;
-            }else{
+            } else {
                 client.receiveMessage("Nickname already exists or wrong password");
                 return -1;
             }
-        }else{
+        } else {
             nicknames.put(nickname, psw);
             client.setNickname(nickname);
             clients.put(nickname, client);
@@ -63,13 +63,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public void executeAction(int pos, int state, String nickname) throws RemoteException, IllegalActionException {
-        Action action;
-        if(state == 1){
-            action = new ChooseOfferAction((char)pos);
-        }
-        //temporary always state 1
-        action = new ChooseOfferAction((char)pos);
+    public void executeAction(Action action, String nickname) throws RemoteException, IllegalActionException {
         gamesController.executeAction(action, nickname);
     }
 }
