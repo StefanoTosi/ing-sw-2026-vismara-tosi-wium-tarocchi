@@ -9,8 +9,8 @@ import java.util.List;
 public class PlayerDTO implements Serializable {
     private String name;
 
-    private List<CharacterDTO> artists;
-    private List<CharacterDTO> gatherers;
+    private List<ArtistDTO> artists;
+    private List<GathererDTO> gatherers;
     private List<HunterDTO> hunters;
     private List<InventorDTO> inventors;
     private List<ShamanDTO> shamans;
@@ -22,7 +22,7 @@ public class PlayerDTO implements Serializable {
     private int order;
     private char offer;
 
-    public PlayerDTO(String name, List<CharacterDTO> artists, List<CharacterDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer) {
+    public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer) {
         this.name = name;
         this.artists = List.copyOf(artists);
         this.gatherers = List.copyOf(gatherers);
@@ -41,11 +41,11 @@ public class PlayerDTO implements Serializable {
         return name;
     }
 
-    public List<CharacterDTO> getArtists() {
+    public List<ArtistDTO> getArtists() {
         return artists;
     }
 
-    public List<CharacterDTO> getGatherers() {
+    public List<GathererDTO> getGatherers() {
         return gatherers;
     }
 

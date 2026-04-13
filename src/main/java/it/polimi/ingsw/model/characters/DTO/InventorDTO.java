@@ -18,4 +18,8 @@ public class InventorDTO implements Serializable {
     public String getIcon() {
         return icon;
     }
+
+    public String getInventionIcon() {
+        return icon;
+    }
 }
