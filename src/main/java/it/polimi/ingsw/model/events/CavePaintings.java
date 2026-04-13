@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.events.DTO.CavePaintingsDTO;
 
 import java.util.List;
 
@@ -47,4 +48,7 @@ public class CavePaintings extends Event {
         return name;
     }
 
+    public CavePaintingsDTO toDTO(){
+        return new CavePaintingsDTO(getEra().name(), minArtist, topPp, bottomPp);
+    }
 }

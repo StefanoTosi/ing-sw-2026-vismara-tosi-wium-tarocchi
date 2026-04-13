@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.characters.*;
-import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;
@@ -69,15 +68,19 @@ public class PlayerDTO implements Serializable {
     public List<BuildingDTO> getBuildings() {
         return buildings;
     }
+
     public int getPp() {
         return pp;
     }
+
     public int getFood() {
         return food;
     }
+
     public int getOrder() {
         return order;
     }
+
     public char getOffer() {
         return offer;
     }

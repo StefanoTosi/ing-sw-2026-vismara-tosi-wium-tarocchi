@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 
 import java.util.List;
 
@@ -13,14 +14,22 @@ import java.util.List;
 
 public class ShamanicRitual extends Event {
 
-    private int winnerPp;
-    private int loserPp;
+    private final int winnerPp;
+    private final int loserPp;
 
     public ShamanicRitual(int winnerPp, int loserPp, Era era){
         super(era);
         this.winnerPp = winnerPp;
         this.loserPp = loserPp;
         this.name = "ShamanicRitual";
+    }
+
+    public int getWinnerPp() {
+        return winnerPp;
+    }
+
+    public int getLoserPp() {
+        return loserPp;
     }
 
     @Override
@@ -65,5 +74,9 @@ public class ShamanicRitual extends Event {
     @Override
     public String getName(){
         return name;
+    }
+
+    public ShamanicRitualDTO toDTO() {
+        return new ShamanicRitualDTO(getWinnerPp(), getLoserPp(), getEra().name());
     }
 }

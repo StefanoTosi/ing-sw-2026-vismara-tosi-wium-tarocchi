@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.characters;
 
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.characters.DTO.CharacterDTO;
 
 /**
  * Represent all the common elements of the characters.
