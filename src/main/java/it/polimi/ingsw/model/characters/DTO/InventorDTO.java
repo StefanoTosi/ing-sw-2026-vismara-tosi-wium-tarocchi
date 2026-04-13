@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.characters;
+package it.polimi.ingsw.model.characters.DTO;
 
 import java.io.Serializable;
 
@@ -16,6 +16,10 @@ public class InventorDTO implements Serializable {
     }
 
     public String getIcon() {
+        return icon;
+    }
+
+    public String getInventionIcon() {
         return icon;
     }
 }

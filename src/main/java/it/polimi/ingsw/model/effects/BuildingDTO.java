@@ -30,12 +30,15 @@ public class BuildingDTO implements Serializable {
     public int getCost() {
         return cost;
     }
+
     public int getPp() {
         return pp;
     }
+
     public int getEffectPp() {
         return effectPp;
     }
+
     public String getEffect() {
         return effect;
     }

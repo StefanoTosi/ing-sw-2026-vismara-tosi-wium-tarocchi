@@ -2,15 +2,15 @@ package it.polimi.ingsw.networking;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.states.ChooseOfferState;
 import it.polimi.ingsw.controller.states.GameState;
-import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.GameDTO;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerDTO;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.characters.Artist;
-import it.polimi.ingsw.model.characters.Hunter;
-import it.polimi.ingsw.model.characters.Inventor;
-import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.board.BoardDTO;
+import it.polimi.ingsw.model.characters.DTO.ArtistDTO;
+import it.polimi.ingsw.model.characters.DTO.GathererDTO;
+import it.polimi.ingsw.model.characters.DTO.HunterDTO;
+import it.polimi.ingsw.model.characters.DTO.InventorDTO;
+import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.NotBoundException;
@@ -52,7 +52,7 @@ public class TUI implements UIObserver {
                 if (!controller.joinGame(client.getNickname())) {
                     int num;
                     System.out.println("No game found, let's create a new one!\n");
-                    System.out.print("How many players do you want ");
+                    System.out.print("How many players do you want? ");
                     do {
                         System.out.print("(2 to 5 players): ");
                         num = in.nextInt();
@@ -76,7 +76,7 @@ public class TUI implements UIObserver {
 
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
-        System.out.println("Rendering of the wonderfull GameBoard");
+        System.out.println("Rendering of the wonderful GameBoard");
         this.game = game;
 
         // If its this players turn, query the player for the action, otherwise do nothing
@@ -104,8 +104,7 @@ public class TUI implements UIObserver {
                         System.out.print("(from A to G): ");
                         offer = in.nextLine();
                     } while(offer.length() != 1);
-                    offer.toUpperCase();
-                    controller.executeAction(new ChooseOfferAction(offer.charAt(0)), client.getNickname());
+                    controller.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)), client.getNickname());
                     break;
                 case 3:
                     // DrawCardsState
@@ -119,14 +118,14 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printBoard(Board board){
+    public void printBoard(BoardDTO board){
         printRowTribe(board.getTopRowTribe());
         printRowTribe(board.getBottomRowTribe());
         printRowBuilding(board.getTopRowBuilding());
         printRowBuilding(board.getBottomRowBuilding());
     }
 
-    public void printRowTribe(List<Card> cards){
+    public void printRowTribe(List<CardDTO> cards){
 
         StringBuilder line1 = new StringBuilder();
         StringBuilder line2 = new StringBuilder();
@@ -134,7 +133,7 @@ public class TUI implements UIObserver {
         StringBuilder line4 = new StringBuilder();
         StringBuilder line5 = new StringBuilder();
 
-        for(Card card : cards) {
+        for(CardDTO card : cards) {
             line1.append("+-------+");
             line2.append("|" + card.getName() + "|");
             line3.append("|" + card.getEra() + "|");
@@ -149,14 +148,14 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printRowBuilding(List<Building> buildings){
+    public void printRowBuilding(List<BuildingDTO> buildings){
         StringBuilder line1 = new StringBuilder();
         StringBuilder line2 = new StringBuilder();
         StringBuilder line3 = new StringBuilder();
         StringBuilder line4 = new StringBuilder();
         StringBuilder line5 = new StringBuilder();
 
-        for(Building building : buildings) {
+        for(BuildingDTO building : buildings) {
             line1.append("+-------+");
             line2.append("| Build |");
             line3.append("|" + building.getCost() + "|");
@@ -165,25 +164,25 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printPlayerCards(List<Player> players){
-        for(Player player : players){
+    public void printPlayerCards(List<PlayerDTO> players){
+        for(PlayerDTO player : players){
             System.out.println("\n=== " + player.getName() + " ===");
             printRowBuilding(player.getBuildings());
             printArtist(player.getArtists());
-            //printGatherer(player.getGatherers());
+            printGatherer(player.getGatherers());
             printHunter(player.getHunters());
             printInventor(player.getInventors());
         }
     }
 
-    public void printArtist(List<Artist> artists) {
+    public void printArtist(List<ArtistDTO> artists) {
         StringBuilder line1 = new StringBuilder();
         StringBuilder line2 = new StringBuilder();
         StringBuilder line3 = new StringBuilder();
         StringBuilder line4 = new StringBuilder();
         StringBuilder line5 = new StringBuilder();
 
-        for (Artist artist : artists) {
+        for (ArtistDTO artist : artists) {
             line1.append("+-------+");
             line2.append("|Artist |");
             line3.append("|" + artist.getEra() + "|");
@@ -192,14 +191,14 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printGatherer(List<Gatherer> gatherers) {
+    public void printGatherer(List<GathererDTO> gatherers) {
         StringBuilder line1 = new StringBuilder();
         StringBuilder line2 = new StringBuilder();
         StringBuilder line3 = new StringBuilder();
         StringBuilder line4 = new StringBuilder();
         StringBuilder line5 = new StringBuilder();
 
-        for (Gatherer gatherer : gatherers) {
+        for (GathererDTO gatherer : gatherers) {
             line1.append("+-------+");
             line2.append("|Gather |");
             line3.append("|       |");
@@ -208,14 +207,14 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printHunter(List<Hunter> hunters) {
+    public void printHunter(List<HunterDTO> hunters) {
         StringBuilder line1 = new StringBuilder();
         StringBuilder line2 = new StringBuilder();
         StringBuilder line3 = new StringBuilder();
         StringBuilder line4 = new StringBuilder();
         StringBuilder line5 = new StringBuilder();
 
-        for (Hunter hunter : hunters) {
+        for (HunterDTO hunter : hunters) {
             line1.append("+-------+");
             line2.append("|Hunter |");
             line3.append("| " + hunter.getEra() + " |");
@@ -224,14 +223,14 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printInventor(List<Inventor> inventors) {
+    public void printInventor(List<InventorDTO> inventors) {
         StringBuilder line1 = new StringBuilder();
         StringBuilder line2 = new StringBuilder();
         StringBuilder line3 = new StringBuilder();
         StringBuilder line4 = new StringBuilder();
         StringBuilder line5 = new StringBuilder();
 
-        for (Inventor inventor : inventors) {
+        for (InventorDTO inventor : inventors) {
             line1.append("+-------+");
             line2.append("|Invent |");
             line3.append("|" + inventor.getEra() + "|");

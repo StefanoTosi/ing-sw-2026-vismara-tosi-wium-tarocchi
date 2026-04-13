@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.events.DTO.SustenanceDTO;
 
 import java.util.List;
 
@@ -56,5 +57,9 @@ public class Sustenance extends Event {
     @Override
     public String getName(){
         return name;
+    }
+
+    public SustenanceDTO toDTO() {
+        return new SustenanceDTO(getEra().name(), getPp());
     }
 }

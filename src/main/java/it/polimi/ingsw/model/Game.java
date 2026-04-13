@@ -44,7 +44,15 @@ public class Game {
 
     public void notifyObserver() throws RemoteException, IllegalActionException {
         for (ClientCallBack observer : observers) {
-           observer.update(this.toDTO());
+            new Thread(() -> {
+                try {
+                    observer.update(this.toDTO());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalActionException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         }
     }
 

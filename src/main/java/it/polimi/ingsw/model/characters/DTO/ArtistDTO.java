@@ -1,11 +1,11 @@
-package it.polimi.ingsw.model.characters;
+package it.polimi.ingsw.model.characters.DTO;
 
 import java.io.Serializable;
 
-public class CharacterDTO implements Serializable {
+public class ArtistDTO implements Serializable {
     private String era;
 
-    public CharacterDTO(String era){
+    public ArtistDTO(String era) {
         this.era = era;
     }
 

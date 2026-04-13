@@ -38,4 +38,8 @@ public abstract class Card {
      * @param player
      */
     public void addToPlayer (Player player){}
+
+    public CardDTO toDTO(){
+        return new CardDTO(getEra().name(), getName());
+    }
 }

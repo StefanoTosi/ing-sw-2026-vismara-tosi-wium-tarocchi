@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.events.DTO.HuntDTO;
 
 import java.util.List;
 
@@ -43,5 +44,9 @@ public class Hunt extends Event {
     @Override
     public String getName(){
         return name;
+    }
+
+    public HuntDTO toDTO(){
+        return new HuntDTO(getEra().name(), getPp());
     }
 }
