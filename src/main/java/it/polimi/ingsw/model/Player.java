@@ -371,8 +371,8 @@ public class Player {
     }
 
     public PlayerDTO toDTO(){
-        return new PlayerDTO(getName(), getArtists().stream().map(Artist::allToDTO).toList(),
-                getGatherers().stream().map(Gatherer::allToDTO).toList(),
+        return new PlayerDTO(getName(), getArtists().stream().map(Artist::toDTO).toList(),
+                getGatherers().stream().map(Gatherer::toDTO).toList(),
                 getHunters().stream().map(Hunter::toDTO).toList(),
                 getInventors().stream().map(Inventor::toDTO).toList(),
                 getShamans().stream().map(Shaman::toDTO).toList(),
