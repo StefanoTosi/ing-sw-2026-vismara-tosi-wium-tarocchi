@@ -27,4 +27,8 @@ public class SetupGameState extends GameState {
         game.setState(new FillBoardState(game));
         game.getState().refillBoard();
     }
+
+    public StateDTO getStateDTO() {
+        return StateDTO.SETUPGAME;
+    }
 }

@@ -14,6 +14,10 @@ public class EndGameState extends GameState {
         this.game = game;
     }
 
+    public StateDTO getStateDTO() {
+        return StateDTO.ENDGAME;
+    }
+
     /**
      * Calculates the final PP scores for each player and orders them to form the rankings,
      * in a list where the first element is the winning player.

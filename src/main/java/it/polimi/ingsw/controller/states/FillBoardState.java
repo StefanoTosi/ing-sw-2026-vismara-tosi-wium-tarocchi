@@ -22,6 +22,10 @@ public class FillBoardState extends GameState {
         this.game = game;
     }
 
+    public StateDTO getStateDTO() {
+        return StateDTO.FILLBOARD;
+    }
+
     /**
      * Refills the top and bottom rows until they are full again. It also moves players back to the order tile and resolves the associated effects
      * @throws IllegalActionException

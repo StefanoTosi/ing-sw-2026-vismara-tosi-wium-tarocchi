@@ -40,6 +40,10 @@ public class DrawCardState extends GameState {
         }
     }
 
+    public StateDTO getStateDTO() {
+        return StateDTO.DRAWCARD;
+    }
+
     /**
      * Draw a card from the top row,
      * not the Event one

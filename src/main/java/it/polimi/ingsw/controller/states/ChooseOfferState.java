@@ -28,6 +28,10 @@ public class ChooseOfferState extends GameState {
         game.setPlayerTurn(drawOrder.remove(0));
     }
 
+    public StateDTO getStateDTO() {
+        return StateDTO.CHOOSEOFFER;
+    }
+
     public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
         if (player.equals(game.getPlayerTurn())) {
             if (order >= 'A' && order <= 'G') {

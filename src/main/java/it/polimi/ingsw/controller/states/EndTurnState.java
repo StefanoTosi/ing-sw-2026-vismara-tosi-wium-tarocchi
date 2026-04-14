@@ -34,6 +34,10 @@ public class EndTurnState extends GameState {
         game.setPlayerTurn(drawOrder.remove(0));
     }
 
+    public StateDTO getStateDTO() {
+        return StateDTO.ENDTURN;
+    }
+
     /**
      * Draw a card from the top row, not the Event one
      * @param player

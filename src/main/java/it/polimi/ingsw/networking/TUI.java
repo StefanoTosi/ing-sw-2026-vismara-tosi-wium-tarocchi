@@ -2,6 +2,7 @@ package it.polimi.ingsw.networking;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.states.ChooseOfferState;
 import it.polimi.ingsw.controller.states.GameState;
+import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
@@ -92,7 +93,7 @@ public class TUI implements UIObserver {
             System.out.println("It's your turn");
             // TODO: sostituire con lo strategy pattern?
             switch (game.getState()) {
-                case 0:
+                case StateDTO.SETUPGAME:
                     // SetupGameState
                     System.out.print("Connected players: ");
                     for (PlayerDTO p : game.getPlayers()) {
@@ -100,11 +101,11 @@ public class TUI implements UIObserver {
                     }
                     System.out.println();
                     break;
-                case 1:
+                case StateDTO.FILLBOARD:
                     // FillBoardState
                     System.out.print("Filling board - this message should never be printed...");
                     break;
-                case 2:
+                case StateDTO.CHOOSEOFFER:
                     // ChooseOfferState
                     String offer;
                     System.out.println("Choose the on which offer tile to go ");
@@ -114,9 +115,13 @@ public class TUI implements UIObserver {
                     } while(offer.length() != 1);
                     controller.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)), client.getNickname());
                     break;
-                case 3:
+                case StateDTO.DRAWCARD:
                     // DrawCardsState
                     System.out.println("Choose which card to draw - TODO");
+                    break;
+                case StateDTO.ENDTURN:
+                    // EndTurnState
+                    System.out.println("EndTurnState - TODO");
                     break;
                 default:
                     System.out.println("Unhandled state id " + game.getState());
