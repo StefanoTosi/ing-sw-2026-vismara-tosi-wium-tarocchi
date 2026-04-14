@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class CardDTO {
+import java.io.Serializable;
+
+public class CardDTO implements Serializable {
     private final String era;
     private final String name;
 

@@ -18,11 +18,11 @@ public abstract class GameState {
     }
 
     // FillBoardState
-    public void movePlayersBackToOrder(Game game) throws IllegalActionException, RemoteException {
+    public void movePlayersBackToOrder() throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void refillBoard(Game game) throws IllegalActionException, RemoteException {
+    public void refillBoard() throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -44,6 +44,8 @@ public abstract class GameState {
     public void resolveEvents() throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
+
+    // EndTurnState
 
     // EndGameState
     public void calculateRankings() throws IllegalActionException {
