@@ -83,14 +83,14 @@ public class TUI implements UIObserver {
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
         System.out.println("Rendering of the wonderful GameBoard");
         this.game = game;
-        printBoard(game.getBoard());
-        printPlayerCards();
+        printBoard();
 
         System.out.println("Curren state: "+ game.getState());
 
         // If its this players turn, query the player for the action, otherwise do nothing
         if (client.getNickname().equals(game.getPlayerTurn())) {
             System.out.println("It's your turn");
+            printPlayerCards();
             // TODO: sostituire con lo strategy pattern?
             switch (game.getState()) {
                 case StateDTO.SETUPGAME:
@@ -131,47 +131,81 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printBoard(BoardDTO board){
-        System.out.println("bro sono dentro");
-        printRowTribe(game.getBoard().getTopRowTribe());
-        printRowTribe(game.getBoard().getBottomRowTribe());
+    public void printBoard(){
+        System.out.println("TopRowTribe:\n");
+        printTopRowTribe();
+        System.out.println("BottomRowTribe:\n");
+        printBottomRowTribe();
+        System.out.println("OfferPath:\n");
         printOfferRow();
+        System.out.println("TopRowBuilding:\n");
         printRowBuilding(game.getBoard().getTopRowBuilding());
+        System.out.println("BottomRowBuilding:\n");
         printRowBuilding(game.getBoard().getBottomRowBuilding());
     }
-
-    public void printRowTribe(List<CardDTO> cards){
+    /* Al momento è ridondante - da fare con printRowTribe e
+    differenziare all'interno con metodo chooseRow -> assegno dinamicamente o top o bottom alla rowtribeprint
+    */
+    public void printTopRowTribe(){
         StringBuilder[] lines = new StringBuilder[7];
 
+        List<CardDTO> cards = game.getBoard().getTopRowTribe();
+
         for(int i=0; i < 7; i++){
-            lines[i] = new StringBuilder();
+            lines[i] = new StringBuilder("");
         }
 
         for(CardDTO card : cards) {
             lines[0].append("+-------+");
-            lines[1].append(String.format("%-7s", card.getName()));
-            lines[2].append(String.format("%-7s", card.getEra()));
-            lines[3].append(String.format("%-7s"));
-            lines[4].append(String.format("%-7s"));
-            lines[5].append(String.format("%-7s"));
+            lines[1].append(String.format("|%-7s|", card.getName()));
+            lines[2].append(String.format("|%-7s|", card.getEra()));
+            lines[3].append("|       |");
+            lines[4].append("|       |");
+            lines[5].append("|       |");
             lines[6].append("+-------+");
+        }
+
+        for(StringBuilder line : lines){
+            System.out.println(line);
+        }
+    }
+
+    public void printBottomRowTribe(){
+        StringBuilder[] lines = new StringBuilder[7];
+        List<CardDTO> cards = game.getBoard().getBottomRowTribe();
+
+        for(int i=0; i < 7; i++){
+            lines[i] = new StringBuilder("");
+        }
+
+        for(CardDTO card : cards) {
+            lines[0].append("+-------+");
+            lines[1].append(String.format("|%-7s|", card.getType()));
+            lines[2].append(String.format("|%-7s|", card.getName()));
+            lines[3].append(String.format("|%-7s|", card.getEra()));
+            lines[4].append("|       |");
+            lines[5].append("|       |");
+            lines[6].append("+-------+");
+        }
+
+        for(StringBuilder line : lines){
+            System.out.println(line);
         }
     }
 
     public void printRowBuilding(List<BuildingDTO> buildings){
         StringBuilder[] lines = new StringBuilder[7];
-
         for(int i=0; i < 7; i++){
             lines[i] = new StringBuilder();
         }
 
         for(BuildingDTO building : buildings) {
             lines[0].append("+-------+");
-            lines[1].append(String.format("%-7s", "Build"));
-            lines[2].append(String.format("%-7s", building.getCost()));
-            lines[3].append(String.format("%-7s", building.getEffect()));
-            lines[4].append(String.format("%-7s", building.getEra()));
-            lines[5].append(String.format("%-7s"));
+            lines[1].append(String.format("|%-7s|", "Build"));
+            lines[2].append(String.format("|%-7s|", building.getCost()));
+            lines[3].append(String.format("|%-7s|", building.getEffect()));
+            lines[4].append(String.format("|%-7s|", building.getEra()));
+            lines[5].append("|       |");
             lines[6].append("+-------+");
         }
 
@@ -221,8 +255,8 @@ public class TUI implements UIObserver {
             lines[1].append(String.format("|%-7s|", ""));
             lines[2].append(String.format("|%-7s|", "Gather"));
             lines[3].append(String.format("|%-7s|", gatherer.getEra()));
-            lines[4].append(String.format("|%-7s|", ""));
-            lines[5].append(String.format("|%-7s|", ""));
+            lines[4].append("|       |");
+            lines[5].append("|       |");
             lines[6].append("+-------+");
         }
 
@@ -244,7 +278,7 @@ public class TUI implements UIObserver {
             lines[2].append(String.format("|%-7s|", "Hunter"));
             lines[3].append(String.format("|%-7s|", hunter.getEra()));
             lines[4].append(String.format("|%-7s|", hunter.getIcon()));
-            lines[5].append("|%-7s|");
+            lines[5].append("|       |");
             lines[6].append("+-------+");
         }
 
@@ -262,11 +296,11 @@ public class TUI implements UIObserver {
 
         for (InventorDTO inventor : inventors) {
             lines[0].append("+-------+");
-            lines[1].append("|%-7s|");
+            lines[1].append("|       |");
             lines[2].append(String.format("|%-7s|", "Invent"));
             lines[3].append(String.format("|%-7s|", inventor.getEra()));
             lines[4].append(String.format("|%-7s|", inventor.getInventionIcon()));
-            lines[5].append("|%-7s|");
+            lines[5].append("|       |");
             lines[6].append("+-------+");
         }
 
@@ -286,23 +320,24 @@ public class TUI implements UIObserver {
             lines[i] = new StringBuilder();
         }
 
-        //------------ lines for test --------------------------------------
-        //PlayerDTO p1 = new PlayerDTO("lisa", null, null, null ,null ,null, null  , null, 0, 0, 0 , 'C');
-        //PlayerDTO p2 = new PlayerDTO("ste", null, null, null ,null ,null, null  , null, 0, 0, 0 , 'A');
-        //GameDTO game = new GameDTO(Arrays.asList(p1,p2),2, null, 0, "");
         lines[0] = new StringBuilder("+-------+");
         lines[6] = new StringBuilder("+-------+");
         for(int i = 1; i < 6; i++){
-            lines[i] = new StringBuilder(String.format("|%-7s| ", ""));
+            lines[i] = new StringBuilder("|       |");
         }
         for(PlayerDTO player : game.getPlayers()) {
-            lines[player.getOrder()] = new StringBuilder(String.format("|%-7s| ", player.getName()));
+            lines[player.getOrder()] = new StringBuilder(String.format("|%-7s|", player.getName()));
         }
 
         //parliamo di offer, devo fare in modo che carichi quello che c'è scritto nel jason - dobbiamo creare una classe offertile mi sa
         StringBuilder[] offer = new StringBuilder[7];
+        offer[0] = new StringBuilder("+-------+");
+        offer[6] = new StringBuilder("+-------+");
         for(int i = 1; i < 6; i++){
-            offer[i] = new StringBuilder(String.format("|%-7s| ", ""));
+            offer[i] = new StringBuilder("|       |");
+        }
+        for (int i = 0; i < 7; i++) {
+            lines[i].append(offer[i]);
         }
 
         for(StringBuilder line : lines){
