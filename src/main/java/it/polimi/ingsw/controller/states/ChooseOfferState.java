@@ -38,6 +38,7 @@ public class ChooseOfferState extends GameState {
                     game.setPlayerTurn(drawOrder.remove(0));
                     // game.notifyObserver("Turn of " + game.getPlayerTurn().getName());
                 } else {
+                    System.out.println("Finished choosing offer tiles");
                     game.setPlayerTurn(null);
                     game.setState(new DrawCardState(game));
                 }

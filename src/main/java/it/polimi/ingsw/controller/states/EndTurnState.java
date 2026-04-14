@@ -1,0 +1,98 @@
+package it.polimi.ingsw.controller.states;
+
+import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.board.Offer;
+import it.polimi.ingsw.model.characters.Hunter;
+import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.characters.Character;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class EndTurnState extends GameState {
+    private final Game game;
+    private List<Player> drawOrder;
+
+    EndTurnState(Game game) {
+        // Resolve end turn effects
+        for (Player p : game.getPlayers()) {
+            for (Building b : p.getBuildings()) {
+                b.getEffect().applyEffectEndTurn(p);
+            }
+        }
+
+        this.game = game;
+        this.drawOrder = new ArrayList<>(game.getPlayers()
+                .stream()
+                .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
+                .filter(p -> p.getCanPickFromTop())
+                .toList());
+
+        game.setPlayerTurn(drawOrder.remove(0));
+    }
+
+    /**
+     * Draw a card from the top row, not the Event one
+     * @param player
+     * @param pos
+     * @throws IllegalActionException
+     */
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
+        Game game = player.getGame();
+
+        if (player.equals(game.getPlayerTurn())) {
+            int index = game.getBoard().getBottomRowTribe().size();
+            if (pos < index) {
+                Card character= game.getBoard().drawFromTopRowTribe(pos);
+                afterDrawn(player, character);
+            } else {
+                Building building = game.getBoard().drawFromTopRowBuilding(pos-index);
+                player.addCard(building);
+                building.getEffect().whenDrawn(player);
+            }
+
+            if (drawOrder.size() > 0) {
+                game.setPlayerTurn(drawOrder.remove(0));
+            } else {
+                // When all players have draw, transition to FillBoardState
+                System.out.println("Finished end turn phase");
+                game.setPlayerTurn(null);
+                game.setState(new FillBoardState(game));
+            }
+        } else {
+            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
+        }
+    }
+
+    /**
+     *  Manage the effect applied just after the drawn
+     * @param player
+     * @param character
+     */
+    private void afterDrawn(Player player, Card character) {
+        if (!character.getType().equals("Event")) {
+            int tmp_numSets = player.countSets();
+            player.addCard(character);
+            for (Building building : player.getBuildings()) {
+                building.getEffect().applyEffectDraw(player, tmp_numSets, (Character) character);
+            }
+            if (character.getName().equals("Hunter")) {
+                huntersDraft(player, (Hunter) character);
+            }
+        }
+    }
+
+    /**
+     * Manage the hunters effect
+     * @param player
+     * @param hunter
+     */
+    private void huntersDraft(Player player, Hunter hunter) {
+        if (hunter.getIcon()) {
+            player.addFood(player.getNumHunters());
+        }
+    }
+}

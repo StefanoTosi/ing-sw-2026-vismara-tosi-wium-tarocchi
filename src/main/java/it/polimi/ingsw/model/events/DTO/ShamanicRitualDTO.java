@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.events.DTO;
 
 import it.polimi.ingsw.model.Era;
 
-public class ShamanicRitualDTO {
+import java.io.Serializable;
+
+public class ShamanicRitualDTO implements Serializable {
     private String era;
     private int winnerPp;
     private int loserPp;

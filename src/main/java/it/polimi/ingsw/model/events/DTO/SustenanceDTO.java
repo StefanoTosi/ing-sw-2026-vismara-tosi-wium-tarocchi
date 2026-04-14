@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.events.DTO;
 
-public class SustenanceDTO {
+import java.io.Serializable;
+
+public class SustenanceDTO implements Serializable {
     private String era;
     private int pp;
 

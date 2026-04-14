@@ -34,5 +34,9 @@ public class ResolveEventsState extends GameState {
         for (Event event : events) {
             event.applyEffect(game.getPlayers());
         }
+
+        // Transition to EndTurnState
+        System.out.println("Finished resolving events");
+        game.setState(new EndTurnState(game));
     }
 }

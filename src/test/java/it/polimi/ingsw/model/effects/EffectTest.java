@@ -389,23 +389,12 @@ class EffectTest {
         Building building = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ET1);
         Game game = new Game(Arrays.asList(p1, p2));
         game.getBoard().initialize(2);
-        game.setState(new FillBoardState());
 
         p1.setGame(game);
         p2.setGame(game);
 
-        try {
-            game.getState().movePlayersBackToOrder(game);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Swap players if shuffled wrong
-        if (p1.getOrder() == 0) {
-            Player tmp = p1;
-            p1 = p2;
-            p2 = tmp;
-        }
+        p1.setOrder(1);
+        p2.setOrder(0);
 
         // The player on the bottom order tile gets no additional food bonus
         building.getEffect().applyEffectTileBonus(p1, building);

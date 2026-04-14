@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.Player;
 import java.io.Serializable;
 import java.util.function.Function;
 
+/**
+ * Simple data version of Building class (no logic)
+ */
+
 public class BuildingDTO implements Serializable {
 
     private int cost;

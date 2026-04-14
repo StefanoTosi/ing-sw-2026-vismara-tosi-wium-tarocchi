@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.events.DTO;
 
-public class HuntDTO {
+import java.io.Serializable;
+
+public class HuntDTO implements Serializable {
     private String era;
     private int pp;
 

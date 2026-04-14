@@ -39,7 +39,7 @@ public abstract class Card {
      */
     public void addToPlayer (Player player){}
 
-    public CardDTO toDTO(){
+    public CardDTO cardToDTO(){
         return new CardDTO(getEra().name(), getName());
     }
 }

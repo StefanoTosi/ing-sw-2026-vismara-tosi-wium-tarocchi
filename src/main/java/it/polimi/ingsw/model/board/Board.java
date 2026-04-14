@@ -444,10 +444,10 @@ public class Board {
 
     public BoardDTO toDTO(){
         return new BoardDTO(getTopRowTribe().size(),
-                getTopRowTribe().stream().map(Card::toDTO).toList(),
+                getTopRowTribe().stream().map(Card::cardToDTO).toList(),
                 getTopRowBuilding().stream().map(Building::toDTO).toList(),
                 getBottomRowTribe().size(),
-                getBottomRowTribe().stream().map(Card::toDTO).toList(),
+                getBottomRowTribe().stream().map(Card::cardToDTO).toList(),
                 getBottomRowBuilding().stream().map(Building::toDTO).toList(),
                 (getDeckTribe() != null)? getDeckTribe().size() : 0,
                 (getDeckE1Building() != null)?getDeckE1Building().size():0,

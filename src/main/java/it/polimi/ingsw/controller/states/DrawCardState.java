@@ -33,6 +33,11 @@ public class DrawCardState extends GameState {
                 .toList());
 
         game.setPlayerTurn(drawOrder.remove(0));
+
+        // Tile A does not allow you to draw any cards
+        if (game.getPlayerTurn().getOffer() == 'A') {
+            game.setPlayerTurn(drawOrder.remove(0));
+        }
     }
 
     /**
@@ -61,12 +66,28 @@ public class DrawCardState extends GameState {
                 drawTopCount = 0;
                 drawBottomCount = 0;
 
+                // Move back to the order tile
+                int availableOrder = (int) game.getPlayers()
+                        .stream()
+                        .filter(p -> p.getOffer() == '\0')
+                        .count();
+
+                game.getPlayerTurn().setOrder(availableOrder);
+                game.getPlayerTurn().setOffer('\0');
+
+                // Execute the ET1 effect
+                game.getPlayerTurn().getBuildings()
+                    .stream()
+                    .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
+
+                // Go to next player or next state
                 if (drawOrder.size() > 0) {
                     game.setPlayerTurn(drawOrder.remove(0));
                 } else {
                     // When all players have draw, transition to ResolveEventsState
                     game.setPlayerTurn(null);
                     game.setState(new ResolveEventsState(game));
+                    game.getState().resolveEvents();
                 }
             }
 
@@ -101,12 +122,29 @@ public class DrawCardState extends GameState {
                 drawTopCount = 0;
                 drawBottomCount = 0;
 
+                // Move back to the order tile
+                int availableOrder = (int) game.getPlayers()
+                        .stream()
+                        .filter(p -> p.getOffer() == '\0')
+                        .count();
+
+                game.getPlayerTurn().setOrder(availableOrder);
+                game.getPlayerTurn().setOffer('\0');
+
+                // Execute the ET1 effect
+                game.getPlayerTurn().getBuildings()
+                        .stream()
+                        .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
+
+                // Go to next player or next state
                 if (drawOrder.size() > 0) {
                     game.setPlayerTurn(drawOrder.remove(0));
                 } else {
                     // When all players have draw, transition to ResolveEventsState
+                    System.out.println("Finished drawing cards");
                     game.setPlayerTurn(null);
                     game.setState(new ResolveEventsState(game));
+                    game.getState().resolveEvents();
                 }
             }
         } else {
