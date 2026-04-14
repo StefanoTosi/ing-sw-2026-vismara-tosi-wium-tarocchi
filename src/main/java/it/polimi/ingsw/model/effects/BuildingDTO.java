@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.effects;
 
+import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
@@ -8,23 +9,18 @@ import java.util.function.Function;
 /**
  * Simple data version of Building class (no logic)
  */
-
-public class BuildingDTO implements Serializable {
-
-    private int cost;
-    private int pp;
-
-    private int effectPp;
-    private String effect;
-
-    private String era;
+public class BuildingDTO extends CardDTO implements Serializable {
+    private final int cost;
+    private final int pp;
+    private final int effectPp;
+    private final String effect;
 
     public BuildingDTO(int cost, int pp, int effectPp, String effect, String era) {
         this.cost = cost;
         this.pp = pp;
         this.effectPp = effectPp;
         this.effect = effect;
-        this.era = era;
+        super(era, "Building");
     }
 
     public int getCost() {
@@ -41,9 +37,5 @@ public class BuildingDTO implements Serializable {
 
     public String getEffect() {
         return effect;
-    }
-
-    public String getEra() {
-        return era;
     }
 }

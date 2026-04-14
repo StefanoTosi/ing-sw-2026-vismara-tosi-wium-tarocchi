@@ -1,15 +1,18 @@
 package it.polimi.ingsw.model.characters.DTO;
 
+import it.polimi.ingsw.model.CardDTO;
+
 import java.io.Serializable;
 
-public class GathererDTO implements Serializable {
-    private String era;
+public class GathererDTO extends CardDTO implements Serializable {
+    private final String name;
 
     public GathererDTO(String era) {
-        this.era = era;
+        super(era, "Character");
+        this.name = "Gatherer";
     }
 
-    public String getEra() {
-        return era;
+    public String getName() {
+        return name;
     }
 }

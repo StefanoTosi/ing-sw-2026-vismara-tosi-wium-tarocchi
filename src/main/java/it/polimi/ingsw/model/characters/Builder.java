@@ -10,8 +10,8 @@ import it.polimi.ingsw.model.characters.DTO.BuilderDTO;
  * cost of every Building card, and at the end of the game provides the prestige points stated
  */
 public class Builder extends Character {
-    private int foodDiscount;
-    private int pp;
+    private final int foodDiscount;
+    private final int pp;
 
     public Builder(int foodDiscount, int pp, Era era) {
         super(era);

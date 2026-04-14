@@ -1,25 +1,24 @@
 package it.polimi.ingsw.model.characters.DTO;
 
+import it.polimi.ingsw.model.CardDTO;
+
 import java.io.Serializable;
 
-public class InventorDTO implements Serializable {
-    private String era;
-    private String icon;
+public class InventorDTO extends CardDTO implements Serializable {
+    private final String icon;
+    private final String name;
 
     public InventorDTO(String era, String icon) {
-        this.era = era;
+        super(era, "Character");
         this.icon = icon;
-    }
-
-    public String getEra() {
-        return era;
-    }
-
-    public String getIcon() {
-        return icon;
+        this.name = "Inventor";
     }
 
     public String getInventionIcon() {
         return icon;
+    }
+
+    public String getName() {
+        return name;
     }
 }

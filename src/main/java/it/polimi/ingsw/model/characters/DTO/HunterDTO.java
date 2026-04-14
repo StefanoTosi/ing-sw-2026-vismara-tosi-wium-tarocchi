@@ -1,21 +1,24 @@
 package it.polimi.ingsw.model.characters.DTO;
 
+import it.polimi.ingsw.model.CardDTO;
+
 import java.io.Serializable;
 
-public class HunterDTO implements Serializable {
-    private boolean icon;
-    private String era;
+public class HunterDTO extends CardDTO implements Serializable {
+    private final boolean icon;
+    private final String name;
 
     public HunterDTO(boolean icon, String era){
         this.icon = icon;
-        this.era = era;
+        super(era, "Character");
+        this.name = "Hunter";
     }
 
     public boolean getIcon() {
         return icon;
     }
 
-    public String getEra() {
-        return era;
+    public String getName() {
+        return name;
     }
 }

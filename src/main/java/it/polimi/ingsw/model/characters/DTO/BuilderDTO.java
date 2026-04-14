@@ -1,16 +1,19 @@
 package it.polimi.ingsw.model.characters.DTO;
 
+import it.polimi.ingsw.model.CardDTO;
+
 import java.io.Serializable;
 
-public class BuilderDTO implements Serializable {
-    private int foodDiscount;
-    private int pp;
-    private String era;
+public class BuilderDTO extends CardDTO implements Serializable {
+    private final int foodDiscount;
+    private final int pp;
+    private final String name;
 
     public BuilderDTO(int foodDiscount, int pp, String era) {
         this.foodDiscount = foodDiscount;
         this.pp = pp;
-        this.era = era;
+        this.name = "Builder";
+        super(era, "Character");
     }
 
     public int getFoodDiscount() {
@@ -21,8 +24,7 @@ public class BuilderDTO implements Serializable {
         return pp;
     }
 
-    public String getEra() {
-        return era;
+    public String getName() {
+        return name;
     }
-
 }

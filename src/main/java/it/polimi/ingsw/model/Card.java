@@ -31,7 +31,9 @@ public abstract class Card {
      * Return the type of the card: Characters, Buildings or Event
      * @return type
      */
-    public String getType(){return TYPE;}
+    public String getType(){
+        return TYPE;
+    }
 
     /**
      * Add the card to the tribe of the specified player
@@ -40,6 +42,6 @@ public abstract class Card {
     public void addToPlayer (Player player){}
 
     public CardDTO cardToDTO(){
-        return new CardDTO(getEra().name(), getName());
+        return new CardDTO(getEra().name(), getType());
     }
 }
