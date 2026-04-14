@@ -14,6 +14,10 @@ public class ResolveEventsState extends GameState {
         this.game = game;
     }
 
+    public StateDTO getStateDTO() {
+        return StateDTO.RESOLVEEVENT;
+    }
+
     public void resolveEvents() {
         List<Card> bottomRow = game.getBoard().getBottomRowTribe();
         List<Event> events = new ArrayList<>();

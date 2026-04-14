@@ -51,4 +51,6 @@ public abstract class GameState {
     public void calculateRankings() throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
+
+    public abstract StateDTO getStateDTO() throws IllegalActionException;
 }

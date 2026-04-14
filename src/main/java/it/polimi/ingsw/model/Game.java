@@ -84,30 +84,14 @@ public class Game {
         this.state = state;
     }
 
-    public GameDTO toDTO(){
-        if(getState() instanceof SetupGameState){
-            return null;
-        }
-        int state = 0;
-        if (this.state instanceof FillBoardState) {
-            state = 1;
-        }
-
-        if (this.state instanceof ChooseOfferState) {
-            state = 2;
-        }
-
-        if (this.state instanceof DrawCardState) {
-            state = 3;
-        }
-
+    public GameDTO toDTO() throws IllegalActionException {
         String turn = "";
         if (playerTurn != null) {
             turn = playerTurn.getName();
         }
 
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO(), state, turn/*, getRankings().stream().map(Player::toDTO).toList()*/);
+                getBoard().toDTO(), getState().getStateDTO(), turn/*, getRankings().stream().map(Player::toDTO).toList()*/);
     }
 
     public Player getPlayerTurn() {
