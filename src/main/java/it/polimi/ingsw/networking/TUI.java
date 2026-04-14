@@ -85,7 +85,7 @@ public class TUI implements UIObserver {
         printBoard(game.getBoard());
         printPlayerCards();
 
-        System.out.println("Curren state: "+ game.getState());
+        System.out.println("Current state: "+ game.getState());
 
         // If its this players turn, query the player for the action, otherwise do nothing
         if (client.getNickname().equals(game.getPlayerTurn())) {
@@ -107,7 +107,7 @@ public class TUI implements UIObserver {
                 case 2:
                     // ChooseOfferState
                     String offer;
-                    System.out.println("Choose the on which offer tile to go ");
+                    System.out.println("Choose an offer tile ");
                     do {
                         System.out.print("(from A to G): ");
                         offer = in.nextLine();

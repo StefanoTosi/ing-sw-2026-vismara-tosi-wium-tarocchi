@@ -19,6 +19,8 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     private final Map<String, ClientCallBack> clients;
     private Map<String, String> nicknames;
 
+    private final Object lock = new Object();
+
     protected ServerRMI() throws RemoteException {
         clients = new ConcurrentHashMap<>();
         nicknames = new ConcurrentHashMap<>();
@@ -26,29 +28,42 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public synchronized int addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
-        if (nicknames.containsKey(nickname)) {
-            if (nicknames.get(nickname).equals(psw)) {
-                client.setNickname(nickname);
-                clients.put(nickname, client);
-                client.receiveMessage("Welcome back " + nickname);
-                return 0;
+    public int addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
+        boolean success;
+        String message;
+
+        synchronized (lock) {
+            if (nicknames.containsKey(nickname)) {
+                if (nicknames.get(nickname).equals(psw)) {
+                    clients.put(nickname, client);
+                    message = "Welcome back " + nickname;
+                    success = true;
+                } else {
+                    message = "Nickname already exists or wrong password";
+                    success = false;
+                }
             } else {
-                client.receiveMessage("Nickname already exists or wrong password");
-                return -1;
+                nicknames.put(nickname, psw);
+                clients.put(nickname, client);
+                message = "Welcome " + nickname;
+                success = true;
             }
-        } else {
-            nicknames.put(nickname, psw);
-            client.setNickname(nickname);
-            clients.put(nickname, client);
-            client.receiveMessage("Welcome "+nickname);
-            return 0;
         }
+
+        if(success){
+            client.setNickname(nickname);
+        }
+        client.receiveMessage(message);
+
+        return success? 0 : -1;
     }
 
     @Override
-    public synchronized void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
-        ClientCallBack client = clients.get(name);
+    public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
+        ClientCallBack client;
+        synchronized (lock) {
+            client = clients.get(name);
+        }
         gamesController.createGame(new Player(name), numPlayers, client);
     }
 
@@ -57,8 +72,12 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public synchronized boolean joinGame(String name) throws RemoteException, IllegalActionException {
-        ClientCallBack client = clients.get(name);
+    public boolean joinGame(String name) throws RemoteException, IllegalActionException {
+        ClientCallBack client;
+        synchronized (lock) {
+            client = clients.get(name);
+        }
+
         return gamesController.joinGame(new Player(name), client);
     }
 
