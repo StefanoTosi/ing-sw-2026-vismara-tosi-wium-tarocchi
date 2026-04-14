@@ -79,6 +79,8 @@ public class TUI implements UIObserver {
         System.out.println("Rendering of the wonderful GameBoard");
         this.game = game;
 
+        System.out.println("Curren state: "+ game.getState());
+
         // If its this players turn, query the player for the action, otherwise do nothing
         if (client.getNickname().equals(game.getPlayerTurn())) {
             System.out.println("It's your turn");
