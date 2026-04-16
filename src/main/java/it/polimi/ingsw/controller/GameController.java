@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import it.polimi.ingsw.networking.ClientCallBack;
+import it.polimi.ingsw.networking.RMI.ClientCallBack;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

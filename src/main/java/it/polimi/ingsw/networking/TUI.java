@@ -1,28 +1,22 @@
 package it.polimi.ingsw.networking;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
-import it.polimi.ingsw.controller.states.ChooseOfferState;
-import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.GameDTO;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerDTO;
-import it.polimi.ingsw.model.board.BoardDTO;
 import it.polimi.ingsw.model.characters.DTO.ArtistDTO;
 import it.polimi.ingsw.model.characters.DTO.GathererDTO;
 import it.polimi.ingsw.model.characters.DTO.HunterDTO;
 import it.polimi.ingsw.model.characters.DTO.InventorDTO;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.RMI.ClientRMI;
+import it.polimi.ingsw.networking.RMI.Controller;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Gatherer;
 
 public class TUI implements UIObserver {
     private Scanner in = new Scanner(System.in);
@@ -87,7 +81,7 @@ public class TUI implements UIObserver {
 
         System.out.println("Current state: "+ game.getState());
 
-        // If its this players turn, query the player for the action, otherwise do nothing
+        // If it's this player's turn, query the player for the action, otherwise do nothing
         if (client.getNickname().equals(game.getPlayerTurn())) {
             System.out.println("It's your turn");
             printPlayerCards();

@@ -1,6 +1,5 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.networking.RMI;
 import it.polimi.ingsw.controller.actions.Action;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.*;

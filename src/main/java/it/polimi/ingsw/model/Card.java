@@ -2,8 +2,9 @@ package it.polimi.ingsw.model;
 
 /**
  * Define the common method of the Card,
- * either they are Characters, Buildings or Event
+ * either they are Characters, Buildings or Events
  */
+
 public abstract class Card {
     protected Era era;
     protected String TYPE;

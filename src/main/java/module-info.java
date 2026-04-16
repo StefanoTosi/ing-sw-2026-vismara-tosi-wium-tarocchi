@@ -7,6 +7,8 @@ module com.example.mesos {
     requires com.fasterxml.jackson.databind;
     requires java.rmi;
     requires jdk.jfr;
+    requires com.fasterxml.jackson.annotation;
+    requires com.example.mesos;
 
     opens it.polimi.ingsw to javafx.fxml;
     exports it.polimi.ingsw;
@@ -29,4 +31,5 @@ module com.example.mesos {
     exports it.polimi.ingsw.networking;
     exports it.polimi.ingsw.model.characters.DTO;
     opens it.polimi.ingsw.model.characters.DTO to javafx.fxml;
+    exports it.polimi.ingsw.networking.RMI;
 }
