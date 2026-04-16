@@ -20,7 +20,7 @@ public class BuildingDTO extends CardDTO implements Serializable {
         this.pp = pp;
         this.effectPp = effectPp;
         this.effect = effect;
-        super(era, "Building");
+        super(era, "Building", "Building");
     }
 
     public int getCost() {
