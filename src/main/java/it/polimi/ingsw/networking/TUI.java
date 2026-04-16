@@ -1,37 +1,71 @@
 package it.polimi.ingsw.networking;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
+import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
+import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
+import it.polimi.ingsw.controller.states.ChooseOfferState;
+import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.GameDTO;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerDTO;
+import it.polimi.ingsw.model.board.BoardDTO;
+import it.polimi.ingsw.model.board.OfferDTO;
+import it.polimi.ingsw.model.board.OrderDTO;
 import it.polimi.ingsw.model.characters.DTO.ArtistDTO;
 import it.polimi.ingsw.model.characters.DTO.GathererDTO;
 import it.polimi.ingsw.model.characters.DTO.HunterDTO;
 import it.polimi.ingsw.model.characters.DTO.InventorDTO;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
+import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import it.polimi.ingsw.networking.RMI.ClientRMI;
-import it.polimi.ingsw.networking.RMI.Controller;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Gatherer;
 
 public class TUI implements UIObserver {
     private Scanner in = new Scanner(System.in);
     private GameDTO game;
     private final ClientRMI client;
     private final Controller controller;
+    public static final String RED = "\u001B[31m";
+    public static final String YELLOW = "\u001B[32m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String ORANGE ="\u001B[38;5;208m";
+    public static final String BG_RED = "\u001B[41m";
+    public static final String BG_GREEN = "\u001B[42m";
+    public static final String BG_BLUE = "\u001B[44m";
+    public static final String BG_YELLOW = "\u001B[43m";
+    public static final String BOLD = "\u001B[1m";
+    public static final String UNDERLINE = "\u001B[4m";
 
+    /**
+     *
+     * @throws RemoteException
+     * @throws NotBoundException
+     */
     public TUI () throws RemoteException, NotBoundException {
         this.client = new ClientRMI(this);
         this.controller = client.connectToServer();
         this.game = null;
     }
 
+    /**
+     * Function that starts the game by adding the user and loading the game
+     * @throws RemoteException
+     * @throws IllegalActionException
+     */
+
     public void start() throws RemoteException, IllegalActionException {
-        System.out.println("MENU:");
+        System.out.println(GREEN + BOLD + "MENU:");
         System.out.println("1. Login");
         System.out.println("2. Exit");
 
@@ -41,9 +75,9 @@ public class TUI implements UIObserver {
             case 1:
                 boolean flag = true;
                 while (flag) {
-                    System.out.print("Username: ");
+                    System.out.print(BLUE + BOLD + "Username: ");
                     String username = in.nextLine();
-                    System.out.print("Password: ");
+                    System.out.print(BLUE + BOLD +"Password: ");
                     String password = in.nextLine();
                     if(controller.addUser(password, username, client) == 0) flag = false;
                 }
@@ -54,6 +88,7 @@ public class TUI implements UIObserver {
                     do {
                         System.out.print("(2 to 5 players): ");
                         num = in.nextInt();
+                        System.out.print("Waiting for other players to connect...");
                         //free the buffer
                         in.nextLine();
                     } while(num < 2 || num > 5);
@@ -67,24 +102,38 @@ public class TUI implements UIObserver {
         }
     }
 
+
     public void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
         TUI tui = new TUI();
         tui.start();
 
     }
 
+    /**
+     * Function that changes the states throwout the game
+     * @param game
+     * @throws RemoteException
+     * @throws IllegalActionException
+     */
+
+
+    /*
+     * la coda notifiche è vuota - wait
+     * altrimenti - tipo update ma handle new notify e come gamedto gli passi un pop dalla coda
+     * finito handle notify torna a controllare la coda
+     * quando viene pushato un elemento nella coda fa notify all
+     * */
+
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
-        System.out.println("Rendering of the wonderful GameBoard");
         this.game = game;
         printBoard();
 
         System.out.println("Current state: "+ game.getState());
 
-        // If it's this player's turn, query the player for the action, otherwise do nothing
+        // If its this players turn, query the player for the action, otherwise do nothing
         if (client.getNickname().equals(game.getPlayerTurn())) {
             System.out.println("It's your turn");
-            printPlayerCards();
             // TODO: sostituire con lo strategy pattern?
             switch (game.getState()) {
                 case StateDTO.SETUPGAME:
@@ -102,16 +151,22 @@ public class TUI implements UIObserver {
                 case StateDTO.CHOOSEOFFER:
                     // ChooseOfferState
                     String offer;
-                    System.out.println("Choose an offer tile ");
+                    //printOfferRow();
+                    System.out.println("Choose the on which offer tile to go ");
                     do {
-                        System.out.print("(from A to G): ");
+                        System.out.print("(write the letter): ");
                         offer = in.nextLine();
                     } while(offer.length() != 1);
                     controller.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)), client.getNickname());
                     break;
                 case StateDTO.DRAWCARD:
                     // DrawCardsState
-                    System.out.println("Choose which card to draw - TODO");
+                    // TODO: if deve prendere da top fai stampa top e poi chiedi che carta vuole (numerata) - vanno separati i due casi
+                    int card;
+                    System.out.println("Choose which card to draw (write its number): ");
+                    card = in.nextInt();
+                    controller.executeAction(new DrawCardFromTopAction(card), client.getNickname());
+                    controller.executeAction(new DrawCardFromBottomAction(card), client.getNickname());
                     break;
                 case StateDTO.ENDTURN:
                     // EndTurnState
@@ -125,61 +180,91 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Calls the functions to print each part of the board
+     */
     public void printBoard(){
-        System.out.println("TopRowTribe:\n");
         printTopRowTribe();
-        System.out.println("BottomRowTribe:\n");
         printBottomRowTribe();
-        System.out.println("OfferPath:\n");
+        printOrderTile();
         printOfferRow();
-        System.out.println("TopRowBuilding:\n");
-        printRowBuilding(game.getBoard().getTopRowBuilding());
-        System.out.println("BottomRowBuilding:\n");
-        printRowBuilding(game.getBoard().getBottomRowBuilding());
     }
     /* Al momento è ridondante - da fare con printRowTribe e
     differenziare all'interno con metodo chooseRow -> assegno dinamicamente o top o bottom alla rowtribeprint
+    ----- crea metodo create list e poi passalo a una print che unisce e stampa
     */
     public void printTopRowTribe(){
         StringBuilder[] lines = new StringBuilder[7];
-
-        List<CardDTO> cards = game.getBoard().getTopRowTribe();
-
         for(int i=0; i < 7; i++){
             lines[i] = new StringBuilder("");
         }
 
+        System.out.println(BLUE + "TopRowTribe:\n");
+
+        //------------ Adding the cards
+        List<CardDTO> cards = game.getBoard().getTopRowTribe();
+        StringBuilder[] events = HandleCards();
         for(CardDTO card : cards) {
-            lines[0].append("+-------+");
-            lines[1].append(String.format("|%-7s|", card.getName()));
-            lines[2].append(String.format("|%-7s|", card.getEra()));
-            lines[3].append("|       |");
-            lines[4].append("|       |");
-            lines[5].append("|       |");
-            lines[6].append("+-------+");
+            lines[0].append(ORANGE + "+----------+");
+            lines[1].append(ORANGE).append(String.format("|%-10s|", card.getName()));
+            lines[2].append(ORANGE).append(String.format("|%-10s|", card.getEra()));
+            lines[3].append(ORANGE + "|          |");
+            lines[4].append(ORANGE + "|          |");
+            lines[5].append(ORANGE + "|          |");
+            lines[6].append(ORANGE + "+----------+");
+        }
+        //------------- Adding the buildings
+        List<BuildingDTO> buildings = game.getBoard().getTopRowBuilding();
+        for(BuildingDTO building : buildings) {
+            lines[0].append(ORANGE + "+----------+");
+            lines[1].append(ORANGE).append(String.format("|%-10s|", "Build"));
+            lines[2].append(ORANGE).append(String.format("|%-10s|", building.getCost()));
+            lines[3].append(ORANGE).append(String.format("|%-10s|", building.getEffect()));
+            lines[4].append(ORANGE).append(String.format("|%-10s|", building.getEra()));
+            lines[5].append(ORANGE + "|          |");
+            lines[6].append(ORANGE + "+----------+");
+        }
+
+        for(int i=0; i<7; i++){
+            lines[i].append(events[i]);
         }
 
         for(StringBuilder line : lines){
             System.out.println(line);
         }
     }
+
+
 
     public void printBottomRowTribe(){
         StringBuilder[] lines = new StringBuilder[7];
         List<CardDTO> cards = game.getBoard().getBottomRowTribe();
 
-        for(int i=0; i < 7; i++){
-            lines[i] = new StringBuilder("");
-        }
+        System.out.println(BLUE + "BottomRowTribe:");
 
+        for(int i=0; i < 7; i++){
+            lines[i] = new StringBuilder();
+        }
+        //------------ Adding the cards
         for(CardDTO card : cards) {
-            lines[0].append("+-------+");
-            lines[1].append(String.format("|%-7s|", card.getType()));
-            lines[2].append(String.format("|%-7s|", card.getName()));
-            lines[3].append(String.format("|%-7s|", card.getEra()));
-            lines[4].append("|       |");
-            lines[5].append("|       |");
-            lines[6].append("+-------+");
+            lines[0].append(ORANGE + "+----------+");
+            lines[1].append(ORANGE).append(String.format("|%-10s|", card.getType()));
+            lines[2].append(ORANGE).append(String.format("|%-10s|", card.getName()));
+            lines[3].append(ORANGE).append(String.format("|%-10s|", card.getEra()));
+            lines[4].append(ORANGE + "|          |");
+            lines[5].append(ORANGE + "|          |");
+            lines[6].append(ORANGE + "+----------+");
+        }
+        List<BuildingDTO> buildings = game.getBoard().getBottomRowBuilding();
+        //------------- Adding the buildings
+        for(BuildingDTO building : buildings) {
+            lines[0].append("+----------+");
+            lines[1].append(String.format("|%-10s|", "Building"));
+            lines[2].append(String.format("|%-10s|", building.getCost()));
+            lines[3].append(String.format("|%-10s|", building.getEffect()));
+            lines[4].append(String.format("|%-10s|", building.getEra()));
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
         }
 
         for(StringBuilder line : lines){
@@ -187,20 +272,22 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printRowBuilding(List<BuildingDTO> buildings){
+    /*public void printRowBuilding(){
         StringBuilder[] lines = new StringBuilder[7];
         for(int i=0; i < 7; i++){
             lines[i] = new StringBuilder();
         }
 
+        List<BuildingDTO> buildings = chooseRowBuilding();
+
         for(BuildingDTO building : buildings) {
-            lines[0].append("+-------+");
-            lines[1].append(String.format("|%-7s|", "Build"));
-            lines[2].append(String.format("|%-7s|", building.getCost()));
-            lines[3].append(String.format("|%-7s|", building.getEffect()));
-            lines[4].append(String.format("|%-7s|", building.getEra()));
-            lines[5].append("|       |");
-            lines[6].append("+-------+");
+            lines[0].append("+----------+");
+            lines[1].append(String.format("|%-10s|", "Build"));
+            lines[2].append(String.format("|%-10s|", building.getCost()));
+            lines[3].append(String.format("|%-10s|", building.getEffect()));
+            lines[4].append(String.format("|%-10s|", building.getEra()));
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
         }
 
         for(StringBuilder line : lines){
@@ -208,34 +295,92 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void printPlayerCards(){
-        List<PlayerDTO> players  = game.getPlayers();
+    public List<CardDTO> chooseRowTribe(){
+        String answer;
+        do {
+            System.out.println("Which tribe row do you wish to view? [T]op or [B]ottom:");
+            answer = in.nextLine();
+        }while(!answer.equals("T") && !answer.equals("B"));
 
-        for(PlayerDTO player : players){
-            System.out.println("\n=== " + player.getName() + " ===");
-            printRowBuilding(player.getBuildings());
-            //printArtist(player.getArtists());
-            printGatherer(player.getGatherers());
-            printHunter(player.getHunters());
-            printInventor(player.getInventors());
+        if(answer == "T"){
+            return game.getBoard().getTopRowTribe();
+        }else{
+            return game.getBoard().getBottomRowTribe();
         }
     }
 
+    public List<BuildingDTO> chooseRowBuilding(){
+        String answer;
+        do {
+            System.out.println("Which building row do you wish to view? [T]op or [B]ottom:");
+            answer = in.nextLine();
+        }while(!answer.equals("T") && !answer.equals("B"));
+
+        if(answer == "T"){
+            return game.getBoard().getTopRowBuilding();
+        }else{
+            return game.getBoard().getBottomRowBuilding();
+        }
+    }*/
+
+    /**
+     * Function to print a single player's cards
+     * @param player
+     */
+    public void printPlayerCards(PlayerDTO player){
+        System.out.println("\n======== " + player.getName() + " ========");
+        printArtist(player.getArtists());
+        printGatherer(player.getGatherers());
+        printHunter(player.getHunters());
+        printInventor(player.getInventors());
+        //printBuilders(player.getBuilders());
+        //printBuildings(player.getBuildings());
+    }
+
+    /**
+     * Function to ask whose cards does the user wish to view
+     */
+    public void choosePlayerCards () {
+        List<PlayerDTO> players  = game.getPlayers();
+        System.out.println("Whose cards do you wish to view?");
+        String name = in.nextLine();
+        for(PlayerDTO player : players){
+            if(name.equals(player.getName())){
+                printPlayerCards(player);
+            }
+        }
+    }
+
+    /**
+     * Function to print the Artist cards of a player
+     * @param artists
+     */
     public void printArtist(List<ArtistDTO> artists) {
-        StringBuilder line1 = new StringBuilder();
-        StringBuilder line2 = new StringBuilder();
-        StringBuilder line3 = new StringBuilder();
-        StringBuilder line4 = new StringBuilder();
-        StringBuilder line5 = new StringBuilder();
+        StringBuilder[] lines = new StringBuilder[7];
+
+        for(int i=0; i < 7; i++){
+            lines[i] = new StringBuilder();
+        }
+
 
         for (ArtistDTO artist : artists) {
-            line1.append("+-------+");
-            line2.append("|Artist |");
-            line3.append("|" + artist.getEra() + "|");
-            line4.append("|       |");
-            line5.append("+-------+");
+            lines[0].append("+----------+");
+            lines[1].append("|          |");
+            lines[2].append(String.format("|%-10s|", "Artist"));
+            lines[3].append(String.format("|%-10s|", artist.getEra()));
+            lines[4].append("|          |");
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
+        }
+        for(StringBuilder line : lines){
+            System.out.println(line);
         }
     }
+
+    /**
+     * Function to print the Gatherer cards of a player
+     * @param gatherers
+     */
 
     public void printGatherer(List<GathererDTO> gatherers) {
         StringBuilder[] lines = new StringBuilder[7];
@@ -245,13 +390,13 @@ public class TUI implements UIObserver {
         }
 
         for (GathererDTO gatherer : gatherers) {
-            lines[0].append("+-------+");
-            lines[1].append(String.format("|%-7s|", ""));
-            lines[2].append(String.format("|%-7s|", "Gather"));
-            lines[3].append(String.format("|%-7s|", gatherer.getEra()));
-            lines[4].append("|       |");
-            lines[5].append("|       |");
-            lines[6].append("+-------+");
+            lines[0].append("+----------+");
+            lines[1].append("|          |");
+            lines[2].append(String.format("|%-10s|", "Gather"));
+            lines[3].append(String.format("|%-10s|", gatherer.getEra()));
+            lines[4].append("|          |");
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
         }
 
         for(StringBuilder line : lines){
@@ -259,6 +404,10 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Function to print the Hunter cards of a player
+     * @param hunters
+     */
     public void printHunter(List<HunterDTO> hunters) {
         StringBuilder[] lines = new StringBuilder[7];
 
@@ -267,13 +416,13 @@ public class TUI implements UIObserver {
         }
 
         for (HunterDTO hunter : hunters) {
-            lines[0].append("+-------+");
-            lines[1].append("|%-7s|");
-            lines[2].append(String.format("|%-7s|", "Hunter"));
-            lines[3].append(String.format("|%-7s|", hunter.getEra()));
-            lines[4].append(String.format("|%-7s|", hunter.getIcon()));
-            lines[5].append("|       |");
-            lines[6].append("+-------+");
+            lines[0].append("+----------+");
+            lines[1].append("|          |");
+            lines[2].append(String.format("|%-10s|", "Hunter"));
+            lines[3].append(String.format("|%-10s|", hunter.getEra()));
+            lines[4].append(String.format("|%-10s|", hunter.getIcon()));
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
         }
 
         for(StringBuilder line : lines){
@@ -281,6 +430,10 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Function to print the Inventor cards of a player
+     * @param inventors
+     */
     public void printInventor(List<InventorDTO> inventors) {
         StringBuilder[] lines = new StringBuilder[7];
 
@@ -289,13 +442,13 @@ public class TUI implements UIObserver {
         }
 
         for (InventorDTO inventor : inventors) {
-            lines[0].append("+-------+");
-            lines[1].append("|       |");
-            lines[2].append(String.format("|%-7s|", "Invent"));
-            lines[3].append(String.format("|%-7s|", inventor.getEra()));
-            lines[4].append(String.format("|%-7s|", inventor.getInventionIcon()));
-            lines[5].append("|       |");
-            lines[6].append("+-------+");
+            lines[0].append("+----------+");
+            lines[1].append("|          |");
+            lines[2].append(String.format("|%-10s|", "Invent"));
+            lines[3].append(String.format("|%-10s|", inventor.getEra()));
+            lines[4].append(String.format("|%-10s|", inventor.getInventionIcon()));
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
         }
 
         for(StringBuilder line : lines){
@@ -310,33 +463,162 @@ public class TUI implements UIObserver {
     public void printOfferRow(){
         StringBuilder[] lines = new StringBuilder[7];
 
-        for(int i=0; i < 7; i++){
-            lines[i] = new StringBuilder();
-        }
+        System.out.println("OfferPath:");
 
-        lines[0] = new StringBuilder("+-------+");
-        lines[6] = new StringBuilder("+-------+");
+        lines[0] = new StringBuilder("+----------+");
+        lines[6] = new StringBuilder("+----------+");
         for(int i = 1; i < 6; i++){
-            lines[i] = new StringBuilder("|       |");
+            lines[i] = new StringBuilder("|          |");
         }
+/*
+        System.out.println("pre ciclo order card:\n");
+
         for(PlayerDTO player : game.getPlayers()) {
-            lines[player.getOrder()] = new StringBuilder(String.format("|%-7s|", player.getName()));
+            //OrderDTO orderTile = game.getBoard().getOrder();
+            if(player.getOffer() == '\0'){
+                lines[player.getOrder() + 1] =  new StringBuilder(String.format("|%-10s|", player.getName()));
+            }
+                //lines[0] = new StringBuilder("+----------+");
+                //lines[1].append(String.format("|%-10s|", "food: " + orderTile.getFoodBonus()));
+                //lines[2].append(String.format("|%-10s|", "food: " + orderTile.getFoodBonus()));
+                //lines[3].append("|         |");
+                //lines[4].append(String.format("|%-10s|", "Pp: " + orderTile.getPpBonus()));
+                //lines[6] = new StringBuilder("+----------+");
         }
-
-        //parliamo di offer, devo fare in modo che carichi quello che c'è scritto nel jason - dobbiamo creare una classe offertile mi sa
-        StringBuilder[] offer = new StringBuilder[7];
-        offer[0] = new StringBuilder("+-------+");
-        offer[6] = new StringBuilder("+-------+");
-        for(int i = 1; i < 6; i++){
-            offer[i] = new StringBuilder("|       |");
-        }
-        for (int i = 0; i < 7; i++) {
-            lines[i].append(offer[i]);
+        System.out.println("post ciclo order card:\n");
+*/
+        //parliamo di offer, devo fare in modo che carichi quello che c'è scritto nel json - dobbiamo creare una classe offertile mi sa
+        List<OfferDTO> offerTiles = game.getBoard().getOfferPath();
+        System.out.println("pre ciclo offer card:\n");
+        for(OfferDTO offerTile : offerTiles){
+            PlayerDTO playerOnTile = null;
+            for(PlayerDTO player : game.getPlayers()){
+                if(player.getOffer() == offerTile.getOrder()){
+                    playerOnTile = player;
+                    break; // TODO: metodo bruttino da cambiare
+                }
+            }
+            lines[0].append(String.format("+----%s-----+", offerTile.getOrder()));
+            if(playerOnTile != null){
+                lines[1].append(String.format("|%-10s|", playerOnTile.getName()));
+            } else {
+                lines[1].append("|          |");
+            }
+            lines[2].append(String.format("|%-10s|", "drawT: " + offerTile.getDrawTop()));
+            lines[3].append(String.format("|%-10s|", "drawB: " + offerTile.getDrawBottom()));
+            lines[4].append(String.format("|%-10s|", "Food: " + offerTile.getFoodBonus()));
+            lines[5].append("|          |");
+            lines[6].append("+----------+");
         }
 
         for(StringBuilder line : lines){
             System.out.println(line);
         }
+    }
+
+    /**
+     * Function to print the OrderTile without the players on it - to view the bonus values on the positions
+     */
+    public void printOrderTile(){
+        int num = game.getNumPlayers()+2;
+        StringBuilder[] lines = new StringBuilder[num];
+        System.out.println("OrderTile:");
+
+        for(int i = 0; i < num; i++){
+            lines[i] = new StringBuilder();
+        }
+
+        OrderDTO orderTile = game.getBoard().getOrder();
+        lines[0].append("+----------+");
+        for(int i = 1; i < num-1; i++){
+            lines[i].append(String.format("|%-10s|", "Food: " + orderTile.getFoodBonus().get(i-1) + " Pp: " + orderTile.getPpBonus().get(i-1)));
+        }
+        lines[num-1].append("+----------+");
+
+        List<PlayerDTO> players = game.getPlayers();
+        for(PlayerDTO player : players){
+            if(player.getOffer() != '\0'){
+                lines[player.getOrder()] = new StringBuilder(String.format("|%-10s|", player.getName()));
+            }
+        }
+
+        for(StringBuilder line : lines){
+            System.out.println(line);
+        }
+    }
+
+
+
+    /**
+     * Function that handles card input and prints them based on what they are, calling other functions as support
+     * @return
+     */
+    public StringBuilder[] HandleCards(){
+        List<CardDTO> cards = game.getBoard().getTopRowTribe();
+        StringBuilder[] lines = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            lines[i] = new StringBuilder();
+        }
+        for(CardDTO card : cards){
+            if(card.getType() == "Event"){
+                StringBuilder[] event = new StringBuilder[7];
+                event = createEvent(card);
+                for(int i = 0; i < 7; i++){
+                    lines[i].append(event[i]);
+                }
+            } else if(card.getType() == "Character"){
+                StringBuilder[] character = new StringBuilder[7];
+                character = createCharacter(card);
+                for(int i = 0; i < 7; i++){
+                    lines[i].append(character[i]);
+                }
+            }
+        }
+        return lines;
+    }
+
+    /**
+     * Function to build an Event card in order to print it
+     * @param card
+     * @return
+     */
+    public StringBuilder[] createEvent(CardDTO card){
+        StringBuilder[] event = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            event[i] = new StringBuilder();
+        }
+        event[0].append(ORANGE + "+----------+");
+        if(card.getName().equals("ShamanicRitual")){
+            event[1].append("|Shamanic |");
+            event[2].append("|Ritual   |");
+            event[3].append(String.format("|%-10s|", card.getWinnerPp()));
+            event[4].append(String.format("|%-10s|", card.getLoserPp()));
+        } else if(card.getName().equals("CavePaintings")){
+            event[1].append("|Cave     |");
+            event[2].append("|Paintings|");
+            event[3].append(String.format("|%-10s|", card.getMinArtist()));
+            event[4].append(String.format("|%-10s|", card.getTopPp()));
+        } else{
+            event[1].append(String.format("|%-10s|", card.getName()));
+            event[2].append("|         |");
+            event[3].append(ORANGE + "|          |");
+            event[4].append(ORANGE + "|          |");
+        }
+        event[5].append(ORANGE).append(String.format("|%-10s|", card.getEra()));
+        event[6].append(ORANGE + "+----------+");
+
+
+        return event;
+    }
+
+    public StringBuilder[] createCharacter(CardDTO card){
+        StringBuilder[] character = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            character[i] = new StringBuilder();
+        }
+        //do we wanna do a function to create each artist and then use the print
+        //function to simply call all these create card functions?
+        return character;
     }
 
 }
