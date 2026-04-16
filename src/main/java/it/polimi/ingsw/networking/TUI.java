@@ -116,6 +116,14 @@ public class TUI implements UIObserver {
      * @throws IllegalActionException
      */
 
+
+    /*
+     * la coda notifiche è vuota - wait
+     * altrimenti - tipo update ma handle new notify e come gamedto gli passi un pop dalla coda
+     * finito handle notify torna a controllare la coda
+     * quando viene pushato un elemento nella coda fa notify all
+     * */
+
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
         this.game = game;
@@ -146,7 +154,7 @@ public class TUI implements UIObserver {
                     //printOfferRow();
                     System.out.println("Choose the on which offer tile to go ");
                     do {
-                        System.out.print("(from A to G): ");
+                        System.out.print("(write the letter): ");
                         offer = in.nextLine();
                     } while(offer.length() != 1);
                     controller.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)), client.getNickname());
@@ -225,6 +233,7 @@ public class TUI implements UIObserver {
             System.out.println(line);
         }
     }
+
 
 
     public void printBottomRowTribe(){
@@ -582,15 +591,19 @@ public class TUI implements UIObserver {
         if(card.getName().equals("ShamanicRitual")){
             event[1].append("|Shamanic |");
             event[2].append("|Ritual   |");
+            event[3].append(String.format("|%-10s|", card.getWinnerPp()));
+            event[4].append(String.format("|%-10s|", card.getLoserPp()));
         } else if(card.getName().equals("CavePaintings")){
             event[1].append("|Cave     |");
             event[2].append("|Paintings|");
+            event[3].append(String.format("|%-10s|", card.getMinArtist()));
+            event[4].append(String.format("|%-10s|", card.getTopPp()));
         } else{
             event[1].append(String.format("|%-10s|", card.getName()));
             event[2].append("|         |");
+            event[3].append(ORANGE + "|          |");
+            event[4].append(ORANGE + "|          |");
         }
-        event[3].append(ORANGE + "|          |");
-        event[4].append(ORANGE + "|          |");
         event[5].append(ORANGE).append(String.format("|%-10s|", card.getEra()));
         event[6].append(ORANGE + "+----------+");
 
