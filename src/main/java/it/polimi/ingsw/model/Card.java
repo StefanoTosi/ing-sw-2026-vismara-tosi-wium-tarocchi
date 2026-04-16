@@ -2,8 +2,9 @@ package it.polimi.ingsw.model;
 
 /**
  * Define the common method of the Card,
- * either they are Characters, Buildings or Event
+ * either they are Characters, Buildings or Events
  */
+
 public abstract class Card {
     protected Era era;
     protected String TYPE;
@@ -31,7 +32,9 @@ public abstract class Card {
      * Return the type of the card: Characters, Buildings or Event
      * @return type
      */
-    public String getType(){return TYPE;}
+    public String getType(){
+        return TYPE;
+    }
 
     /**
      * Add the card to the tribe of the specified player
@@ -40,6 +43,6 @@ public abstract class Card {
     public void addToPlayer (Player player){}
 
     public CardDTO cardToDTO(){
-        return new CardDTO(getEra().name(), getName(), getType());
+        return new CardDTO(getEra().name(), getType());
     }
 }

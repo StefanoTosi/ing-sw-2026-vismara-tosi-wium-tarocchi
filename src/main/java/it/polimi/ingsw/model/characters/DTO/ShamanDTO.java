@@ -1,21 +1,24 @@
 package it.polimi.ingsw.model.characters.DTO;
 
+import it.polimi.ingsw.model.CardDTO;
+
 import java.io.Serializable;
 
-public class ShamanDTO implements Serializable {
-    private String era;
-    private int stars;
+public class ShamanDTO extends CardDTO implements Serializable {
+    private final int stars;
+    private final String name;
 
     public  ShamanDTO(String era, int stars) {
-        this.era = era;
+        super(era, "Character");
         this.stars = stars;
-    }
-
-    public String getEra() {
-        return era;
+        this.name = "Shaman";
     }
 
     public int getStars() {
         return stars;
+    }
+
+    public String getName() {
+        return name;
     }
 }
