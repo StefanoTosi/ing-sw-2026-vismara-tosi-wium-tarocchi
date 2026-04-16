@@ -16,7 +16,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     private String nickname;
     private UIObserver observer;
 
-    protected ClientRMI(UIObserver observer) throws RemoteException {
+    public ClientRMI(UIObserver observer) throws RemoteException {
         this.observer = observer;
     }
 

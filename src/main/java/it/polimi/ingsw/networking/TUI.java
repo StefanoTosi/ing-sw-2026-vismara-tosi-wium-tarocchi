@@ -20,6 +20,8 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.RMI.ClientRMI;
+import it.polimi.ingsw.networking.RMI.Controller;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
