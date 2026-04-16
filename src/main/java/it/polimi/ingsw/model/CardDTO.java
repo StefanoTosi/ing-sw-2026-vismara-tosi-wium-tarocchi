@@ -5,6 +5,14 @@ import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "TYPE")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = CharacterDTO.class, name = "Character"),
+        @JsonSubTypes.Type(value = BuildingDTO.class, name = "Building"),
+        @JsonSubTypes.Type(value = EventDTO.class, name = "Event")
+})
 public class CardDTO implements Serializable {
     private final String era;
     private final String TYPE;
