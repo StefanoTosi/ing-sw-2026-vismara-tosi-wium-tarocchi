@@ -8,7 +8,7 @@ public class HuntDTO extends CardDTO implements Serializable {
     private final int pp;
 
     public HuntDTO(String era, int pp){
-        super(era, "Event");
+        super(era, "Event", "Hunt");
         this.pp = pp;
     }
 

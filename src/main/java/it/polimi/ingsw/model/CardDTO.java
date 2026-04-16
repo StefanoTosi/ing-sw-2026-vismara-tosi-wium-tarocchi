@@ -1,25 +1,38 @@
 package it.polimi.ingsw.model;
 
 import com.fasterxml.jackson.annotation.*;
+import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
-
+import it.polimi.ingsw.model.events.DTO.*;
 import java.io.Serializable;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "TYPE")
+        property = "name")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CharacterDTO.class, name = "Character"),
+        @JsonSubTypes.Type(value = ArtistDTO.class, name = "Artist"),
+        @JsonSubTypes.Type(value = BuilderDTO.class, name = "Builder"),
+        @JsonSubTypes.Type(value = GathererDTO.class, name = "Gatherer"),
+        @JsonSubTypes.Type(value = HunterDTO.class, name = "Hunter"),
+        @JsonSubTypes.Type(value = InventorDTO.class, name = "Inventor"),
+        @JsonSubTypes.Type(value = ShamanDTO.class, name = "Shaman"),
+
         @JsonSubTypes.Type(value = BuildingDTO.class, name = "Building"),
-        @JsonSubTypes.Type(value = EventDTO.class, name = "Event")
+
+        @JsonSubTypes.Type(value = CavePaintingsDTO.class, name = "Cave Paintings"),
+        @JsonSubTypes.Type(value = HuntDTO.class, name = "Hunt"),
+        @JsonSubTypes.Type(value = ShamanicRitualDTO.class, name = "Shamanic Ritual"),
+        @JsonSubTypes.Type(value = SustenanceDTO.class, name = "Sustenance")
 })
 public class CardDTO implements Serializable {
     private final String era;
     private final String TYPE;
+    private final String name;
 
-    public CardDTO(String era, String type) {
+    public CardDTO(String era, String type, String name) {
         this.era = era;
         this.TYPE = type;
+        this.name = name;
     }
 
     public String getEra() {
@@ -31,7 +44,7 @@ public class CardDTO implements Serializable {
     }
 
     public String getName() {
-        return "";
+        return name;
     }
 
     public int getCost() {

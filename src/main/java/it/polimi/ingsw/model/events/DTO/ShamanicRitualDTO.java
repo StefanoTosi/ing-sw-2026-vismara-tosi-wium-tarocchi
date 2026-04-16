@@ -11,7 +11,7 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
 
 
     public ShamanicRitualDTO (int winnerPp, int loserPp, String era){
-        super(era, "Event");
+        super(era, "Event",  "Shamanic Ritual");
         this.winnerPp = winnerPp;
         this.loserPp = loserPp;
     }

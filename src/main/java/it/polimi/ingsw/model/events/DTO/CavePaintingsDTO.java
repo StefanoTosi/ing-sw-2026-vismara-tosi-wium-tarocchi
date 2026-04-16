@@ -9,7 +9,7 @@ public class CavePaintingsDTO extends CardDTO implements Serializable {
     private final int minArtist;
 
     public CavePaintingsDTO(String era, int minArtist, int topPp, int bottomPp){
-        super(era, "Event");
+        super(era, "Event", "Cave Paintings");
         this.minArtist = minArtist;
         this.topPp = topPp;
         this.bottomPp = bottomPp;

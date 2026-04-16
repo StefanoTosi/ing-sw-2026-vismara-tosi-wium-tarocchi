@@ -8,7 +8,7 @@ public class SustenanceDTO extends CardDTO implements Serializable {
     private final int pp;
 
     public SustenanceDTO(String era, int pp){
-        super(era, "Event");
+        super(era, "Event", "Sustenance");
         this.pp = pp;
     }
 
