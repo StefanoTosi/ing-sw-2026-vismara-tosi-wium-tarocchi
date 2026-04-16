@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import com.fasterxml.jackson.annotation.*;
+import it.polimi.ingsw.model.effects.BuildingDTO;
+
 import java.io.Serializable;
 
 public class CardDTO implements Serializable {
@@ -52,6 +55,26 @@ public class CardDTO implements Serializable {
     }
 
     public int getStars() {
+        return 0;
+    }
+
+    public int getMinArtist() {
+        return 0;
+    }
+
+    public int getTopPp() {
+        return 0;
+    }
+
+    public int getBottomPp() {
+        return 0;
+    }
+
+    public int getWinnerPp() {
+        return 0;
+    }
+
+    public int getLoserPp() {
         return 0;
     }
 }
