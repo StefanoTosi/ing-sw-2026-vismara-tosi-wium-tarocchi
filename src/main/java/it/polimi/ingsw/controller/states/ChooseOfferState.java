@@ -35,7 +35,8 @@ public class ChooseOfferState extends GameState {
     public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
         if (player.equals(game.getPlayerTurn())) {
             if (order >= 'A' && order <= 'G') {
-                player.setOrder(order);
+                //player.setOrder(order);
+                player.setOffer(order);
 
                 // Increment player turn or got to DrawCardsState
                 if (drawOrder.size() > 0) {

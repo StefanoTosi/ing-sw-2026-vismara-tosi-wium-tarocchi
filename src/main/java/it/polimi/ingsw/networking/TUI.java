@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.characters.DTO.HunterDTO;
 import it.polimi.ingsw.model.characters.DTO.InventorDTO;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
+import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.NotBoundException;
@@ -46,11 +47,22 @@ public class TUI implements UIObserver {
     public static final String BOLD = "\u001B[1m";
     public static final String UNDERLINE = "\u001B[4m";
 
+    /**
+     *
+     * @throws RemoteException
+     * @throws NotBoundException
+     */
     public TUI () throws RemoteException, NotBoundException {
         this.client = new ClientRMI(this);
         this.controller = client.connectToServer();
         this.game = null;
     }
+
+    /**
+     * Function that starts the game by adding the user and loading the game
+     * @throws RemoteException
+     * @throws IllegalActionException
+     */
 
     public void start() throws RemoteException, IllegalActionException {
         System.out.println(GREEN + BOLD + "MENU:");
@@ -90,11 +102,19 @@ public class TUI implements UIObserver {
         }
     }
 
+
     public void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
         TUI tui = new TUI();
         tui.start();
 
     }
+
+    /**
+     * Function that changes the states throwout the game
+     * @param game
+     * @throws RemoteException
+     * @throws IllegalActionException
+     */
 
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
@@ -152,10 +172,14 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Calls the functions to print each part of the board
+     */
     public void printBoard(){
         printTopRowTribe();
         printBottomRowTribe();
-        //printOfferRow();
+        printOrderTile();
+        printOfferRow();
     }
     /* Al momento è ridondante - da fare con printRowTribe e
     differenziare all'interno con metodo chooseRow -> assegno dinamicamente o top o bottom alla rowtribeprint
@@ -171,6 +195,7 @@ public class TUI implements UIObserver {
 
         //------------ Adding the cards
         List<CardDTO> cards = game.getBoard().getTopRowTribe();
+        StringBuilder[] events = HandleCards();
         for(CardDTO card : cards) {
             lines[0].append(ORANGE + "+----------+");
             lines[1].append(ORANGE).append(String.format("|%-10s|", card.getName()));
@@ -192,6 +217,9 @@ public class TUI implements UIObserver {
             lines[6].append(ORANGE + "+----------+");
         }
 
+        for(int i=0; i<7; i++){
+            lines[i].append(events[i]);
+        }
 
         for(StringBuilder line : lines){
             System.out.println(line);
@@ -433,7 +461,7 @@ public class TUI implements UIObserver {
         for(int i = 1; i < 6; i++){
             lines[i] = new StringBuilder("|          |");
         }
-
+/*
         System.out.println("pre ciclo order card:\n");
 
         for(PlayerDTO player : game.getPlayers()) {
@@ -449,12 +477,8 @@ public class TUI implements UIObserver {
                 //lines[6] = new StringBuilder("+----------+");
         }
         System.out.println("post ciclo order card:\n");
-
+*/
         //parliamo di offer, devo fare in modo che carichi quello che c'è scritto nel json - dobbiamo creare una classe offertile mi sa
-        StringBuilder[] offer = new StringBuilder[7];
-        for(int i=0; i < 7; i++){
-            offer[i] = new StringBuilder();
-        }
         List<OfferDTO> offerTiles = game.getBoard().getOfferPath();
         System.out.println("pre ciclo offer card:\n");
         for(OfferDTO offerTile : offerTiles){
@@ -462,7 +486,7 @@ public class TUI implements UIObserver {
             for(PlayerDTO player : game.getPlayers()){
                 if(player.getOffer() == offerTile.getOrder()){
                     playerOnTile = player;
-                    break;
+                    break; // TODO: metodo bruttino da cambiare
                 }
             }
             lines[0].append(String.format("+----%s-----+", offerTile.getOrder()));
@@ -478,10 +502,6 @@ public class TUI implements UIObserver {
             lines[6].append("+----------+");
         }
 
-        for (int i = 0; i < 7; i++) {
-            lines[i].append(offer[i]);
-        }
-
         for(StringBuilder line : lines){
             System.out.println(line);
         }
@@ -491,25 +511,102 @@ public class TUI implements UIObserver {
      * Function to print the OrderTile without the players on it - to view the bonus values on the positions
      */
     public void printOrderTile(){
-        StringBuilder[] lines = new StringBuilder[7];
+        int num = game.getNumPlayers()+2;
+        StringBuilder[] lines = new StringBuilder[num];
         System.out.println("OrderTile:");
 
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < num; i++){
             lines[i] = new StringBuilder();
         }
 
-        System.out.println("pre ciclo order card:\n");
         OrderDTO orderTile = game.getBoard().getOrder();
         lines[0].append("+----------+");
-        lines[1].append(String.format("|%-10s|", "food: " + orderTile.getFoodBonus()));
-        lines[2].append(String.format("|%-10s|", "food: " + orderTile.getFoodBonus()));
-        lines[3].append("|         |");
-        lines[4].append(String.format("|%-10s|", "Pp: " + orderTile.getPpBonus()));
-        lines[6].append("+----------+");
+        for(int i = 1; i < num-1; i++){
+            lines[i].append(String.format("|%-10s|", "Food: " + orderTile.getFoodBonus().get(i-1) + " Pp: " + orderTile.getPpBonus().get(i-1)));
+        }
+        lines[num-1].append("+----------+");
+
+        List<PlayerDTO> players = game.getPlayers();
+        for(PlayerDTO player : players){
+            if(player.getOffer() != '\0'){
+                lines[player.getOrder()] = new StringBuilder(String.format("|%-10s|", player.getName()));
+            }
+        }
 
         for(StringBuilder line : lines){
             System.out.println(line);
         }
     }
+
+
+
+    /**
+     * Function that handles card input and prints them based on what they are, calling other functions as support
+     * @return
+     */
+    public StringBuilder[] HandleCards(){
+        List<CardDTO> cards = game.getBoard().getTopRowTribe();
+        StringBuilder[] lines = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            lines[i] = new StringBuilder();
+        }
+        for(CardDTO card : cards){
+            if(card.getType() == "Event"){
+                StringBuilder[] event = new StringBuilder[7];
+                event = createEvent(card);
+                for(int i = 0; i < 7; i++){
+                    lines[i].append(event[i]);
+                }
+            } else if(card.getType() == "Character"){
+                StringBuilder[] character = new StringBuilder[7];
+                character = createCharacter(card);
+                for(int i = 0; i < 7; i++){
+                    lines[i].append(character[i]);
+                }
+            }
+        }
+        return lines;
+    }
+
+    /**
+     * Function to build an Event card in order to print it
+     * @param card
+     * @return
+     */
+    public StringBuilder[] createEvent(CardDTO card){
+        StringBuilder[] event = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            event[i] = new StringBuilder();
+        }
+        event[0].append(ORANGE + "+----------+");
+        if(card.getName().equals("ShamanicRitual")){
+            event[1].append("|Shamanic |");
+            event[2].append("|Ritual   |");
+        } else if(card.getName().equals("CavePaintings")){
+            event[1].append("|Cave     |");
+            event[2].append("|Paintings|");
+        } else{
+            event[1].append(String.format("|%-10s|", card.getName()));
+            event[2].append("|         |");
+        }
+        event[3].append(ORANGE + "|          |");
+        event[4].append(ORANGE + "|          |");
+        event[5].append(ORANGE).append(String.format("|%-10s|", card.getEra()));
+        event[6].append(ORANGE + "+----------+");
+
+
+        return event;
+    }
+
+    public StringBuilder[] createCharacter(CardDTO card){
+        StringBuilder[] character = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            character[i] = new StringBuilder();
+        }
+        //do we wanna do a function to create each artist and then use the print
+        //function to simply call all these create card functions?
+        return character;
+    }
+
 }
 
