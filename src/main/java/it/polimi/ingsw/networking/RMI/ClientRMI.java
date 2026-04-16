@@ -1,5 +1,6 @@
 package it.polimi.ingsw.networking.RMI;
 
+import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
@@ -14,10 +15,12 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Client {
     private static final int PORT = 1099;
     private String nickname;
+    private final Controller controller;
     private UIObserver observer;
 
-    public ClientRMI(UIObserver observer) throws RemoteException {
+    public ClientRMI(UIObserver observer) throws RemoteException, NotBoundException {
         this.observer = observer;
+        this.controller = connectToServer();
     }
 
     @Override
@@ -29,6 +32,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         this.nickname = nickname;
     }
 
+    @Override
     public String getNickname(){
         return nickname;
     }
@@ -46,5 +50,25 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         if (game != null) {
             observer.update(game);
         }
+    }
+
+    @Override
+    public int addUser(String password, String username) throws RemoteException {
+        return controller.addUser(password, username, this);
+    }
+
+    @Override
+    public boolean joinGame() throws IllegalActionException, RemoteException {
+        return controller.joinGame(getNickname());
+    }
+
+    @Override
+    public void createGame(int num) throws IllegalActionException, RemoteException {
+        controller.createGame(getNickname(), num);
+    }
+
+    @Override
+    public void executeAction(Action action) throws IllegalActionException, RemoteException {
+        controller.executeAction(action, getNickname());
     }
 }

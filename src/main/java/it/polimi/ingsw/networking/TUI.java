@@ -22,6 +22,7 @@ import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.RMI.Controller;
+import it.polimi.ingsw.networking.TCP.ClientTCP;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -35,8 +36,7 @@ import java.util.stream.Gatherer;
 public class TUI implements UIObserver {
     private Scanner in = new Scanner(System.in);
     private GameDTO game;
-    private final ClientRMI client;
-    private final Controller controller;
+    private Client client;
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[32m";
     public static final String BLUE = "\u001B[34m";
@@ -55,9 +55,23 @@ public class TUI implements UIObserver {
      * @throws NotBoundException
      */
     public TUI () throws RemoteException, NotBoundException {
-        this.client = new ClientRMI(this);
-        this.controller = client.connectToServer();
         this.game = null;
+        this.client = null;
+    }
+
+    public void chooseTCPorRMI() throws NotBoundException, RemoteException {
+        int choice = 0;
+        do{
+            System.out.println(BLUE + BOLD + "Choose between RMI[1] or TCP[2] connection");
+            choice = in.nextInt();
+            //free the buffer
+            in.nextLine();
+        }while(choice != 1 && choice != 2);
+        if(choice == 1) {
+            this.client = new ClientRMI(this);
+        }else{
+            this.client = new ClientTCP(this);
+        }
     }
 
     /**
@@ -81,9 +95,9 @@ public class TUI implements UIObserver {
                     String username = in.nextLine();
                     System.out.print(BLUE + BOLD +"Password: ");
                     String password = in.nextLine();
-                    if(controller.addUser(password, username, client) == 0) flag = false;
+                    if(client.addUser(password, username) == 0) flag = false;
                 }
-                if (!controller.joinGame(client.getNickname())) {
+                if (!client.joinGame()) {
                     int num;
                     System.out.println("No game found, let's create a new one!\n");
                     System.out.print("How many players do you want? ");
@@ -94,7 +108,7 @@ public class TUI implements UIObserver {
                         //free the buffer
                         in.nextLine();
                     } while(num < 2 || num > 5);
-                    controller.createGame(client.getNickname(), num);
+                    client.createGame(num);
                 }
                 break;
             case 2:
@@ -107,8 +121,8 @@ public class TUI implements UIObserver {
 
     public void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
         TUI tui = new TUI();
+        tui.chooseTCPorRMI();
         tui.start();
-
     }
 
     /**
@@ -159,7 +173,7 @@ public class TUI implements UIObserver {
                         System.out.print("(write the letter): ");
                         offer = in.nextLine();
                     } while(offer.length() != 1);
-                    controller.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)), client.getNickname());
+                    client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
                     break;
                 case StateDTO.DRAWCARD:
                     // DrawCardsState
@@ -167,8 +181,8 @@ public class TUI implements UIObserver {
                     int card;
                     System.out.println("Choose which card to draw (write its number): ");
                     card = in.nextInt();
-                    controller.executeAction(new DrawCardFromTopAction(card), client.getNickname());
-                    controller.executeAction(new DrawCardFromBottomAction(card), client.getNickname());
+                    client.executeAction(new DrawCardFromTopAction(card));
+                    client.executeAction(new DrawCardFromBottomAction(card));
                     break;
                 case StateDTO.ENDTURN:
                     // EndTurnState

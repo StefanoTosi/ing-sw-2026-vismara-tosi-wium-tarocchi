@@ -8,7 +8,6 @@ module com.example.mesos {
     requires java.rmi;
     requires jdk.jfr;
     requires com.fasterxml.jackson.annotation;
-    requires com.example.mesos;
 
     opens it.polimi.ingsw to javafx.fxml;
     exports it.polimi.ingsw;
