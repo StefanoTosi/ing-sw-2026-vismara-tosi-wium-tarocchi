@@ -3,10 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.states.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import it.polimi.ingsw.networking.ClientCallBack;
-import jdk.jfr.consumer.RecordingFile;
+import it.polimi.ingsw.networking.RMI.ClientCallBack;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 

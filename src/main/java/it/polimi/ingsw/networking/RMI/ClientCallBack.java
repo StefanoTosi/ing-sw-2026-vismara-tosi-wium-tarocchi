@@ -1,7 +1,5 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.networking.RMI;
 
-import it.polimi.ingsw.controller.states.GameState;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 

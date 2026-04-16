@@ -1,9 +1,9 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.networking.RMI;
 
-import it.polimi.ingsw.controller.states.GameState;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.UIObserver;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -11,12 +11,12 @@ import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
 
 
-public class ClientRMI extends UnicastRemoteObject implements ClientCallBack {
+public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Client {
     private static final int PORT = 1099;
     private String nickname;
-    private UIObserver  observer;
+    private UIObserver observer;
 
-    protected ClientRMI(UIObserver observer) throws RemoteException {
+    public ClientRMI(UIObserver observer) throws RemoteException {
         this.observer = observer;
     }
 

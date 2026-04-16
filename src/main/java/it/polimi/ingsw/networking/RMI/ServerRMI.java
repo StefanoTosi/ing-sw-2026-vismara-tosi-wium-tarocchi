@@ -1,11 +1,7 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.networking.RMI;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
-import it.polimi.ingsw.controller.actions.ChooseOfferAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
-import it.polimi.ingsw.controller.states.ChooseOfferState;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 

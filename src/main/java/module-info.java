@@ -31,4 +31,5 @@ module com.example.mesos {
     exports it.polimi.ingsw.networking;
     exports it.polimi.ingsw.model.characters.DTO;
     opens it.polimi.ingsw.model.characters.DTO to javafx.fxml;
+    exports it.polimi.ingsw.networking.RMI;
 }

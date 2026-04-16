@@ -1,8 +1,10 @@
 package it.polimi.ingsw.networking;
+import it.polimi.ingsw.networking.RMI.ServerRMI;
+
 import java.rmi.*;
 import java.rmi.registry.*;
 
-public class ServerRMIMain {
+public class ServerMain {
     //default number of RMI Registry port
     private static final int PORT = 1099;
 
