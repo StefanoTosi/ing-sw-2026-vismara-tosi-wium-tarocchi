@@ -71,7 +71,11 @@ public class ClientTCP implements Client {
         sendRequest(request);
         Message response = (Message) in.readObject();
         System.out.println(response.getParams()[0]);
-        return (int)response.getParams()[1];
+        int result = (int)response.getParams()[1];
+        if(result == 0){
+            setNickname(username);
+        }
+        return result;
     }
 
     @Override
