@@ -14,7 +14,7 @@ public class Game {
     private final Board board;
     private GameState state;
     private List<Player> rankings;
-    private List<ClientCallBack> observers;
+    private List<ClientCallBack> observersRMI;
     private Player playerTurn;
     private String errorFlag;
 
@@ -27,21 +27,21 @@ public class Game {
         }
 
         this.state = new SetupGameState();
-        this.observers = new ArrayList<>();
+        this.observersRMI = new ArrayList<>();
         this.playerTurn = null;
         this.errorFlag = "";
     }
 
-    public void addObserver(ClientCallBack observer){
-        this.observers.add(observer);
+    public void addObserverRMI(ClientCallBack observer){
+        this.observersRMI.add(observer);
     }
 
-    public void removeObserver(ClientCallBack observer){
-        this.observers.remove(observer);
+    public void removeObserverRMI(ClientCallBack observer){
+        this.observersRMI.remove(observer);
     }
 
     public void notifyObserver() throws RemoteException, IllegalActionException {
-        for (ClientCallBack observer : observers) {
+        for (ClientCallBack observer : observersRMI) {
             new Thread(() -> {
                 try {
                     observer.update(this.toDTO());

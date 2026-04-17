@@ -47,7 +47,7 @@ public class GameController {
     public boolean joinGame(Player player, ClientCallBack client) throws RemoteException, IllegalActionException {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
-                game.addObserver(client);
+                game.addObserverRMI(client);
                 player.setGame(game);
                 game.getState().registerPlayer(game, player);
                 game.notifyObserver();
@@ -61,7 +61,7 @@ public class GameController {
         Game newGame = new Game(new ArrayList<Player>());
         addGame(newGame);
         newGame.setNumPlayers(num);
-        newGame.addObserver(client);
+        newGame.addObserverRMI(client);
         player.setGame(newGame);
         newGame.getState().registerPlayer(newGame, player);
     }

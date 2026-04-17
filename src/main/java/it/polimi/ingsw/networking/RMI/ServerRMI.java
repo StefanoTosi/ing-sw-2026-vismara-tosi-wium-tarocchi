@@ -17,10 +17,10 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
 
     private final Object lock = new Object();
 
-    public ServerRMI() throws RemoteException {
+    public ServerRMI(GameController game) throws RemoteException {
         clients = new ConcurrentHashMap<>();
         nicknames = new ConcurrentHashMap<>();
-        gamesController = new GameController();
+        gamesController = game;
     }
 
     @Override
