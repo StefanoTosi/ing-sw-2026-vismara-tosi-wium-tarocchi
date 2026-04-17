@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -48,6 +49,8 @@ public class Game {
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 } catch (IllegalActionException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }).start();

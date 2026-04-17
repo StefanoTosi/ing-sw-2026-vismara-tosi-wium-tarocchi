@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.UIObserver;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
@@ -46,7 +47,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public void update(GameDTO game) throws RemoteException, IllegalActionException {
+    public void update(GameDTO game) throws IOException, IllegalActionException {
         if (game != null) {
             observer.update(game);
         }

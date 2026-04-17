@@ -6,6 +6,8 @@ import it.polimi.ingsw.networking.TCP.ServerTCP;
 import java.io.IOException;
 import java.rmi.*;
 import java.rmi.registry.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerMain {
     //default number of RMI Registry port
@@ -13,10 +15,10 @@ public class ServerMain {
 
     public static void main(String[] args) throws IOException, AlreadyBoundException{
         GameController gameController = new GameController();
-
+        Map<String,String> nicknames = new ConcurrentHashMap<>();
 
         //RMI connection
-        ServerRMI server = new ServerRMI(gameController);
+        ServerRMI server = new ServerRMI(gameController, nicknames);
 
         //Bind remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(PORT);
@@ -25,6 +27,6 @@ public class ServerMain {
 
         //Socket connection
         ServerTCP serverTCP = new ServerTCP(gameController);
-        serverTCP.waitForConnection();
+        serverTCP.waitForConnection(nicknames);
     }
 }

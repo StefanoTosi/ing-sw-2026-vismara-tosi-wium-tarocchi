@@ -17,9 +17,9 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
 
     private final Object lock = new Object();
 
-    public ServerRMI(GameController game) throws RemoteException {
+    public ServerRMI(GameController game, Map<String, String> nicknames) throws RemoteException {
         clients = new ConcurrentHashMap<>();
-        nicknames = new ConcurrentHashMap<>();
+        this.nicknames = nicknames;
         gamesController = game;
     }
 
