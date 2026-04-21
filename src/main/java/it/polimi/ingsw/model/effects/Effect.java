@@ -140,7 +140,6 @@ public enum Effect {
             player.addFood(player.getNumArtists());
         }
     },
-
     /**
      * End game:
      * At the end of the game, you gain 6 Prestige Points for each set of 6 different Character
