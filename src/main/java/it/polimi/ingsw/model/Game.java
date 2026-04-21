@@ -88,13 +88,13 @@ public class Game {
     }
 
     public GameDTO toDTO() throws IllegalActionException {
-        String turn = "";
+        Player turn = new Player("");
         if (playerTurn != null) {
-            turn = playerTurn.getName();
+            turn = playerTurn;
         }
 
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO(), getState().getStateDTO(), turn/*, getRankings().stream().map(Player::toDTO).toList()*/);
+                getBoard().toDTO(), getState().getStateDTO(), turn.toDTO()/*, getRankings().stream().map(Player::toDTO).toList()*/);
     }
 
     public Player getPlayerTurn() {

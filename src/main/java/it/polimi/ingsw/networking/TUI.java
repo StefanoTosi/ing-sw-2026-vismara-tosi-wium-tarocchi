@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Gatherer;
 
 public class TUI implements UIObserver {
@@ -51,7 +52,7 @@ public class TUI implements UIObserver {
     public static final String UNDERLINE = "\u001B[4m";
 
     /**
-     *
+     *TUI
      * @throws RemoteException
      * @throws NotBoundException
      */
@@ -60,6 +61,11 @@ public class TUI implements UIObserver {
         this.client = null;
     }
 
+    /**
+     * Lets the user choose between a TCP connection and an RMI connection
+     * @throws NotBoundException
+     * @throws RemoteException
+     */
     public void chooseTCPorRMI() throws NotBoundException, RemoteException {
         int choice = 0;
         do{
@@ -139,6 +145,19 @@ public class TUI implements UIObserver {
      * altrimenti - tipo update ma handle new notify e come gamedto gli passi un pop dalla coda
      * finito handle notify torna a controllare la coda
      * quando viene pushato un elemento nella coda fa notify all
+     *
+     * TODO: funzione queueNotify che struttura la coda, pop che fa uscire dalla coda, add che fa aggiungere alla coda,
+     *  funzioni separate per l'attivazione delle varie azioni in async per l'handling di più partite contemporanee?
+     *
+     * notifyPlayer() = update la parte dell'if
+     * update deve mettere la funzione in coda e poi ogni player smaltisce la coda in maniera asincrona/parallela
+     *
+     * metti che il giocatore se nè andato tutti gli altri possono continuare
+     *
+     * serve per notificare tutti della partita, ergo uno sta giocando gli altri sannno che x sta giocando e cosa fa
+     *
+     * TODO: aggiungi stampa turno
+     *
      * */
 
     @Override
@@ -146,10 +165,10 @@ public class TUI implements UIObserver {
         this.game = game;
         printBoard();
 
-        System.out.println("Current state: "+ game.getState());
+        System.out.println("Current state: " + game.getState());
 
         // If its this players turn, query the player for the action, otherwise do nothing
-        if (client.getNickname().equals(game.getPlayerTurn())) {
+        if (client.getNickname().equals(game.getPlayerTurn().getName())) {
             System.out.println("It's your turn");
             // TODO: sostituire con lo strategy pattern?
             switch (game.getState()) {
@@ -179,11 +198,37 @@ public class TUI implements UIObserver {
                 case StateDTO.DRAWCARD:
                     // DrawCardsState
                     // TODO: if deve prendere da top fai stampa top e poi chiedi che carta vuole (numerata) - vanno separati i due casi
+                    OfferDTO playerOffer = null;
+                    for(OfferDTO offerTile : game.getBoard().getOfferPath()){
+                        if(offerTile.getOrder() == game.getPlayerTurn().getOffer()){
+                            playerOffer = offerTile;
+                        }
+                    }
+                    String chosenRow = "";
+                    int drawTop = playerOffer.getDrawTop();
+                    int drawBottom = playerOffer.getDrawBottom();
                     int card;
-                    System.out.println("Choose which card to draw (write its number): ");
-                    card = in.nextInt();
-                    client.executeAction(new DrawCardFromTopAction(card));
-                    client.executeAction(new DrawCardFromBottomAction(card));
+                    while(drawTop + drawBottom > 0){
+                        if(drawTop != 0 && drawBottom != 0){
+                            System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
+                            chosenRow = in.nextLine();
+                            if(chosenRow.equals("T")){
+                                drawTop += drawCardTopRow();
+                            }
+                            if(chosenRow.equals("B")){
+                                drawBottom += drawCardBottomRow();
+                            }
+                        } else if(drawTop != 0){
+                            drawTop += drawCardTopRow();
+                        } else {
+                            drawBottom += drawCardBottomRow();
+                        }
+                    }
+
+
+
+
+
                     break;
                 case StateDTO.ENDTURN:
                     // EndTurnState
@@ -193,7 +238,33 @@ public class TUI implements UIObserver {
                     System.out.println("Unhandled state id " + game.getState());
             }
         } else {
-            System.out.println("Current player turn: " + game.getPlayerTurn());
+            System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+        }
+    }
+
+    private int drawCardBottomRow() throws IllegalActionException, IOException {
+        int card;
+        System.out.println("Choose which card to draw (write its number): \n");
+        card = in.nextInt();
+        if(card > 0 && card < game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size()){
+            client.executeAction(new DrawCardFromBottomAction(card));
+            return -1;
+        }else{
+            System.out.println("You chose a card out of range\n");
+            return 0;
+        }
+    }
+
+    private int drawCardTopRow() throws IllegalActionException, IOException {
+        int card;
+        System.out.println("Choose which card to draw (write its number): \n");
+        card = in.nextInt();
+        if(card > 0 && card < game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size()){
+            client.executeAction(new DrawCardFromTopAction(card));
+            return -1;
+        }else{
+            System.out.println("You chose a card out of range\n");
+            return 0;
         }
     }
 
