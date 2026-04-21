@@ -32,16 +32,16 @@ public abstract class GameState {
     }
 
     // DrawCardState
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
+    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 
     // ResoveEventsState
-    public void resolveEvents() throws IllegalActionException {
+    public void resolveEvents() throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 

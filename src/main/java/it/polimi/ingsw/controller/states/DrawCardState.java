@@ -51,10 +51,10 @@ public class DrawCardState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
-        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
+        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer() - 'A');
         if (player.equals(game.getPlayerTurn()) && drawTopCount < offer.getDrawTop()) {
-            int index = game.getBoard().getBottomRowTribe().size();
+            int index = game.getBoard().getTopRowTribe().size();
             if (pos < index) {
                 Card character= game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
@@ -90,13 +90,14 @@ public class DrawCardState extends GameState {
                 } else {
                     // When all players have draw, transition to ResolveEventsState
                     game.setPlayerTurn(null);
-                    game.setState(new ResolveEventsState(game));
-                    game.getState().resolveEvents();
+
+                    ResolveEventsState r = new ResolveEventsState(game);
+                    r.resolveEvents();
                 }
             }
 
         } else {
-            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
+            throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawTop() + ")");
         }
     }
 
@@ -107,8 +108,8 @@ public class DrawCardState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException {
-        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer());
+    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, RemoteException {
+        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer() - 'A');
         if (player.equals(game.getPlayerTurn()) && drawBottomCount < offer.getDrawBottom()) {
             int index = game.getBoard().getBottomRowTribe().size();
             if (pos < index) {
@@ -147,12 +148,13 @@ public class DrawCardState extends GameState {
                     // When all players have draw, transition to ResolveEventsState
                     System.out.println("Finished drawing cards");
                     game.setPlayerTurn(null);
-                    game.setState(new ResolveEventsState(game));
-                    game.getState().resolveEvents();
+
+                    ResolveEventsState r = new ResolveEventsState(game);
+                    r.resolveEvents();
                 }
             }
         } else {
-            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
+            throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawBottom() + ")");
         }
     }
 

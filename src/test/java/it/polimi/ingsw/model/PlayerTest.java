@@ -22,7 +22,7 @@ class PlayerTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
 
         assertEquals("Elisa", player1.getName());
     }
@@ -32,7 +32,7 @@ class PlayerTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
         player1.setPp(42);
         assertEquals(42, player1.getPp());
     }
@@ -42,7 +42,7 @@ class PlayerTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
         player1.setPp(42);
         assertEquals(42, player1.getPp());
     }
@@ -52,7 +52,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         player.addPp(42);
         assertEquals(42, player.getPp());
         player.addPp(-3);
@@ -66,7 +66,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         player.setFood(42);
         assertEquals(42, player.getFood());
     }
@@ -76,7 +76,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         player.setFood(42);
         assertEquals(42, player.getFood());
         assertThrows(IllegalArgumentException.class, ()->player.setFood(-4));
@@ -88,7 +88,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         player.addFood(42);
         assertEquals(42, player.getFood());
         assertThrows(IllegalArgumentException.class, ()->player.addFood(-43));
@@ -102,7 +102,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         //Card card = null;
         //player.addCard(card); me lo dà non valido come è giusto che sia
         assertEquals(0,player.countNumBuildings());
@@ -130,7 +130,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Artist card = new Artist(Era.II);
         player.addArtist(card);
         assertEquals(1, player.getNumArtists());
@@ -141,7 +141,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Gatherer card = new Gatherer(Era.II);
         player.addGatherer(card);
         assertEquals(1, player.getNumGatherers());
@@ -152,7 +152,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Hunter card = new Hunter(true, Era.I);
         player.addHunter(card);
         assertEquals(1, player.getNumHunters());
@@ -163,7 +163,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Inventor card = new Inventor(Icon.ARROW, Era.I);
         player.addInventor(card);
         assertEquals(1, player.getNumInventors());
@@ -174,7 +174,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Shaman card = new Shaman(2, Era.II);
         player.addShaman(card);
         assertEquals(1, player.getNumShamans());
@@ -185,7 +185,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Builder card = new Builder(1, 2, Era.I);
         player.addBuilder(card);
         assertEquals(1, player.getNumBuilders());
@@ -197,7 +197,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Artist artist = new Artist(Era.II);
         player.addArtist(artist);
         Inventor inventor = new Inventor(Icon.ARROW, Era.I);
@@ -236,7 +236,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.countNumBuildings());
         Effect effect = Effect.EG2;
         Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
@@ -251,7 +251,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.countNumCharacters());
         Artist card = new Artist(Era.II);
         player.addArtist(card);
@@ -265,7 +265,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Effect effect = Effect.EG2;
         Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
         player.addBuilding(building);
@@ -277,7 +277,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumArtists());
         Artist card = new Artist(Era.II);
         player.addArtist(card);
@@ -289,7 +289,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumGatherers());
         Gatherer card = new Gatherer(Era.II);
         player.addGatherer(card);
@@ -301,7 +301,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumInventors());
         Inventor card = new Inventor(Icon.ARROW, Era.II);
         player.addInventor(card);
@@ -313,7 +313,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumHunters());
         Hunter card = new Hunter(true, Era.II);
         player.addHunter(card);
@@ -325,7 +325,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumShamans());
         Shaman card = new Shaman(3, Era.I);
         player.addShaman(card);
@@ -337,7 +337,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumBuilders());
         Builder card = new Builder(1, 2, Era.I);
         player.addBuilder(card);
@@ -349,7 +349,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.getNumStars());
         Shaman card = new Shaman(3, Era.I);
         player.addShaman(card);
@@ -364,7 +364,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.countBuildersPp());
         Builder card = new Builder(1, 2, Era.I);
         player.addBuilder(card);
@@ -379,7 +379,7 @@ class PlayerTest {
         Player player = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
 
         assertEquals(0, player.countBuildersPp());
 

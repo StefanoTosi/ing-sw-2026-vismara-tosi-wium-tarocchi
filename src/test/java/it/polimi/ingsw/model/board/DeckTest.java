@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,8 +16,8 @@ class DeckTest {
 
     @Test
     void Deck() {
-        Deck deck = new Deck(new ArrayList<>());
-        assertThrows(IllegalArgumentException.class, () -> new Deck(null));
+        Deck deck = new Deck(new ArrayList<>(), null);
+        assertThrows(IllegalArgumentException.class, () -> new Deck(null, null));
     }
 
     @Test
@@ -25,7 +26,8 @@ class DeckTest {
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new Inventor(Icon.ARROW, Era.III);
         Card card4 = new Artist(Era.II);
-        Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)));
+        Random rng = new Random(42);
+        Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)), rng);
         ArrayList<Card> originalDeck = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)));
 
         deck.shuffle();
@@ -37,7 +39,7 @@ class DeckTest {
         }
         assertEquals(0, deck.size());
 
-        Deck emptyDeck = new Deck(new ArrayList<>());
+        Deck emptyDeck = new Deck(new ArrayList<>(), null);
         emptyDeck.shuffle();
         assertThrows(NoSuchElementException.class, emptyDeck::draw);
     }
@@ -47,7 +49,7 @@ class DeckTest {
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new Hunter(true, Era.II);
-        Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3)));
+        Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3)), null);
         assertEquals(card1, deck.draw());
         assertEquals(card2, deck.draw());
         assertEquals(card3, deck.draw());
@@ -58,11 +60,11 @@ class DeckTest {
     void stack() {
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
-        Deck deck1 = new Deck(new ArrayList<>(Arrays.asList(card1, card2)));
+        Deck deck1 = new Deck(new ArrayList<>(Arrays.asList(card1, card2)), null);
 
         Card card3 = new Inventor(Icon.ARROW, Era.III);
         Card card4 = new Artist(Era.II);
-        Deck deck2 = new Deck(new ArrayList<>(Arrays.asList(card3, card4)));
+        Deck deck2 = new Deck(new ArrayList<>(Arrays.asList(card3, card4)), null);
 
         deck2 = deck2.stack(deck1);
         assertEquals(card1, deck2.draw());
@@ -71,7 +73,7 @@ class DeckTest {
         assertEquals(card4, deck2.draw());
 
         assertThrows(NoSuchElementException.class, ()->{
-            Deck deck3 =  new Deck(new ArrayList<>());
+            Deck deck3 =  new Deck(new ArrayList<>(), null);
             deck3 = deck3.stack(deck1);
             assertEquals(card1, deck3.draw());
             assertEquals(card2, deck3.draw());

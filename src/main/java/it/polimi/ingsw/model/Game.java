@@ -17,11 +17,12 @@ public class Game {
     private List<ClientCallBack> observersRMI;
     private Player playerTurn;
     private String errorFlag;
+    private Random rng;
 
-    public Game (List<Player> players) throws IllegalArgumentException {
+    public Game (List<Player> players, Random rng) throws IllegalArgumentException {
         this.players = players;
         this.numPlayers = 0;
-        this.board = new Board();
+        this.board = new Board(rng);
         for(int i = 0; i < numPlayers; i++){
             players.get(i).setGame(this);
         }
@@ -30,6 +31,7 @@ public class Game {
         this.observersRMI = new ArrayList<>();
         this.playerTurn = null;
         this.errorFlag = "";
+        this.rng = rng;
     }
 
     public void addObserverRMI(ClientCallBack observer){
@@ -108,4 +110,7 @@ public class Game {
         this.errorFlag = errorFlag;
     }
 
+    public Random gerRng() {
+        return rng;
+    }
 }

@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.events.Sustenance;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ResolveEventsState extends GameState {
         return StateDTO.RESOLVEEVENT;
     }
 
-    public void resolveEvents() {
+    public void resolveEvents() throws IllegalActionException, RemoteException {
         List<Card> bottomRow = game.getBoard().getBottomRowTribe();
         List<Event> events = new ArrayList<>();
         for (Card card : bottomRow) {
@@ -37,10 +39,11 @@ public class ResolveEventsState extends GameState {
 
         for (Event event : events) {
             event.applyEffect(game.getPlayers());
+            System.out.println("Resolved event " + event.getName());
         }
 
         // Transition to EndTurnState
         System.out.println("Finished resolving events");
-        game.setState(new EndTurnState(game));
+        EndTurnState e = new EndTurnState(game);
     }
 }

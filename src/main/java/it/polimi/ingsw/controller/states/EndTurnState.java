@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.characters.Character;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class EndTurnState extends GameState {
     private final Game game;
     private List<Player> drawOrder;
 
-    EndTurnState(Game game) {
+    EndTurnState(Game game) throws IllegalActionException, RemoteException {
         // Resolve end turn effects
         for (Player p : game.getPlayers()) {
             for (Building b : p.getBuildings()) {
@@ -31,7 +32,15 @@ public class EndTurnState extends GameState {
                 .filter(p -> p.getCanPickFromTop())
                 .toList());
 
-        game.setPlayerTurn(drawOrder.remove(0));
+        if (drawOrder.size() > 0) {
+            game.setPlayerTurn(drawOrder.remove(0));
+        } else {
+            System.out.println("Finished end turn phase");
+            game.setPlayerTurn(null);
+
+            FillBoardState f = new FillBoardState(game);
+            f.refillBoard();
+        }
     }
 
     public StateDTO getStateDTO() {
@@ -44,11 +53,11 @@ public class EndTurnState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
         Game game = player.getGame();
 
         if (player.equals(game.getPlayerTurn())) {
-            int index = game.getBoard().getBottomRowTribe().size();
+            int index = game.getBoard().getTopRowTribe().size();
             if (pos < index) {
                 Card character= game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
@@ -64,7 +73,9 @@ public class EndTurnState extends GameState {
                 // When all players have draw, transition to FillBoardState
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
-                game.setState(new FillBoardState(game));
+
+                FillBoardState f = new FillBoardState(game);
+                f.refillBoard();
             }
         } else {
             throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");

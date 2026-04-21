@@ -43,7 +43,7 @@ public class FillBoardState extends GameState {
         List<Player> ordered;
         if (boardUninitialized) {
             ordered = new ArrayList<>(game.getPlayers());
-            Collections.shuffle(ordered);
+            Collections.shuffle(ordered, game.gerRng());
 
             for (int i = 0; i < ordered.size(); i++) {
                 ordered.get(i).setOrder(i);

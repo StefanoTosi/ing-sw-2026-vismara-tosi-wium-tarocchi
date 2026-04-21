@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.characters.Artist;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +15,10 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
+        assertEquals(0, game.getNumPlayers());
+
+        game.setNumPlayers(3);
         assertEquals(3, game.getNumPlayers());
     }
 
@@ -27,7 +27,7 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
         List<Player> test = Arrays.asList(player1, player2, player3);
         assert game.getPlayers().equals(test);
     }
@@ -37,7 +37,7 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
     }
 
     @Test
@@ -45,7 +45,7 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
     }
 
     @Test
@@ -53,8 +53,8 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
-        Board board = new Board();
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), new Random(42));
+        Board board = new Board(new Random(42));
         board.initialize(3);
         Card card = new Artist(Era.II);
         Card card2 = new Artist(Era.II);
@@ -70,7 +70,7 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
     }
 
     @Test
@@ -78,7 +78,7 @@ class GameTest {
         Player player1 = new Player("Elisa");
         Player player2 = new Player("Stefano");
         Player player3 = new Player("Gilles");
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), null);
 
 
     }

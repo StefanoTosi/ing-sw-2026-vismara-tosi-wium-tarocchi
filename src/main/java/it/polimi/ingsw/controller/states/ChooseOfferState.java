@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ChooseOfferState extends GameState {
     private final Game game;

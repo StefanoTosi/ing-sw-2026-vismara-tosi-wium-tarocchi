@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,7 +81,7 @@ class EffectTest {
         Player p3 = new Player("Elisa");
         Player p4 = new Player("Lisa");
 
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(p3, p4)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(p3, p4)), null);
 
         p3.setGame(game);
         p4.setGame(game);
@@ -111,7 +112,7 @@ class EffectTest {
         Player p1 = new Player("Elisa");
         Player p2 = new Player("Lisa");
 
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(p1, p2)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(p1, p2)), null);
 
         p1.setGame(game);
         p2.setGame(game);
@@ -387,7 +388,7 @@ class EffectTest {
         Player p1 = new Player("Elisa");
         Player p2 = new Player("Gilles");
         Building building = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ET1);
-        Game game = new Game(Arrays.asList(p1, p2));
+        Game game = new Game(Arrays.asList(p1, p2), new Random(42));
         game.getBoard().initialize(2);
 
         p1.setGame(game);
@@ -428,7 +429,7 @@ class EffectTest {
         Building b1 = new Building(Era.I, 5, 5, 5, (p) -> null, Effect.ESC2);
         b1.getEffect().whenDrawn(p1);
 
-        Game game = new Game(new ArrayList<Player>(Arrays.asList(p1, p2)));
+        Game game = new Game(new ArrayList<Player>(Arrays.asList(p1, p2)), null);
 
         Shaman s1 = new Shaman(3, Era.I);
         Shaman s2 = new Shaman(3, Era.I);

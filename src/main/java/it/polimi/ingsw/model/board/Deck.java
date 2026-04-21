@@ -9,23 +9,25 @@ import java.util.*;
  */
 public class Deck {
     private final List<Card> deck;
+    private Random rng;
 
     private List<Card> getDeck() {
         return deck;
     }
 
-    public Deck(List<Card> deck) throws IllegalArgumentException {
+    public Deck(List<Card> deck, Random rng) throws IllegalArgumentException {
         if (deck == null) {
             throw new IllegalArgumentException("'deck' is null");
         }
         this.deck = deck;
+        this.rng = rng;
     }
 
     /**
      * Shuffles the deck
      */
     public void shuffle() {
-        Collections.shuffle(deck);
+        Collections.shuffle(deck, rng);
     }
 
     /**
@@ -45,7 +47,7 @@ public class Deck {
 
         List<Card> d = new ArrayList<Card>(deck);
         d.addAll(0, topDeck.getDeck());
-        return new Deck(d);
+        return new Deck(d, rng);
     }
 
     public int size() {

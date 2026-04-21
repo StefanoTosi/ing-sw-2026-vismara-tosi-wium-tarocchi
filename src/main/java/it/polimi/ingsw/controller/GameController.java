@@ -9,6 +9,7 @@ import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameController {
     private List<Game> games;
@@ -58,7 +59,7 @@ public class GameController {
     }
 
     public void createGame(Player player, int num, ClientCallBack client) throws RemoteException, IllegalActionException {
-        Game newGame = new Game(new ArrayList<Player>());
+        Game newGame = new Game(new ArrayList<Player>(), new Random(System.currentTimeMillis()));
         addGame(newGame);
         newGame.setNumPlayers(num);
         newGame.addObserverRMI(client);

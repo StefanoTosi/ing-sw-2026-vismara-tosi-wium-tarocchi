@@ -3,6 +3,8 @@ package it.polimi.ingsw.controller.actions;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.rmi.RemoteException;
+
 public class DrawCardFromTopAction implements Action {
     private final int pos;
 
@@ -21,7 +23,7 @@ public class DrawCardFromTopAction implements Action {
      * @throws IllegalActionException
      */
     @Override
-    public void execute(Player player) throws IllegalActionException {
+    public void execute(Player player) throws IllegalActionException, RemoteException {
         player.getGame().getState().drawCardFromTop(player, pos);
     }
 }

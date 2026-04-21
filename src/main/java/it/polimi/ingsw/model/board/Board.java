@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Card;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.zip.DataFormatException;
 
@@ -35,10 +36,12 @@ public class Board {
     private Order order;
     private List<Offer> offerPath;
 
+    private Random rng;
+
     /**
      * Generates an empty board. Decks will be filled by initialize() and the rows will be arranged in the RefillBoardState
      */
-    public Board() {
+    public Board(Random rng) {
         this.topRowTribe = new ArrayList<>();
         this.topRowBuilding = new ArrayList<>();
         this.bottomRowTribe = new ArrayList<>();
@@ -51,6 +54,8 @@ public class Board {
 
         this.order = null;
         this.offerPath = null;
+
+        this.rng = rng;
     }
 
     /**
@@ -236,15 +241,15 @@ public class Board {
             e.printStackTrace();
         }
 
-        Deck deckTribeI = new Deck(tribeI);
-        Deck deckTribeII = new Deck(tribeII);
-        Deck deckTribeIII = new Deck(tribeIII);
+        Deck deckTribeI = new Deck(tribeI, rng);
+        Deck deckTribeII = new Deck(tribeII, rng);
+        Deck deckTribeIII = new Deck(tribeIII, rng);
 
-        Deck deckE1Building = new Deck(e1Building);
-        Deck deckE2Building = new Deck(e2Building);
-        Deck deckE3Building = new Deck(e3Building);
+        Deck deckE1Building = new Deck(e1Building, rng);
+        Deck deckE2Building = new Deck(e2Building, rng);
+        Deck deckE3Building = new Deck(e3Building, rng);
 
-        Deck deckFinalEvents = new Deck(finalEvents);
+        Deck deckFinalEvents = new Deck(finalEvents, rng);
 
         // Shuffle
         deckTribeI.shuffle();
@@ -331,7 +336,12 @@ public class Board {
                         break;
                     case "Offer":
                         if (node.get("minNumPlayers").asInt() <= numPlayers) {
-                            this.offerPath.add(new Offer(node.get("order").asText().charAt(0), node.get("foodBonus").asInt(), node.get("drawTop").asInt(), node.get("drawBottom").asInt()));
+                            this.offerPath.add(new Offer(
+                                    node.get("order").asText().charAt(0),
+                                    node.get("foodBonus").asInt(),
+                                    node.get("drawTop").asInt(),
+                                    node.get("drawBottom").asInt()
+                            ));
                         }
                         break;
                     default:

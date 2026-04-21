@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +16,7 @@ class BoardTest {
 
     @Test
     void getTopRowTribe() {
-        Board board = new Board();
+        Board board = new Board(new Random(42));
         board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
@@ -28,7 +29,7 @@ class BoardTest {
 
     @Test
     void drawFromTopRowTribe() {
-        Board board = new Board();
+        Board board = new Board(new Random(42));
         board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
@@ -57,7 +58,7 @@ class BoardTest {
 
     @Test
     void getBottomRowTribe() {
-        Board board = new Board();
+        Board board = new Board(new Random(42));
         board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
@@ -70,7 +71,7 @@ class BoardTest {
 
     @Test
     void drawFromBottomRowTribe() {
-        Board board = new Board();
+        Board board = new Board(new Random(42));
         board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
