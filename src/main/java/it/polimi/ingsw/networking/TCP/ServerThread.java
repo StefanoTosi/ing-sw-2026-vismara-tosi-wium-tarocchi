@@ -14,10 +14,14 @@ public class ServerThread implements Runnable {
 
     private GameController gameController;
     private Map<String, String> nicknames;
+    private final Object lock;
 
-    public ServerThread(Socket client, GameController game, Map<String, String> nicknames) {
+
+    public ServerThread(Socket client, GameController game, Map<String, String> nicknames, Object lock) {
         this.gameController = game;
         this.nicknames = nicknames;
+        this.lock = lock;
+
         try{
             this.client = client;
             out = new ObjectOutputStream(client.getOutputStream());
@@ -59,18 +63,21 @@ public class ServerThread implements Runnable {
     private void addUser(String psw, String nickname) throws IOException {
         int success = -1;
         String message;
-        if (nicknames.containsKey(nickname)) {
-            if (nicknames.get(nickname).equals(psw)) {
-                message = "Welcome back " + nickname;
-                success = 0;
+
+        synchronized (lock) {
+            if (nicknames.containsKey(nickname)) {
+                if (nicknames.get(nickname).equals(psw)) {
+                    message = "Welcome back " + nickname;
+                    success = 0;
+                } else {
+                    message = "Nickname already exists or wrong password";
+                    success = -1;
+                }
             } else {
-                message = "Nickname already exists or wrong password";
-                success = -1;
+                nicknames.put(nickname, psw);
+                message = "Welcome " + nickname;
+                success = 0;
             }
-        } else {
-            nicknames.put(nickname, psw);
-            message = "Welcome " + nickname;
-            success = 0;
         }
 
         Message msg = new Message(RequestType.ADDUSER, message, success);

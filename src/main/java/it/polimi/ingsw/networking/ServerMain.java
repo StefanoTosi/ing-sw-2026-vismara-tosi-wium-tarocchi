@@ -16,9 +16,10 @@ public class ServerMain {
     public static void main(String[] args) throws IOException, AlreadyBoundException{
         GameController gameController = new GameController();
         Map<String,String> nicknames = new ConcurrentHashMap<>();
+        Object lock = new Object(); //lista di lock per diverse funzioni?
 
         //RMI connection
-        ServerRMI server = new ServerRMI(gameController, nicknames);
+        ServerRMI server = new ServerRMI(gameController, nicknames, lock);
 
         //Bind remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(PORT);
@@ -26,7 +27,7 @@ public class ServerMain {
         System.out.println("ServerRMI ready");
 
         //Socket connection
-        ServerTCP serverTCP = new ServerTCP(gameController);
+        ServerTCP serverTCP = new ServerTCP(gameController, lock);
         serverTCP.waitForConnection(nicknames);
     }
 }
