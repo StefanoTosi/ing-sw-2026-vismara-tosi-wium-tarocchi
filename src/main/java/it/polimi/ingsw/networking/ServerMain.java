@@ -6,6 +6,7 @@ import it.polimi.ingsw.networking.TCP.ServerTCP;
 import java.io.IOException;
 import java.rmi.*;
 import java.rmi.registry.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,11 +16,11 @@ public class ServerMain {
 
     public static void main(String[] args) throws IOException, AlreadyBoundException{
         GameController gameController = new GameController();
-        Map<String,String> nicknames = new ConcurrentHashMap<>();
+        Map<String,User> users = new ConcurrentHashMap<>();
         Object lock = new Object(); //lista di lock per diverse funzioni?
 
         //RMI connection
-        ServerRMI server = new ServerRMI(gameController, nicknames, lock);
+        ServerRMI server = new ServerRMI(gameController, users, lock);
 
         //Bind remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(PORT);
@@ -28,6 +29,6 @@ public class ServerMain {
 
         //Socket connection
         ServerTCP serverTCP = new ServerTCP(gameController, lock);
-        serverTCP.waitForConnection(nicknames);
+        serverTCP.waitForConnection(users);
     }
 }

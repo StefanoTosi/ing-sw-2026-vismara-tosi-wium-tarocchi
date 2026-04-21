@@ -1,6 +1,7 @@
 package it.polimi.ingsw.networking.TCP;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.networking.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,13 +14,13 @@ public class ServerThread implements Runnable {
     private ObjectOutputStream out;
 
     private GameController gameController;
-    private Map<String, String> nicknames;
+    private Map<String, User> users;
     private final Object lock;
 
 
-    public ServerThread(Socket client, GameController game, Map<String, String> nicknames, Object lock) {
+    public ServerThread(Socket client, GameController game, Map<String, User> users, Object lock) {
         this.gameController = game;
-        this.nicknames = nicknames;
+        this.users = users;
         this.lock = lock;
 
         try{
@@ -63,18 +64,29 @@ public class ServerThread implements Runnable {
     private void addUser(String psw, String nickname) throws IOException {
         int success = -1;
         String message;
+        User user;
 
         synchronized (lock) {
-            if (nicknames.containsKey(nickname)) {
-                if (nicknames.get(nickname).equals(psw)) {
-                    message = "Welcome back " + nickname;
-                    success = 0;
+            if (users.containsKey(nickname)) {
+                user = users.get(nickname);
+                if (user.getPassword().equals(psw)) {
+                    //check if the user is already logged in elsewhere
+                    if(user.isActive()) {
+                        message = "User " + nickname + " is already active elsewhere";
+                        success = -1;
+                    } else {
+                        user.setActive(true);
+                        message = "Welcome back " + nickname;
+                        success = 0;
+                    }
                 } else {
                     message = "Nickname already exists or wrong password";
                     success = -1;
                 }
             } else {
-                nicknames.put(nickname, psw);
+                user = new User(nickname, psw);
+                user.setActive(true);
+                users.put(nickname, user);
                 message = "Welcome " + nickname;
                 success = 0;
             }
