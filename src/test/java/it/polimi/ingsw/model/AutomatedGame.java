@@ -44,7 +44,7 @@ public class AutomatedGame {
     }
 
     public void printEventsToResolve() {
-        System.out.println("Events to resolvents:");
+        System.out.println("Events to resolve:");
         for (Card c : game.getBoard().getBottomRowTribe()) {
             if (c instanceof Event) {
                 System.out.println("\t" + c.getName());

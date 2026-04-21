@@ -27,6 +27,7 @@ public class Sustenance extends Event {
     public void applyEffect(List<Player> players){
         // Apply building effects for sustenance
         for (Player player : players){
+            player.setFoodDiscount(0);
             for (Building building : player.getBuildings()){
                 building.getEffect().applyEffectEventSustenance(player, building);
             }

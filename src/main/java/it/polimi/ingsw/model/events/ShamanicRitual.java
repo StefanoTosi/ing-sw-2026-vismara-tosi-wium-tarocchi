@@ -43,29 +43,31 @@ public class ShamanicRitual extends Event {
             }
         }
 
-        for(Player player : players){
+        for (Player player : players) {
             int stars = player.getNumStars();
 
-            if(stars > maxStar){
+            if (stars > maxStar) {
                 maxStar = stars;
             }
 
-            if(stars < minStar){
+            if (stars < minStar) {
                 minStar = stars;
             }
-
         }
-        for(Player player : players){
+
+        for (Player player : players){
             int stars = player.getNumStars();
-            int multiple = 0;
 
             if(stars == maxStar){
                 //check se ha building con effetto3 shamanic ritual -> metto 2pp
-                player.addPp(winnerPp);
-                player.addPp(multiple);
+                if (player.getDoublePp() /* TODO: controlalre che non ci sia parità*/ ) {
+                    player.addPp(winnerPp * 2);
+                } else {
+                    player.addPp(winnerPp);
+                }
             }
 
-            if(stars == minStar){
+            if(stars == minStar && !player.getDontLosePp()){
                 player.addPp(-loserPp);
             }
         }

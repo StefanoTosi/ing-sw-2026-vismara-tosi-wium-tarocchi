@@ -28,7 +28,7 @@ public enum Effect {
      */
     ES1 {
         @Override
-        public void applyEffectEventSustenance (Player player, Building building) {
+        public void applyEffectEventSustenance(Player player, Building building) {
             player.setFoodDiscount(player.getFoodDiscount() + building.getNumCharacter.apply(player));
         }
     },
@@ -41,16 +41,7 @@ public enum Effect {
     ESC1 {
         @Override
         public void applyEffectEventShamanicRitual (Player player, Building building) {
-            boolean dontLosePp = true;
-            int stars = player.getNumStars() + player.getAdditionalStars();
-            for (Player p : player.getGame().getPlayers()) {
-                if (p.getNumStars() + p.getAdditionalStars() <= stars && !p.equals(player)) {
-                    dontLosePp = false;
-                    break;
-                }
-            }
-
-            player.setDontLosePp(dontLosePp);
+            player.setDontLosePp(true);
         }
     },
 
@@ -110,16 +101,7 @@ public enum Effect {
     ESC3 {
         @Override
         public void applyEffectEventShamanicRitual (Player player, Building building) {
-            boolean doublePp = true;
-            int stars = player.getNumStars() + player.getAdditionalStars();
-            for (Player p : player.getGame().getPlayers()) {
-                if (p.getNumStars() + p.getAdditionalStars() >= stars && !p.equals(player)) {
-                    doublePp = false;
-                    break;
-                }
-            }
-
-            player.setDoublePp(doublePp);
+            player.setDoublePp(true);
         }
     },
 

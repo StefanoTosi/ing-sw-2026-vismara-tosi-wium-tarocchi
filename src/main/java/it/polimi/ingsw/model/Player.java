@@ -123,6 +123,9 @@ public class Player {
 
     public void addHunter(Hunter hunter) {
         this.hunters.add(hunter);
+        if (hunter.getIcon()) {
+            addFood(getNumHunters());
+        }
     }
 
     public void addInventor(Inventor inventor) {

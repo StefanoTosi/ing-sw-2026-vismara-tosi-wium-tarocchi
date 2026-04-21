@@ -170,20 +170,6 @@ public class DrawCardState extends GameState {
             for (Building building : player.getBuildings()) {
                 building.getEffect().applyEffectDraw(player, tmp_numSets, (Character)character);
             }
-            if (character.getName().equals("Hunter")) {
-                huntersDraft(player, (Hunter) character);
-            }
-        }
-    }
-
-    /**
-     * Manage the hunters effect
-     * @param player
-     * @param hunter
-     */
-    private void huntersDraft(Player player, Hunter hunter) {
-        if (hunter.getIcon()) {
-            player.addFood(player.getNumHunters());
         }
     }
 }
