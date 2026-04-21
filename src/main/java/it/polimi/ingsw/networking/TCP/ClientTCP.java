@@ -6,12 +6,8 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.UIObserver;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 
 public class ClientTCP implements Client {
@@ -21,17 +17,29 @@ public class ClientTCP implements Client {
     private final int serverPort = 1234;
     private Socket mySocket;
 
-    private BufferedReader in;
-    private DataOutputStream out;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
 
     public ClientTCP(UIObserver observer) {
         this.observer = observer;
         connect();
+        startListener();
     }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    private void startListener(){
+        new Thread(() -> {
+            try{
+                //TODO
+                //Ascolta ogni risposta dal client ed esegue di conseguenza
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void connect(){
@@ -39,38 +47,54 @@ public class ClientTCP implements Client {
             mySocket=new Socket(serverAdress, serverPort);
 
             //link to sokcet the object for reading/wriding
-            in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
-            out = new DataOutputStream(mySocket.getOutputStream());
+            out = new ObjectOutputStream(mySocket.getOutputStream());
+            out.flush();
+            in = new ObjectInputStream(mySocket.getInputStream());
         } catch (IOException ex) {
             System.err.println("Host sconosciuto.");
         }
     }
 
+    private void sendRequest(Message request) throws IOException {
+        out.writeObject(request);
+        out.flush();
+    }
+
     @Override
     public void update(GameDTO game) throws RemoteException, IllegalActionException {
-        if (game != null) {
-            observer.update(game);
+        //Do nothing
+    }
+
+    @Override
+    public int addUser(String password, String username) throws IOException, ClassNotFoundException {
+        Message request = new Message(RequestType.ADDUSER, password, username);
+        sendRequest(request);
+        Message response = (Message) in.readObject();
+        System.out.println(response.getParams()[0]);
+        int result = (int)response.getParams()[1];
+        if(result == 0){
+            setNickname(username);
         }
+        return result;
     }
 
     @Override
-    public int addUser(String password, String username) throws RemoteException {
-        return 0;
-    }
-
-    @Override
-    public boolean joinGame() throws IllegalActionException, RemoteException {
+    public boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException {
+        Message request = new Message(RequestType.JOINGAME);
+        sendRequest(request);
         return false;
     }
 
     @Override
-    public void createGame(int num) throws IllegalActionException, RemoteException {
-
+    public void createGame(int num) throws IllegalActionException, IOException {
+        Message request = new Message(RequestType.CREATEGAME, num);
+        sendRequest(request);
     }
 
     @Override
-    public void executeAction(Action action) throws IllegalActionException, RemoteException {
-
+    public void executeAction(Action action) throws IllegalActionException, IOException {
+        Message request = new Message(RequestType.EXECUTEACTION, action);
+        sendRequest(request);
     }
 
     @Override

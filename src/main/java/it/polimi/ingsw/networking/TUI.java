@@ -24,6 +24,7 @@ import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.RMI.Controller;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -80,7 +81,7 @@ public class TUI implements UIObserver {
      * @throws IllegalActionException
      */
 
-    public void start() throws RemoteException, IllegalActionException {
+    public void start() throws IOException, IllegalActionException, ClassNotFoundException {
         System.out.println(GREEN + BOLD + "MENU:");
         System.out.println("1. Login");
         System.out.println("2. Exit");
@@ -119,7 +120,7 @@ public class TUI implements UIObserver {
     }
 
 
-    public void main(String[] args) throws RemoteException, NotBoundException, IllegalActionException {
+    public void main(String[] args) throws IOException, NotBoundException, IllegalActionException, ClassNotFoundException {
         TUI tui = new TUI();
         tui.chooseTCPorRMI();
         tui.start();
@@ -141,7 +142,7 @@ public class TUI implements UIObserver {
      * */
 
     @Override
-    public void update(GameDTO game) throws RemoteException, IllegalActionException {
+    public void update(GameDTO game) throws IOException, IllegalActionException {
         this.game = game;
         printBoard();
 
