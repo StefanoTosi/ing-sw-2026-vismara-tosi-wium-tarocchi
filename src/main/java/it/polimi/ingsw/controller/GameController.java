@@ -68,7 +68,7 @@ public class GameController {
     }
 
     public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, RemoteException {
-        // TODO: il game controller dovrebbe controllare le notifiche ai client? O lo facciamo dentro gli stati?
+        getPlayer(player).getGame().setErrorFlag("");
         try {
             action.execute(getPlayer(player));
         } catch (IllegalActionException e) {

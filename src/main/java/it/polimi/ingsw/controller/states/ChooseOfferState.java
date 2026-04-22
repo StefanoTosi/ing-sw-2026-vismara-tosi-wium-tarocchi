@@ -36,13 +36,11 @@ public class ChooseOfferState extends GameState {
     public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
         if (player.equals(game.getPlayerTurn())) {
             if (order >= 'A' && order <= 'G') {
-                //player.setOrder(order);
                 player.setOffer(order);
 
-                // Increment player turn or got to DrawCardsState
+                // Increment player turn or go to DrawCardsState
                 if (drawOrder.size() > 0) {
                     game.setPlayerTurn(drawOrder.remove(0));
-                    // game.notifyObserver("Turn of " + game.getPlayerTurn().getName());
                 } else {
                     System.out.println("Finished choosing offer tiles");
                     game.setPlayerTurn(null);
@@ -52,7 +50,7 @@ public class ChooseOfferState extends GameState {
                 throw new IllegalActionException("'order' was out of bounds");
             }
         } else {
-            throw new IllegalActionException("Player tried to choose offer tile out of order");
+            throw new IllegalActionException("Player " + player.getName() + " tried to choose offer tile out of order");
         }
     }
 }

@@ -56,7 +56,7 @@ public class DrawCardState extends GameState {
         if (player.equals(game.getPlayerTurn()) && drawTopCount < offer.getDrawTop()) {
             int index = game.getBoard().getTopRowTribe().size();
             if (pos < index) {
-                Card character= game.getBoard().drawFromTopRowTribe(pos);
+                Card character = game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
             } else {
                 Building building = game.getBoard().drawFromTopRowBuilding(pos-index);
@@ -95,7 +95,6 @@ public class DrawCardState extends GameState {
                     r.resolveEvents();
                 }
             }
-
         } else {
             throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawTop() + ")");
         }
@@ -113,7 +112,7 @@ public class DrawCardState extends GameState {
         if (player.equals(game.getPlayerTurn()) && drawBottomCount < offer.getDrawBottom()) {
             int index = game.getBoard().getBottomRowTribe().size();
             if (pos < index) {
-                Card character =  game.getBoard().drawFromBottomRowTribe(pos);
+                Card character = game.getBoard().drawFromBottomRowTribe(pos);
                 afterDrawn(player, character);
             } else {
                 Building building = game.getBoard().drawFromBottomRowBuilding(pos-index);
@@ -163,13 +162,15 @@ public class DrawCardState extends GameState {
      * @param player
      * @param character
      */
-    private void afterDrawn(Player player, Card character) {
+    private void afterDrawn(Player player, Card character) throws IllegalActionException {
         if (!character.getType().equals("Event")) {
             int tmp_numSets = player.countSets();
             player.addCard(character);
             for (Building building : player.getBuildings()) {
                 building.getEffect().applyEffectDraw(player, tmp_numSets, (Character)character);
             }
+        } else {
+            throw new IllegalActionException("Player " + player.getName() + " tried to draw an event card");
         }
     }
 }

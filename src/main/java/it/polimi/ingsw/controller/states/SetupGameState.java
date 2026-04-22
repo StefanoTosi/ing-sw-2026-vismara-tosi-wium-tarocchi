@@ -12,7 +12,6 @@ public class SetupGameState extends GameState {
         game.getPlayers().add(player);
 
         // Start the game
-        // game.notifyObserver();
         if (game.getPlayers().size() == game.getNumPlayers()) {
             game.getState().startGame(game);
         }
