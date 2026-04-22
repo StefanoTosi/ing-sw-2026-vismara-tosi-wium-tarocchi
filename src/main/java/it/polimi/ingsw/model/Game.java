@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.states.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
+import it.polimi.ingsw.networking.TCP.ObserverTCP;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -16,6 +17,7 @@ public class Game {
     private GameState state;
     private List<Player> rankings;
     private List<ClientCallBack> observersRMI;
+    private List<ObserverTCP> observersTCP;
     private Player playerTurn;
     private String errorFlag;
     private Random rng;
@@ -30,6 +32,7 @@ public class Game {
 
         this.state = new SetupGameState();
         this.observersRMI = new ArrayList<>();
+        this.observersTCP = new ArrayList<>();
         this.playerTurn = null;
         this.errorFlag = "";
         this.rng = rng;
@@ -43,6 +46,14 @@ public class Game {
         this.observersRMI.remove(observer);
     }
 
+    public void addObserverTCP(ObserverTCP observer){
+        this.observersTCP.add(observer);
+    }
+
+    public void removeObserverTCP(ObserverTCP observer){
+        this.observersTCP.remove(observer);
+    }
+
     public void notifyObserver() throws RemoteException, IllegalActionException {
         for (ClientCallBack observer : observersRMI) {
             new Thread(() -> {
@@ -53,6 +64,21 @@ public class Game {
                 } catch (IllegalActionException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        }
+        for (ObserverTCP observer : observersTCP) {
+            new Thread(() -> {
+                try {
+                    observer.update(this.toDTO());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalActionException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }).start();

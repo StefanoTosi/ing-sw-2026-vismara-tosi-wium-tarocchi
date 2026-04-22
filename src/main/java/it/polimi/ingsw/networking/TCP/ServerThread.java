@@ -1,13 +1,20 @@
 package it.polimi.ingsw.networking.TCP;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.actions.Action;
+import it.polimi.ingsw.model.GameDTO;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.User;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Map;
 
-public class ServerThread implements Runnable {
+import static it.polimi.ingsw.networking.JsonUtil.toJson;
+
+public class ServerThread implements Runnable, ObserverTCP {
     private Socket client;
 
     private ObjectInputStream in;
@@ -44,13 +51,13 @@ public class ServerThread implements Runnable {
                         addUser((String)req.getParams()[0], (String)req.getParams()[1]);
                         break;
                     case JOINGAME:
-                        joinGame();
+                        joinGame((String)req.getParams()[0]);
                         break;
                     case CREATEGAME:
-                        createGame();
+                        createGame((int)req.getParams()[0], (String)req.getParams()[1]);
                         break;
                     case EXECUTEACTION:
-                        executeAction();
+                        executeAction((Action)req.getParams()[0], (String)req.getParams()[1]);
                         break;
                     default:
                         break;
@@ -96,14 +103,28 @@ public class ServerThread implements Runnable {
         out.writeObject(msg);
     }
 
-    private void joinGame(){}
+    private void joinGame(String name) throws IllegalActionException, IOException {
+        boolean result = gameController.joinGameTCP(new Player(name), this);
+        Message msg = new Message(RequestType.JOINGAME, result);
+        out.writeObject(msg);
+    }
 
-    private void createGame(){}
+    private void createGame(int num, String name) throws IllegalActionException, RemoteException {
+        gameController.createGameTCP(new Player(name), num, this);
+    }
 
-    private void executeAction(){}
+    private void executeAction(Action action, String nickname) throws IllegalActionException, RemoteException {
+        gameController.executeAction(action, nickname);
+    }
 
     @Override
     public void run() {
         comunicate();
+    }
+
+    @Override
+    public void update(GameDTO game) throws Exception {
+        Message response = new Message(RequestType.UPDATE, toJson(game));
+        out.writeObject(response);
     }
 }

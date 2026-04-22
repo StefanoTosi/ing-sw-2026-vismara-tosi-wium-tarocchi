@@ -29,6 +29,7 @@ public class ServerMain {
 
         //Socket connection
         ServerTCP serverTCP = new ServerTCP(gameController, lock);
+        System.out.println("ServerTCP ready");
         serverTCP.waitForConnection(users);
     }
 }

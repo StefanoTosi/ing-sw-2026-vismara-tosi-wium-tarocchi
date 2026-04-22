@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
+import it.polimi.ingsw.networking.TCP.ObserverTCP;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class GameController {
         games.remove(game);
     }
 
-    public boolean joinGame(Player player, ClientCallBack client) throws RemoteException, IllegalActionException {
+    public boolean joinGameRMI(Player player, ClientCallBack client) throws RemoteException, IllegalActionException {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
                 game.addObserverRMI(client);
@@ -58,11 +59,33 @@ public class GameController {
         return false;
     }
 
-    public void createGame(Player player, int num, ClientCallBack client) throws RemoteException, IllegalActionException {
+    public void createGameRMI(Player player, int num, ClientCallBack client) throws RemoteException, IllegalActionException {
         Game newGame = new Game(new ArrayList<Player>(), new Random(System.currentTimeMillis()));
         addGame(newGame);
         newGame.setNumPlayers(num);
         newGame.addObserverRMI(client);
+        player.setGame(newGame);
+        newGame.getState().registerPlayer(newGame, player);
+    }
+
+    public boolean joinGameTCP(Player player, ObserverTCP client) throws RemoteException, IllegalActionException {
+        for(Game game : games){
+            if(game.getPlayers().size() < game.getNumPlayers()){
+                game.addObserverTCP(client);
+                player.setGame(game);
+                game.getState().registerPlayer(game, player);
+                game.notifyObserver();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createGameTCP(Player player, int num, ObserverTCP client) throws RemoteException, IllegalActionException {
+        Game newGame = new Game(new ArrayList<Player>(), new Random(System.currentTimeMillis()));
+        addGame(newGame);
+        newGame.setNumPlayers(num);
+        newGame.addObserverTCP(client);
         player.setGame(newGame);
         newGame.getState().registerPlayer(newGame, player);
     }

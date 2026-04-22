@@ -9,6 +9,11 @@ import it.polimi.ingsw.networking.UIObserver;
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static it.polimi.ingsw.networking.JsonUtil.fromJson;
 
 public class ClientTCP implements Client {
     private String nickname;
@@ -20,6 +25,7 @@ public class ClientTCP implements Client {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
+    private final Map<RequestType, Message> responses = new ConcurrentHashMap<>();
 
     public ClientTCP(UIObserver observer) {
         this.observer = observer;
@@ -34,12 +40,25 @@ public class ClientTCP implements Client {
     private void startListener(){
         new Thread(() -> {
             try{
-                //TODO
-                //Ascolta ogni risposta dal client ed esegue di conseguenza
+                while(true) {
+                    Message response = (Message) in.readObject();
+                    if(response.getRequest().equals(RequestType.UPDATE)){
+                        update((GameDTO) fromJson((String)response.getParams()[0], GameDTO.class));
+                    }else{
+                        responses.put(response.getRequest(), response);
+                    }
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public Message waitResponses(RequestType requestType) throws InterruptedException {
+        while(!responses.containsKey(requestType)){
+            Thread.sleep(50); //Brutal polling
+        }
+        return responses.remove(requestType);
     }
 
     public void connect(){
@@ -61,39 +80,61 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void update(GameDTO game) throws RemoteException, IllegalActionException {
-        //Do nothing
+    public void update(GameDTO game) throws IOException, IllegalActionException {
+        if(game != null){
+            observer.update(game);
+        }
     }
 
     @Override
     public int addUser(String password, String username) throws IOException, ClassNotFoundException {
-        Message request = new Message(RequestType.ADDUSER, password, username);
-        sendRequest(request);
-        Message response = (Message) in.readObject();
-        System.out.println(response.getParams()[0]);
-        int result = (int)response.getParams()[1];
-        if(result == 0){
-            setNickname(username);
+        int result = -1;
+        try{
+            Message request = new Message(RequestType.ADDUSER, password, username);
+            sendRequest(request);
+            Message response = waitResponses(RequestType.ADDUSER);
+            if(response.getRequest().equals(RequestType.ADDUSER)){
+                System.out.println(response.getParams()[0]);
+                result = (int)response.getParams()[1];
+                if(result == 0){
+                    setNickname(username);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
         return result;
     }
 
     @Override
     public boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException {
-        Message request = new Message(RequestType.JOINGAME);
-        sendRequest(request);
-        return false;
+        boolean result = false;
+        try{
+            Message request = new Message(RequestType.JOINGAME, getNickname());
+            sendRequest(request);
+            Message response = waitResponses(RequestType.JOINGAME);
+            if(response.getRequest().equals(RequestType.JOINGAME)){
+                result = (boolean)response.getParams()[0];
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public void createGame(int num) throws IllegalActionException, IOException {
-        Message request = new Message(RequestType.CREATEGAME, num);
-        sendRequest(request);
+        try{
+            Message request = new Message(RequestType.CREATEGAME, num, getNickname());
+            sendRequest(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void executeAction(Action action) throws IllegalActionException, IOException {
-        Message request = new Message(RequestType.EXECUTEACTION, action);
+        Message request = new Message(RequestType.EXECUTEACTION, action, getNickname());
         sendRequest(request);
     }
 

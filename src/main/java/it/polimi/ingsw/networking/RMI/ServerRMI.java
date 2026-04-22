@@ -71,7 +71,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         synchronized (lock) {
             client = clients.get(name);
         }
-        gamesController.createGame(new Player(name), numPlayers, client);
+        gamesController.createGameRMI(new Player(name), numPlayers, client);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
             client = clients.get(name);
         }
 
-        return gamesController.joinGame(new Player(name), client);
+        return gamesController.joinGameRMI(new Player(name), client);
     }
 
     @Override
