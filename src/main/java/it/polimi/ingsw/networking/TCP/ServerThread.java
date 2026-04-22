@@ -41,7 +41,6 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     private void comunicate(){
-        //TODO comunicazione con client
         try{
             while(true){
                 Message req = (Message)in.readObject();
