@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.User;
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,33 +14,43 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerRMI extends UnicastRemoteObject implements Controller {
     private GameController gamesController;
     private final Map<String, ClientCallBack> clients;
-    private Map<String, String> nicknames;
+    private Map<String, User> users;
+    private final Object lock;
 
-    private final Object lock = new Object();
-
-    public ServerRMI(GameController game, Map<String, String> nicknames) throws RemoteException {
+    public ServerRMI(GameController game, Map<String, User> users, Object lock) throws RemoteException {
         clients = new ConcurrentHashMap<>();
-        this.nicknames = nicknames;
+        this.users = users;
         gamesController = game;
+        this.lock = lock;
     }
 
     @Override
     public int addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
         boolean success;
         String message;
+        User user;
 
         synchronized (lock) {
-            if (nicknames.containsKey(nickname)) {
-                if (nicknames.get(nickname).equals(psw)) {
-                    clients.put(nickname, client);
-                    message = "Welcome back " + nickname;
-                    success = true;
+            if (users.containsKey(nickname)) {
+                user = users.get(nickname);
+                if (user.getPassword().equals(psw)) {
+                    //check if the user is already logged in elsewhere
+                    if(user.isActive()) {
+                        message = "User " + nickname + " is already active elsewhere";
+                        success = false;
+                    } else {
+                        user.setActive(true);
+                        message = "Welcome back " + nickname;
+                        success = true;
+                    }
                 } else {
                     message = "Nickname already exists or wrong password";
                     success = false;
                 }
             } else {
-                nicknames.put(nickname, psw);
+                user = new User(nickname, psw);
+                user.setActive(true);
+                users.put(nickname, user);
                 clients.put(nickname, client);
                 message = "Welcome " + nickname;
                 success = true;
