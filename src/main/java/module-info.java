@@ -9,12 +9,12 @@ module com.example.mesos {
     requires jdk.jfr;
     requires com.fasterxml.jackson.annotation;
 
+    opens it.polimi.ingsw.model to com.fasterxml.jackson.databind, javafx.fxml;
     opens it.polimi.ingsw to javafx.fxml;
     exports it.polimi.ingsw;
     exports it.polimi.ingsw.model.characters;
     opens it.polimi.ingsw.model.characters to javafx.fxml;
     exports it.polimi.ingsw.model;
-    opens it.polimi.ingsw.model to javafx.fxml;
     exports it.polimi.ingsw.model.events;
     opens it.polimi.ingsw.model.events to javafx.fxml;
     exports it.polimi.ingsw.model.board;
