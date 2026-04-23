@@ -81,8 +81,8 @@ public class TwoPlayerGame {
         ag.step(new ChooseOfferAction('C'), players.get(1));
 
         // Draw cards
-        ag.step(new DrawCardFromBottomAction(0), players.get(0));
-        ag.step(new DrawCardFromTopAction(0), players.get(1));
+        ag.step(new DrawCardFromBottomAction(1), players.get(0));
+        ag.step(new DrawCardFromTopAction(1), players.get(1));
 
         System.out.println("---------------------------------------");
         ag.printPlayerStats();

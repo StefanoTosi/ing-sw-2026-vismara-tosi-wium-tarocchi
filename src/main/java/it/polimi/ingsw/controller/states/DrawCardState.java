@@ -52,7 +52,10 @@ public class DrawCardState extends GameState {
      * @throws IllegalActionException
      */
     public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
-        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer() - 'A');
+        Offer offer = player.getGame().getBoard().getOfferPath()
+                .stream()
+                .filter(o -> o.getOrder() == player.getOffer())
+                .findFirst().get();
         if (player.equals(game.getPlayerTurn()) && drawTopCount < offer.getDrawTop()) {
             int index = game.getBoard().getTopRowTribe().size();
             if (pos < index) {
@@ -108,7 +111,10 @@ public class DrawCardState extends GameState {
      * @throws IllegalActionException
      */
     public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, RemoteException {
-        Offer offer = player.getGame().getBoard().getOfferPath().get(player.getOffer() - 'A');
+        Offer offer = player.getGame().getBoard().getOfferPath()
+                .stream()
+                .filter(o -> o.getOrder() == player.getOffer())
+                .findFirst().get();
         if (player.equals(game.getPlayerTurn()) && drawBottomCount < offer.getDrawBottom()) {
             int index = game.getBoard().getBottomRowTribe().size();
             if (pos < index) {

@@ -30,7 +30,7 @@
 
     {
       "type": "Offer",
-      "minNumPlayers": 2,
+      "minNumPlayers": 5,
       "order": "A",
       "foodBonus": 3,
       "drawTop": 0,
