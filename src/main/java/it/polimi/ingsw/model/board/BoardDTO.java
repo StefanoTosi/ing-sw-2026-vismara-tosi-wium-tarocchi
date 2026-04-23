@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.board;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.effects.Building;
@@ -23,6 +25,9 @@ public class BoardDTO implements Serializable {
 
     private OrderDTO order;
     private List<OfferDTO> offerPath;
+
+    @JsonCreator
+    private BoardDTO() {}
 
     public BoardDTO(int numTopRowTribe, List<CardDTO> topRowTribe, List<BuildingDTO> topRowBuilding, int numBottomRowTribe, List<CardDTO> bottomRowTribe, List<BuildingDTO> bottomRowBuilding, int deckTribe, int deckE1Building, int deckE2Building, int deckE3Building, OrderDTO order, List<OfferDTO> offerPath) {
         this.numTopRowTribe = numTopRowTribe;

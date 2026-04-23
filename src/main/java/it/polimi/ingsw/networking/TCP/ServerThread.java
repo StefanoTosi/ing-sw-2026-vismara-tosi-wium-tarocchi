@@ -13,8 +13,6 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-import static it.polimi.ingsw.networking.JsonUtil.toJson;
-
 public class ServerThread implements Runnable, ObserverTCP {
     private Socket client;
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.board.Board;
@@ -16,6 +17,9 @@ public class GameDTO implements Serializable {
     private StateDTO state; // TODO: temporaneo, possiamo serializzare i GameState?
     private PlayerDTO playerTurn;
     //private List<PlayerDTO> rankings;
+
+    @JsonCreator
+    private GameDTO() {}
 
     public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn/*, List<PlayerDTO> rankings*/) {
         this.players = List.copyOf(players);

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.board;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.io.Serializable;
 
 public class OfferDTO implements Serializable {
@@ -7,6 +9,9 @@ public class OfferDTO implements Serializable {
     private int foodBonus;
     private int drawTop;
     private int drawBottom;
+
+    @JsonCreator
+    private OfferDTO() {}
 
     public OfferDTO(char order, int foodBonus, int drawTop, int drawBottom) throws IllegalArgumentException {
         this.order = order;

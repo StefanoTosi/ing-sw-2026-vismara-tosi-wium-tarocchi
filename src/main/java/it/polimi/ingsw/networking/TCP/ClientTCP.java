@@ -13,8 +13,8 @@ import java.rmi.RemoteException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static it.polimi.ingsw.networking.JsonUtil.fromJson;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ClientTCP implements Client {
     private String nickname;
@@ -26,7 +26,7 @@ public class ClientTCP implements Client {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private final Map<RequestType, Message> responses = new ConcurrentHashMap<>();
+    private final LinkedBlockingQueue<Message> responses = new LinkedBlockingQueue<>();
 
     public ClientTCP(UIObserver observer) {
         this.observer = observer;
@@ -46,20 +46,13 @@ public class ClientTCP implements Client {
                     if(response.getRequest().equals(RequestType.UPDATE)){
                         update((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
                     }else{
-                        responses.put(response.getRequest(), response);
+                        responses.put(response);
                     }
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
         }).start();
-    }
-
-    public Message waitResponses(RequestType requestType) throws InterruptedException {
-        while(!responses.containsKey(requestType)){
-            Thread.sleep(50); //Brutal polling
-        }
-        return responses.remove(requestType);
     }
 
     public void connect(){
@@ -93,7 +86,7 @@ public class ClientTCP implements Client {
         try{
             Message request = new Message(RequestType.ADDUSER, password, username);
             sendRequest(request);
-            Message response = waitResponses(RequestType.ADDUSER);
+            Message response = responses.take();
             if(response.getRequest().equals(RequestType.ADDUSER)){
                 System.out.println(response.getParams()[0]);
                 result = (int)response.getParams()[1];
@@ -113,7 +106,7 @@ public class ClientTCP implements Client {
         try{
             Message request = new Message(RequestType.JOINGAME, getNickname());
             sendRequest(request);
-            Message response = waitResponses(RequestType.JOINGAME);
+            Message response = responses.take();
             if(response.getRequest().equals(RequestType.JOINGAME)){
                 result = (boolean)response.getParams()[0];
             }

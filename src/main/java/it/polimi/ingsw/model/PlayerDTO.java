@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
@@ -21,6 +22,9 @@ public class PlayerDTO implements Serializable {
     private int food;
     private int order;
     private char offer;
+
+    @JsonCreator
+    private PlayerDTO() {}
 
     public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer) {
         this.name = name;

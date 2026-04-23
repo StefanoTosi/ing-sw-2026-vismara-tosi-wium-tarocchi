@@ -6,9 +6,13 @@ import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.events.DTO.*;
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "name")
+        property = "name",
+        visible = true
+)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ArtistDTO.class, name = "Artist"),
         @JsonSubTypes.Type(value = BuilderDTO.class, name = "Builder"),
@@ -26,12 +30,13 @@ import java.io.Serializable;
 })
 public class CardDTO implements Serializable {
     private final String era;
-    private final String TYPE;
+    private final String type;
     private final String name;
 
-    public CardDTO(String era, String type, String name) {
+    @JsonCreator
+    public CardDTO(@JsonProperty("era") String era, @JsonProperty("type") String type, @JsonProperty("name") String name) {
         this.era = era;
-        this.TYPE = type;
+        this.type = type;
         this.name = name;
     }
 
@@ -40,7 +45,7 @@ public class CardDTO implements Serializable {
     }
 
     public String getType() {
-        return TYPE;
+        return type;
     }
 
     public String getName() {
