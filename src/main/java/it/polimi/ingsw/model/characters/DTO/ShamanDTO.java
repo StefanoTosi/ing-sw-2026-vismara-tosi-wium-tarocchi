@@ -8,12 +8,7 @@ import java.io.Serializable;
 public class ShamanDTO extends CardDTO implements Serializable {
     private final int stars;
 
-    @JsonCreator
-    public ShamanDTO(@JsonProperty("stars") int stars) {
-        this.stars = stars;
-    }
-
-    public  ShamanDTO(String era, int stars) {
+    public ShamanDTO(@JsonProperty("era") String era, @JsonProperty("stars") int stars) {
         super(era, "Character", "Shaman");
         this.stars = stars;
     }

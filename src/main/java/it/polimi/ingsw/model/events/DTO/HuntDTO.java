@@ -10,11 +10,7 @@ public class HuntDTO extends CardDTO implements Serializable {
     private final int pp;
 
     @JsonCreator
-    public HuntDTO(@JsonProperty("pp") int pp) {
-        this.pp = pp;
-    }
-
-    public HuntDTO(String era, int pp){
+    public HuntDTO(@JsonProperty("era") String era, @JsonProperty("pp") int pp){
         super(era, "Event", "Hunt");
         this.pp = pp;
     }

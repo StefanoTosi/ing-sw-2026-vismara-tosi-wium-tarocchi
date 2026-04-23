@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.events.DTO;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.Era;
 
@@ -11,12 +12,7 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
     private final int loserPp;
 
     @JsonCreator
-    public ShamanicRitualDTO() {
-        this.winnerPp = 0;
-        this.loserPp = 0;
-    }
-
-    public ShamanicRitualDTO (int winnerPp, int loserPp, String era){
+    public ShamanicRitualDTO (@JsonProperty("winnerPp") int winnerPp, @JsonProperty("loserPp") int loserPp, @JsonProperty("era") String era){
         super(era, "Event",  "Shamanic Ritual");
         this.winnerPp = winnerPp;
         this.loserPp = loserPp;

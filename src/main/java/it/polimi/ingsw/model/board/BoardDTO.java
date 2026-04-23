@@ -27,7 +27,7 @@ public class BoardDTO implements Serializable {
     private List<OfferDTO> offerPath;
 
     @JsonCreator
-    public BoardDTO() {}
+    private BoardDTO() {}
 
     public BoardDTO(int numTopRowTribe, List<CardDTO> topRowTribe, List<BuildingDTO> topRowBuilding, int numBottomRowTribe, List<CardDTO> bottomRowTribe, List<BuildingDTO> bottomRowBuilding, int deckTribe, int deckE1Building, int deckE2Building, int deckE3Building, OrderDTO order, List<OfferDTO> offerPath) {
         this.numTopRowTribe = numTopRowTribe;

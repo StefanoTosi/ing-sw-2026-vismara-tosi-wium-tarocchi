@@ -6,8 +6,6 @@ import java.io.Serializable;
 
 public class ArtistDTO extends CardDTO implements Serializable {
     @JsonCreator
-    public  ArtistDTO() {}
-
     public ArtistDTO(String era) {
         super(era, "Character", "Artist");
     }

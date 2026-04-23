@@ -11,13 +11,7 @@ public class CavePaintingsDTO extends CardDTO implements Serializable {
     private final int minArtist;
 
     @JsonCreator
-    public  CavePaintingsDTO(@JsonProperty("pp") int pp) {
-        this.topPp = pp;
-        this.bottomPp = pp;
-        this.minArtist = 0;
-    }
-
-    public CavePaintingsDTO(String era, int minArtist, int topPp, int bottomPp){
+    public CavePaintingsDTO(@JsonProperty("era") String era, @JsonProperty("minArtist") int minArtist, @JsonProperty("topPp") int topPp, @JsonProperty("bottomPp") int bottomPp){
         super(era, "Event", "Cave Paintings");
         this.minArtist = minArtist;
         this.topPp = topPp;

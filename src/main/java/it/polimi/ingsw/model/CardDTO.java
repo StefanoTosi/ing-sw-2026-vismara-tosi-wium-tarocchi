@@ -10,7 +10,9 @@ import java.io.Serializable;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "name")
+        property = "name",
+        visible = true
+)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ArtistDTO.class, name = "Artist"),
         @JsonSubTypes.Type(value = BuilderDTO.class, name = "Builder"),
@@ -30,12 +32,6 @@ public class CardDTO implements Serializable {
     private final String era;
     private final String type;
     private final String name;
-
-    public CardDTO() {
-    this.era = null;
-        this.type = null;
-        this.name = null;
-    }
 
     @JsonCreator
     public CardDTO(@JsonProperty("era") String era, @JsonProperty("type") String type, @JsonProperty("name") String name) {

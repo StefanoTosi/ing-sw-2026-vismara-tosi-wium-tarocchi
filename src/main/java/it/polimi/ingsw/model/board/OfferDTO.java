@@ -11,7 +11,7 @@ public class OfferDTO implements Serializable {
     private int drawBottom;
 
     @JsonCreator
-    public OfferDTO() {}
+    private OfferDTO() {}
 
     public OfferDTO(char order, int foodBonus, int drawTop, int drawBottom) throws IllegalArgumentException {
         this.order = order;
