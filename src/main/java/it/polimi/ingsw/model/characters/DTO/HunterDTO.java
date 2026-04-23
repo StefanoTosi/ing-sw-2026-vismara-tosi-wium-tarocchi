@@ -8,6 +8,10 @@ public class HunterDTO extends CardDTO implements Serializable {
     private final boolean icon;
 
     @JsonCreator
+    public HunterDTO() {
+        this.icon = false;
+    }
+
     public HunterDTO(boolean icon, String era){
         this.icon = icon;
         super(era, "Character", "Hunter");

@@ -8,6 +8,10 @@ public class InventorDTO extends CardDTO implements Serializable {
     private final String icon;
 
     @JsonCreator
+    public InventorDTO() {
+        this.icon = null;
+    }
+
     public InventorDTO(String era, String icon) {
         super(era, "Character", "Inventor");
         this.icon = icon;

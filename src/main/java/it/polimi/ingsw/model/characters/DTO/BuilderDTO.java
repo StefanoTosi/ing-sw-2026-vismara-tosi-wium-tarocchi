@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.characters.DTO;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
 import java.io.Serializable;
 
@@ -9,6 +10,11 @@ public class BuilderDTO extends CardDTO implements Serializable {
     private final int pp;
 
     @JsonCreator
+    public BuilderDTO() {
+        this.foodDiscount = 0;
+        this.pp = 0;
+    }
+
     public BuilderDTO(int foodDiscount, int pp, String era) {
         this.foodDiscount = foodDiscount;
         this.pp = pp;

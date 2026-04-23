@@ -24,6 +24,8 @@ public class PlayerDTO implements Serializable {
     private char offer;
 
     @JsonCreator
+    public PlayerDTO() {}
+
     public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer) {
         this.name = name;
         this.artists = List.copyOf(artists);

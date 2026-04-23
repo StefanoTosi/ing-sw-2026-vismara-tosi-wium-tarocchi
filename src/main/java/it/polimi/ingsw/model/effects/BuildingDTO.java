@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.Player;
 
@@ -14,6 +15,14 @@ public class BuildingDTO extends CardDTO implements Serializable {
     private final int pp;
     private final int effectPp;
     private final String effect;
+
+    @JsonCreator
+    public BuildingDTO() {
+        this.cost = 0;
+        this.pp = 0;
+        this.effectPp = 0;
+        this.effect = "";
+    }
 
     public BuildingDTO(int cost, int pp, int effectPp, String effect, String era) {
         this.cost = cost;

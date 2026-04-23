@@ -11,6 +11,8 @@ public class OrderDTO implements Serializable {
     private int numPlayers;
 
     @JsonCreator
+    public OrderDTO() {}
+
     public OrderDTO(List<Integer> foodBonus, List<Integer> ppBonus, int numPlayers) {
         this.foodBonus = List.copyOf(foodBonus);
         this.ppBonus = List.copyOf(ppBonus);
