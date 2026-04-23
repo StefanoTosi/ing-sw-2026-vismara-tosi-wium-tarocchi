@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.UIObserver;
 
 import java.io.*;
@@ -43,7 +44,7 @@ public class ClientTCP implements Client {
                 while(true) {
                     Message response = (Message) in.readObject();
                     if(response.getRequest().equals(RequestType.UPDATE)){
-                        update((GameDTO) fromJson((String)response.getParams()[0], GameDTO.class));
+                        update((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
                     }else{
                         responses.put(response.getRequest(), response);
                     }

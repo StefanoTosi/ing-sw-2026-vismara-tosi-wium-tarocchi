@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.User;
 
 import java.io.*;
@@ -123,7 +124,7 @@ public class ServerThread implements Runnable, ObserverTCP {
 
     @Override
     public void update(GameDTO game) throws Exception {
-        Message response = new Message(RequestType.UPDATE, toJson(game));
+        Message response = new Message(RequestType.UPDATE, JsonUtil.toJson(game));
         out.writeObject(response);
     }
 }
