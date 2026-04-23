@@ -29,6 +29,7 @@ public class CardDTO implements Serializable {
     private final String TYPE;
     private final String name;
 
+    @JsonCreator
     public CardDTO(String era, String type, String name) {
         this.era = era;
         this.TYPE = type;
