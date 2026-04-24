@@ -19,8 +19,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ClientTCP implements Client {
     private String nickname;
     private UIObserver observer;
-    private final String serverAdress = "127.0.0.1";
-    private final int serverPort = 1234;
+    private String serverAdress;
+    private int serverPort;
     private Socket mySocket;
 
     private ObjectInputStream in;
@@ -28,8 +28,10 @@ public class ClientTCP implements Client {
 
     private final LinkedBlockingQueue<Message> responses = new LinkedBlockingQueue<>();
 
-    public ClientTCP(UIObserver observer) {
+    public ClientTCP(UIObserver observer, int port, String address) {
         this.observer = observer;
+        this.serverAdress = address;
+        this.serverPort = port;
         connect();
         startListener();
     }
@@ -59,7 +61,7 @@ public class ClientTCP implements Client {
         try {
             mySocket=new Socket(serverAdress, serverPort);
 
-            //link to sokcet the object for reading/wriding
+            //link to socket the object for reading/wriding
             out = new ObjectOutputStream(mySocket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(mySocket.getInputStream());

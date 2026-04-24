@@ -9,14 +9,15 @@ import java.net.Socket;
 import java.util.Map;
 
 public class ServerTCP {
-    private int port = 1234;
+    private int port;
     private ServerSocket serverSocket;
     private GameController gameController;
     private final Object lock;
 
-    public ServerTCP(GameController gameController,  Object lock) {
+    public ServerTCP(GameController gameController,  Object lock, int port) {
         this.gameController = gameController;
         this.lock = lock;
+        this.port = port;
     }
 
     public void waitForConnection(Map<String, User> users) throws IOException {

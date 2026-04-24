@@ -1,4 +1,6 @@
 package it.polimi.ingsw.networking;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
@@ -24,6 +26,7 @@ import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.RMI.Controller;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
 
+import java.io.File;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -39,6 +42,9 @@ public class TUI implements UIObserver {
     private Scanner in = new Scanner(System.in);
     private GameDTO game;
     private Client client;
+    private int portTCP;
+    private int portRMI;
+    private String serverAddress;
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[32m";
     public static final String BLUE = "\u001B[34m";
@@ -56,9 +62,12 @@ public class TUI implements UIObserver {
      * @throws RemoteException
      * @throws NotBoundException
      */
-    public TUI () throws RemoteException, NotBoundException {
+    public TUI (int portRMI, int portTCP, String serverAddress) throws RemoteException, NotBoundException {
         this.game = null;
         this.client = null;
+        this.serverAddress = serverAddress;
+        this.portRMI = portRMI;
+        this.portTCP = portTCP;
     }
 
     /**
@@ -75,9 +84,9 @@ public class TUI implements UIObserver {
             in.nextLine();
         }while(choice != 1 && choice != 2);
         if(choice == 1) {
-            this.client = new ClientRMI(this);
+            this.client = new ClientRMI(this, portRMI, serverAddress);
         }else{
-            this.client = new ClientTCP(this);
+            this.client = new ClientTCP(this, portTCP, serverAddress);
         }
     }
 
@@ -111,10 +120,10 @@ public class TUI implements UIObserver {
                     do {
                         System.out.print("(2 to 5 players): ");
                         num = in.nextInt();
-                        System.out.print("Waiting for other players to connect...");
                         //free the buffer
                         in.nextLine();
                     } while(num < 2 || num > 5);
+                    System.out.print("Waiting for other players to connect...");
                     client.createGame(num);
                 }
                 break;
@@ -123,13 +132,6 @@ public class TUI implements UIObserver {
             default:
                 System.out.println("Invalid input");
         }
-    }
-
-
-    public void main(String[] args) throws IOException, NotBoundException, IllegalActionException, ClassNotFoundException {
-        TUI tui = new TUI();
-        tui.chooseTCPorRMI();
-        tui.start();
     }
 
     /**

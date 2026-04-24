@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.UIObserver;
+import javafx.css.converter.LadderConverter;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -14,14 +15,17 @@ import java.rmi.server.UnicastRemoteObject;
 
 
 public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Client {
-    private static final int PORT = 1099;
+    private static int port;
+    private static String serverAddress;
     private String nickname;
     private final Controller controller;
     private UIObserver observer;
 
-    public ClientRMI(UIObserver observer) throws RemoteException, NotBoundException {
+    public ClientRMI(UIObserver observer, int port, String address) throws RemoteException, NotBoundException {
         this.observer = observer;
         this.controller = connectToServer();
+        this.port = port;
+        this.serverAddress = address;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
 
     public Controller connectToServer() throws RemoteException, NotBoundException {
         // Getting the registry
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1", PORT);
+        Registry registry = LocateRegistry.getRegistry(serverAddress, port);
         String remoteObjectName = "ServerRMI";
 
         return (Controller) registry.lookup(remoteObjectName);
