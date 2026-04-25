@@ -32,16 +32,16 @@ public class BoardDTO implements Serializable {
     public BoardDTO(int numTopRowTribe, List<CardDTO> topRowTribe, List<BuildingDTO> topRowBuilding, int numBottomRowTribe, List<CardDTO> bottomRowTribe, List<BuildingDTO> bottomRowBuilding, int deckTribe, int deckE1Building, int deckE2Building, int deckE3Building, OrderDTO order, List<OfferDTO> offerPath) {
         this.numTopRowTribe = numTopRowTribe;
         this.topRowTribe = topRowTribe;
-        this.topRowBuilding = List.copyOf(topRowBuilding);
+        this.topRowBuilding = topRowBuilding;
         this.numBottomRowTribe = numBottomRowTribe;
         this.bottomRowTribe = bottomRowTribe;
-        this.bottomRowBuilding = List.copyOf(bottomRowBuilding);
+        this.bottomRowBuilding = bottomRowBuilding;
         this.deckTribe = deckTribe;
         this.deckE1Building = deckE1Building;
         this.deckE2Building = deckE2Building;
         this.deckE3Building = deckE3Building;
         this.order = order;
-        this.offerPath = List.copyOf(offerPath);
+        this.offerPath = offerPath;
     }
 
     public int getNumTopRowTribe() {
