@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.UIObserver;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -43,7 +44,7 @@ public class FieldController implements UIObserver {
         for (int i = 0; i < GUISession.getGame().getBoard().getTopRowTribe().size(); i++) {
             Rectangle r = new Rectangle(cardW, cardH);
             r.setFill(Color.RED);
-            MeshView m = createCardMesh(front, cardW, cardH);
+            Group m = createCardMesh(front, back, cardW, cardH);
             m.setLayoutX(-cardW);
             m.setLayoutY(-cardH);
 
@@ -61,7 +62,7 @@ public class FieldController implements UIObserver {
         for (int i = 0; i < GUISession.getGame().getBoard().getBottomRowTribe().size(); i++) {
             Rectangle r = new Rectangle(cardW, cardH);
             r.setFill(Color.RED);
-            MeshView m = createCardMesh(front, cardW, cardH);
+            Group m = createCardMesh(front, back, cardW, cardH);
             m.setLayoutX(-cardW);
             m.setLayoutY(-cardH);
 
@@ -111,13 +112,11 @@ public class FieldController implements UIObserver {
         GUISession.setGame(game);
     }
 
-    private MeshView createCardMesh(Image image, double width, double height) {
-        TriangleMesh mesh = new TriangleMesh();
+    private Group createCardMesh(Image front, Image back, double width, double height) {
+        TriangleMesh frontMesh = new TriangleMesh();
 
         // Define card points
-        float w = (float) width / 2;
-        float h = (float) height / 2;
-        mesh.getPoints().addAll(
+        frontMesh.getPoints().addAll(
                 0, 0, 0f,  // Point 0 (Top Left)
                 (float) width, 0, 0f,  // Point 1 (Top Right)
                 0, (float) height, 0f,  // Point 2 (Bottom Left)
@@ -125,28 +124,62 @@ public class FieldController implements UIObserver {
         );
 
         // Define texture coordinates
-        mesh.getTexCoords().addAll(
+        frontMesh.getTexCoords().addAll(
                 0f, 0f, // 0: Top Left
                 1f, 0f, // 1: Top Right
                 0f, 1f, // 2: Bottom Left
                 1f, 1f  // 3: Bottom Right
         );
 
-        // Define faces. Two triangles make a square. Points are counter-clockwise.
-        mesh.getFaces().addAll(
+        // Define two faces. Two triangles make a square. Points are counter-clockwise.
+        frontMesh.getFaces().addAll(
                 0, 0, 2, 2, 1, 1, // Triangle 1
                 2, 2, 3, 3, 1, 1  // Triangle 2
         );
 
-        MeshView meshView = new MeshView(mesh);
+        MeshView frontMeshView = new MeshView(frontMesh);
 
-        // Create the material
-        PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(Color.BLACK);
-        material.setSelfIlluminationMap(image);
-        meshView.setMaterial(material);
-        meshView.setCullFace(CullFace.BACK);
+        // Create the materials with no shadows
+        PhongMaterial frontMat = new PhongMaterial();
+        frontMat.setDiffuseColor(Color.BLACK);
+        frontMat.setSelfIlluminationMap(front);
+        frontMeshView.setMaterial(frontMat);
+        frontMeshView.setCullFace(CullFace.BACK);
 
-        return meshView;
+        // Build back
+        TriangleMesh backMesh = new TriangleMesh();
+
+        // Define card points
+        backMesh.getPoints().addAll(
+                0, 0, 0f,  // Point 0 (Top Left)
+                (float) width, 0, 0f,  // Point 1 (Top Right)
+                0, (float) height, 0f,  // Point 2 (Bottom Left)
+                (float) width, (float) height, 0f   // Point 3 (Bottom Right)
+        );
+
+        // Define texture coordinates
+        backMesh.getTexCoords().addAll(
+                0f, 0f, // 0: Top Left
+                1f, 0f, // 1: Top Right
+                0f, 1f, // 2: Bottom Left
+                1f, 1f  // 3: Bottom Right
+        );
+
+        // Define two faces. Two triangles make a square. Points are counter-clockwise.
+        backMesh.getFaces().addAll(
+                1, 1, 2, 2, 0, 0, // Triangle 3
+                1, 1, 3, 3, 2, 2  // Triangle 4
+        );
+
+        MeshView backMeshView = new MeshView(backMesh);
+
+        // Create the materials with no shadows
+        PhongMaterial backMat = new PhongMaterial();
+        backMat.setDiffuseColor(Color.BLACK);
+        backMat.setSelfIlluminationMap(back);
+        backMeshView.setMaterial(backMat);
+        backMeshView.setCullFace(CullFace.BACK);
+
+        return new Group(frontMeshView, backMeshView);
     }
 }

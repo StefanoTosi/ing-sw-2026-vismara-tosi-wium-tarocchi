@@ -1,25 +1,28 @@
 package it.polimi.ingsw.networking.GUI;
 
 import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.Group;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class AnimatedCard {
-    private MeshView mesh;
+    private Group mesh;
     private Rectangle reference;
 
-    public AnimatedCard(MeshView mesh, Rectangle reference) {
+    public AnimatedCard(Group mesh, Rectangle reference) {
         this.mesh = mesh;
         this.reference = reference;
     }
 
-    public MeshView getMesh() {
+    public Group getMesh() {
         return mesh;
     }
 
-    public void setMesh(MeshView mesh) {
+    public void setMesh(Group mesh) {
         this.mesh = mesh;
     }
 
@@ -37,7 +40,7 @@ public class AnimatedCard {
     }
 
     public void animatePosition() {
-        TranslateTransition trans = new TranslateTransition(Duration.seconds(0.2), mesh);
+        TranslateTransition trans = new TranslateTransition(Duration.seconds(2), mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
         trans.setFromX(0);
@@ -56,6 +59,15 @@ public class AnimatedCard {
             mesh.setTranslateX(0);
             mesh.setTranslateY(0);
         });
+
+        // 3D flip
+        RotateTransition rotator = new RotateTransition(Duration.seconds(2), mesh);
+        rotator.setAxis(Rotate.Y_AXIS);
+        rotator.setFromAngle(180);
+        rotator.setToAngle(0);
+        rotator.setDelay(Duration.seconds(0.2));
+        rotator.setInterpolator(Interpolator.EASE_BOTH);
+        rotator.play();
 
         trans.play();
     }
