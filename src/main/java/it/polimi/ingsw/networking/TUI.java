@@ -137,20 +137,6 @@ public class TUI implements UIObserver {
 
 
     /*
-     * la coda notifiche è vuota - wait
-     * altrimenti - tipo update ma handle new notify e come gamedto gli passi un pop dalla coda
-     * finito handle notify torna a controllare la coda
-     * quando viene pushato un elemento nella coda fa notify all
-     *
-     * TODO: funzione queueNotify che struttura la coda, pop che fa uscire dalla coda, add che fa aggiungere alla coda,
-     *  funzioni separate per l'attivazione delle varie azioni in async per l'handling di più partite contemporanee?
-     *
-     * notifyPlayer() = update la parte dell'if
-     * update deve mettere la funzione in coda e poi ogni player smaltisce la coda in maniera asincrona/parallela
-     *
-     * metti che il giocatore se nè andato tutti gli altri possono continuare
-     *
-     * serve per notificare tutti della partita, ergo uno sta giocando gli altri sannno che x sta giocando e cosa fa
      *
      * TODO: aggiungi stampa turno
      *
@@ -222,27 +208,39 @@ public class TUI implements UIObserver {
                         String chosenRow = "";
                         int drawTop = playerOffer.getDrawTop();
                         int drawBottom = playerOffer.getDrawBottom();
-                        int card;
+
+                        System.out.println("this is the cards the player has to draw " + playerOffer.getDrawTop() + playerOffer.getDrawBottom() + "\n");
                         while (drawTop + drawBottom > 0) {
                             if (drawTop != 0 && drawBottom != 0) {
                                 System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
-                                chosenRow = in.nextLine();
+                                chosenRow = in.nextLine().toUpperCase();
+                                System.out.println("this is the cards the player has to draw  before drawing " + drawTop + drawBottom + "\n");
                                 if (chosenRow.equals("T")) {
                                     drawTop += drawCardTopRow();
+                                    System.out.println("after drawing from top" + drawTop + "\n");
                                 }
                                 if (chosenRow.equals("B")) {
                                     drawBottom += drawCardBottomRow();
+                                    System.out.println("after drawing from bottom" + drawBottom + "\n");
                                 }
                             } else if (drawTop != 0) {
                                 drawTop += drawCardTopRow();
+                                System.out.println("after drawing from top" + drawTop + "\n");
                             } else {
                                 drawBottom += drawCardBottomRow();
+                                System.out.println("after drawing from bottom" + drawTop + "\n");
                             }
+                            if (drawTop + drawBottom > 0) {
+                                game = updates.take();
+                            }
+                            System.out.println("fine while post update take");
                         }
                         break;
                     case StateDTO.ENDTURN:
                         // EndTurnState
-                        System.out.println("EndTurnState - TODO");
+                        System.out.println("EndTurnState");
+                        int effectDraw = 1;
+                        effectDraw = drawCardTopRow();
                         break;
                     default:
                         System.out.println("Unhandled state id " + game.getState());
@@ -301,8 +299,8 @@ public class TUI implements UIObserver {
      * Calls the functions to print each part of the board
      */
     public void printBoard(){
-        printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
-        printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
+        //printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
+        //printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         printOrderTile();
         printOfferRow();
         //printPlayerCards(game.getPlayerTurn());
