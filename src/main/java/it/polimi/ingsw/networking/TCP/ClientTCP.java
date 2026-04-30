@@ -76,7 +76,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void update(GameDTO game) throws IOException, IllegalActionException {
+    public void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException {
         if(game != null){
             observer.update(game);
         }

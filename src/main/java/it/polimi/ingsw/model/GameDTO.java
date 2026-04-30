@@ -16,6 +16,7 @@ public class GameDTO implements Serializable {
     private BoardDTO board;
     private StateDTO state; // TODO: temporaneo, possiamo serializzare i GameState?
     private PlayerDTO playerTurn;
+    private int turnNumber;
     //private List<PlayerDTO> rankings;
 
     @JsonCreator

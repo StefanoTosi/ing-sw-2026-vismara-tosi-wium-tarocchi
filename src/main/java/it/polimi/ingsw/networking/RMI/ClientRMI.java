@@ -51,7 +51,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public void update(GameDTO game) throws IOException, IllegalActionException {
+    public void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException {
         if (game != null) {
             observer.update(game);
         }
@@ -63,7 +63,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public boolean joinGame() throws IllegalActionException, RemoteException {
+    public boolean joinGame() throws IllegalActionException, IOException, InterruptedException {
         return controller.joinGame(getNickname());
     }
 
@@ -73,7 +73,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public void executeAction(Action action) throws IllegalActionException, RemoteException {
+    public void executeAction(Action action) throws IllegalActionException, IOException, InterruptedException {
         controller.executeAction(action, getNickname());
     }
 }

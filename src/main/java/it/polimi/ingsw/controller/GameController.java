@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.TCP.ObserverTCP;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class GameController {
         games.remove(game);
     }
 
-    public boolean joinGameRMI(Player player, ClientCallBack client) throws RemoteException, IllegalActionException {
+    public boolean joinGameRMI(Player player, ClientCallBack client) throws IOException, IllegalActionException, InterruptedException {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
                 game.addObserverRMI(client);
@@ -68,7 +69,7 @@ public class GameController {
         newGame.getState().registerPlayer(newGame, player);
     }
 
-    public boolean joinGameTCP(Player player, ObserverTCP client) throws RemoteException, IllegalActionException {
+    public boolean joinGameTCP(Player player, ObserverTCP client) throws Exception {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
                 game.addObserverTCP(client);
@@ -90,7 +91,7 @@ public class GameController {
         newGame.getState().registerPlayer(newGame, player);
     }
 
-    public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, RemoteException {
+    public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, IOException, InterruptedException {
         getPlayer(player).getGame().setErrorFlag("");
         try {
             action.execute(getPlayer(player));

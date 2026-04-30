@@ -101,7 +101,7 @@ public class ServerThread implements Runnable, ObserverTCP {
         out.writeObject(msg);
     }
 
-    private void joinGame(String name) throws IllegalActionException, IOException {
+    private void joinGame(String name) throws Exception {
         boolean result = gameController.joinGameTCP(new Player(name), this);
         Message msg = new Message(RequestType.JOINGAME, result);
         out.writeObject(msg);
@@ -111,7 +111,7 @@ public class ServerThread implements Runnable, ObserverTCP {
         gameController.createGameTCP(new Player(name), num, this);
     }
 
-    private void executeAction(Action action, String nickname) throws IllegalActionException, RemoteException {
+    private void executeAction(Action action, String nickname) throws IllegalActionException, IOException, InterruptedException {
         gameController.executeAction(action, nickname);
     }
 

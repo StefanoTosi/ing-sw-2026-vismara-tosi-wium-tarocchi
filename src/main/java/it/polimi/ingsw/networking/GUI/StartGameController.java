@@ -54,7 +54,7 @@ public class StartGameController implements UIObserver {
     }
 
     @FXML
-    void login() throws IOException, ClassNotFoundException, IllegalActionException {
+    void login() throws IOException, ClassNotFoundException, IllegalActionException, InterruptedException {
         System.out.println(username.getText() + " " + password.getText());
 
         if (GUISession.getClient().addUser(password.getText(), username.getText()) == 0) {

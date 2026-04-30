@@ -8,5 +8,5 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 public interface UIObserver {
-    void update(GameDTO game) throws IOException, IllegalActionException;
+    void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException;
 }

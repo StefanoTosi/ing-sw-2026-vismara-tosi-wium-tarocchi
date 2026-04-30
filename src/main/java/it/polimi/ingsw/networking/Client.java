@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 public interface Client {
-    public void update(GameDTO game) throws IOException, IllegalActionException;
+    public void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException;
     public int addUser(String password, String username) throws IOException, ClassNotFoundException;
-    public boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException;
+    public boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException;
     public void createGame(int num) throws IllegalActionException, IOException;
-    public void executeAction(Action action) throws IllegalActionException, IOException;
+    public void executeAction(Action action) throws IllegalActionException, IOException, InterruptedException;
     public String getNickname();
 }

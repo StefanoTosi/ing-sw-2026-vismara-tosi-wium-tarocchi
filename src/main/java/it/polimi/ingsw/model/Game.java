@@ -54,34 +54,16 @@ public class Game {
         this.observersTCP.remove(observer);
     }
 
-    public void notifyObserver() throws RemoteException, IllegalActionException {
+    public void notifyObserver() throws IOException, IllegalActionException, InterruptedException {
         for (ClientCallBack observer : observersRMI) {
-            new Thread(() -> {
-                try {
-                    observer.update(this.toDTO());
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalActionException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+            observer.update(this.toDTO());
         }
         for (ObserverTCP observer : observersTCP) {
-            new Thread(() -> {
-                try {
-                    observer.update(this.toDTO());
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalActionException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+            try{
+                observer.update(this.toDTO());
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

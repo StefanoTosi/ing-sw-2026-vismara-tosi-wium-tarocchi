@@ -13,7 +13,7 @@ public class TUIMain {
     private static int portTCP;
     private static String serverAddress;
 
-    public static void main(String[] args) throws IOException, NotBoundException, IllegalActionException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, NotBoundException, IllegalActionException, ClassNotFoundException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
 

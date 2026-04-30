@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.User;
 
+import java.io.IOException;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public boolean joinGame(String name) throws RemoteException, IllegalActionException {
+    public boolean joinGame(String name) throws IOException, IllegalActionException, InterruptedException {
         ClientCallBack client;
         synchronized (lock) {
             client = clients.get(name);
@@ -89,7 +90,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public void executeAction(Action action, String nickname) throws RemoteException, IllegalActionException {
+    public void executeAction(Action action, String nickname) throws IOException, IllegalActionException, InterruptedException {
         gamesController.executeAction(action, nickname);
     }
 }
