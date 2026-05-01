@@ -68,6 +68,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
+    public void closingGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        observer.closingGame();
+    }
+
+    @Override
     public int addUser(String password, String username) throws RemoteException {
         return controller.addUser(password, username, this);
     }

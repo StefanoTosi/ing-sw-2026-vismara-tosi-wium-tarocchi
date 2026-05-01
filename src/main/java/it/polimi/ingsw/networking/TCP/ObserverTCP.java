@@ -8,4 +8,5 @@ import java.rmi.Remote;
 
 public interface ObserverTCP extends Remote {
     void update(GameDTO game) throws Exception;
+    void closingGame() throws IOException;
 }

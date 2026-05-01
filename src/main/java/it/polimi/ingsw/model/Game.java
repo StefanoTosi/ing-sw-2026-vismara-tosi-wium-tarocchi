@@ -67,6 +67,19 @@ public class Game {
         }
     }
 
+    public void closingGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        for (ClientCallBack observer : observersRMI) {
+            observer.closingGame();
+        }
+        for (ObserverTCP observer : observersTCP) {
+            try{
+                observer.closingGame();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }

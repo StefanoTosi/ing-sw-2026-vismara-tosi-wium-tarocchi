@@ -151,4 +151,10 @@ public class ServerThread implements Runnable, ObserverTCP {
         Message response = new Message(RequestType.UPDATE, JsonUtil.toJson(game));
         out.writeObject(response);
     }
+
+    @Override
+    public void closingGame() throws IOException {
+        Message response = new Message(RequestType.CLOSEGAME);
+        out.writeObject(response);
+    }
 }

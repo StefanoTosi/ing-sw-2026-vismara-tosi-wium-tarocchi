@@ -12,4 +12,5 @@ public interface ClientCallBack extends Remote {
     void setNickname(String nickname) throws RemoteException;
     String getNickname() throws RemoteException;
     void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException;
+    void closingGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException;
 }

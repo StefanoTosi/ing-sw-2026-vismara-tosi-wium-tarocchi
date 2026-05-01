@@ -7,5 +7,5 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import java.rmi.RemoteException;
 
 public enum RequestType {
-    UPDATE, ADDUSER, JOINGAME, CREATEGAME, EXECUTEACTION, LEAVEMATCH, LEAVEGAME
+    UPDATE, ADDUSER, JOINGAME, CREATEGAME, EXECUTEACTION, LEAVEMATCH, LEAVEGAME, CLOSEGAME
 }

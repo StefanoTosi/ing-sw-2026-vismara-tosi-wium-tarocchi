@@ -48,7 +48,11 @@ public class ClientTCP implements Client {
                     if(response.getRequest().equals(RequestType.UPDATE)){
                         update((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
                     }else{
-                        responses.put(response);
+                        if(response.getRequest().equals(RequestType.CLOSEGAME)){
+                            closeGame();
+                        }else{
+                            responses.put(response);
+                        }
                     }
                 }
             }catch (Exception e){
@@ -80,6 +84,10 @@ public class ClientTCP implements Client {
         if(game != null){
             observer.update(game);
         }
+    }
+
+    private void closeGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        observer.closingGame();
     }
 
     @Override
