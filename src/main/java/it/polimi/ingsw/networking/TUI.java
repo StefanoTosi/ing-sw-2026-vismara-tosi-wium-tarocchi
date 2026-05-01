@@ -93,8 +93,11 @@ public class TUI implements UIObserver {
      */
 
     public void start() throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
-        renderMenu();
-        int input = Integer.parseInt(in.nextLine());
+        int input;
+        do{
+            renderStartMenu();
+            input = Integer.parseInt(in.nextLine());
+        }while(input != 1 && input != 2);
 
         switch (input) {
             case 1:
@@ -106,26 +109,50 @@ public class TUI implements UIObserver {
                     String password = in.nextLine();
                     if(client.addUser(password, username) == 0) flag = false;
                 }
-                if (!client.joinGame()) {
-                    int num;
-                    System.out.println("No game found, let's create a new one!\n");
-                    System.out.print("How many players do you want? ");
-                    do {
-                        System.out.print("(2 to 5 players): ");
-                        num = in.nextInt();
-                        //free the buffer
-                        in.nextLine();
-                    } while(num < 2 || num > 5);
-                    System.out.print("Waiting for other players to connect...");
-                    client.createGame(num);
-                }
-                handleState();
+                joinGame();
                 break;
             case 2:
+                client.leaveGame();
                 System.exit(0);
             default:
                 System.out.println("Invalid input");
         }
+    }
+
+    public void anotherGame() throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+        int input;
+        do{
+            renderMenu();
+            input = Integer.parseInt(in.nextLine());
+        }while(input != 1 && input != 2);
+
+        switch (input) {
+            case 1:
+                joinGame();
+                break;
+            case 2:
+                client.leaveGame();
+                System.exit(0);
+            default:
+                System.out.println("Invalid input");
+        }
+    }
+
+    public void joinGame() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+        if (!client.joinGame()) {
+            int num;
+            System.out.println("No game found, let's create a new one!\n");
+            System.out.print("How many players do you want? ");
+            do {
+                System.out.print("(2 to 5 players): ");
+                num = in.nextInt();
+                //free the buffer
+                in.nextLine();
+            } while(num < 2 || num > 5);
+            System.out.print("Waiting for other players to connect...");
+            client.createGame(num);
+        }
+        handleState();
     }
 
     /**
@@ -152,7 +179,7 @@ public class TUI implements UIObserver {
         updates.offer(game);
     }
 
-    public void handleState() throws InterruptedException, IllegalActionException, IOException {
+    public void handleState() throws InterruptedException, IllegalActionException, IOException, ClassNotFoundException {
         while(true){
             game = updates.take();
             printBoard();
@@ -242,6 +269,10 @@ public class TUI implements UIObserver {
                         int effectDraw = 1;
                         effectDraw = drawCardTopRow();
                         break;
+                    case StateDTO.ENDGAME:
+                        //TODO, lavoro di Lisa da gestire come meglio crede
+                        client.leaveMatch();
+                        anotherGame();
                     default:
                         System.out.println("Unhandled state id " + game.getState());
                 }
@@ -289,9 +320,15 @@ public class TUI implements UIObserver {
 
     // -------------------------------- Render functions ---------------------------------------------------------------
 
-    public void renderMenu(){
+    public void renderStartMenu(){
         System.out.println(GREEN + BOLD + "MENU:");
         System.out.println("1. Login");
+        System.out.println("2. Exit");
+    }
+
+    public void renderMenu(){
+        System.out.println(GREEN + BOLD + "MENU:");
+        System.out.println("1. Play again");
         System.out.println("2. Exit");
     }
 

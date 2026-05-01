@@ -57,6 +57,12 @@ public class ServerThread implements Runnable, ObserverTCP {
                     case EXECUTEACTION:
                         executeAction((Action)req.getParams()[0], (String)req.getParams()[1]);
                         break;
+                    case LEAVEMATCH:
+                        leaveMatch((String)req.getParams()[0]);
+                        break;
+                    case LEAVEGAME:
+                        leaveGame((String)req.getParams()[0]);
+                        break;
                     default:
                         break;
                 }
@@ -101,13 +107,33 @@ public class ServerThread implements Runnable, ObserverTCP {
         out.writeObject(msg);
     }
 
+    private void leaveMatch(String name) throws RemoteException {
+        User user = users.get(name);
+        user.setInGame(false);
+        gameController.leaveMatchTCP(name, this);
+    }
+
+    private void leaveGame(String name){
+        User user = users.get(name);
+        user.setActive(false);
+    }
+
     private void joinGame(String name) throws Exception {
-        boolean result = gameController.joinGameTCP(new Player(name), this);
+        User user = users.get(name);
+        boolean result = true;
+        if(!user.getInGame()){
+            result = gameController.joinGameTCP(new Player(name), this);
+            user.setInGame(true);
+        }else{
+            gameController.reconnectGameTCP(name, this);
+        }
         Message msg = new Message(RequestType.JOINGAME, result);
         out.writeObject(msg);
     }
 
     private void createGame(int num, String name) throws IllegalActionException, RemoteException {
+        User user = users.get(name);
+        user.setInGame(true);
         gameController.createGameTCP(new Player(name), num, this);
     }
 

@@ -42,6 +42,16 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         return nickname;
     }
 
+    @Override
+    public void leaveMatch() throws RemoteException {
+        controller.leaveMatch(getNickname());
+    }
+
+    @Override
+    public void leaveGame() throws RemoteException {
+        controller.leaveGame(getNickname());
+    }
+
     public Controller connectToServer() throws RemoteException, NotBoundException {
         // Getting the registry
         Registry registry = LocateRegistry.getRegistry(serverAddress, port);

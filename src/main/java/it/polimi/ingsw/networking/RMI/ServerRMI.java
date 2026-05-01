@@ -70,23 +70,47 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
         ClientCallBack client;
         synchronized (lock) {
+            User user = users.get(name);
+            user.setInGame(true);
             client = clients.get(name);
         }
         gamesController.createGameRMI(new Player(name), numPlayers, client);
     }
 
     @Override
-    public void leaveGame() throws RemoteException {
+    public void leaveGame(String name) throws RemoteException {
+        synchronized (lock){
+            User user = users.get(name);
+            user.setActive(false);
+        }
+    }
+
+    @Override
+    public void leaveMatch(String name) throws RemoteException {
+        ClientCallBack client;
+        synchronized (lock) {
+            User user = users.get(name);
+            user.setInGame(false);
+            client = clients.get(name);
+        }
+        gamesController.leaveMatchRMI(name, client);
     }
 
     @Override
     public boolean joinGame(String name) throws IOException, IllegalActionException, InterruptedException {
         ClientCallBack client;
-        synchronized (lock) {
+        boolean result = true;
+        synchronized (lock){
+            User user = users.get(name);
             client = clients.get(name);
+            if(!user.getInGame()){
+                user.setInGame(true);
+                result = gamesController.joinGameRMI(new Player(name), client);
+            }else{
+                gamesController.reconnectGameRMI(name, client);
+            }
         }
-
-        return gamesController.joinGameRMI(new Player(name), client);
+        return result;
     }
 
     @Override

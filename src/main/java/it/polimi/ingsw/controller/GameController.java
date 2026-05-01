@@ -43,10 +43,6 @@ public class GameController {
         games.add(game);
     }
 
-    public void removeGame(Game game) throws IllegalActionException {
-        games.remove(game);
-    }
-
     public boolean joinGameRMI(Player player, ClientCallBack client) throws IOException, IllegalActionException, InterruptedException {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
@@ -99,5 +95,21 @@ public class GameController {
             getPlayer(player).getGame().setErrorFlag(e.getReason());
         }
         getPlayer(player).getGame().notifyObserver();
+    }
+
+    public void leaveMatchTCP(String player, ObserverTCP client) throws RemoteException {
+        getPlayer(player).getGame().removeObserverTCP(client);
+    }
+
+    public void leaveMatchRMI(String player, ClientCallBack client) throws RemoteException {
+        getPlayer(player).getGame().removeObserverRMI(client);
+    }
+
+    public void reconnectGameTCP(String player, ObserverTCP client) throws RemoteException {
+        getPlayer(player).getGame().addObserverTCP(client);
+    }
+
+    public void reconnectGameRMI(String player, ClientCallBack client) throws RemoteException {
+        getPlayer(player).getGame().addObserverRMI(client);
     }
 }

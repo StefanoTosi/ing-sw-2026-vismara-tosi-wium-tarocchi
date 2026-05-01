@@ -4,11 +4,13 @@ public class User {
     private String nickname;
     private String password;
     private boolean active;
+    private boolean inGame;
 
     public User(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
         this.active = false;
+        this.inGame = false;
     }
 
     public void setNickname(String nickname) {
@@ -33,5 +35,13 @@ public class User {
 
     public boolean isActive() {
         return this.active;
+    }
+
+    public boolean getInGame(){
+        return this.inGame;
+    }
+
+    public void setInGame(boolean inGame){
+        this.inGame = inGame;
     }
 }

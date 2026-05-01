@@ -130,12 +130,36 @@ public class ClientTCP implements Client {
 
     @Override
     public void executeAction(Action action) throws IllegalActionException, IOException {
-        Message request = new Message(RequestType.EXECUTEACTION, action, getNickname());
-        sendRequest(request);
+        try{
+            Message request = new Message(RequestType.EXECUTEACTION, action, getNickname());
+            sendRequest(request);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public String getNickname() {
         return nickname;
+    }
+
+    @Override
+    public void leaveMatch() {
+        try{
+            Message request = new Message(RequestType.LEAVEMATCH, getNickname());
+            sendRequest(request);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void leaveGame() {
+        try{
+            Message request = new Message(RequestType.LEAVEGAME, getNickname());
+            sendRequest(request);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
