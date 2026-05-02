@@ -28,6 +28,21 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         this.serverAddress = address;
     }
 
+    public void ping(){
+        new Thread(() -> {
+            while(true) {
+                try {
+                    controller.ping(getNickname());
+                    Thread.sleep(3000);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
     @Override
     public void receiveMessage(String message) throws RemoteException {
         System.out.println(message + "\n");
@@ -68,8 +83,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public void closingGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
-        observer.closingGame();
+    public void closingGame(GameDTO game) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        //System.out.println("\n");
+        observer.closingGame(game);
     }
 
     @Override

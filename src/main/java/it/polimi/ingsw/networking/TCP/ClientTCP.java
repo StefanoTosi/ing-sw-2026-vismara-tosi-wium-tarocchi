@@ -49,7 +49,7 @@ public class ClientTCP implements Client {
                         update((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
                     }else{
                         if(response.getRequest().equals(RequestType.CLOSEGAME)){
-                            closeGame();
+                            closeGame((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
                         }else{
                             responses.put(response);
                         }
@@ -74,7 +74,7 @@ public class ClientTCP implements Client {
         }
     }
 
-    private void sendRequest(Message request) throws IOException {
+    private synchronized void sendRequest(Message request) throws IOException {
         out.writeObject(request);
         out.flush();
     }
@@ -86,8 +86,8 @@ public class ClientTCP implements Client {
         }
     }
 
-    private void closeGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
-        observer.closingGame();
+    private void closeGame(GameDTO game) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        observer.closingGame(game);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void leaveMatch() {
+    public void leaveMatch() throws InterruptedException {
         try{
             Message request = new Message(RequestType.LEAVEMATCH, getNickname());
             sendRequest(request);
@@ -169,5 +169,20 @@ public class ClientTCP implements Client {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void ping() {
+        new Thread(() -> {
+            while(true) {
+                try{
+                    Message request = new Message(RequestType.PING, getNickname());
+                    sendRequest(request);
+                    Thread.sleep(3000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

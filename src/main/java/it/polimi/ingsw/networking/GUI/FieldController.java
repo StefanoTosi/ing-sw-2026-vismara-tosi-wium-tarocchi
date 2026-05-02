@@ -112,6 +112,12 @@ public class FieldController implements UIObserver {
         GUISession.setGame(game);
     }
 
+    @Override
+    public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+
+    }
+
+
     private Group createCardMesh(Image front, Image back, double width, double height) {
         TriangleMesh frontMesh = new TriangleMesh();
 

@@ -34,12 +34,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Gatherer;
 
 public class TUI implements UIObserver {
-    private Scanner in = new Scanner(System.in);
+    private final Scanner in = new Scanner(System.in);
     private GameDTO game;
     private Client client;
     private int portTCP;
     private int portRMI;
     private String serverAddress;
+    private boolean gameClosed;
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[32m";
     public static final String BLUE = "\u001B[34m";
@@ -64,6 +65,7 @@ public class TUI implements UIObserver {
         this.serverAddress = serverAddress;
         this.portRMI = portRMI;
         this.portTCP = portTCP;
+        this.gameClosed = false;
     }
 
     /**
@@ -75,9 +77,7 @@ public class TUI implements UIObserver {
         int choice = 0;
         do{
             System.out.println(BLUE + BOLD + "Choose between RMI[1] or TCP[2] connection");
-            choice = in.nextInt();
-            //free the buffer
-            in.nextLine();
+            choice = Integer.parseInt(in.nextLine());
         }while(choice != 1 && choice != 2);
         if(choice == 1) {
             this.client = new ClientRMI(this, portRMI, serverAddress);
@@ -109,6 +109,7 @@ public class TUI implements UIObserver {
                     String password = in.nextLine();
                     if(client.addUser(password, username) == 0) flag = false;
                 }
+                client.ping();
                 joinGame();
                 break;
             case 2:
@@ -145,9 +146,7 @@ public class TUI implements UIObserver {
             System.out.print("How many players do you want? ");
             do {
                 System.out.print("(2 to 5 players): ");
-                num = in.nextInt();
-                //free the buffer
-                in.nextLine();
+                num = Integer.parseInt(in.nextLine());
             } while(num < 2 || num > 5);
             System.out.print("Waiting for other players to connect...");
             client.createGame(num);
@@ -180,15 +179,20 @@ public class TUI implements UIObserver {
     }
 
     @Override
-    public void closingGame() throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
-        System.out.println("Sorry, the game as been closed due to a disconnection of a player\n");
+    public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+        System.out.println("\nSorry, the game as been closed due to a disconnection of a player\n");
         client.leaveMatch();
-        anotherGame();
+        this.gameClosed = true;
+        updates.offer(game);
     }
 
     public void handleState() throws InterruptedException, IllegalActionException, IOException, ClassNotFoundException {
         while(true){
             game = updates.take();
+            if(this.gameClosed){
+                this.gameClosed = false;
+                anotherGame();
+            }
             printBoard();
             System.out.println(BLUE + "Current state: " + game.getState());
 
@@ -228,8 +232,9 @@ public class TUI implements UIObserver {
                             System.out.print("(write the letter): ");
                             offer = in.nextLine();
                         } while (offer.length() != 1);
-
-                        client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
+                        if(!this.gameClosed){
+                            client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
+                        }
                         break;
                     case StateDTO.DRAWCARD:
                         // DrawCardsState
@@ -301,10 +306,13 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         System.out.println("Choose which card to draw from the Bottom Row (write its number): \n");
-        card = in.nextInt();
+        card = Integer.parseInt(in.nextLine());
         if(card > 0 && card < game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size()){
-            client.executeAction(new DrawCardFromBottomAction(card));
-            return -1;
+            if(!this.gameClosed){
+                client.executeAction(new DrawCardFromBottomAction(card));
+                return -1;
+            }
+            return -10;
         }else{
             System.out.println("You chose a card out of range\n");
             return 0;
@@ -315,10 +323,13 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         System.out.println("Choose which card to draw from the Top Row (write its number): \n");
-        card = in.nextInt();
+        card = Integer.parseInt(in.nextLine());
         if(card > 0 && card < game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size()){
-            client.executeAction(new DrawCardFromTopAction(card));
-            return -1;
+            if(!this.gameClosed){
+                client.executeAction(new DrawCardFromTopAction(card));
+                return -1;
+            }
+            return -10;
         }else{
             System.out.println("You chose a card out of range\n");
             return 0;

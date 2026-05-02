@@ -122,4 +122,9 @@ public class StartGameController implements UIObserver {
             }
         });
     }
+
+    @Override
+    public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+
+    }
 }

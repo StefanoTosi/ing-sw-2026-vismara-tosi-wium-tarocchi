@@ -43,7 +43,8 @@ public class GameController {
         games.add(game);
     }
 
-    public void removeGame(Game game) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+    public void removeGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        Game game = getPlayer(name).getGame();
         game.closingGame();
         games.remove(game);
     }
@@ -103,11 +104,15 @@ public class GameController {
     }
 
     public void leaveMatchTCP(String player, ObserverTCP client) throws RemoteException {
-        getPlayer(player).getGame().removeObserverTCP(client);
+        if(getPlayer(player) != null){
+            getPlayer(player).getGame().removeObserverTCP(client);
+        }
     }
 
     public void leaveMatchRMI(String player, ClientCallBack client) throws RemoteException {
-        getPlayer(player).getGame().removeObserverRMI(client);
+        if(getPlayer(player) != null){
+            getPlayer(player).getGame().removeObserverRMI(client);
+        }
     }
 
     public void reconnectGameTCP(String player, ObserverTCP client) throws RemoteException {

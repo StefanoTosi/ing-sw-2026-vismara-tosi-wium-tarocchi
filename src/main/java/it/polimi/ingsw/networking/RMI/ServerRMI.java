@@ -16,6 +16,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     private GameController gamesController;
     private final Map<String, ClientCallBack> clients;
     private Map<String, User> users;
+    private ConcurrentHashMap<String, Long> lastSeen = new ConcurrentHashMap<>();
     private final Object lock;
 
     public ServerRMI(GameController game, Map<String, User> users, Object lock) throws RemoteException {
@@ -23,6 +24,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         this.users = users;
         gamesController = game;
         this.lock = lock;
+        checkTimeouts();
     }
 
     @Override
@@ -41,6 +43,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                         success = false;
                     } else {
                         user.setActive(true);
+                        clients.put(nickname, client);
                         message = "Welcome back " + nickname;
                         success = true;
                     }
@@ -67,6 +70,38 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
+    public synchronized void ping(String name) throws RemoteException {
+        lastSeen.put(name, System.currentTimeMillis());
+    }
+
+    public void checkTimeouts(){
+        new Thread(() -> {
+            while(true){
+                long now = System.currentTimeMillis();
+                for(String name : lastSeen.keySet()){
+                    if(now - lastSeen.get(name) > 10000){
+                        users.get(name).setActive(false);
+                        users.get(name).setInGame(false);
+                        try {
+                            leaveMatch(name);
+                            clients.remove(name);
+                            gamesController.removeGame(name);
+                        } catch (IllegalActionException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
+
+    @Override
     public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
         ClientCallBack client;
         synchronized (lock) {
@@ -82,6 +117,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         synchronized (lock){
             User user = users.get(name);
             user.setActive(false);
+            clients.remove(name);
         }
     }
 

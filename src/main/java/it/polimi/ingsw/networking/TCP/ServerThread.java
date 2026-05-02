@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerThread implements Runnable, ObserverTCP {
     private Socket client;
@@ -21,7 +22,10 @@ public class ServerThread implements Runnable, ObserverTCP {
 
     private GameController gameController;
     private Map<String, User> users;
+    private Long lastSeen;
     private final Object lock;
+    private String nickname;
+    private boolean clientOn;
 
 
     public ServerThread(Socket client, GameController game, Map<String, User> users, Object lock) {
@@ -37,11 +41,54 @@ public class ServerThread implements Runnable, ObserverTCP {
         }catch(Exception e){
             e.printStackTrace();
         }
+        this.lastSeen = 0L;
+        this.clientOn = true;
+        checkTimeouts();
+    }
+
+    public void checkTimeouts(){
+        new Thread(() -> {
+            while(clientOn){
+                long now = System.currentTimeMillis();
+                    if(now - lastSeen > 10000 && lastSeen != 0){
+                        users.get(getNickname()).setActive(false);
+                        users.get(getNickname()).setInGame(false);
+                        System.out.println("connessione chiusa con successo "+getNickname());
+                        try {
+                            leaveMatch(getNickname());
+                            gameController.removeGame(getNickname());
+                            this.clientOn = false;
+                            client.close();
+                        } catch (IllegalActionException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
+    public void setNickname(String nickname){
+        this.nickname = nickname;
+    }
+
+    public String getNickname(){
+        return this.nickname;
     }
 
     private void comunicate(){
         try{
-            while(true){
+            while(clientOn){
                 Message req = (Message)in.readObject();
                 switch (req.getRequest()){
                     case ADDUSER:
@@ -63,11 +110,15 @@ public class ServerThread implements Runnable, ObserverTCP {
                     case LEAVEGAME:
                         leaveGame((String)req.getParams()[0]);
                         break;
+                    case PING:
+                        lastSeen = System.currentTimeMillis();
+                        break;
                     default:
                         break;
                 }
             }
         }catch(Exception e){
+            System.out.println("Non sto ricevendo messaggi da " + getNickname());
             e.printStackTrace();
         }
     }
@@ -88,6 +139,7 @@ public class ServerThread implements Runnable, ObserverTCP {
                     } else {
                         user.setActive(true);
                         message = "Welcome back " + nickname;
+                        setNickname(nickname);
                         success = 0;
                     }
                 } else {
@@ -98,28 +150,36 @@ public class ServerThread implements Runnable, ObserverTCP {
                 user = new User(nickname, psw);
                 user.setActive(true);
                 users.put(nickname, user);
+                setNickname(nickname);
                 message = "Welcome " + nickname;
                 success = 0;
             }
         }
 
-        Message msg = new Message(RequestType.ADDUSER, message, success);
-        out.writeObject(msg);
+        Message response = new Message(RequestType.ADDUSER, message, success);
+        sendResponse(response);
     }
 
     private void leaveMatch(String name) throws RemoteException {
-        User user = users.get(name);
-        user.setInGame(false);
+        synchronized (lock){
+            User user = users.get(name);
+            user.setInGame(false);
+        }
         gameController.leaveMatchTCP(name, this);
     }
 
     private void leaveGame(String name){
-        User user = users.get(name);
-        user.setActive(false);
+        synchronized (lock){
+            User user = users.get(name);
+            user.setActive(false);
+        }
     }
 
     private void joinGame(String name) throws Exception {
-        User user = users.get(name);
+        User user;
+        synchronized (lock){
+            user = users.get(name);
+        }
         boolean result = true;
         if(!user.getInGame()){
             result = gameController.joinGameTCP(new Player(name), this);
@@ -127,18 +187,26 @@ public class ServerThread implements Runnable, ObserverTCP {
         }else{
             gameController.reconnectGameTCP(name, this);
         }
-        Message msg = new Message(RequestType.JOINGAME, result);
-        out.writeObject(msg);
+        Message response = new Message(RequestType.JOINGAME, result);
+        sendResponse(response);
     }
 
     private void createGame(int num, String name) throws IllegalActionException, RemoteException {
-        User user = users.get(name);
-        user.setInGame(true);
+        User user;
+        synchronized (lock){
+            user = users.get(name);
+            user.setInGame(true);
+        }
         gameController.createGameTCP(new Player(name), num, this);
     }
 
     private void executeAction(Action action, String nickname) throws IllegalActionException, IOException, InterruptedException {
         gameController.executeAction(action, nickname);
+    }
+
+    private synchronized void sendResponse(Message response) throws IOException {
+        out.writeObject(response);
+        out.flush();
     }
 
     @Override
@@ -149,12 +217,12 @@ public class ServerThread implements Runnable, ObserverTCP {
     @Override
     public void update(GameDTO game) throws Exception {
         Message response = new Message(RequestType.UPDATE, JsonUtil.toJson(game));
-        out.writeObject(response);
+        sendResponse(response);
     }
 
     @Override
-    public void closingGame() throws IOException {
-        Message response = new Message(RequestType.CLOSEGAME);
-        out.writeObject(response);
+    public void closingGame(GameDTO game) throws Exception {
+        Message response = new Message(RequestType.CLOSEGAME, JsonUtil.toJson(game));
+        sendResponse(response);
     }
 }

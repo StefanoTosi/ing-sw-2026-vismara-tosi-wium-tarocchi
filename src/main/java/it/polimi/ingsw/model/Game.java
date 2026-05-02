@@ -69,11 +69,11 @@ public class Game {
 
     public void closingGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         for (ClientCallBack observer : observersRMI) {
-            observer.closingGame();
+            observer.closingGame(this.toDTO());
         }
         for (ObserverTCP observer : observersTCP) {
             try{
-                observer.closingGame();
+                observer.closingGame(this.toDTO());
             }catch(Exception e){
                 e.printStackTrace();
             }
