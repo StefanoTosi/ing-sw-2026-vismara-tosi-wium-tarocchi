@@ -48,6 +48,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
+    public void stopGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        controller.stopGame(name);
+    }
+
+    @Override
     public void receiveMessage(String message) throws RemoteException {
         System.out.println(message + "\n");
     }
@@ -62,7 +67,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public void leaveMatch() throws RemoteException {
+    public void leaveMatch() throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         controller.leaveMatch(getNickname());
     }
 

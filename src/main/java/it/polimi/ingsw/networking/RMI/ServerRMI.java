@@ -85,7 +85,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                         try {
                             leaveMatch(name);
                             clients.remove(name);
-                            gamesController.removeGame(name);
+                            stopGame(name);
                         } catch (IllegalActionException e) {
                             throw new RuntimeException(e);
                         } catch (IOException e) {
@@ -122,7 +122,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public void leaveMatch(String name) throws RemoteException {
+    public void leaveMatch(String name) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         ClientCallBack client;
         synchronized (lock) {
             User user = users.get(name);
@@ -152,5 +152,10 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public void executeAction(Action action, String nickname) throws IOException, IllegalActionException, InterruptedException {
         gamesController.executeAction(action, nickname);
+    }
+
+    @Override
+    public void stopGame(String name) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+        gamesController.removeGame(name);
     }
 }

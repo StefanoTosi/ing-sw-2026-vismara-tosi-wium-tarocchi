@@ -15,7 +15,8 @@ public interface Client {
     public void createGame(int num) throws IllegalActionException, IOException;
     public void executeAction(Action action) throws IllegalActionException, IOException, InterruptedException;
     public String getNickname();
-    public void leaveMatch() throws RemoteException, InterruptedException;
+    public void leaveMatch() throws IOException, InterruptedException, IllegalActionException, ClassNotFoundException;
     public void leaveGame() throws RemoteException;
     public void ping();
+    public void stopGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException;
 }

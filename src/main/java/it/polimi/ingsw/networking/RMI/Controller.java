@@ -10,7 +10,8 @@ public interface Controller extends Remote{
     public void ping(String name) throws RemoteException;
     public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException;
     public void leaveGame(String name) throws RemoteException;
-    public void leaveMatch(String name) throws RemoteException;
+    public void leaveMatch(String name) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException;
     public boolean joinGame(String name) throws IOException, IllegalActionException, InterruptedException;
     public void executeAction(Action action, String nickname) throws IOException, IllegalActionException, InterruptedException;
+    public void stopGame(String name) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException;
 }

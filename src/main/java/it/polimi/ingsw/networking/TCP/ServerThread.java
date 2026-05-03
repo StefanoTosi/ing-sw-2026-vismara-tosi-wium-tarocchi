@@ -56,7 +56,7 @@ public class ServerThread implements Runnable, ObserverTCP {
                         System.out.println("connessione chiusa con successo "+getNickname());
                         try {
                             leaveMatch(getNickname());
-                            gameController.removeGame(getNickname());
+                            closeGame();
                             this.clientOn = false;
                             client.close();
                         } catch (IllegalActionException e) {
@@ -113,6 +113,9 @@ public class ServerThread implements Runnable, ObserverTCP {
                     case PING:
                         lastSeen = System.currentTimeMillis();
                         break;
+                    case CLOSEGAME:
+                        closeGame();
+                        break;
                     default:
                         break;
                 }
@@ -121,6 +124,10 @@ public class ServerThread implements Runnable, ObserverTCP {
             System.out.println("Non sto ricevendo messaggi da " + getNickname());
             e.printStackTrace();
         }
+    }
+
+    private void closeGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        gameController.removeGame(getNickname());
     }
 
     private void addUser(String psw, String nickname) throws IOException {
@@ -160,7 +167,7 @@ public class ServerThread implements Runnable, ObserverTCP {
         sendResponse(response);
     }
 
-    private void leaveMatch(String name) throws RemoteException {
+    private void leaveMatch(String name) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         synchronized (lock){
             User user = users.get(name);
             user.setInGame(false);

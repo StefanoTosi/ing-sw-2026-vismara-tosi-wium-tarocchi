@@ -45,8 +45,10 @@ public class GameController {
 
     public void removeGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         Game game = getPlayer(name).getGame();
-        game.closingGame();
-        games.remove(game);
+        if(game != null){
+            game.closingGame();
+            games.remove(game);
+        }
     }
 
     public boolean joinGameRMI(Player player, ClientCallBack client) throws IOException, IllegalActionException, InterruptedException {

@@ -188,6 +188,16 @@ public class ClientTCP implements Client {
         }).start();
     }
 
+    @Override
+    public void stopGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        try{
+            Message request = new Message(RequestType.CLOSEGAME);
+            sendRequest(request);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private void shutDownClient(){
         System.out.println("\nSorry the server crashed\n");
         try {
