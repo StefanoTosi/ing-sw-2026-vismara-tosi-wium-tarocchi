@@ -35,8 +35,12 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
                     controller.ping(getNickname());
                     Thread.sleep(3000);
                 } catch (RemoteException e) {
+                    System.out.println("\nSorry the server crashed\n");
+                    System.exit(1);
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
+                    System.out.println("\nSorry the server crashed\n");
+                    System.exit(1);
                     throw new RuntimeException(e);
                 }
             }

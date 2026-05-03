@@ -68,6 +68,14 @@ public class TUI implements UIObserver {
         this.gameClosed = false;
     }
 
+    public boolean getGameClosed(){
+        return this.gameClosed;
+    }
+
+    public void setGameClosed(boolean gameClosed){
+        this.gameClosed = gameClosed;
+    }
+
     /**
      * Lets the user choose between a TCP connection and an RMI connection
      * @throws NotBoundException
@@ -182,15 +190,15 @@ public class TUI implements UIObserver {
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         System.out.println("\nSorry, the game as been closed due to a disconnection of a player\n");
         client.leaveMatch();
-        this.gameClosed = true;
+        setGameClosed(true);
         updates.offer(game);
     }
 
     public void handleState() throws InterruptedException, IllegalActionException, IOException, ClassNotFoundException {
         while(true){
             game = updates.take();
-            if(this.gameClosed){
-                this.gameClosed = false;
+            if(getGameClosed()){
+                setGameClosed(false);
                 anotherGame();
             }
             printBoard();
@@ -232,7 +240,7 @@ public class TUI implements UIObserver {
                             System.out.print("(write the letter): ");
                             offer = in.nextLine();
                         } while (offer.length() != 1);
-                        if(!this.gameClosed){
+                        if(!getGameClosed()){
                             client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
                         }
                         break;
@@ -308,7 +316,7 @@ public class TUI implements UIObserver {
         System.out.println("Choose which card to draw from the Bottom Row (write its number): \n");
         card = Integer.parseInt(in.nextLine());
         if(card > 0 && card < game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size()){
-            if(!this.gameClosed){
+            if(!getGameClosed()){
                 client.executeAction(new DrawCardFromBottomAction(card));
                 return -1;
             }
@@ -325,7 +333,7 @@ public class TUI implements UIObserver {
         System.out.println("Choose which card to draw from the Top Row (write its number): \n");
         card = Integer.parseInt(in.nextLine());
         if(card > 0 && card < game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size()){
-            if(!this.gameClosed){
+            if(!getGameClosed()){
                 client.executeAction(new DrawCardFromTopAction(card));
                 return -1;
             }
