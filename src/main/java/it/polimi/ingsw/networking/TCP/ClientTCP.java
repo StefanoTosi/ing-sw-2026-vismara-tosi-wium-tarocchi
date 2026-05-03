@@ -56,6 +56,7 @@ public class ClientTCP implements Client {
                     }
                 }
             }catch (Exception e){
+                shutDownClient();
                 e.printStackTrace();
             }
         }).start();
@@ -180,16 +181,20 @@ public class ClientTCP implements Client {
                     sendRequest(request);
                     Thread.sleep(3000);
                 }catch (Exception e){
-                    System.out.println("\nSorry the server crashed\n");
-                    try {
-                        mySocket.close();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    System.exit(1);
+                    shutDownClient();
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    private void shutDownClient(){
+        System.out.println("\nSorry the server crashed\n");
+        try {
+            mySocket.close();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        System.exit(1);
     }
 }
