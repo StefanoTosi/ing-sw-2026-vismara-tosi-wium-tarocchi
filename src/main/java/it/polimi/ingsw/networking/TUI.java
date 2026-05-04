@@ -42,7 +42,7 @@ public class TUI implements UIObserver {
     private String serverAddress;
     private boolean gameClosed;
     public static final String RED = "\u001B[31m";
-    public static final String YELLOW = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
     public static final String BLUE = "\u001B[34m";
     public static final String GREEN = "\u001B[32m";
     public static final String ORANGE ="\u001B[38;5;208m";
@@ -228,7 +228,7 @@ public class TUI implements UIObserver {
                         char[] freeTiles = new char[game.getNumPlayers() * 2];
                         int i = 0;
                         for (OfferDTO offerTile : offerTiles) {
-                            freeTiles[i] = offerTile.getOrder();
+                            freeTiles[i++] = offerTile.getOrder();
                         }
 
                         String offer;
@@ -291,6 +291,7 @@ public class TUI implements UIObserver {
                         break;
                     case StateDTO.ENDGAME:
                         //TODO, lavoro di Lisa da gestire come meglio crede
+                        printRankings();
                         client.leaveMatch();
                         anotherGame();
                     default:
@@ -310,12 +311,32 @@ public class TUI implements UIObserver {
         // notify observer in game.java
     }
 
+    private void printRankings(){
+        List<PlayerDTO> ranking = game.getRankings();
+        int displayedPos = 1;
+        for(int i = 0; i < ranking.size(); i++){
+            if(i > 0){
+                PlayerDTO current = ranking.get(i);
+                PlayerDTO previous = ranking.get(i-1);
+                boolean tied =  current.getPp() == previous.getPp() && current.getFood() == previous.getFood();
+
+                if(!tied){
+                    displayedPos = i + 1;
+                }
+            }
+
+            PlayerDTO p = ranking.get(i);
+            System.out.printf("%d. %-15s (%d PP, %d food)%n",displayedPos, p.getName(), p.getPp(), p.getFood());
+        }
+    }
+
     private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         System.out.println("Choose which card to draw from the Bottom Row (write its number): \n");
         card = Integer.parseInt(in.nextLine());
-        if(card > 0 && card < game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size()){
+        int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
+        if(card > 0 && card <= size){
             if(!getGameClosed()){
                 client.executeAction(new DrawCardFromBottomAction(card));
                 return -1;
@@ -332,7 +353,8 @@ public class TUI implements UIObserver {
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         System.out.println("Choose which card to draw from the Top Row (write its number): \n");
         card = Integer.parseInt(in.nextLine());
-        if(card > 0 && card < game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size()){
+        int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
+        if(card > 0 && card <= size){
             if(!getGameClosed()){
                 client.executeAction(new DrawCardFromTopAction(card));
                 return -1;
@@ -384,7 +406,7 @@ public class TUI implements UIObserver {
             build[i] = new StringBuilder();
         }
         //------------- Adding the cards
-        lines = HandleCards(cards);
+        lines = handleCards(cards);
         //------------- Adding the buildings
         build = printBuildings(buildings);
         for(int i = 0; i < 7; i++){
@@ -416,7 +438,7 @@ public class TUI implements UIObserver {
      * Function that handles card input and prints them based on what they are, calling other functions as support
      * @return
      */
-    public StringBuilder[] HandleCards(List<CardDTO> cards){
+    public StringBuilder[] handleCards(List<CardDTO> cards){
         StringBuilder[] lines = new StringBuilder[7];
         for(int i = 0; i < 7; i++){
             lines[i] = new StringBuilder();
@@ -759,10 +781,20 @@ public class TUI implements UIObserver {
         }
     }
 
-    // --------------------------- Helper functions for StringBuilder --------------------------------------------------
+    // --------------------------- Helper functions ----------------------------------------------------------
     public void printLine(StringBuilder[] lines){
         for(StringBuilder line : lines){
             System.out.println(line);
+        }
+    }
+
+    private int readInt(){
+        while(true){
+            try{
+                return Integer.parseInt(in.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Invalid number\n");
+            }
         }
     }
 }

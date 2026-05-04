@@ -17,7 +17,7 @@ public class GameDTO implements Serializable {
     private StateDTO state; // TODO: temporaneo, possiamo serializzare i GameState?
     private PlayerDTO playerTurn;
     private int turnNumber;
-    //private List<PlayerDTO> rankings;
+    private List<PlayerDTO> rankings;
 
     @JsonCreator
     private GameDTO() {}
@@ -28,7 +28,7 @@ public class GameDTO implements Serializable {
         this.board = board;
         this.state = state;
         this.playerTurn = playerTurn;
-        //this.rankings = List.copyOf(rankings);
+        this.rankings = List.copyOf(rankings);
     }
 
     public List<PlayerDTO> getPlayers() {
@@ -51,9 +51,9 @@ public class GameDTO implements Serializable {
         return playerTurn;
     }
 
-    /*
+
     public List<PlayerDTO> getRankings() {
         return rankings;
     }
-    */
+
 }

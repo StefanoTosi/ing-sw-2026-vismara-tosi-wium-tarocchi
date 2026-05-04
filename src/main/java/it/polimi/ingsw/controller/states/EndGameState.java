@@ -24,6 +24,7 @@ public class EndGameState extends GameState {
      */
     public void calculateRankings() {
         List<Player> rankings = game.getPlayers();
+
         for (Player player : rankings) {
             player.addPp(player.countTribePp());
 
@@ -32,7 +33,13 @@ public class EndGameState extends GameState {
             }
         }
 
-        rankings.sort(Comparator.comparingInt(Player::getPp).reversed());
+        // first compares players based on PPs, then based on food, so that in case of a tie based on PP score
+        // it checks if it is also a tie based on Food
+        rankings.sort(
+                Comparator.comparingInt(Player::getPp).reversed()
+                .thenComparing(Comparator.comparingInt(Player::getFood).reversed())
+        );
+
         game.setRankings(rankings);
     }
 }
