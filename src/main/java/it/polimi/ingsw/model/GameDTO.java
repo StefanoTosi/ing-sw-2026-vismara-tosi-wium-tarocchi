@@ -22,13 +22,14 @@ public class GameDTO implements Serializable {
     @JsonCreator
     private GameDTO() {}
 
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn/*, List<PlayerDTO> rankings*/) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn/*, List<PlayerDTO> rankings*/, int turnNumber) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
         this.state = state;
         this.playerTurn = playerTurn;
         //this.rankings = List.copyOf(rankings);
+        this.turnNumber = turnNumber;
     }
 
     public List<PlayerDTO> getPlayers() {
@@ -56,4 +57,8 @@ public class GameDTO implements Serializable {
         return rankings;
     }
     */
+
+    public int getTurnNumber() {
+        return turnNumber;
+    }
 }

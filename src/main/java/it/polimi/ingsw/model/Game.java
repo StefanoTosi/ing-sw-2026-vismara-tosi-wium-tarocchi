@@ -21,6 +21,7 @@ public class Game {
     private Player playerTurn;
     private String errorFlag;
     private Random rng;
+    private int turnNumber;
 
     public Game (List<Player> players, Random rng) throws IllegalArgumentException {
         this.players = players;
@@ -36,6 +37,7 @@ public class Game {
         this.playerTurn = null;
         this.errorFlag = "";
         this.rng = rng;
+        this.turnNumber = 1;
     }
 
     public void addObserverRMI(ClientCallBack observer){
@@ -115,7 +117,7 @@ public class Game {
         }
 
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO(), getState().getStateDTO(), turn.toDTO()/*, getRankings().stream().map(Player::toDTO).toList()*/);
+                getBoard().toDTO(), getState().getStateDTO(), turn.toDTO()/*, getRankings().stream().map(Player::toDTO).toList()*/, getTurnNumber());
     }
 
     public Player getPlayerTurn() {
@@ -136,5 +138,13 @@ public class Game {
 
     public Random gerRng() {
         return rng;
+    }
+
+    public int getTurnNumber() {
+        return turnNumber;
+    }
+
+    public void newTurn() {
+        this.turnNumber++;
     }
 }
