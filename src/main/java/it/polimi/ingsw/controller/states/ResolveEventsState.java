@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ResolveEventsState extends GameState {
@@ -22,28 +23,28 @@ public class ResolveEventsState extends GameState {
 
     public void resolveEvents() throws IllegalActionException, RemoteException {
         List<Card> bottomRow = game.getBoard().getBottomRowTribe();
-        List<Event> events = new ArrayList<>();
-        for (Card card : bottomRow) {
-            if (card instanceof Event) {
-                events.add((Event) card);
-            }
-        }
+        List<Event> events = bottomRow.stream().filter(card -> card instanceof Event).map(card -> (Event)card).toList();
+
+        List<Event> orderedEvents = new ArrayList<>(events);
 
         // Move Sustenance events to solve them last
-        for(Event event : events) {
-            if (event instanceof Sustenance) {
-                events.remove(event);
-                events.add(event);
-            }
-        }
+        orderedEvents.sort(
+                Comparator.comparing(
+                        event -> event instanceof Sustenance)
+        );
+
 
         for (Event event : events) {
             event.applyEffect(game.getPlayers());
             System.out.println("Resolved event " + event.getName());
         }
 
+        bottomRow.removeAll(orderedEvents);
+
         // Transition to EndTurnState
         System.out.println("Finished resolving events");
-        EndTurnState e = new EndTurnState(game);
+        game.setState(
+                new EndTurnState(game)
+        );
     }
 }
