@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.networking.GUI.StartGameController">
    <children>
-      <VBox fx:id="clientSelect" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="clientSelect" alignment="CENTER" layoutY="90.0" prefHeight="330.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
          <children>
-            <Label fx:id="label" text="What client do you want to use?">
+            <Label fx:id="label" style="-fx-background-color: rgba(0, 0, 0, 0.3);" text=" What client do you want to use? " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </Label>
             <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="10.0">
                <children>
@@ -22,7 +26,7 @@
          </children>
       </VBox>
 
-      <VBox fx:id="login" alignment="CENTER" layoutX="156.0" prefHeight="400.0" prefWidth="288.0" spacing="20.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="156.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="login" alignment="CENTER" layoutX="156.0" layoutY="90.0" prefHeight="400.0" prefWidth="288.0" spacing="20.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="156.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="90.0">
          <children>
             <Label text="Login">
                <font>
@@ -34,15 +38,9 @@
             <Button mnemonicParsing="false" onAction="#login" text="Login" />
          </children>
       </VBox>
-      <VBox fx:id="newGame" alignment="CENTER" layoutX="157.0" prefHeight="400.0" prefWidth="288.0" spacing="20.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="waiting" alignment="CENTER" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="No game found, let's create one!" />
-            <TextField fx:id="numPlayers" promptText="Number of players (2 - 5)" />
-            <Button mnemonicParsing="false" onAction="#createGame" text="Create" />
-         </children></VBox>
-      <VBox fx:id="waiting" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Label alignment="CENTER" text="Waiting for other players to connect...">
+            <Label alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.3);" text=" Waiting for other players to connect... " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -54,5 +52,11 @@
             <Label text="Error message" textFill="WHITE" />
          </children>
       </VBox>
+      <VBox fx:id="newGame" alignment="CENTER" layoutX="157.0" layoutY="90.0" prefHeight="400.0" prefWidth="288.0" spacing="20.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="90.0">
+         <children>
+            <Label style="-fx-background-color: rgba(0, 0, 0, 0.3);" text=" No game found, let's create one! " textFill="WHITE" />
+            <TextField fx:id="numPlayers" promptText="Number of players (2 - 5)" />
+            <Button mnemonicParsing="false" onAction="#createGame" text="Create" />
+         </children></VBox>
    </children>
 </AnchorPane>

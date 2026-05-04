@@ -1,12 +1,10 @@
 package it.polimi.ingsw.networking.GUI;
 
-import it.polimi.ingsw.model.GameDTO;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import it.polimi.ingsw.networking.UIObserver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +21,8 @@ public class GUIApplication extends Application {
 
         stage.setTitle("Mesos");
         stage.setScene(scene);
-        stage.show();
+        Image icon = new Image("icon.png");
+        stage.getIcons().add(icon);
+        scene.getRoot().setStyle("-fx-background-image: url('/cover.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat;");        stage.show();
     }
 }
