@@ -22,7 +22,7 @@ public class GameDTO implements Serializable {
     @JsonCreator
     private GameDTO() {}
 
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn/*, List<PlayerDTO> rankings*/, int turnNumber) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
