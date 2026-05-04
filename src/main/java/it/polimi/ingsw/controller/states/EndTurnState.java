@@ -3,8 +3,6 @@ package it.polimi.ingsw.controller.states;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.board.Offer;
-import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.characters.Character;
@@ -73,6 +71,7 @@ public class EndTurnState extends GameState {
                 // When all players have draw, transition to FillBoardState
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
+                game.newTurn();
 
                 FillBoardState f = new FillBoardState(game);
                 f.refillBoard();
