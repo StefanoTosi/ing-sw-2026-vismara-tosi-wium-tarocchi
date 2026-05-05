@@ -30,7 +30,7 @@ public class EndTurnState extends GameState {
                 .filter(p -> p.getCanPickFromTop())
                 .toList());
 
-        game.setTurnNumber(game.getTurnNumber() + 1);
+        game.newTurn();
         if (drawOrder.size() > 0) {
             game.setPlayerTurn(drawOrder.remove(0));
         } else {
@@ -69,10 +69,9 @@ public class EndTurnState extends GameState {
             if (drawOrder.size() > 0) {
                 game.setPlayerTurn(drawOrder.remove(0));
             } else {
-                // When all players have draw, transition to FillBoardState
+                // When all players have drawn, transition to FillBoardState
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
-                game.newTurn();
 
                 FillBoardState f = new FillBoardState(game);
                 f.refillBoard();

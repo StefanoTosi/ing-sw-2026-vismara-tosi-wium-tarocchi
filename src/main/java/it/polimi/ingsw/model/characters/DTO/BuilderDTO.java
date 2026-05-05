@@ -16,10 +16,12 @@ public class BuilderDTO extends CardDTO implements Serializable {
         super(era, "Character", "Builder", id);
     }
 
+    @Override
     public int getFoodDiscount() {
         return foodDiscount;
     }
 
+    @Override
     public int getPp() {
         return pp;
     }
