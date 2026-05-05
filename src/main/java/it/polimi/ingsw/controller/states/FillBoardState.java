@@ -44,7 +44,7 @@ public class FillBoardState extends GameState {
                 board.getTopRowBuilding().size() == 0 &&
                 board.getBottomRowBuilding().size() == 0;
 
-        // At the beginning of the game, randomly put layers on the order tile
+        // At the beginning of the game, randomly put players on the order tile
         List<Player> ordered;
         if (boardUninitialized) {
             ordered = new ArrayList<>(game.getPlayers());

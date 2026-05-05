@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.characters.Character;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class EndTurnState extends GameState {
@@ -36,9 +37,8 @@ public class EndTurnState extends GameState {
         } else {
             System.out.println("Finished end turn phase");
             game.setPlayerTurn(null);
-
-            FillBoardState f = new FillBoardState(game);
-            f.refillBoard();
+                FillBoardState f = new FillBoardState(game);
+                f.refillBoard();
         }
     }
 
@@ -73,7 +73,6 @@ public class EndTurnState extends GameState {
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
                 game.newTurn();
-
                 FillBoardState f = new FillBoardState(game);
                 f.refillBoard();
             }
