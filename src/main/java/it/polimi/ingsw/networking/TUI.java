@@ -275,11 +275,11 @@ public class TUI implements UIObserver {
                                 System.out.println("after drawing from top" + drawTop + "\n");
                             } else {
                                 drawBottom += drawCardBottomRow();
-                                System.out.println("after drawing from bottom" + drawTop + "\n");
+                                System.out.println("after drawing from bottom" + drawBottom+ "\n");
                             }
-                            if (drawTop + drawBottom > 0) {
+                            /*if (drawTop + drawBottom > 0) {  CRASHA SE METTO NUMERO SBAGLIATO PER COLPA DI QUESTO
                                 game = updates.take();
-                            }
+                            }*/
                         }
                         break;
                     case StateDTO.ENDTURN:
@@ -334,7 +334,7 @@ public class TUI implements UIObserver {
     private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
-        System.out.println("Choose which card to draw from the Bottom Row (write its number): \n");
+        System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
         card = Integer.parseInt(in.nextLine()) - 1; // fixes index and pos mismatch
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
         if(card >= 0 && card < size){
@@ -352,7 +352,7 @@ public class TUI implements UIObserver {
     private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
-        System.out.println("Choose which card to draw from the Top Row (write its number): \n");
+        System.out.println("Choose which card to draw from the Top Row (write its number): ");
         card = Integer.parseInt(in.nextLine()) - 1; // fixes index and pos mismatch
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         if(card >= 0 && card < size){
@@ -409,27 +409,28 @@ public class TUI implements UIObserver {
         //------------- Adding the cards
         lines = handleCards(cards);
         //------------- Adding the buildings
-        build = printBuildings(buildings);
+        build = printBuildings(buildings, cards.size());
         for(int i = 0; i < 7; i++){
             lines[i].append(build[i]);
         }
         printLine(lines);
     }
 
-    public StringBuilder[] printBuildings(List<BuildingDTO> buildings){
+    public StringBuilder[] printBuildings(List<BuildingDTO> buildings, int numCard){
         StringBuilder[] lines = new StringBuilder[7];
         for(int i = 0; i < 7; i++){
             lines[i] = new StringBuilder();
         }
 
         for(BuildingDTO building : buildings) {
-            lines[0].append(ORANGE + "+----------+");
+            lines[0].append(ORANGE).append(String.format("+----%d-----+", numCard));
             lines[1].append(ORANGE).append(String.format("|%-10s|", "Build"));
             lines[2].append(ORANGE).append(String.format("|%-10s|", building.getCost()));
             lines[3].append(ORANGE).append(String.format("|%-10s|", building.getEffect()));
             lines[4].append(ORANGE).append(String.format("|%-10s|", building.getEra()));
             lines[5].append(ORANGE + "|          |");
             lines[6].append(ORANGE + "+----------+");
+            numCard++;
         }
         return lines;
     }
@@ -540,9 +541,9 @@ public class TUI implements UIObserver {
         appendLines(lines, printArtist(player.getArtists()));
         appendLines(lines, printGatherer(player.getGatherers()));
         appendLines(lines, printHunter(player.getHunters()));
-        //lines = printInventor(player.getInventors());
-        //lines = printBuilders(player.getBuilders());
-        appendLines(lines,printBuildings(player.getBuildings()));
+        appendLines(lines, printInventor(player.getInventors()));
+        appendLines(lines, printBuilders(player.getBuilders()));
+        appendLines(lines,printBuildings(player.getBuildings(), 0));
         boolean isEmpty = true;
 
         for(StringBuilder line : lines){
@@ -655,7 +656,7 @@ public class TUI implements UIObserver {
      * Function to print the Inventor cards of a player
      * @param inventors
      */
-    public void printInventor(List<InventorDTO> inventors) {
+    public StringBuilder[] printInventor(List<InventorDTO> inventors) {
         StringBuilder[] lines = new StringBuilder[7];
 
         for(int i=0; i < 7; i++){
@@ -672,13 +673,14 @@ public class TUI implements UIObserver {
             lines[6].append("+----------+");
         }
 
+        return lines;
     }
 
     /**
      * Function to print the Inventor cards of a player
      * @param builders
      */
-    public void printBuilders(List<BuilderDTO> builders) {
+    public StringBuilder[] printBuilders(List<BuilderDTO> builders) {
         StringBuilder[] lines = new StringBuilder[7];
 
         for(int i=0; i < 7; i++){
@@ -694,7 +696,7 @@ public class TUI implements UIObserver {
             lines[5].append(String.format("|%-10s|", builder.getEra()));
             lines[6].append("+----------+");
         }
-
+        return lines;
     }
 
     /**
