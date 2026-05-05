@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class GathererDTO extends CardDTO implements Serializable {
     @JsonCreator
-    public GathererDTO(String era, @JsonProperty("id") int id) {
+    public GathererDTO(@JsonProperty("era") String era, @JsonProperty("id") int id) {
         super(era, "Character", "Gatherer", id);
     }
 }
