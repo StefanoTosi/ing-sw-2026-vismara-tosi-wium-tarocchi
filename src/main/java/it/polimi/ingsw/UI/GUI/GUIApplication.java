@@ -14,7 +14,7 @@ public class GUIApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("start-game.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
         UISession.setObserver(fxmlLoader.getController());
 
         PerspectiveCamera camera = new PerspectiveCamera();

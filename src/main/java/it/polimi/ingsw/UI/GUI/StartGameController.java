@@ -112,16 +112,13 @@ public class StartGameController implements UIObserver {
                 FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("field.fxml"));
                 Parent fieldRoot = null;
 
-                System.out.println("Trying to load");
                 try {
                     fieldRoot = fxmlLoader.load();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 label.getScene().setRoot(fieldRoot);
-                System.out.println(fxmlLoader.getController().getClass());
                 UISession.setObserver(fxmlLoader.getController());
-                System.out.println("Overwitten observer");
             }
         });
     }

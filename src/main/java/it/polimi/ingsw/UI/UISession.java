@@ -50,6 +50,9 @@ public class UISession {
 
     public static void setObserver(UIObserver observer) {
         UISession.observer = observer;
+        if (client != null) {
+            client.setObserver(observer);
+        }
     }
 
     public static GameDTO getGame() {

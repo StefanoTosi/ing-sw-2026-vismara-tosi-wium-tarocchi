@@ -213,6 +213,7 @@ public class ServerThread implements Runnable, ObserverTCP {
 
     private synchronized void sendResponse(Message response) throws IOException {
         out.writeObject(response);
+        out.reset();
         out.flush();
     }
 

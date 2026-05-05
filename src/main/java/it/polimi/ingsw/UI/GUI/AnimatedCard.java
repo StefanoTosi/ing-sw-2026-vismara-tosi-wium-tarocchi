@@ -28,13 +28,10 @@ public class AnimatedCard {
     private Rectangle reference;
     private CardDTO card;
 
-    final int cardW = 575 / 4;
-    final int cardH = 810 / 4;
+    final int cardW = 575 / 5;
+    final int cardH = 810 / 5;
 
-    final int tileW = 391 / 4;
-    final int tileH = 627 / 4;
-
-    public AnimatedCard(CardDTO card, HBox row, Pane cardsContainer, EventHandler<MouseEvent> clickHandler) {
+    public AnimatedCard(CardDTO card, EventHandler<MouseEvent> clickHandler) {
         this.card = card;
 
         // Load images
@@ -49,9 +46,6 @@ public class AnimatedCard {
         mesh.setLayoutX(-cardW);
         mesh.setLayoutY(-cardH);
         mesh.setOnMouseClicked(clickHandler);
-
-        row.getChildren().add(reference);
-        cardsContainer.getChildren().add(mesh);
     }
 
     public Group getMesh() {
@@ -83,9 +77,9 @@ public class AnimatedCard {
         mesh.setLayoutY(reference.localToScene(0, 0).getY());
     }
 
-    public void animatePosition() {
+    public void animatePosition(Duration d) {
         mesh.toFront();
-        TranslateTransition trans = new TranslateTransition(Duration.seconds(2), mesh);
+        TranslateTransition trans = new TranslateTransition(d, mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
         trans.setFromX(0);
@@ -104,16 +98,39 @@ public class AnimatedCard {
             mesh.setTranslateX(0);
             mesh.setTranslateY(0);
         });
+        trans.play();
 
         // 3D flip
-        RotateTransition rotator = new RotateTransition(Duration.seconds(2), mesh);
+        /*RotateTransition rotator = new RotateTransition(Duration.seconds(2), mesh);
         rotator.setAxis(Rotate.Y_AXIS);
         rotator.setFromAngle(180);
         rotator.setToAngle(0);
         rotator.setDelay(Duration.seconds(0.2));
         rotator.setInterpolator(Interpolator.EASE_BOTH);
-        rotator.play();
+        rotator.play();*/
+    }
 
+    public void animatePosition(Duration d, double x, double y) {
+        mesh.toFront();
+        TranslateTransition trans = new TranslateTransition(d, mesh);
+        trans.setInterpolator(Interpolator.EASE_BOTH);
+
+        trans.setFromX(0);
+        trans.setToX(x - mesh.getLayoutX());
+
+        trans.setFromY(0);
+        trans.setToY(y - mesh.getLayoutY());
+
+        trans.setOnFinished(event -> {
+            double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
+            double newLayoutY = mesh.getLayoutY() + mesh.getTranslateY();
+
+            mesh.setLayoutX(newLayoutX);
+            mesh.setLayoutY(newLayoutY);
+
+            mesh.setTranslateX(0);
+            mesh.setTranslateY(0);
+        });
         trans.play();
     }
 

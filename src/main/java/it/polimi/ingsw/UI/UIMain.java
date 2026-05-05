@@ -37,8 +37,10 @@ public class UIMain {
                 TUI tui = new TUI(UISession.getPortRMI(), UISession.getPortTCP(), UISession.getAddr());
                 tui.chooseTCPorRMI();
                 tui.start();
+                return;
             } else if (in.equals("2")) {
                 Application.launch(GUIApplication.class, args);
+                return;
             }
         }
     }
