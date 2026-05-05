@@ -84,6 +84,7 @@ public class Board {
             JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/cards.json"));
             JsonNode cardsNode = root.get("cards");
 
+            int id = 1;
             for (JsonNode node : cardsNode) {
                 Era era = Era.valueOf(node.get("era").asText());
                 switch (node.get("role").asText()) {
@@ -114,6 +115,7 @@ public class Board {
                             }
 
                             // Insert character in the correct tribe deck
+                            character.setId(id);
                             switch (era) {
                                 case I:
                                     tribeI.add(character);
@@ -146,6 +148,7 @@ public class Board {
                             default:
                                 throw new DataFormatException("Unrecognized event '" + node.get("type").asText() + "' while parsing cards.json");
                         }
+                        event.setId(id);
 
                         if (node.get("final").asBoolean()) {
                             finalEvents.add(event);
@@ -219,6 +222,7 @@ public class Board {
                         }
 
                         Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, getNumCharacter, effect);
+                        building.setId(id);
 
                         switch (era) {
                             case I:
@@ -235,6 +239,7 @@ public class Board {
                     default:
                         throw new DataFormatException("Unrecognized role '" + node.get("role").asText() + "' while parsing cards.json");
                 }
+                id += 1;
             }
         } catch (Exception e) {
             System.out.println("Error in loading cards from json file");

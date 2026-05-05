@@ -12,11 +12,11 @@ public class GUIMain {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
 
-        try{
+        try {
             GUISession.setPortRMI(root.get("port_rmi").asInt());
             GUISession.setPortTCP(root.get("port_tcp").asInt());
             GUISession.setAddr(root.get("host").asText());
-        }catch(Exception e){
+        } catch(Exception e) {
             // Fallback to local test values
             GUISession.setPortRMI(1099);
             GUISession.setPortTCP(1234);

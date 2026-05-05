@@ -10,10 +10,10 @@ public class BuilderDTO extends CardDTO implements Serializable {
     private final int pp;
 
     @JsonCreator
-    public BuilderDTO(@JsonProperty("foodDiscount") int foodDiscount, @JsonProperty("pp") int pp, @JsonProperty("era") String era) {
+    public BuilderDTO(@JsonProperty("foodDiscount") int foodDiscount, @JsonProperty("pp") int pp, @JsonProperty("era") String era, @JsonProperty("id") int id) {
         this.foodDiscount = foodDiscount;
         this.pp = pp;
-        super(era, "Character", "Builder");
+        super(era, "Character", "Builder", id);
     }
 
     public int getFoodDiscount() {

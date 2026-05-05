@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class ShamanDTO extends CardDTO implements Serializable {
     private final int stars;
 
-    public ShamanDTO(@JsonProperty("era") String era, @JsonProperty("stars") int stars) {
-        super(era, "Character", "Shaman");
+    public ShamanDTO(@JsonProperty("era") String era, @JsonProperty("stars") int stars, @JsonProperty("id") int id) {
+        super(era, "Character", "Shaman", id);
         this.stars = stars;
     }
 

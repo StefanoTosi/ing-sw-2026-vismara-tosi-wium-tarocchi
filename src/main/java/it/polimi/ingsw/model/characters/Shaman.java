@@ -30,6 +30,6 @@ public class Shaman extends Character {
     }
 
     public ShamanDTO toDTO(){
-        return new ShamanDTO(getEra().name(), getStars());
+        return new ShamanDTO(getEra().name(), getStars(), getId());
     }
 }

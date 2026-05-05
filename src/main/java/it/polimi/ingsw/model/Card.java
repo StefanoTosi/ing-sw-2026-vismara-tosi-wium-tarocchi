@@ -8,6 +8,7 @@ package it.polimi.ingsw.model;
 public abstract class Card {
     protected Era era;
     protected String TYPE;
+    protected int id; // Number used to get the corresponding texture
 
     public Card(Era era) {
         this.era = era;
@@ -43,6 +44,14 @@ public abstract class Card {
     public void addToPlayer (Player player){}
 
     public CardDTO cardToDTO(){
-        return new CardDTO(getEra().name(), getType(), getName());
+        return new CardDTO(getEra().name(), getType(), getName(), getId());
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

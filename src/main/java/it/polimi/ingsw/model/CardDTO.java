@@ -32,12 +32,14 @@ public class CardDTO implements Serializable {
     private final String era;
     private final String type;
     private final String name;
+    private final int id;
 
     @JsonCreator
-    public CardDTO(@JsonProperty("era") String era, @JsonProperty("type") String type, @JsonProperty("name") String name) {
+    public CardDTO(@JsonProperty("era") String era, @JsonProperty("type") String type, @JsonProperty("name") String name, @JsonProperty("id") int id) {
         this.era = era;
         this.type = type;
         this.name = name;
+        this.id = id;
     }
 
     public String getEra() {
@@ -102,5 +104,9 @@ public class CardDTO implements Serializable {
 
     public int getLoserPp() {
         return 0;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.networking.GUI;
 
+import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.model.CardDTO;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -12,10 +14,12 @@ import javafx.util.Duration;
 public class AnimatedCard {
     private Group mesh;
     private Rectangle reference;
+    private CardDTO card;
 
-    public AnimatedCard(Group mesh, Rectangle reference) {
+    public AnimatedCard(Group mesh, Rectangle reference, CardDTO card) {
         this.mesh = mesh;
         this.reference = reference;
+        this.card = card;
     }
 
     public Group getMesh() {
@@ -32,6 +36,14 @@ public class AnimatedCard {
 
     public void setReference(Rectangle reference) {
         this.reference = reference;
+    }
+
+    public CardDTO getCard() {
+        return card;
+    }
+
+    public void setCard(CardDTO card) {
+        this.card = card;
     }
 
     public void resetPosition() {
@@ -70,5 +82,14 @@ public class AnimatedCard {
         rotator.play();
 
         trans.play();
+    }
+
+    public void spin() {
+        RotateTransition rotator = new RotateTransition(Duration.seconds(0.4), mesh);
+        rotator.setAxis(Rotate.Y_AXIS);
+        rotator.setFromAngle(0);
+        rotator.setToAngle(360);
+        rotator.setInterpolator(Interpolator.EASE_BOTH);
+        rotator.play();
     }
 }

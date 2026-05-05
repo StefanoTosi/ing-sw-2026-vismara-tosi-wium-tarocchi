@@ -145,6 +145,10 @@ public class Game {
         return turnNumber;
     }
 
+    public void setTurnNumber(int turnNumber) {
+        this.turnNumber = turnNumber;
+    }
+
     public void newTurn() {
         this.turnNumber++;
     }

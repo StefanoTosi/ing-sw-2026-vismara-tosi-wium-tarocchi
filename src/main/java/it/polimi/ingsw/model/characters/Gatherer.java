@@ -23,6 +23,6 @@ public class Gatherer extends Character {
     }
 
     public GathererDTO toDTO(){
-        return new GathererDTO(getEra().name());
+        return new GathererDTO(getEra().name(), getId());
     }
 }

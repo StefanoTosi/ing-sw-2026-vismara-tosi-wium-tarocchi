@@ -49,6 +49,6 @@ public class CavePaintings extends Event {
     }
 
     public CavePaintingsDTO toDTO(){
-        return new CavePaintingsDTO(getEra().name(), minArtist, topPp, bottomPp);
+        return new CavePaintingsDTO(getEra().name(), minArtist, topPp, bottomPp, getId());
     }
 }

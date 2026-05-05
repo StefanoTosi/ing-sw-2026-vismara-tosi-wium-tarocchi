@@ -43,8 +43,6 @@ public class ResolveEventsState extends GameState {
 
         // Transition to EndTurnState
         System.out.println("Finished resolving events");
-        game.setState(
-                new EndTurnState(game)
-        );
+        EndTurnState e = new EndTurnState(game);
     }
 }

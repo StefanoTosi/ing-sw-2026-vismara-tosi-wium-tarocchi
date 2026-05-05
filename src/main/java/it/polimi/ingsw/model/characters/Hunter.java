@@ -31,6 +31,6 @@ public class Hunter extends Character {
     }
 
     public HunterDTO toDTO(){
-        return new HunterDTO(getIcon(), getEra().name());
+        return new HunterDTO(getIcon(), getEra().name(), getId());
     }
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,6 +18,7 @@ import javafx.scene.shape.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FieldController implements UIObserver {
     @FXML HBox topRow;
@@ -36,21 +38,20 @@ public class FieldController implements UIObserver {
         topRowAnim = new ArrayList<>();
         bottomRowAnim = new ArrayList<>();
 
-        System.out.println("init");
-        Image front = new Image("a.png");
-        Image back = new Image("b.png");
-
         // Place fixed cards in the JavaFx layout
         for (int i = 0; i < GUISession.getGame().getBoard().getTopRowTribe().size(); i++) {
+            Image front = new Image(getClass().getResource("/front/" + GUISession.getGame().getBoard().getTopRowTribe().get(i).getId() + ".png").toExternalForm());
+            Image back = new Image(getClass().getResource("/back/" + GUISession.getGame().getBoard().getTopRowTribe().get(i).getId() + ".png").toExternalForm());
             Rectangle r = new Rectangle(cardW, cardH);
             r.setFill(Color.RED);
             Group m = createCardMesh(front, back, cardW, cardH);
             m.setLayoutX(-cardW);
             m.setLayoutY(-cardH);
+            m.setOnMouseClicked(this::cardClicked);
 
             topRow.getChildren().add(r);
             cardsContainer.getChildren().add(m);
-            topRowAnim.add(new AnimatedCard(m, r));
+            topRowAnim.add(new AnimatedCard(m, r, GUISession.getGame().getBoard().getTopRowTribe().get(i)));
         }
 
         for (int i = 0; i < GUISession.getGame().getBoard().getOfferPath().size(); i++) {
@@ -60,15 +61,18 @@ public class FieldController implements UIObserver {
         }
 
         for (int i = 0; i < GUISession.getGame().getBoard().getBottomRowTribe().size(); i++) {
+            Image front = new Image(getClass().getResource("/front/" + GUISession.getGame().getBoard().getBottomRowTribe().get(i).getId() + ".png").toExternalForm());
+            Image back = new Image(getClass().getResource("/back/" + GUISession.getGame().getBoard().getBottomRowTribe().get(i).getId() + ".png").toExternalForm());
             Rectangle r = new Rectangle(cardW, cardH);
             r.setFill(Color.RED);
             Group m = createCardMesh(front, back, cardW, cardH);
             m.setLayoutX(-cardW);
             m.setLayoutY(-cardH);
+            m.setOnMouseClicked(this::cardClicked);
 
             bottomRow.getChildren().add(r);
             cardsContainer.getChildren().add(m);
-            bottomRowAnim.add(new AnimatedCard(m, r));
+            bottomRowAnim.add(new AnimatedCard(m, r, GUISession.getGame().getBoard().getBottomRowTribe().get(i)));
         }
 
         // Place animated cards in the cards container
@@ -131,10 +135,10 @@ public class FieldController implements UIObserver {
 
         // Define texture coordinates
         frontMesh.getTexCoords().addAll(
-                0f, 0f, // 0: Top Left
-                1f, 0f, // 1: Top Right
-                0f, 1f, // 2: Bottom Left
-                1f, 1f  // 3: Bottom Right
+                0.1f, 0.07f, // 0: Top Left
+                0.89f, 0.07f, // 1: Top Right
+                0.1f, 0.92f, // 2: Bottom Left
+                0.89f, 0.92f  // 3: Bottom Right
         );
 
         // Define two faces. Two triangles make a square. Points are counter-clockwise.
@@ -165,10 +169,10 @@ public class FieldController implements UIObserver {
 
         // Define texture coordinates
         backMesh.getTexCoords().addAll(
-                0f, 0f, // 0: Top Left
-                1f, 0f, // 1: Top Right
-                0f, 1f, // 2: Bottom Left
-                1f, 1f  // 3: Bottom Right
+                0.1f, 0.07f, // 0: Top Left
+                0.89f, 0.07f, // 1: Top Right
+                0.1f, 0.92f, // 2: Bottom Left
+                0.89f, 0.92f  // 3: Bottom Right
         );
 
         // Define two faces. Two triangles make a square. Points are counter-clockwise.
@@ -187,5 +191,16 @@ public class FieldController implements UIObserver {
         backMeshView.setCullFace(CullFace.BACK);
 
         return new Group(frontMeshView, backMeshView);
+    }
+
+    @FXML
+    void cardClicked(MouseEvent e) {
+        System.out.println("Clicked");
+        Group g = (Group) e.getSource();
+        AnimatedCard c = Stream.concat(topRowAnim.stream(), bottomRowAnim.stream())
+                .filter(a -> a.getMesh() == g)
+                .findFirst().get();
+        System.out.println(c.getCard().getName());
+        c.spin();
     }
 }

@@ -38,6 +38,6 @@ public class Builder extends Character {
     }
 
     public BuilderDTO toDTO(){
-        return new BuilderDTO(getFoodDiscount(), getPp(), getEra().name());
+        return new BuilderDTO(getFoodDiscount(), getPp(), getEra().name(), getId());
     }
 }

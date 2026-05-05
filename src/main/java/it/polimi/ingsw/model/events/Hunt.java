@@ -47,6 +47,6 @@ public class Hunt extends Event {
     }
 
     public HuntDTO toDTO(){
-        return new HuntDTO(getEra().name(), getPp());
+        return new HuntDTO(getEra().name(), getPp(), getId());
     }
 }

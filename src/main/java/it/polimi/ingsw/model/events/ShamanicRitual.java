@@ -89,6 +89,6 @@ public class ShamanicRitual extends Event {
     }
 
     public ShamanicRitualDTO toDTO() {
-        return new ShamanicRitualDTO(getWinnerPp(), getLoserPp(), getEra().name());
+        return new ShamanicRitualDTO(getWinnerPp(), getLoserPp(), getEra().name(), getId());
     }
 }

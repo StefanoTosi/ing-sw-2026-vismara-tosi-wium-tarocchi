@@ -30,6 +30,7 @@ public class EndTurnState extends GameState {
                 .filter(p -> p.getCanPickFromTop())
                 .toList());
 
+        game.setTurnNumber(game.getTurnNumber() + 1);
         if (drawOrder.size() > 0) {
             game.setPlayerTurn(drawOrder.remove(0));
         } else {

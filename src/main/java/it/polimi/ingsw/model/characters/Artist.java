@@ -24,6 +24,6 @@ public class Artist extends Character {
     }
 
     public ArtistDTO toDTO(){
-        return new ArtistDTO(getEra().name());
+        return new ArtistDTO(getEra().name(), getId());
     }
 }

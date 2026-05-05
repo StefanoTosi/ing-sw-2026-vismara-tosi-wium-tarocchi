@@ -12,8 +12,8 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
     private final int loserPp;
 
     @JsonCreator
-    public ShamanicRitualDTO (@JsonProperty("winnerPp") int winnerPp, @JsonProperty("loserPp") int loserPp, @JsonProperty("era") String era){
-        super(era, "Event",  "Shamanic Ritual");
+    public ShamanicRitualDTO (@JsonProperty("winnerPp") int winnerPp, @JsonProperty("loserPp") int loserPp, @JsonProperty("era") String era, @JsonProperty("id") int id){
+        super(era, "Event",  "Shamanic Ritual", id);
         this.winnerPp = winnerPp;
         this.loserPp = loserPp;
     }

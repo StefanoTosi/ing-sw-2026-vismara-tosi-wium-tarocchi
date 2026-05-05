@@ -61,6 +61,6 @@ public class Sustenance extends Event {
     }
 
     public SustenanceDTO toDTO() {
-        return new SustenanceDTO(getEra().name(), getPp());
+        return new SustenanceDTO(getEra().name(), getPp(), getId());
     }
 }

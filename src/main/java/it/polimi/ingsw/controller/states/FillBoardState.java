@@ -31,6 +31,11 @@ public class FillBoardState extends GameState {
      * @throws IllegalActionException
      */
     public void refillBoard() throws IllegalActionException, RemoteException {
+        if (game.getTurnNumber() > 10) {
+            game.setState(new EndGameState(game));
+            game.getState().calculateRankings();
+            return;
+        }
         Board board = game.getBoard();
 
         // Used to initially insert buildings from era I
@@ -56,7 +61,11 @@ public class FillBoardState extends GameState {
         if (boardUninitialized) {
             currentEra = Era.I;
         } else {
-            currentEra = board.getTopRowTribe().get(board.getTopRowTribe().size() - 1).getEra();
+            if (board.getTopRowTribe().size() == 0) {
+                currentEra = Era.III;
+            } else {
+                currentEra = board.getTopRowTribe().get(board.getTopRowTribe().size() - 1).getEra();
+            }
         }
 
         // Clear and move rows

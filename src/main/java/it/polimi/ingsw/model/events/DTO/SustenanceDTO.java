@@ -10,8 +10,8 @@ public class SustenanceDTO extends CardDTO implements Serializable {
     private final int pp;
 
     @JsonCreator
-    public SustenanceDTO(@JsonProperty("era") String era, @JsonProperty("pp") int pp){
-        super(era, "Event", "Sustenance");
+    public SustenanceDTO(@JsonProperty("era") String era, @JsonProperty("pp") int pp, @JsonProperty("id") int id){
+        super(era, "Event", "Sustenance", id);
         this.pp = pp;
     }
 

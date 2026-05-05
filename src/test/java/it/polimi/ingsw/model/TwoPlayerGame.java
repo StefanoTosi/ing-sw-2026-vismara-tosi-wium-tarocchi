@@ -9,10 +9,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,6 +31,9 @@ public class TwoPlayerGame {
         ag.printPlayerStats();
         ag.printEventsToResolve();
         ag.printPlayersOrder();
+
+        // Turn 1
+        System.out.println("Turn: " + game.getTurnNumber());
 
         // Choose offer tile
         ag.step(new ChooseOfferAction('C'), players.get(1));
@@ -63,6 +63,9 @@ public class TwoPlayerGame {
         assertEquals(0, players.get(1).getFood());
         assertEquals(0, players.get(1).getPp());
 
+        // Turn 2
+        System.out.println("Turn: " + game.getTurnNumber());
+
         // Choose offer tile
         ag.step(new ChooseOfferAction('B'), players.get(0));
         ag.step(new ChooseOfferAction('C'), players.get(1));
@@ -75,6 +78,9 @@ public class TwoPlayerGame {
         ag.printPlayerStats();
         ag.printEventsToResolve();
         ag.printPlayersOrder();
+
+        // Turn 3
+        System.out.println("Turn: " + game.getTurnNumber());
 
         // Choose offer tile
         ag.step(new ChooseOfferAction('B'), players.get(0));
@@ -89,5 +95,118 @@ public class TwoPlayerGame {
         ag.printEventsToResolve();
         ag.printPlayersOrder();
 
+        // Turn 4
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        System.out.println(game.getState());
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(0), players.get(0));
+        ag.step(new DrawCardFromTopAction(0), players.get(1));
+
+        System.out.println("---------------------------------------");
+        ag.printPlayerStats();
+        ag.printEventsToResolve();
+        ag.printPlayersOrder();
+
+        // Turn 5
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(0), players.get(0));
+        ag.step(new DrawCardFromTopAction(1), players.get(1));
+
+        System.out.println("---------------------------------------");
+        ag.printPlayerStats();
+        ag.printEventsToResolve();
+        ag.printPlayersOrder();
+
+        // Turn 6
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(0), players.get(0));
+        ag.step(new DrawCardFromTopAction(1), players.get(1));
+
+        System.out.println("---------------------------------------");
+        ag.printPlayerStats();
+        ag.printEventsToResolve();
+        ag.printPlayersOrder();
+
+        // Turn 7
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(1), players.get(0));
+        ag.step(new DrawCardFromTopAction(0), players.get(1));
+
+        System.out.println("---------------------------------------");
+        ag.printPlayerStats();
+        ag.printEventsToResolve();
+        ag.printPlayersOrder();
+
+        // Turn 8
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(1), players.get(0));
+        ag.step(new DrawCardFromTopAction(1), players.get(1));
+
+        System.out.println("---------------------------------------");
+        ag.printPlayerStats();
+        ag.printEventsToResolve();
+        ag.printPlayersOrder();
+
+        // Turn 9
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(1), players.get(0));
+        ag.step(new DrawCardFromTopAction(0), players.get(1));
+
+        System.out.println("---------------------------------------");
+        ag.printPlayerStats();
+        ag.printEventsToResolve();
+        ag.printPlayersOrder();
+
+        // Turn 10
+        System.out.println("Turn: " + game.getTurnNumber());
+
+        // Choose offer tile
+        ag.step(new ChooseOfferAction('B'), players.get(0));
+        ag.step(new ChooseOfferAction('C'), players.get(1));
+
+        // Draw cards
+        ag.step(new DrawCardFromBottomAction(1), players.get(0));
+        ag.step(new DrawCardFromTopAction(0), players.get(1));
+
+        // Print ranking
+        System.out.println("\nGame ended\nRanking: ");
+        for (Player p : game.getRankings()) {
+            System.out.println("\t" + p.getName());
+        }
     }
 }
