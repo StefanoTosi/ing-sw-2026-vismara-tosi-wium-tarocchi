@@ -381,7 +381,7 @@ public class Player {
                 getShamans().stream().map(Shaman::toDTO).toList(),
                 getBuilders().stream().map(Builder::toDTO).toList(),
                 getBuildings().stream().map(Building::toDTO).toList(),
-                getPp(), getFood(), getOrder(), getOffer());
+                getPp(), getFood(), getOrder(), getOffer(), getCanPickFromTop());
     }
 
     public void setCanPickFromTop(boolean canPickFromTop) {

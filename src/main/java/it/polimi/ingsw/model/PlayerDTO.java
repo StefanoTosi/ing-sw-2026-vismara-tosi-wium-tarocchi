@@ -22,11 +22,12 @@ public class PlayerDTO implements Serializable {
     private int food;
     private int order;
     private char offer;
+    private boolean canPickFromTop;
 
     @JsonCreator
     private PlayerDTO() {}
 
-    public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer) {
+    public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer ,boolean canPickFromTop) {
         this.name = name;
         this.artists = List.copyOf(artists);
         this.gatherers = List.copyOf(gatherers);
@@ -39,6 +40,7 @@ public class PlayerDTO implements Serializable {
         this.food = food;
         this.order = order;
         this.offer = offer;
+        this.canPickFromTop = canPickFromTop;
     }
 
     public String getName() {
@@ -87,5 +89,10 @@ public class PlayerDTO implements Serializable {
 
     public char getOffer() {
         return offer;
+    }
+
+
+    public boolean getCanPickFromTop() {
+        return canPickFromTop;
     }
 }
