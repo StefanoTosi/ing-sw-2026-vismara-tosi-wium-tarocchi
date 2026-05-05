@@ -1,37 +1,26 @@
-package it.polimi.ingsw.networking;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+package it.polimi.ingsw.UI.TUI;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
-import it.polimi.ingsw.controller.states.ChooseOfferState;
-import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.BoardDTO;
 import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.board.OrderDTO;
 import it.polimi.ingsw.model.characters.DTO.*;
-import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
-import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
-import it.polimi.ingsw.networking.RMI.Controller;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
+import it.polimi.ingsw.networking.UIObserver;
 
-import java.io.File;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Gatherer;
 
 public class TUI implements UIObserver {
     private final Scanner in = new Scanner(System.in);

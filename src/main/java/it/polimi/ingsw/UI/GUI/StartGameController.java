@@ -1,8 +1,8 @@
-package it.polimi.ingsw.networking.GUI;
+package it.polimi.ingsw.UI.GUI;
 
+import it.polimi.ingsw.UI.UISession;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.GameDTO;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
@@ -15,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class StartGameController implements UIObserver {
 
     @FXML
     void selectRMI() throws NotBoundException, IOException {
-        GUISession.setClient(new ClientRMI(GUISession.getObserver(), GUISession.getPortRMI(), GUISession.getAddr()));
+        UISession.setClient(new ClientRMI(UISession.getObserver(), UISession.getPortRMI(), UISession.getAddr()));
         System.out.println("RMI selected");
 
         clientSelect.setVisible(false);
@@ -46,7 +45,7 @@ public class StartGameController implements UIObserver {
 
     @FXML
     void selectTCP() {
-        GUISession.setClient(new ClientTCP(GUISession.getObserver(), GUISession.getPortTCP(), GUISession.getAddr()));
+        UISession.setClient(new ClientTCP(UISession.getObserver(), UISession.getPortTCP(), UISession.getAddr()));
         System.out.println("TCP selected");
 
         clientSelect.setVisible(false);
@@ -57,8 +56,8 @@ public class StartGameController implements UIObserver {
     void login() throws IOException, ClassNotFoundException, IllegalActionException, InterruptedException {
         System.out.println(username.getText() + " " + password.getText());
 
-        if (GUISession.getClient().addUser(password.getText(), username.getText()) == 0) {
-            if (!GUISession.getClient().joinGame()) {
+        if (UISession.getClient().addUser(password.getText(), username.getText()) == 0) {
+            if (!UISession.getClient().joinGame()) {
                 login.setVisible(false);
                 newGame.setVisible(true);
                 errorToast.setVisible(false);
@@ -81,7 +80,7 @@ public class StartGameController implements UIObserver {
                 errorToast.setVisible(true);
                 ((Label) errorToast.getChildren().get(0)).setText("Number of players must be between 2 and 5");
             } else {
-                GUISession.getClient().createGame(num);
+                UISession.getClient().createGame(num);
                 newGame.setVisible(false);
                 waiting.setVisible(true);
                 errorToast.setVisible(false);
@@ -96,7 +95,7 @@ public class StartGameController implements UIObserver {
 
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
-        GUISession.setGame(game);
+        UISession.setGame(game);
         Platform.runLater(() -> {
             for (PlayerDTO p : game.getPlayers()) {
                 if (waiting.getChildren()
@@ -112,13 +111,17 @@ public class StartGameController implements UIObserver {
             if (game.getState() != StateDTO.SETUPGAME) {
                 FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("field.fxml"));
                 Parent fieldRoot = null;
+
+                System.out.println("Trying to load");
                 try {
                     fieldRoot = fxmlLoader.load();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 label.getScene().setRoot(fieldRoot);
-                GUISession.setObserver(fxmlLoader.getController());
+                System.out.println(fxmlLoader.getController().getClass());
+                UISession.setObserver(fxmlLoader.getController());
+                System.out.println("Overwitten observer");
             }
         });
     }

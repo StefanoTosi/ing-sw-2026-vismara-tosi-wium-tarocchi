@@ -33,6 +33,10 @@ module com.example.mesos {
     opens it.polimi.ingsw.model.characters.DTO to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.networking.RMI;
     exports it.polimi.ingsw.networking.TCP;
-    exports it.polimi.ingsw.networking.GUI;
-    opens it.polimi.ingsw.networking.GUI to javafx.fxml;
+    exports it.polimi.ingsw.UI.GUI;
+    opens it.polimi.ingsw.UI.GUI to javafx.fxml;
+    exports it.polimi.ingsw.UI.TUI;
+    opens it.polimi.ingsw.UI.TUI to javafx.fxml;
+    exports it.polimi.ingsw.UI;
+    opens it.polimi.ingsw.UI to javafx.fxml;
 }

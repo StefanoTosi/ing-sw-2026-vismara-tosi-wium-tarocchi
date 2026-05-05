@@ -1,4 +1,4 @@
-package it.polimi.ingsw.networking.GUI;
+package it.polimi.ingsw.UI.GUI;
 
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.CardDTO;

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.networking.GUI;
+package it.polimi.ingsw.UI.GUI;
 
+import it.polimi.ingsw.UI.UISession;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.GameDTO;
@@ -10,14 +11,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -43,7 +39,7 @@ public class FieldController implements UIObserver {
         bottomRowAnim = new ArrayList<>();
         offerPathAnim = new ArrayList<>();
 
-        BoardDTO board = GUISession.getGame().getBoard();
+        BoardDTO board = UISession.getGame().getBoard();
 
         // Load top row
         for (int i = 0; i < board.getTopRowTribe().size(); i++) {
@@ -72,7 +68,7 @@ public class FieldController implements UIObserver {
 
         // Place animated cards in the cards container
         Platform.runLater(() -> {
-            debugLabel.setText("Its the turn of " + GUISession.getGame().getPlayerTurn().getName());
+            debugLabel.setText("Its the turn of " + UISession.getGame().getPlayerTurn().getName());
             animateAll();
 
             // React to window resizes
@@ -120,7 +116,7 @@ public class FieldController implements UIObserver {
 
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
-        GUISession.setGame(game);
+        UISession.setGame(game);
 
         Platform.runLater(() -> {
             debugLabel.setText("Its the turn of " + game.getPlayerTurn().getName());
@@ -145,9 +141,9 @@ public class FieldController implements UIObserver {
 
     @FXML
     void tileClicked(MouseEvent e) {
-        GameDTO game = GUISession.getGame();
+        GameDTO game = UISession.getGame();
         // If its ChooseOfferState and my turn
-        if (game.getState() == StateDTO.CHOOSEOFFER && game.getPlayerTurn().getName().equals(GUISession.getClient().getNickname())) {
+        if (game.getState() == StateDTO.CHOOSEOFFER && game.getPlayerTurn().getName().equals(UISession.getClient().getNickname())) {
             // Find the clicked tile
             Group g = (Group) e.getSource();
             AnimatedTile c = offerPathAnim.stream()
@@ -156,7 +152,7 @@ public class FieldController implements UIObserver {
 
             // Choose it
             try {
-                GUISession.getClient().executeAction(new ChooseOfferAction(c.getTile().getOrder()));
+                UISession.getClient().executeAction(new ChooseOfferAction(c.getTile().getOrder()));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -116,4 +116,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     public void executeAction(Action action) throws IllegalActionException, IOException, InterruptedException {
         controller.executeAction(action, getNickname());
     }
+
+    @Override
+    public void setObserver(UIObserver observer) {
+        this.observer = observer;
+    }
 }

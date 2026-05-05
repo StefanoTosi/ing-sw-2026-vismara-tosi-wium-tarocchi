@@ -1,5 +1,6 @@
-package it.polimi.ingsw.networking.GUI;
+package it.polimi.ingsw.UI.GUI;
 
+import it.polimi.ingsw.UI.UISession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.PerspectiveCamera;
@@ -14,7 +15,7 @@ public class GUIApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("start-game.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        GUISession.setObserver(fxmlLoader.getController());
+        UISession.setObserver(fxmlLoader.getController());
 
         PerspectiveCamera camera = new PerspectiveCamera();
         scene.setCamera(camera);

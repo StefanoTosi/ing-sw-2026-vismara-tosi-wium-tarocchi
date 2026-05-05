@@ -19,4 +19,5 @@ public interface Client {
     public void leaveGame() throws RemoteException;
     public void ping();
     public void stopGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException;
+    public void setObserver(UIObserver observer);
 }

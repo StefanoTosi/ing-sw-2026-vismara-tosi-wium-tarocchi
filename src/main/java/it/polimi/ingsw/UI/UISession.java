@@ -1,11 +1,10 @@
-package it.polimi.ingsw.networking.GUI;
+package it.polimi.ingsw.UI;
 
-import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.UIObserver;
 
-public class GUISession {
+public class UISession {
     private static int portRMI;
     private static int portTCP;
     private static String addr;
@@ -18,7 +17,7 @@ public class GUISession {
     }
 
     public static void setClient(Client client) {
-        GUISession.client = client;
+        UISession.client = client;
     }
 
     public static int getPortRMI() {
@@ -26,7 +25,7 @@ public class GUISession {
     }
 
     public static void setPortRMI(int portRMI) {
-        GUISession.portRMI = portRMI;
+        UISession.portRMI = portRMI;
     }
 
     public static int getPortTCP() {
@@ -34,7 +33,7 @@ public class GUISession {
     }
 
     public static void setPortTCP(int portTCP) {
-        GUISession.portTCP = portTCP;
+        UISession.portTCP = portTCP;
     }
 
     public static String getAddr() {
@@ -42,7 +41,7 @@ public class GUISession {
     }
 
     public static void setAddr(String addr) {
-        GUISession.addr = addr;
+        UISession.addr = addr;
     }
 
     public static UIObserver getObserver() {
@@ -50,7 +49,7 @@ public class GUISession {
     }
 
     public static void setObserver(UIObserver observer) {
-        GUISession.observer = observer;
+        UISession.observer = observer;
     }
 
     public static GameDTO getGame() {
@@ -58,6 +57,6 @@ public class GUISession {
     }
 
     public static void setGame(GameDTO game) {
-        GUISession.game = game;
+        UISession.game = game;
     }
 }
