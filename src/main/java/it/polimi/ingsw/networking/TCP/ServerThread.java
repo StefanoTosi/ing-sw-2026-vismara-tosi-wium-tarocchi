@@ -122,7 +122,7 @@ public class ServerThread implements Runnable, ObserverTCP {
             }
         }catch(Exception e){
             System.out.println("Non sto ricevendo messaggi da " + getNickname());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

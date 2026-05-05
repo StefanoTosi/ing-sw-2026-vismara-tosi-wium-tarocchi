@@ -22,6 +22,8 @@ public class Game {
     private String errorFlag;
     private Random rng;
     private int turnNumber;
+    private Object lockRMI = new Object();
+    private Object lockTCP = new Object();
 
     public Game (List<Player> players, Random rng) throws IllegalArgumentException {
         this.players = players;
@@ -42,43 +44,67 @@ public class Game {
     }
 
     public void addObserverRMI(ClientCallBack observer){
-        this.observersRMI.add(observer);
+        synchronized (lockRMI){
+            this.observersRMI.add(observer);
+        }
     }
 
     public void removeObserverRMI(ClientCallBack observer){
-        this.observersRMI.remove(observer);
+        synchronized (lockRMI){
+            this.observersRMI.remove(observer);
+        }
     }
 
     public void addObserverTCP(ObserverTCP observer){
-        this.observersTCP.add(observer);
+        synchronized (lockTCP){
+            this.observersTCP.add(observer);
+        }
     }
 
     public void removeObserverTCP(ObserverTCP observer){
-        this.observersTCP.remove(observer);
+        synchronized (lockTCP){
+            this.observersTCP.remove(observer);
+        }
     }
 
     public void notifyObserver() throws IOException, IllegalActionException, InterruptedException {
-        for (ClientCallBack observer : observersRMI) {
-            observer.update(this.toDTO());
+        synchronized (lockRMI){
+            for (ClientCallBack observer : observersRMI) {
+                try{
+                    observer.update(this.toDTO());
+                }catch(Exception e){
+                    //e.printStackTrace();
+                }
+            }
         }
-        for (ObserverTCP observer : observersTCP) {
-            try{
-                observer.update(this.toDTO());
-            }catch(Exception e){
-                e.printStackTrace();
+        synchronized (lockTCP){
+            for (ObserverTCP observer : observersTCP) {
+                try{
+                    observer.update(this.toDTO());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     public void closingGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
-        for (ClientCallBack observer : observersRMI) {
-            observer.closingGame(this.toDTO());
+        synchronized (lockRMI){
+            for (ClientCallBack observer : observersRMI) {
+                try{
+                    observer.closingGame(this.toDTO());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
-        for (ObserverTCP observer : observersTCP) {
-            try{
-                observer.closingGame(this.toDTO());
-            }catch(Exception e){
-                e.printStackTrace();
+        synchronized (lockTCP){
+            for (ObserverTCP observer : observersTCP) {
+                try{
+                    observer.closingGame(this.toDTO());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }

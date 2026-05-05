@@ -177,8 +177,6 @@ public class TUI implements UIObserver {
 
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
-        System.out.println("\nSorry, the game as been closed due to a disconnection of a player\n");
-        client.leaveMatch();
         setGameClosed(true);
         updates.offer(game);
     }
@@ -187,7 +185,9 @@ public class TUI implements UIObserver {
         while(true){
             game = updates.take();
             if(getGameClosed()){
+                client.leaveMatch();
                 setGameClosed(false);
+                System.out.println("\nSorry, the game as been closed due to a disconnection of a player\n");
                 anotherGame();
             }
             printBoard();

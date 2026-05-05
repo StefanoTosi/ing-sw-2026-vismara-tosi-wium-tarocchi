@@ -93,7 +93,6 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
 
     @Override
     public void closingGame(GameDTO game) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
-        //System.out.println("\n");
         observer.closingGame(game);
     }
 
