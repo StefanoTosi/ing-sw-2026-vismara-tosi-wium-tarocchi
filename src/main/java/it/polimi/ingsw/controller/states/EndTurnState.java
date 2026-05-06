@@ -32,7 +32,9 @@ public class EndTurnState extends GameState {
 
         game.setTurnNumber(game.getTurnNumber() + 1);
         if (drawOrder.size() > 0) {
+            System.out.println("Resolving end turn phase");
             game.setPlayerTurn(drawOrder.remove(0));
+            game.setState(this);
         } else {
             System.out.println("Finished end turn phase");
             game.setPlayerTurn(null);

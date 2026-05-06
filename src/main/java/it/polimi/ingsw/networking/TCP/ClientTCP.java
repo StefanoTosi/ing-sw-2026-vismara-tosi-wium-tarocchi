@@ -207,4 +207,9 @@ public class ClientTCP implements Client {
         }
         System.exit(1);
     }
+
+    @Override
+    public void setObserver(UIObserver observer) {
+        this.observer = observer;
+    }
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.networking.GUI;
+package it.polimi.ingsw.UI.GUI;
 
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.board.OfferDTO;
@@ -32,7 +32,7 @@ public class AnimatedTile {
 
         // Create reference
         reference = new Rectangle(tileW, tileH);
-        reference.setFill(Color.RED);
+        reference.setFill(Color.TRANSPARENT);
 
         mesh = createTileMesh(front, tileW, tileH);
         mesh.setOnMouseClicked(clickHandler);
