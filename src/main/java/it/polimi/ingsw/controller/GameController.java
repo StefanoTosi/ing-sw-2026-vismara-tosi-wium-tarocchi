@@ -44,10 +44,12 @@ public class GameController {
     }
 
     public void removeGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
-        Game game = getPlayer(name).getGame();
-        if(game != null){
-            game.closingGame();
-            games.remove(game);
+        if(getPlayer(name) != null){
+            Game game = getPlayer(name).getGame();
+            if(game != null){
+                game.closingGame();
+                games.remove(game);
+            }
         }
     }
 

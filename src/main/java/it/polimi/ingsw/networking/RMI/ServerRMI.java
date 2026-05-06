@@ -81,8 +81,9 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                 for(String name : lastSeen.keySet()){
                     if(now - lastSeen.get(name) > 10000){
                         users.get(name).setActive(false);
-                        users.get(name).setInGame(false);
                         try {
+                            System.out.println("Chiusa connessione con " + name);
+                            lastSeen.remove(name);
                             leaveMatch(name);
                             clients.remove(name);
                             stopGame(name);
