@@ -18,11 +18,12 @@ public class GameDTO implements Serializable {
     private PlayerDTO playerTurn;
     private int turnNumber;
     private List<PlayerDTO> rankings;
+    private String errorFlag;
 
     @JsonCreator
     private GameDTO() {}
 
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber, String errorFlag) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
@@ -30,6 +31,7 @@ public class GameDTO implements Serializable {
         this.playerTurn = playerTurn;
         this.rankings = List.copyOf(rankings);
         this.turnNumber = turnNumber;
+        this.errorFlag = errorFlag;
     }
 
     public List<PlayerDTO> getPlayers() {
@@ -52,13 +54,15 @@ public class GameDTO implements Serializable {
         return playerTurn;
     }
 
-
     public List<PlayerDTO> getRankings() {
         return rankings;
     }
 
-
     public int getTurnNumber() {
         return turnNumber;
+    }
+
+    public String getErrorFlag() {
+        return errorFlag;
     }
 }

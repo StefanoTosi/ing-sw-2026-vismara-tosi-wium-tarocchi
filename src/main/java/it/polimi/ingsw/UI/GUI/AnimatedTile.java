@@ -32,7 +32,7 @@ public class AnimatedTile {
 
         // Create reference
         reference = new Rectangle(tileW, tileH);
-        reference.setFill(Color.RED);
+        reference.setFill(Color.TRANSPARENT);
 
         mesh = createTileMesh(front, tileW, tileH);
         mesh.setOnMouseClicked(clickHandler);

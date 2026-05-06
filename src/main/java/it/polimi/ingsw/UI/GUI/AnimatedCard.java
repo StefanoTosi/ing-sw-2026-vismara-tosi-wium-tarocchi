@@ -31,6 +31,8 @@ public class AnimatedCard {
     final int cardW = 575 / 5;
     final int cardH = 810 / 5;
 
+    private final Image mask = new Image("card-mask.png");
+
     public AnimatedCard(CardDTO card, EventHandler<MouseEvent> clickHandler) {
         this.card = card;
 
@@ -40,7 +42,8 @@ public class AnimatedCard {
 
         // Create reference
         reference = new Rectangle(cardW, cardH);
-        reference.setFill(Color.RED);
+        // reference.setFill(Color.RED);
+        reference.setFill(Color.TRANSPARENT);
 
         mesh = createCardMesh(front, back, cardW, cardH);
         mesh.setLayoutX(-cardW);
@@ -78,7 +81,6 @@ public class AnimatedCard {
     }
 
     public void animatePosition(Duration d) {
-        mesh.toFront();
         TranslateTransition trans = new TranslateTransition(d, mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
@@ -111,7 +113,6 @@ public class AnimatedCard {
     }
 
     public void animatePosition(Duration d, double x, double y) {
-        mesh.toFront();
         TranslateTransition trans = new TranslateTransition(d, mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
@@ -135,7 +136,7 @@ public class AnimatedCard {
     }
 
     public void spin() {
-        RotateTransition rotator = new RotateTransition(Duration.seconds(0.4), mesh);
+        RotateTransition rotator = new RotateTransition(Duration.seconds(0.7), mesh);
         rotator.setAxis(Rotate.Y_AXIS);
         rotator.setFromAngle(0);
         rotator.setToAngle(360);
@@ -176,6 +177,7 @@ public class AnimatedCard {
         frontMat.setSelfIlluminationMap(front);
         frontMeshView.setMaterial(frontMat);
         frontMeshView.setCullFace(CullFace.BACK);
+        frontMat.setDiffuseMap(mask);
 
         // Build back
         TriangleMesh backMesh = new TriangleMesh();
@@ -210,6 +212,7 @@ public class AnimatedCard {
         backMat.setSelfIlluminationMap(back);
         backMeshView.setMaterial(backMat);
         backMeshView.setCullFace(CullFace.BACK);
+        frontMat.setDiffuseMap(mask);
 
         return new Group(frontMeshView, backMeshView);
     }

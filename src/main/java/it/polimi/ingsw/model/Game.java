@@ -118,7 +118,7 @@ public class Game {
         }
 
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO(), getState().getStateDTO(), turn.toDTO(), getRankings().stream().map(Player::toDTO).toList(), getTurnNumber());
+                getBoard().toDTO(), getState().getStateDTO(), turn.toDTO(), getRankings().stream().map(Player::toDTO).toList(), getTurnNumber(), getErrorFlag());
     }
 
     public Player getPlayerTurn() {
