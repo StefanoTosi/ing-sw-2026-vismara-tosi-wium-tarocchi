@@ -203,7 +203,7 @@ public class TUI implements UIObserver {
             }
             printBoard();
             System.out.println(BLUE + "Current state: " + game.getState());
-            System.out.println("Current turn" + game.getTurnNumber());
+            System.out.println("Current turn " + game.getTurnNumber());
 
             // If its this players turn, query the player for the action, otherwise do nothing
             if (client.getNickname().equals(game.getPlayerTurn().getName())) {
@@ -235,12 +235,10 @@ public class TUI implements UIObserver {
                         System.out.println("Choose the on which offer tile to go ");
 
                         System.out.println("\nthe available tiles are: " + Arrays.toString(freeTiles));
-                        boolean correct;
                         do {
                             System.out.print("(write the letter): ");
                             offer = in.nextLine();
-                            correct = new String(freeTiles).indexOf(offer.charAt(0)) >= 0;
-                        } while (offer.length() != 1 && correct);
+                        } while (offer.length() != 1 ); //TODO: NON FUNZIONA QUESTA CONDIZIONE
                         if(!getGameClosed()){
                             client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
                         }
@@ -389,7 +387,10 @@ public class TUI implements UIObserver {
         //printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         printOrderTile();
         printOfferRow();
-        printPlayerCards(game.getPlayerTurn());
+        for(PlayerDTO player : game.getPlayers()){
+            printPlayerCards(player);
+        }
+
     }
 
     /**
@@ -423,7 +424,7 @@ public class TUI implements UIObserver {
         }
 
         for(BuildingDTO building : buildings) {
-            lines[0].append(ORANGE).append(String.format("+----%d-----+", numCard));
+            lines[0].append(ORANGE).append(String.format("+----%d-----+", numCard+1));
             lines[1].append(ORANGE).append(String.format("|%-10s|", "Build"));
             lines[2].append(ORANGE).append(String.format("|%-10s|", building.getCost()));
             lines[3].append(ORANGE).append(String.format("|%-10s|", building.getEffect()));
@@ -511,9 +512,9 @@ public class TUI implements UIObserver {
             character[2].append(String.format("|%-10s|", card.getStars()));
         } else if (card.getName().equals("Inventor")){
             character[2].append(String.format("|%-10s|", card.getInventionIcon()));
-        } else if (card.getName().equals("Gatherer")){
+        } /*else if (card.getName().equals("Gatherer")){
             character[2].append(String.format("|%-10s|", card.getFoodDiscount()));
-        } else if (card.getName().equals("Builder")){
+        }*/ else if (card.getName().equals("Builder")){
             character[2].append(String.format("|%-10s|", card.getFoodDiscount()));
         } else if (card.getName().equals("Hunter")){
             character[2].append(String.format("|%-10s|", card.getIcon()));
@@ -665,7 +666,7 @@ public class TUI implements UIObserver {
 
         for (InventorDTO inventor : inventors) {
             lines[0].append("+----------+");
-            lines[1].append(String.format("|%-10s|", "Invent"));
+            lines[1].append(String.format("|%-10s|", "Inventor"));
             lines[2].append(String.format("|%-10s|", inventor.getInventionIcon()));
             lines[3].append("|          |");
             lines[4].append("|          |");
@@ -690,7 +691,7 @@ public class TUI implements UIObserver {
         for (BuilderDTO builder : builders) {
             lines[0].append("+----------+");
             lines[1].append(String.format("|%-10s|", "Builder"));
-            lines[2].append(String.format("|%-10s|", builder.getFoodDiscount()));
+            lines[2].append(String.format("|discount %d|", builder.getFoodDiscount()));
             lines[3].append("|          |");
             lines[4].append("|          |");
             lines[5].append(String.format("|%-10s|", builder.getEra()));
