@@ -233,7 +233,7 @@ public class TUI implements UIObserver {
                         do {
                             System.out.print("(write the letter): ");
                             offer = in.nextLine();
-                        } while (offer.length() != 1 && contains(freeTiles, offer) && contains(occupiedTiles,offer)); //TODO: NON FUNZIONA QUESTA CONDIZIONE
+                        } while (offer.length() != 1 || !contains(freeTiles, offer) || contains(occupiedTiles,offer)); //TODO: NON FUNZIONA QUESTA CONDIZIONE
                         if(!getGameClosed()){
                             client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
                         }
@@ -813,18 +813,8 @@ public class TUI implements UIObserver {
         }
     }
 
-    private int readInt(){
-        while(true){
-            try{
-                return Integer.parseInt(in.nextLine());
-            } catch (NumberFormatException e){
-                System.out.println("Invalid number\n");
-            }
-        }
-    }
-
     private boolean contains(char array[], String s){
-        if(s.equals(null) || s.length()!=1){
+        if(s == null || s.length()!=1){
             return false;
         }
 
@@ -839,8 +829,24 @@ public class TUI implements UIObserver {
         return false;
     }
 
-    private void input(){
+    private int readInt(){
+        while(true){
+            try{
+                return Integer.parseInt(in.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println(RED + "Please enter a valid number!");
+            }
+        }
+    }
 
+    private char readChar(){
+        while(true){
+            try{
+                return 'C';
+            } catch (NumberFormatException e) {
+                System.out.println(RED + "Please enter a valid number!");
+            }
+        }
     }
 }
 
