@@ -1,7 +1,13 @@
 package it.polimi.ingsw.networking.TCP;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
+import it.polimi.ingsw.controller.actions.ChooseOfferAction;
+import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
+import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -17,8 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerThread implements Runnable, ObserverTCP {
     private Socket client;
 
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private BufferedReader in;
+    private PrintWriter out;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private GameController gameController;
     private Map<String, User> users;
@@ -35,9 +42,8 @@ public class ServerThread implements Runnable, ObserverTCP {
 
         try{
             this.client = client;
-            out = new ObjectOutputStream(client.getOutputStream());
-            out.flush();
-            in = new ObjectInputStream(client.getInputStream());
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            out = new PrintWriter(client.getOutputStream(), true);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -89,26 +95,27 @@ public class ServerThread implements Runnable, ObserverTCP {
     private void comunicate(){
         try{
             while(clientOn){
-                Message req = (Message)in.readObject();
+                String json =  in.readLine();
+                Message req = JsonUtil.fromJson(json, Message.class);
                 switch (req.getRequest()){
                     case ADDUSER:
-                        req.getParams();
-                        addUser((String)req.getParams()[0], (String)req.getParams()[1]);
+                        addUser(req.getPayload().get("password").asText(), req.getPayload().get("username").asText());
                         break;
                     case JOINGAME:
-                        joinGame((String)req.getParams()[0]);
+                        joinGame(req.getPayload().get("nickname").asText());
                         break;
                     case CREATEGAME:
-                        createGame((int)req.getParams()[0], (String)req.getParams()[1]);
+                        createGame(req.getPayload().get("num").asInt(), req.getPayload().get("nickname").asText());
                         break;
                     case EXECUTEACTION:
-                        executeAction((Action)req.getParams()[0], (String)req.getParams()[1]);
+                        JsonNode payload = req.getPayload();
+                        executeAction(mapper.treeToValue(payload.get("action"), Action.class), payload.get("nickname").asText());
                         break;
                     case LEAVEMATCH:
-                        leaveMatch((String)req.getParams()[0]);
+                        leaveMatch(req.getPayload().get("nickname").asText());
                         break;
                     case LEAVEGAME:
-                        leaveGame((String)req.getParams()[0]);
+                        leaveGame(req.getPayload().get("nickname").asText());
                         break;
                     case PING:
                         lastSeen = System.currentTimeMillis();
@@ -122,7 +129,7 @@ public class ServerThread implements Runnable, ObserverTCP {
             }
         }catch(Exception e){
             System.out.println("Non sto ricevendo messaggi da " + getNickname());
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -163,7 +170,11 @@ public class ServerThread implements Runnable, ObserverTCP {
             }
         }
 
-        Message response = new Message(RequestType.ADDUSER, message, success);
+        ObjectNode payload = mapper.createObjectNode();
+        payload.put("result", success);
+        payload.put("msg", message);
+
+        Message response = new Message(RequestType.ADDUSER, payload);
         sendResponse(response);
     }
 
@@ -194,7 +205,11 @@ public class ServerThread implements Runnable, ObserverTCP {
         }else{
             gameController.reconnectGameTCP(name, this);
         }
-        Message response = new Message(RequestType.JOINGAME, result);
+
+        ObjectNode payload = mapper.createObjectNode();
+        payload.put("result", result);
+
+        Message response = new Message(RequestType.JOINGAME, payload);
         sendResponse(response);
     }
 
@@ -212,9 +227,8 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     private synchronized void sendResponse(Message response) throws IOException {
-        out.writeObject(response);
-        out.reset();
-        out.flush();
+        String json = mapper.writeValueAsString(response);
+        out.println(json);
     }
 
     @Override
@@ -224,13 +238,15 @@ public class ServerThread implements Runnable, ObserverTCP {
 
     @Override
     public void update(GameDTO game) throws Exception {
-        Message response = new Message(RequestType.UPDATE, JsonUtil.toJson(game));
+        JsonNode payload = mapper.valueToTree(game);
+        Message response = new Message(RequestType.UPDATE, payload);
         sendResponse(response);
     }
 
     @Override
     public void closingGame(GameDTO game) throws Exception {
-        Message response = new Message(RequestType.CLOSEGAME, JsonUtil.toJson(game));
+        JsonNode payload = mapper.valueToTree(game);
+        Message response = new Message(RequestType.CLOSEGAME, payload);
         sendResponse(response);
     }
 }

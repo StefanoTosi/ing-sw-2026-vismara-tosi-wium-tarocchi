@@ -1,21 +1,33 @@
 package it.polimi.ingsw.networking.TCP;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.io.Serializable;
 
 public class Message implements Serializable {
     private RequestType request;
-    private Object[] params;
+    private JsonNode payload;
 
-    public Message(RequestType request, Object... params) {
+    public Message () {}
+
+    public Message(RequestType request, JsonNode payload) {
         this.request = request;
-        this.params = params;
+        this.payload = payload;
     }
 
     public RequestType getRequest() {
         return request;
     }
 
-    public Object[] getParams() {
-        return params;
+    public JsonNode getPayload() {
+        return payload;
+    }
+
+    public void setRequest(RequestType request) {
+        this.request = request;
+    }
+
+    public void setPayload(JsonNode payload) {
+        this.payload = payload;
     }
 }
