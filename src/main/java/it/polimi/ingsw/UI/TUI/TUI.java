@@ -70,11 +70,11 @@ public class TUI implements UIObserver {
      * @throws NotBoundException
      * @throws RemoteException
      */
-    public void chooseTCPorRMI() throws NotBoundException, RemoteException {
+    public void chooseTCPorRMI() throws NotBoundException, IOException, IllegalActionException, InterruptedException, ClassNotFoundException {
         int choice = 0;
         do{
             System.out.println(BLUE + BOLD + "Choose between RMI[1] or TCP[2] connection");
-            choice = Integer.parseInt(in.nextLine());
+            choice = readInt();
         }while(choice != 1 && choice != 2);
         if(choice == 1) {
             this.client = new ClientRMI(this, portRMI, serverAddress);
@@ -93,7 +93,7 @@ public class TUI implements UIObserver {
         int input;
         do{
             renderStartMenu();
-            input = Integer.parseInt(in.nextLine());
+            input = readInt();
         }while(input != 1 && input != 2);
 
         switch (input) {
@@ -101,9 +101,9 @@ public class TUI implements UIObserver {
                 boolean flag = true;
                 while (flag) {
                     System.out.print(BLUE + BOLD + "Username: ");
-                    String username = in.nextLine();
+                    String username = readLine();
                     System.out.print(BLUE + BOLD +"Password: ");
-                    String password = in.nextLine();
+                    String password = readLine();
                     if(client.addUser(password, username) == 0) flag = false;
                 }
                 client.ping();
@@ -121,7 +121,7 @@ public class TUI implements UIObserver {
         int input;
         do{
             renderMenu();
-            input = Integer.parseInt(in.nextLine());
+            input = readInt();
         }while(input != 1 && input != 2);
 
         switch (input) {
@@ -143,7 +143,7 @@ public class TUI implements UIObserver {
             System.out.print("How many players do you want? ");
             do {
                 System.out.print("(2 to 5 players): ");
-                num = Integer.parseInt(in.nextLine());
+                num = readInt();
             } while(num < 2 || num > 5);
             System.out.print("Waiting for other players to connect...");
             client.createGame(num);
@@ -195,24 +195,23 @@ public class TUI implements UIObserver {
             System.out.println("Current turn " + game.getTurnNumber());
 
             // If its this players turn, query the player for the action, otherwise do nothing
-            if (client.getNickname().equals(game.getPlayerTurn().getName())) {
-                System.out.println("It's your turn");
                 // TODO: sostituire con lo strategy pattern?
-                switch (game.getState()) {
-                    case StateDTO.SETUPGAME:
-                        // SetupGameState
-                        System.out.print("Connected players: ");
-                        for (PlayerDTO p : game.getPlayers()) {
-                            System.out.print(p.getName());
-                        }
-                        System.out.println();
-                        break;
-                    case StateDTO.FILLBOARD:
-                        // FillBoardState
-                        System.out.print("Filling board - this message should never be printed...");
-                        break;
-                    case StateDTO.CHOOSEOFFER:
-                        // ChooseOfferState
+            switch (game.getState()) {
+                case StateDTO.SETUPGAME:
+                    // SetupGameState
+                    System.out.print("Connected players: ");
+                    for (PlayerDTO p : game.getPlayers()) {
+                        System.out.print(p.getName());
+                    }
+                    System.out.println();
+                    break;
+                case StateDTO.FILLBOARD:
+                    // FillBoardState
+                    System.out.print("Filling board - this message should never be printed...");
+                    break;
+                case StateDTO.CHOOSEOFFER:
+                    // ChooseOfferState
+                    if (client.getNickname().equals(game.getPlayerTurn().getName())){
                         List<OfferDTO> offerTiles = game.getBoard().getOfferPath();
                         char[] freeTiles = new char[game.getNumPlayers() * 2];
                         char[] occupiedTiles = new char[game.getNumPlayers()];
@@ -226,40 +225,46 @@ public class TUI implements UIObserver {
                             occupiedTiles[i++] = p.getOffer();
                         }
 
-                        String offer;
-                        System.out.println("Choose the on which offer tile to go ");
+                        char offer;
+                        System.out.println("Choose on which offer tile to go ");
 
                         System.out.println("\nthe available tiles are: " + Arrays.toString(freeTiles));
                         do {
                             System.out.print("(write the letter): ");
-                            offer = in.nextLine();
-                        } while (offer.length() != 1 || !contains(freeTiles, offer) || contains(occupiedTiles,offer)); //TODO: NON FUNZIONA QUESTA CONDIZIONE
+                            offer = readChar();
+                        } while (!contains(freeTiles, offer) || contains(occupiedTiles,offer));
                         if(!getGameClosed()){
-                            client.executeAction(new ChooseOfferAction(offer.toUpperCase().charAt(0)));
+                            client.executeAction(new ChooseOfferAction(offer));
                         }
-                        break;
-                    case StateDTO.DRAWCARD:
-                        // DrawCardsState
+                    }
+                    else {
+                        System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                    }
+                    break;
+                case StateDTO.DRAWCARD:
+                    // DrawCardsState
+                    if (client.getNickname().equals(game.getPlayerTurn().getName())){
+                        System.out.println("It's your turn!");
                         OfferDTO playerOffer = new OfferDTO('A', 0, 0, 0);
                         for (OfferDTO offerTile : game.getBoard().getOfferPath()) {
                             if (offerTile.getOrder() == game.getPlayerTurn().getOffer()) {
                                 playerOffer = offerTile;
                             }
                         }
-                        String chosenRow = "";
+                        char chosenRow;
                         int drawTop = playerOffer.getDrawTop();
                         int drawBottom = playerOffer.getDrawBottom();
 
                         while (drawTop + drawBottom > 0) {
                             if (drawTop != 0 && drawBottom != 0) {
                                 System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
-                                chosenRow = in.nextLine().toUpperCase();
+                                chosenRow = readChar();
                                 System.out.println("this is the cards the player has to draw  before drawing " + drawTop + drawBottom + "\n");
-                                if (chosenRow.equals("T")) {
+                                if (chosenRow == 'T') {
                                     drawTop += drawCardTopRow();
                                     System.out.println("after drawing from top" + drawTop + "\n");
                                 }
-                                if (chosenRow.equals("B")) {
+                                if (chosenRow == 'B') {
                                     drawBottom += drawCardBottomRow();
                                     System.out.println("after drawing from bottom" + drawBottom + "\n");
                                 }
@@ -274,25 +279,27 @@ public class TUI implements UIObserver {
                                 game = updates.take();
                             }*/
                         }
-                        break;
-                    case StateDTO.ENDTURN:
-                        // EndTurnState
-                        System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
-                        if(game.getPlayerTurn().getCanPickFromTop()){
-                            int effectDraw = 1;
-                            effectDraw = drawCardTopRow();
-                        }
-                        break;
-                    case StateDTO.ENDGAME:
-                        // EndGameState
-                        printRankings();
-                        client.leaveMatch();
-                        anotherGame();
-                    default:
-                        System.out.println("Unhandled state id " + game.getState());
-                }
-            } else {
-                System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                    }
+                    else {
+                        System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                    }
+                    break;
+                case StateDTO.ENDTURN:
+                    // EndTurnState
+                    System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
+                    if(game.getPlayerTurn().getCanPickFromTop()){
+                        int effectDraw = 1;
+                        effectDraw = drawCardTopRow();
+                    }
+                    break;
+                case StateDTO.ENDGAME:
+                    // EndGameState
+                    System.out.println("sono dentro endgame");
+                    printRankings();
+                    client.leaveMatch();
+                    anotherGame();
+                default:
+                    System.out.println("Unhandled state id " + game.getState());
             }
         }
         // lockUpdate.wait(); //
@@ -320,15 +327,15 @@ public class TUI implements UIObserver {
             }
 
             PlayerDTO p = ranking.get(i);
-            System.out.printf("%d. %-15s (%d PP, %d food)%n",displayedPos, p.getName(), p.getPp(), p.getFood());
+            System.out.printf(YELLOW + "%d. %-15s (%d PP, %d food)%n",displayedPos, p.getName(), p.getPp(), p.getFood());
         }
     }
 
-    private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException {
+    private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-        card = Integer.parseInt(in.nextLine()) - 1; // fixes index and pos mismatch
+        card = readInt() - 1; // fixes index and pos mismatch
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
@@ -342,11 +349,11 @@ public class TUI implements UIObserver {
         }
     }
 
-    private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException {
+    private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         System.out.println("Choose which card to draw from the Top Row (write its number): ");
-        card = Integer.parseInt(in.nextLine()) - 1; // fixes index and pos mismatch
+        card = readInt() - 1; // fixes index and pos mismatch
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
@@ -378,8 +385,8 @@ public class TUI implements UIObserver {
      * Calls the functions to print each part of the board
      */
     public void printBoard(){
-        //printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
-        //printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
+        printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
+        printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         printOrderTile();
         printOfferRow();
         for(PlayerDTO player : game.getPlayers()){
@@ -560,10 +567,10 @@ public class TUI implements UIObserver {
     /**
      * Function to ask whose cards does the user wish to view
      */
-    public void choosePlayerCards () {
+    public void choosePlayerCards () throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         List<PlayerDTO> players = game.getPlayers();
         System.out.println("Whose cards do you wish to view?");
-        String name = in.nextLine();
+        String name = readLine();
         for(PlayerDTO player : players){
             if(name.equals(player.getName())){
                 printPlayerCards(player);
@@ -813,15 +820,9 @@ public class TUI implements UIObserver {
         }
     }
 
-    private boolean contains(char array[], String s){
-        if(s == null || s.length()!=1){
-            return false;
-        }
-
-        char target = Character.toUpperCase(s.charAt(0));
-
+    private boolean contains(char array[], char s){
         for(char c : array){
-            if(c == target){
+            if(c == s){
                 return true;
             }
         }
@@ -829,23 +830,47 @@ public class TUI implements UIObserver {
         return false;
     }
 
-    private int readInt(){
+    private boolean handleCommand(String input) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        switch (input.toLowerCase()){
+            case "exit":
+            case "quit":
+                client.stopGame(client.getNickname());
+                anotherGame();
+            case "board":
+                printBoard();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private String readLine() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        while(true){
+            String input = in.nextLine().trim();
+            if(handleCommand(input)){
+                continue;
+            }
+            return  input;
+        }
+    }
+
+    private int readInt() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
         while(true){
             try{
-                return Integer.parseInt(in.nextLine().trim());
+                return Integer.parseInt(readLine());
             } catch (NumberFormatException e) {
                 System.out.println(RED + "Please enter a valid number!");
             }
         }
     }
 
-    private char readChar(){
+    private char readChar() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         while(true){
-            try{
-                return 'C';
-            } catch (NumberFormatException e) {
-                System.out.println(RED + "Please enter a valid number!");
+            String input = readLine().trim().toUpperCase();
+            if(input.length() == 1){
+                return input.charAt(0);
             }
+            System.out.println(RED + "Please enter a single letter!");
         }
     }
 }
