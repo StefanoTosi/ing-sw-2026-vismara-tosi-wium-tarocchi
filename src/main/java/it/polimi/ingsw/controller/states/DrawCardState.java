@@ -3,7 +3,9 @@ package it.polimi.ingsw.controller.states;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Offer;
+import it.polimi.ingsw.model.characters.Builder;
 import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
@@ -32,11 +34,29 @@ public class DrawCardState extends GameState {
                 .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
                 .toList());
 
-        game.setPlayerTurn(drawOrder.remove(0));
+        game.setPlayerTurn(drawOrder.removeFirst());
 
         // Tile A does not allow you to draw any cards
         if (game.getPlayerTurn().getOffer() == 'A') {
-            game.setPlayerTurn(drawOrder.remove(0));
+            game.setPlayerTurn(drawOrder.removeFirst());
+        }
+
+        // Verify if at least one player can draw cards
+        boolean found = false;
+        while(!found && !drawOrder.isEmpty()) {
+
+            if(game.getBoard().drawableCards(drawOrder.getFirst()) > 0) {
+                found = true;
+            } else {
+                game.setPlayerTurn(drawOrder.removeFirst());
+            }
+        }
+
+        // If no player can draw any card, transition to next state
+        if(drawOrder.isEmpty()) {
+            game.setPlayerTurn(null);
+            ResolveEventsState r = new ResolveEventsState(game);
+            r.resolveEvents();
         }
     }
 
@@ -62,9 +82,17 @@ public class DrawCardState extends GameState {
                 Card character = game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
             } else {
-                Building building = game.getBoard().drawFromTopRowBuilding(pos-index);
-                player.addCard(building);
-                building.getEffect().whenDrawn(player);
+                Building building = game.getBoard().getTopRowBuilding().get(pos);
+                int buildingCost = building.discountedCost(player);
+
+                if(buildingCost <= player.getFood()) {
+                    building = game.getBoard().drawFromTopRowBuilding(pos-index);
+                    player.addCard(building);
+                    player.addFood(-buildingCost);
+                    building.getEffect().whenDrawn(player);
+                } else {
+                    throw new IllegalActionException("Player " + player.getName() + " tried to draw a building but has insufficient food");
+                }
             }
 
             // When all cards have been drawn, go to the next player
@@ -88,10 +116,10 @@ public class DrawCardState extends GameState {
                     .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
 
                 // Go to next player or next state
-                if (drawOrder.size() > 0) {
-                    game.setPlayerTurn(drawOrder.remove(0));
+                if (!drawOrder.isEmpty()) {
+                    game.setPlayerTurn(drawOrder.removeFirst());
                 } else {
-                    // When all players have draw, transition to ResolveEventsState
+                    // When all players have drawn, transition to ResolveEventsState
                     game.setPlayerTurn(null);
 
                     ResolveEventsState r = new ResolveEventsState(game);
@@ -121,9 +149,25 @@ public class DrawCardState extends GameState {
                 Card character = game.getBoard().drawFromBottomRowTribe(pos);
                 afterDrawn(player, character);
             } else {
-                Building building = game.getBoard().drawFromBottomRowBuilding(pos-index);
-                player.addCard(building);
-                building.getEffect().whenDrawn(player);
+                Building building;
+                int buildingCost = game.getBoard().getBottomRowBuilding().get(pos).getCost();
+
+                //Calculate discount provided by builders in the tribe
+                for(Builder b : player.getBuilders()) {
+                    buildingCost -= b.getFoodDiscount();
+                }
+                if(buildingCost <= 0) {
+                    buildingCost = 0;
+                }
+
+                if(buildingCost <= player.getFood()) {
+                    building = game.getBoard().drawFromBottomRowBuilding(pos-index);
+                    player.addCard(building);
+                    player.addFood(-buildingCost);
+                    building.getEffect().whenDrawn(player);
+                } else {
+                    throw new IllegalActionException("Player " + player.getName() + " tried to draw a building but has insufficient food");
+                }
             }
 
             // When all cards have been drawn, go to the next player

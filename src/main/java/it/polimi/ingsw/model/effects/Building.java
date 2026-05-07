@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.effects;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.characters.Builder;
 
 import java.util.function.Function;
 
@@ -94,5 +95,24 @@ public class Building extends Card {
      */
     public BuildingDTO toDTO() {
         return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffect().name(), getEra().name(), getId());
+    }
+
+    /**
+     * Calculates the cost considering the discount applied by the builders in the players' tribe
+     * @param player
+     * @return int
+     */
+    public int discountedCost(Player player) {
+        int buildingCost = this.cost;
+
+        //Calculate discount provided by builders in the tribe
+        for(Builder b : player.getBuilders()) {
+            buildingCost -= b.getFoodDiscount();
+        }
+        if(buildingCost <= 0) {
+            buildingCost = 0;
+        }
+
+        return buildingCost;
     }
 }

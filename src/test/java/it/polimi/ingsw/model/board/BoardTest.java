@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.events.ShamanicRitual;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ class BoardTest {
     }
 
     @Test
-    void drawFromTopRowTribe() {
+    //TODO: testare effetti
+    void drawFromTopRowTribe() throws IllegalActionException {
         Board board = new Board(new Random(42));
         board.initialize(5);
         Card card1 = new Hunter(true, Era.II);
@@ -70,7 +72,7 @@ class BoardTest {
     }
 
     @Test
-    void drawFromBottomRowTribe() {
+    void drawFromBottomRowTribe() throws IllegalActionException {
         Board board = new Board(new Random(42));
         board.initialize(5);
         Card card1 = new Hunter(true, Era.II);

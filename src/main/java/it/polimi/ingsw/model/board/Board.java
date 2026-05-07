@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.events.*;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 /**
  * Game board, holds information about all elements present on the board
@@ -396,11 +397,14 @@ public class Board {
     /**
      * Picks the card in the top tribe row at position pos
      */
-    public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException {
+    public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= topRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
+        } else if (topRowTribe.get(pos) instanceof Event) {
+            throw new IllegalActionException("Events can't be drawn");
+        } else {
+            return topRowTribe.remove(pos);
         }
-        return topRowTribe.remove(pos);
     }
 
     /**
@@ -416,11 +420,14 @@ public class Board {
     /**
      * Picks the card in the bottom tribe row at position pos
      */
-    public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException {
+    public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
+        } else if (topRowTribe.get(pos) instanceof Event) {
+            throw new IllegalActionException("Events can't be drawn");
+        } else {
+            return bottomRowTribe.remove(pos);
         }
-        return bottomRowTribe.remove(pos);
     }
 
     /**
@@ -455,6 +462,56 @@ public class Board {
 
     public List<Offer> getOfferPath() {
         return offerPath;
+    }
+
+    /**
+     * Calculates available cards the player can actually draw (subtracting events and unaffordable buildings)
+     * @param player
+     * @return int
+     */
+    public int drawableCards(Player player) {
+        int drawTop = 0;
+        int drawBottom = 0;
+
+        for(Offer o : this.offerPath) {
+            if(o.getOrder() == player.getOffer()) {
+                drawTop =  o.getDrawTop();
+                drawBottom = o.getDrawBottom();
+            }
+        }
+
+        // Subtract event cards
+        for(Card card : this.topRowTribe) {
+            if(card instanceof Event) {
+                drawTop--;
+            }
+        }
+        for(Card card : this.bottomRowTribe) {
+            if(card instanceof Event) {
+                drawBottom--;
+            }
+        }
+
+        //Subtract unaffordable buildings
+        for(Building building : this.topRowBuilding) {
+            if(building.discountedCost(player) > player.getFood()) {
+                drawTop--;
+            }
+        }
+        for(Building building : this.bottomRowBuilding) {
+            if(building.discountedCost(player) > player.getFood()) {
+                drawBottom--;
+            }
+        }
+
+        if(drawTop < 0){
+            drawTop = 0;
+        }
+        if(drawBottom < 0){
+            drawBottom = 0;
+        }
+
+        return drawTop + drawBottom;
     }
 
     public BoardDTO toDTO(){

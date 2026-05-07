@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SustenanceTest {
 
     @Test
-    void applyeffect() {
+    void applyEffect() {
         Sustenance s = new Sustenance(5, Era.I);
         Gatherer g = new Gatherer(Era.I);
         Artist a1 = new Artist(Era.I);
@@ -37,7 +37,7 @@ class SustenanceTest {
         p2.addCard(a2);
         p2.addCard(a3);
 
-        // P3 is able to pay with gatheres
+        // P3 is able to pay with gatherers
         Player p3 = new Player("Gilles");
         p3.setFood(5);
         p3.setPp(10);
