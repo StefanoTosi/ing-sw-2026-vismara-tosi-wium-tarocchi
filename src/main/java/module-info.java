@@ -13,11 +13,11 @@ module com.example.mesos {
     opens it.polimi.ingsw.model to com.fasterxml.jackson.databind, javafx.fxml;
     opens it.polimi.ingsw to javafx.fxml;
     exports it.polimi.ingsw;
-    exports it.polimi.ingsw.model.characters;
-    opens it.polimi.ingsw.model.characters to javafx.fxml, com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.model.characters.DTO;
+    opens it.polimi.ingsw.model.characters.DTO to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.model;
-    exports it.polimi.ingsw.model.events;
-    opens it.polimi.ingsw.model.events to javafx.fxml, com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.model.events.DTO;
+    opens it.polimi.ingsw.model.events.DTO to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.model.board;
     opens it.polimi.ingsw.model.board to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.model.effects;
@@ -29,8 +29,6 @@ module com.example.mesos {
     exports it.polimi.ingsw.controller.states;
     opens it.polimi.ingsw.controller.states to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.networking;
-    exports it.polimi.ingsw.model.characters.DTO;
-    opens it.polimi.ingsw.model.characters.DTO to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.networking.RMI;
     exports it.polimi.ingsw.networking.TCP;
     exports it.polimi.ingsw.UI.GUI;

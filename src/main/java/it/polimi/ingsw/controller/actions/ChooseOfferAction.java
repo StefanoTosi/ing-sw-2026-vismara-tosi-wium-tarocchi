@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller.actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
@@ -8,8 +10,14 @@ import java.rmi.RemoteException;
 public class ChooseOfferAction implements Action {
     private final char order;
 
-    public ChooseOfferAction(char order) {
+    @JsonCreator
+    public ChooseOfferAction(@JsonProperty("order") char order) {
         this.order = order;
+    }
+
+    @JsonProperty("order")
+    public char getOrder() {
+        return order;
     }
 
     @Override

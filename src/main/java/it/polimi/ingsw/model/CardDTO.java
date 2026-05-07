@@ -23,9 +23,9 @@ import java.io.Serializable;
 
         @JsonSubTypes.Type(value = BuildingDTO.class, name = "Building"),
 
-        @JsonSubTypes.Type(value = CavePaintingsDTO.class, name = "Cave Paintings"),
+        @JsonSubTypes.Type(value = CavePaintingsDTO.class, name = "CavePaintings"),
         @JsonSubTypes.Type(value = HuntDTO.class, name = "Hunt"),
-        @JsonSubTypes.Type(value = ShamanicRitualDTO.class, name = "Shamanic Ritual"),
+        @JsonSubTypes.Type(value = ShamanicRitualDTO.class, name = "ShamanicRitual"),
         @JsonSubTypes.Type(value = SustenanceDTO.class, name = "Sustenance")
 })
 public class CardDTO implements Serializable {
