@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller.actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
@@ -16,8 +18,14 @@ public class DrawCardFromBottomAction implements Action {
      * @param pos it's the absolute position of the card on the board,
      *            doesn't matter in which List it belongs
      */
-    public DrawCardFromBottomAction(int pos) {
+    @JsonCreator
+    public DrawCardFromBottomAction(@JsonProperty("pos") int pos) {
         this.pos = pos;
+    }
+
+    @JsonProperty("pos")
+    public int getPos() {
+        return pos;
     }
 
     /**
@@ -29,4 +37,5 @@ public class DrawCardFromBottomAction implements Action {
     public void execute(Player player) throws IllegalActionException, RemoteException {
         player.getGame().getState().drawCardFromBottom(player, pos);
     }
+
 }

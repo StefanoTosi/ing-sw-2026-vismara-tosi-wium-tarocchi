@@ -1,5 +1,8 @@
 package it.polimi.ingsw.networking.TCP;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -23,8 +26,9 @@ public class ClientTCP implements Client {
     private int serverPort;
     private Socket mySocket;
 
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private BufferedReader in;
+    private PrintWriter out;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private final LinkedBlockingQueue<Message> responses = new LinkedBlockingQueue<>();
 
@@ -44,20 +48,22 @@ public class ClientTCP implements Client {
         new Thread(() -> {
             try{
                 while(true) {
-                    Message response = (Message) in.readObject();
-                    if(response.getRequest().equals(RequestType.UPDATE)){
-                        update((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
-                    }else{
-                        if(response.getRequest().equals(RequestType.CLOSEGAME)){
-                            closeGame((GameDTO) JsonUtil.fromJson((String)response.getParams()[0], GameDTO.class));
-                        }else{
+                    String json = in.readLine();
+                    Message response = mapper.readValue(json, Message.class);
+                    switch (response.getRequest()){
+                        case RequestType.UPDATE:
+                            update(mapper.treeToValue(response.getPayload(), GameDTO.class));
+                            break;
+                        case RequestType.CLOSEGAME:
+                            closeGame(mapper.treeToValue(response.getPayload(), GameDTO.class));
+                            break;
+                        default:
                             responses.put(response);
-                        }
                     }
                 }
             }catch (Exception e){
-                shutDownClient();
                 e.printStackTrace();
+                shutDownClient();
             }
         }).start();
     }
@@ -67,17 +73,16 @@ public class ClientTCP implements Client {
             mySocket=new Socket(serverAdress, serverPort);
 
             //link to socket the object for reading/wriding
-            out = new ObjectOutputStream(mySocket.getOutputStream());
-            out.flush();
-            in = new ObjectInputStream(mySocket.getInputStream());
+            out = new PrintWriter(mySocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
         } catch (IOException ex) {
             System.err.println("Host sconosciuto.");
         }
     }
 
-    private synchronized void sendRequest(Message request) throws IOException {
-        out.writeObject(request);
-        out.flush();
+    private synchronized void sendRequest(Message request) throws Exception {
+        String json = JsonUtil.toJson(request);
+        out.println(json);
     }
 
     @Override
@@ -95,12 +100,15 @@ public class ClientTCP implements Client {
     public int addUser(String password, String username) throws IOException, ClassNotFoundException {
         int result = -1;
         try{
-            Message request = new Message(RequestType.ADDUSER, password, username);
+            ObjectNode payload = mapper.createObjectNode();
+            payload.put("username", username);
+            payload.put("password", password);
+            Message request = new Message(RequestType.ADDUSER, payload);
             sendRequest(request);
             Message response = responses.take();
             if(response.getRequest().equals(RequestType.ADDUSER)){
-                System.out.println(response.getParams()[0]);
-                result = (int)response.getParams()[1];
+                System.out.println(response.getPayload().get("msg"));
+                result = response.getPayload().get("result").asInt();
                 if(result == 0){
                     setNickname(username);
                 }
@@ -115,11 +123,13 @@ public class ClientTCP implements Client {
     public boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException {
         boolean result = false;
         try{
-            Message request = new Message(RequestType.JOINGAME, getNickname());
+            ObjectNode payload = mapper.createObjectNode();
+            payload.put("nickname", getNickname());
+            Message request = new Message(RequestType.JOINGAME, payload);
             sendRequest(request);
             Message response = responses.take();
             if(response.getRequest().equals(RequestType.JOINGAME)){
-                result = (boolean)response.getParams()[0];
+                result = (boolean)response.getPayload().get("result").asBoolean();
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -130,7 +140,10 @@ public class ClientTCP implements Client {
     @Override
     public void createGame(int num) throws IllegalActionException, IOException {
         try{
-            Message request = new Message(RequestType.CREATEGAME, num, getNickname());
+            ObjectNode payload = mapper.createObjectNode();
+            payload.put("num", num);
+            payload.put("nickname", getNickname());
+            Message request = new Message(RequestType.CREATEGAME, payload);
             sendRequest(request);
         }catch(Exception e){
             e.printStackTrace();
@@ -140,7 +153,11 @@ public class ClientTCP implements Client {
     @Override
     public void executeAction(Action action) throws IllegalActionException, IOException {
         try{
-            Message request = new Message(RequestType.EXECUTEACTION, action, getNickname());
+            JsonNode payload = mapper.valueToTree((Action)action);
+            ObjectNode root = mapper.createObjectNode();
+            root.set("action", payload);
+            root.put("nickname", getNickname());
+            Message request = new Message(RequestType.EXECUTEACTION, root);
             sendRequest(request);
         }catch (Exception e){
             e.printStackTrace();
@@ -155,7 +172,9 @@ public class ClientTCP implements Client {
     @Override
     public void leaveMatch() throws InterruptedException {
         try{
-            Message request = new Message(RequestType.LEAVEMATCH, getNickname());
+            ObjectNode payload = mapper.createObjectNode();
+            payload.put("nickname", getNickname());
+            Message request = new Message(RequestType.LEAVEMATCH, payload);
             sendRequest(request);
         }catch (Exception e){
             e.printStackTrace();
@@ -165,7 +184,9 @@ public class ClientTCP implements Client {
     @Override
     public void leaveGame() {
         try{
-            Message request = new Message(RequestType.LEAVEGAME, getNickname());
+            ObjectNode payload = mapper.createObjectNode();
+            payload.put("nickname", getNickname());
+            Message request = new Message(RequestType.LEAVEGAME, payload);
             sendRequest(request);
         }catch (Exception e){
             e.printStackTrace();
@@ -177,7 +198,9 @@ public class ClientTCP implements Client {
         new Thread(() -> {
             while(true) {
                 try{
-                    Message request = new Message(RequestType.PING, getNickname());
+                    ObjectNode payload = mapper.createObjectNode();
+                    payload.put("nickname", getNickname());
+                    Message request = new Message(RequestType.PING, payload);
                     sendRequest(request);
                     Thread.sleep(3000);
                 }catch (Exception e){
@@ -191,7 +214,8 @@ public class ClientTCP implements Client {
     @Override
     public void stopGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         try{
-            Message request = new Message(RequestType.CLOSEGAME);
+            ObjectNode payload = mapper.createObjectNode();
+            Message request = new Message(RequestType.CLOSEGAME, payload);
             sendRequest(request);
         }catch (Exception e){
             e.printStackTrace();
