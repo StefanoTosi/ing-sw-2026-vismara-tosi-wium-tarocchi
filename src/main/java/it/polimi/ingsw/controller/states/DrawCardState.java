@@ -44,7 +44,6 @@ public class DrawCardState extends GameState {
         // Verify if at least one player can draw cards
         boolean found = false;
         while(!found && !drawOrder.isEmpty()) {
-
             if(game.getBoard().drawableCards(drawOrder.getFirst()) > 0) {
                 found = true;
             } else {

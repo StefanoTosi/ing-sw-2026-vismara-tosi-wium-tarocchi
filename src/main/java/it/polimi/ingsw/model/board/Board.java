@@ -423,7 +423,7 @@ public class Board {
     public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
-        } else if (topRowTribe.get(pos) instanceof Event) {
+        } else if (bottomRowTribe.get(pos) instanceof Event) {
             throw new IllegalActionException("Events can't be drawn");
         } else {
             return bottomRowTribe.remove(pos);
@@ -472,7 +472,10 @@ public class Board {
     public int drawableCards(Player player) {
         int drawTop = 0;
         int drawBottom = 0;
+        int topRowSize = topRowTribe.size();
+        int bottomRowSize = bottomRowTribe.size();
 
+        //Look for the player's drawTop and bottomTop numbers
         for(Offer o : this.offerPath) {
             if(o.getOrder() == player.getOffer()) {
                 drawTop =  o.getDrawTop();
@@ -483,35 +486,41 @@ public class Board {
         // Subtract event cards
         for(Card card : this.topRowTribe) {
             if(card instanceof Event) {
-                drawTop--;
+                topRowSize--;
             }
         }
         for(Card card : this.bottomRowTribe) {
             if(card instanceof Event) {
-                drawBottom--;
+                bottomRowSize--;
             }
         }
 
         //Subtract unaffordable buildings
         for(Building building : this.topRowBuilding) {
             if(building.discountedCost(player) > player.getFood()) {
-                drawTop--;
+                topRowSize--;
             }
         }
         for(Building building : this.bottomRowBuilding) {
             if(building.discountedCost(player) > player.getFood()) {
-                drawBottom--;
+                bottomRowSize--;
             }
         }
 
-        if(drawTop < 0){
-            drawTop = 0;
+        if(topRowSize < 0){
+            topRowSize = 0;
         }
-        if(drawBottom < 0){
-            drawBottom = 0;
+        if(bottomRowSize < 0){
+            bottomRowSize = 0;
         }
 
-        return drawTop + drawBottom;
+        if(drawTop > 0){
+            return Math.min(topRowSize, drawTop);
+        } else if(drawBottom > 0){
+            return Math.min(bottomRowSize, drawBottom);
+        } else {
+            return 0;
+        }
     }
 
     public BoardDTO toDTO(){
