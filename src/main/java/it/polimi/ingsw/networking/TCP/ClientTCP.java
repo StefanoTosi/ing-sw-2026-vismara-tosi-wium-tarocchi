@@ -7,13 +7,16 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.UIObserver;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -235,5 +238,26 @@ public class ClientTCP implements Client {
     @Override
     public void setObserver(UIObserver observer) {
         this.observer = observer;
+    }
+
+    @Override
+    public List<LeaderboardDTO> getLeaderboard() {
+        List<LeaderboardDTO> result = new ArrayList<>();
+        try{
+            ObjectNode payload = mapper.createObjectNode();
+            Message request = new Message(RequestType.PRINTLEADERBOARD, null);
+            sendRequest(request);
+            Message response = responses.take();
+            if(response.getRequest().equals(RequestType.PRINTLEADERBOARD)){
+                System.out.println(response.getPayload().toString());
+                result = mapper.convertValue(
+                        response.getPayload(),
+                        mapper.getTypeFactory()
+                                .constructCollectionType(List.class, LeaderboardDTO.class));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 }

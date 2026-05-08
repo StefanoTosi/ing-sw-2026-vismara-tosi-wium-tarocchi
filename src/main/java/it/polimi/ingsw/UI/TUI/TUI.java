@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
 import it.polimi.ingsw.networking.UIObserver;

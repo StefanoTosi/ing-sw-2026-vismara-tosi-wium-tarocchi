@@ -5,6 +5,8 @@ import it.polimi.ingsw.networking.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class userDAO {
@@ -47,7 +49,7 @@ public class userDAO {
     }
 
     public static void addRankings(String nickname, int score, int num_player){
-        String sql = "INSERT INTO leaerboard (score,num_player,nickname) VALUES (?,?,?)";
+        String sql = "INSERT INTO leaderboard (score,num_player,nickname) VALUES (?,?,?)";
         try{
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -62,28 +64,29 @@ public class userDAO {
         }
     }
 
-    public static void printLeaerBoard(){
-        String sql = "SELECT nickname, num_player, SUM(score) AS total_score, played_at FROM leaerboard"
-                +"GROUP BY nickname, num_player"
+    public static List<LeaderboardDTO> printLeaderBoard(){
+        String sql = "SELECT nickname, num_player, SUM(score) AS total_score FROM leaderboard\n"
+                +"GROUP BY nickname, num_player\n"
                 +"ORDER BY num_player ASC, total_score DESC";
+
+        List<LeaderboardDTO> leaderboard = new ArrayList<>();
 
         try{
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
-            int cur_players = 0;
-
             while(rs.next()){
                 String nickname = rs.getString("nickname");
-                int num_player = rs.getInt("num_player");
+                int num_players = rs.getInt("num_player");
                 int score = rs.getInt("total_score");
-                String played_at = rs.getString("played_at");
-                //TODO capiamo dove vogliamo salvarlo
+
+                leaderboard.add(new LeaderboardDTO(nickname, score, num_players));
             }
         }catch(Exception e){
             e.printStackTrace();
         }
+        return leaderboard;
     }
 
 }

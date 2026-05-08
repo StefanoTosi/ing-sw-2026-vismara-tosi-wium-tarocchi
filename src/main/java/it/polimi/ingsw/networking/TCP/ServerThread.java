@@ -124,6 +124,9 @@ public class ServerThread implements Runnable, ObserverTCP {
                     case CLOSEGAME:
                         closeGame();
                         break;
+                    case PRINTLEADERBOARD:
+                        getLeaderboard();
+                        break;
                     default:
                         break;
                 }
@@ -249,6 +252,12 @@ public class ServerThread implements Runnable, ObserverTCP {
     public void closingGame(GameDTO game) throws Exception {
         JsonNode payload = mapper.valueToTree(game);
         Message response = new Message(RequestType.CLOSEGAME, payload);
+        sendResponse(response);
+    }
+
+    public void getLeaderboard() throws IOException {
+        JsonNode payload = mapper.valueToTree(userDAO.printLeaderBoard());
+        Message response = new Message(RequestType.PRINTLEADERBOARD, payload);
         sendResponse(response);
     }
 }

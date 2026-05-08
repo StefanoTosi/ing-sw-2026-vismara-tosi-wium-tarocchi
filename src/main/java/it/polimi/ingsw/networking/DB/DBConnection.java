@@ -26,7 +26,7 @@ public class DBConnection {
                     "  psw varchar(35) NOT NULL\n" +
                     ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;\n");
             //create table leaerboard
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS classifica (\n"
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS leaderboard (\n"
                     + " id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
                     + " score int(11) DEFAULT NULL,\n"
                     + " played_at datetime DEFAULT current_timestamp(),\n"

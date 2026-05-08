@@ -25,6 +25,8 @@ module com.example.mesos {
     opens it.polimi.ingsw.model.effects to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.controller;
     opens it.polimi.ingsw.controller to javafx.fxml;
+    exports it.polimi.ingsw.networking.DB;
+    opens it.polimi.ingsw.networking.DB to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.controller.actions;
     opens it.polimi.ingsw.controller.actions to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.controller.states;
