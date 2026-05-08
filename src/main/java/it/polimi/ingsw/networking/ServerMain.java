@@ -2,6 +2,8 @@ package it.polimi.ingsw.networking;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.networking.DB.DBConnection;
+import it.polimi.ingsw.networking.DB.userDAO;
 import it.polimi.ingsw.networking.RMI.ServerRMI;
 import it.polimi.ingsw.networking.TCP.ServerTCP;
 
@@ -33,6 +35,9 @@ public class ServerMain {
         GameController gameController = new GameController();
         Map<String,User> users = new ConcurrentHashMap<>();
         Object lock = new Object(); //lista di lock per diverse funzioni?
+
+        DBConnection.initializeDB();
+        userDAO.loadUser(users);
 
         //RMI connection
         ServerRMI server = new ServerRMI(gameController, users, lock);

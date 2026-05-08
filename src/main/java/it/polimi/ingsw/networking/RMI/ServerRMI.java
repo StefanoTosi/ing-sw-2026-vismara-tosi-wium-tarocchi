@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.DB.userDAO;
 import it.polimi.ingsw.networking.User;
 
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                 user.setActive(true);
                 users.put(nickname, user);
                 clients.put(nickname, client);
+                userDAO.addUsers(user);
                 message = "Welcome " + nickname;
                 success = true;
             }

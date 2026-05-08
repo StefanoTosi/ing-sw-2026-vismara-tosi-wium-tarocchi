@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.states;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.networking.DB.userDAO;
 
 import java.util.Comparator;
 import java.util.List;
@@ -31,6 +32,11 @@ public class EndGameState extends GameState {
             for(Building building : player.getBuildings()) {
                 building.getEffect().applyEffectEndGame(player, building);
             }
+        }
+
+        //Add the score to the DB
+        for(Player player : rankings) {
+            userDAO.addRankings(player.getName(), player.getPp(), game.getNumPlayers());
         }
 
         // first compares players based on PPs, then based on food, so that in case of a tie based on PP score

@@ -11,6 +11,7 @@ import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.DB.userDAO;
 import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.User;
 
@@ -164,6 +165,7 @@ public class ServerThread implements Runnable, ObserverTCP {
                 user = new User(nickname, psw);
                 user.setActive(true);
                 users.put(nickname, user);
+                userDAO.addUsers(user);
                 setNickname(nickname);
                 message = "Welcome " + nickname;
                 success = 0;
