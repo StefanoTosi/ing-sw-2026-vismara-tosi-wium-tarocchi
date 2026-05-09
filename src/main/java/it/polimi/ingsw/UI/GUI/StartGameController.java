@@ -57,6 +57,7 @@ public class StartGameController implements UIObserver {
         System.out.println(username.getText() + " " + password.getText());
 
         if (UISession.getClient().addUser(password.getText(), username.getText()) == 0) {
+            UISession.getClient().ping();
             if (!UISession.getClient().joinGame()) {
                 login.setVisible(false);
                 newGame.setVisible(true);
@@ -126,5 +127,12 @@ public class StartGameController implements UIObserver {
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
 
+    }
+
+
+    @Override
+    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+        System.out.println("Sorry, the server crashed\n");
+        System.exit(1);
     }
 }

@@ -5,31 +5,36 @@ import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.controller.states.StateDTO;
-import it.polimi.ingsw.model.CardDTO;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameDTO;
-import it.polimi.ingsw.model.PlayerDTO;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.BoardDTO;
 import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.UIObserver;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.w3c.dom.css.Rect;
 
 import java.io.IOException;
 import java.util.*;
@@ -55,6 +60,8 @@ public class FieldController implements UIObserver {
     private List<AnimatedTile> offerPathAnim;
     private List<AnimatedCard> bottomRowAnim;
 
+    private List<AnimatedTotem> totems;
+
     private int drawTopCount = 0;
     private int drawBottomCount = 0;
 
@@ -72,8 +79,24 @@ public class FieldController implements UIObserver {
         BoardDTO board = UISession.getGame().getBoard();
 
         // Load offer path
+        Image o = new Image(getClass().getResource("/order/" + game.getNumPlayers() + ".png").toExternalForm());
+        ImageView order = new ImageView();
+        order.setImage(o);
+        order.setFitWidth(AnimatedTile.tileW);
+        order.setFitHeight(AnimatedTile.tileH);
+        offerPath.getChildren().add(order);
+
         for (int i = 0; i < board.getOfferPath().size(); i++) {
             offerPathAnim.add(new AnimatedTile(board.getOfferPath().get(i), offerPath, cardsContainer, this::tileClicked));
+        }
+
+        // Load totems
+        totems = new ArrayList<>();
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            totems.add(new AnimatedTotem(i));
+            cardsContainer.getChildren().add(totems.get(i).getMesh());
+            cardsContainer.getChildren().add(totems.get(i).getReference());
+            totems.get(i).resetPosition();
         }
 
         // Add all cards
@@ -102,11 +125,12 @@ public class FieldController implements UIObserver {
                 "    -fx-border-color: #F04D3B !important;" + // Change this to your color
                 "}");
 
-        // TODO: Render totems
-
         // Place animated cards in the cards container
         Platform.runLater(() -> {
             debugLabel.setText("Its the turn of " + UISession.getGame().getPlayerTurn().getName());
+            for (AnimatedObject t : totems) {
+                t.resetPosition();
+            }
 
             // React to window resizes
             cardsContainer.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -118,8 +142,11 @@ public class FieldController implements UIObserver {
             ((Stage) cardsContainer.getScene().getWindow()).maximizedProperty().addListener((observable, oldValue, isMaximized) -> {
                 Platform.runLater(this::resetAll);
             });
-        });
 
+            ((Stage) cardsContainer.getScene().getWindow()).setOnCloseRequest(event -> {
+                System.exit(0);
+            });
+        });
     }
 
     private void resetAll() {
@@ -133,6 +160,11 @@ public class FieldController implements UIObserver {
 
         for (AnimatedTile a : offerPathAnim) {
             a.resetPosition();
+        }
+
+        for (AnimatedObject t : totems) {
+            t.getMesh().toFront();
+            t.resetPosition();
         }
     }
 
@@ -149,6 +181,9 @@ public class FieldController implements UIObserver {
             a.resetPosition();
         }
 
+        for (AnimatedObject t : totems) {
+            t.getMesh().toFront();
+        }
     }
 
     @Override
@@ -162,6 +197,27 @@ public class FieldController implements UIObserver {
         }
 
         System.out.println(game.getState());
+
+        // Move totems
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            if (game.getPlayers().get(i).getOffer() != '\0') {
+                AnimatedObject totem = totems.get(i);
+                PlayerDTO p = game.getPlayers().get(i);
+                AnimatedTile offer = offerPathAnim
+                        .stream()
+                        .filter(o -> o.getTile().getOrder() == p.getOffer())
+                        .findFirst()
+                        .get();
+                totem.getReference().setLayoutX(offer.getReference().localToScene(0, 0).getX());
+                totem.getReference().setLayoutY(offer.getReference().localToScene(0, 0).getY());
+                totem.animatePosition(Duration.seconds(0.6));
+            } else {
+                AnimatedObject totem = totems.get(i);
+                totem.getReference().setLayoutX(offerPathAnim.get(0).getReference().localToScene(0, 0).getX() - AnimatedTile.tileW);
+                totem.getReference().setLayoutY(offerPathAnim.get(0).getReference().localToScene(0, 0).getY());
+                totem.animatePosition(Duration.seconds(0.6));
+            }
+        }
 
         // Reconcile the playing field with the new GameDTO
         reconcile(game);
@@ -196,12 +252,47 @@ public class FieldController implements UIObserver {
 
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+        Platform.runLater(() -> {
+            System.out.println("ok1");
+            try {
+                UISession.getClient().leaveMatch();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+            System.out.println("ok2");
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("start-game.fxml"));
+            Parent startRoot = null;
+
+            try {
+                startRoot = fxmlLoader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("ok3");
+            VBox errorToastStart = (VBox) startRoot.lookup("#errorToast");
+            errorToastStart.setVisible(true);
+            ((Label) errorToastStart.getChildren().get(0)).setText("Sorry, the game as been closed due to a disconnection of a player");
+
+            startRoot.lookup("#login").setVisible(true);
+            startRoot.lookup("#clientSelect").setVisible(false);
+
+            cardsContainer.getScene().setRoot(startRoot);
+            UISession.setObserver(fxmlLoader.getController());
+        });
+    }
+
+    @Override
+    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+        System.out.println("Sorry, the server crashed\n");
+        System.exit(1);
     }
 
     @FXML
     void cardClicked(MouseEvent e) {
         GameDTO game = UISession.getGame();
+        Group g = (Group) e.getSource();
 
         // If its my turn
         if (game.getPlayerTurn().getName().equals(UISession.getClient().getNickname())) {
@@ -212,24 +303,27 @@ public class FieldController implements UIObserver {
 
                 Platform.runLater(() -> {
                     // Find the card
-                    Group g = (Group) e.getSource();
                     AnimatedCard c = topRowAnim.stream()
                             .filter(a -> a.getMesh() == g)
                             .findFirst().orElse(null);
 
-                    if (c != null && drawTopCount < offer.getDrawTop() && !c.getCard().getType().equals("Event")) {
-                        // Is in top row
-                        int i = topRowAnim.indexOf(c);
-                        topRowAnim.remove(c);
-                        topRow.getChildren().remove(c.getReference());
+                    if (c != null && drawTopCount < offer.getDrawTop()) {
+                        if (!c.getCard().getType().equals("Event")) {
+                            // Is in top row
+                            int i = topRowAnim.indexOf(c);
+                            topRowAnim.remove(c);
+                            topRow.getChildren().remove(c.getReference());
 
-                        // Send action
-                        try {
-                            UISession.getClient().executeAction(new DrawCardFromTopAction(i));
-                            drawCard(c);
-                            drawTopCount += 1;
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                            // Send action
+                            try {
+                                UISession.getClient().executeAction(new DrawCardFromTopAction(i));
+                                drawCard(c);
+                                drawTopCount += 1;
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        } else {
+                            meshRegistry.get(g).shake();
                         }
                     } else if (drawBottomCount < offer.getDrawBottom()) {
                         // Is in bottom row
@@ -249,6 +343,8 @@ public class FieldController implements UIObserver {
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
+                        } else {
+                            meshRegistry.get(g).shake();
                         }
                     }
 
@@ -256,7 +352,6 @@ public class FieldController implements UIObserver {
             } else if (game.getState() == StateDTO.ENDTURN) {
                 Platform.runLater(() -> {
                     // Find the card
-                    Group g = (Group) e.getSource();
                     AnimatedCard c = topRowAnim.stream()
                             .filter(a -> a.getMesh() == g)
                             .findFirst().orElse(null);
@@ -275,9 +370,15 @@ public class FieldController implements UIObserver {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                    } else {
+                        meshRegistry.get(g).shake();
                     }
                 });
             }
+        } else {
+            Platform.runLater(() -> {
+                meshRegistry.get(g).shake();
+            });
         }
     }
 
@@ -293,12 +394,19 @@ public class FieldController implements UIObserver {
                     .filter(a -> a.getMesh() == g)
                     .findFirst().get();
 
-            // Choose it
-            try {
-                UISession.getClient().executeAction(new ChooseOfferAction(c.getTile().getOrder()));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            // Check its free
+            if (!game.getPlayers().stream().anyMatch(p -> p.getOffer() == c.getTile().getOrder())) {
+                // Choose it
+                try {
+                    UISession.getClient().executeAction(new ChooseOfferAction(c.getTile().getOrder()));
+
+                    Platform.runLater(() -> {
+                    });
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
+
         }
         // Otherwise do nothing
     }

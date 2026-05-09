@@ -23,9 +23,7 @@ import javafx.util.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class AnimatedCard {
-    private Group mesh;
-    private Rectangle reference;
+public class AnimatedCard extends AnimatedObject {
     private CardDTO card;
 
     final int cardW = 575 / 5;
@@ -34,6 +32,7 @@ public class AnimatedCard {
     private final Image mask = new Image("card-mask.png");
 
     public AnimatedCard(CardDTO card, EventHandler<MouseEvent> clickHandler) {
+        super(null, null);
         this.card = card;
 
         // Load images
@@ -41,30 +40,16 @@ public class AnimatedCard {
         Image back = new Image(getClass().getResource("/back/" + card.getId() + ".png").toExternalForm());
 
         // Create reference
-        reference = new Rectangle(cardW, cardH);
+        Rectangle reference = new Rectangle(cardW, cardH);
         // reference.setFill(Color.RED);
         reference.setFill(Color.TRANSPARENT);
+        setReference(reference);
 
-        mesh = createCardMesh(front, back, cardW, cardH);
+        Group mesh = createCardMesh(front, back, cardW, cardH);
         mesh.setLayoutX(-cardW);
         mesh.setLayoutY(-cardH);
         mesh.setOnMouseClicked(clickHandler);
-    }
-
-    public Group getMesh() {
-        return mesh;
-    }
-
-    public void setMesh(Group mesh) {
-        this.mesh = mesh;
-    }
-
-    public Rectangle getReference() {
-        return reference;
-    }
-
-    public void setReference(Rectangle reference) {
-        this.reference = reference;
+        setMesh(mesh);
     }
 
     public CardDTO getCard() {
@@ -75,74 +60,6 @@ public class AnimatedCard {
         this.card = card;
     }
 
-    public void resetPosition() {
-        mesh.setLayoutX(reference.localToScene(0, 0).getX());
-        mesh.setLayoutY(reference.localToScene(0, 0).getY());
-    }
-
-    public void animatePosition(Duration d) {
-        TranslateTransition trans = new TranslateTransition(d, mesh);
-        trans.setInterpolator(Interpolator.EASE_BOTH);
-
-        trans.setFromX(0);
-        trans.setToX(reference.localToScene(0, 0).getX() - mesh.getLayoutX());
-
-        trans.setFromY(0);
-        trans.setToY(reference.localToScene(0, 0).getY() - mesh.getLayoutY());
-
-        trans.setOnFinished(event -> {
-            double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
-            double newLayoutY = mesh.getLayoutY() + mesh.getTranslateY();
-
-            mesh.setLayoutX(newLayoutX);
-            mesh.setLayoutY(newLayoutY);
-
-            mesh.setTranslateX(0);
-            mesh.setTranslateY(0);
-        });
-        trans.play();
-
-        // 3D flip
-        /*RotateTransition rotator = new RotateTransition(Duration.seconds(2), mesh);
-        rotator.setAxis(Rotate.Y_AXIS);
-        rotator.setFromAngle(180);
-        rotator.setToAngle(0);
-        rotator.setDelay(Duration.seconds(0.2));
-        rotator.setInterpolator(Interpolator.EASE_BOTH);
-        rotator.play();*/
-    }
-
-    public void animatePosition(Duration d, double x, double y) {
-        TranslateTransition trans = new TranslateTransition(d, mesh);
-        trans.setInterpolator(Interpolator.EASE_BOTH);
-
-        trans.setFromX(0);
-        trans.setToX(x - mesh.getLayoutX());
-
-        trans.setFromY(0);
-        trans.setToY(y - mesh.getLayoutY());
-
-        trans.setOnFinished(event -> {
-            double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
-            double newLayoutY = mesh.getLayoutY() + mesh.getTranslateY();
-
-            mesh.setLayoutX(newLayoutX);
-            mesh.setLayoutY(newLayoutY);
-
-            mesh.setTranslateX(0);
-            mesh.setTranslateY(0);
-        });
-        trans.play();
-    }
-
-    public void spin() {
-        RotateTransition rotator = new RotateTransition(Duration.seconds(0.7), mesh);
-        rotator.setAxis(Rotate.Y_AXIS);
-        rotator.setFromAngle(0);
-        rotator.setToAngle(360);
-        rotator.setInterpolator(Interpolator.EASE_BOTH);
-        rotator.play();
-    }
 
     private Group createCardMesh(Image front, Image back, double width, double height) {
         TriangleMesh frontMesh = new TriangleMesh();

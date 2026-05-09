@@ -3,7 +3,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.networking.DB.DBConnection;
-import it.polimi.ingsw.networking.DB.userDAO;
+import it.polimi.ingsw.networking.DB.UserDAO;
 import it.polimi.ingsw.networking.RMI.ServerRMI;
 import it.polimi.ingsw.networking.TCP.ServerTCP;
 
@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.rmi.*;
 import java.rmi.registry.*;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,7 +36,7 @@ public class ServerMain {
         Object lock = new Object(); //lista di lock per diverse funzioni?
 
         DBConnection.initializeDB();
-        userDAO.loadUser(users);
+        UserDAO.loadUser(users);
 
         //RMI connection
         ServerRMI server = new ServerRMI(gameController, users, lock);

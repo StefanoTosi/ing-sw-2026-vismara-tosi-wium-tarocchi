@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
-import it.polimi.ingsw.networking.DB.userDAO;
+import it.polimi.ingsw.networking.DB.UserDAO;
 import it.polimi.ingsw.networking.User;
 
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                 user.setActive(true);
                 users.put(nickname, user);
                 clients.put(nickname, client);
-                userDAO.addUsers(user);
+                UserDAO.addUsers(user);
                 message = "Welcome " + nickname;
                 success = true;
             }
@@ -76,6 +76,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public synchronized void ping(String name) throws RemoteException {
         lastSeen.put(name, System.currentTimeMillis());
+        System.out.println("ping " + name);
     }
 
     public void checkTimeouts(){
@@ -166,6 +167,6 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
 
     @Override
     public List<LeaderboardDTO> getLeaderboard() {
-        return userDAO.printLeaderBoard();
+        return UserDAO.printLeaderBoard();
     }
 }

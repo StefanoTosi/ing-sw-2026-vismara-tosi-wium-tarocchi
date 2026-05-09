@@ -72,6 +72,7 @@ public class GUIBuilder {
         cards.setSpacing(5);
         cards.setAlignment(Pos.CENTER_LEFT);
         cards.setFillHeight(true);
+        cards.setStyle("-fx-background-color: #00000000");
         sa.getChildren().add(cards);
         AnchorPane.setBottomAnchor(cards, 0.0);
         AnchorPane.setTopAnchor(cards, 0.0);

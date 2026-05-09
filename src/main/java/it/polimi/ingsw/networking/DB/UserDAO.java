@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class userDAO {
+public class UserDAO {
 
     public static void loadUser(Map<String, User> users){
         String sql = "SELECT * FROM users";

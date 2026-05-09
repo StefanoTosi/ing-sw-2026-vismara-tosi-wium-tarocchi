@@ -8,6 +8,7 @@ module com.example.mesos {
     requires java.rmi;
     requires jdk.jfr;
     requires com.fasterxml.jackson.annotation;
+    requires jdk.xml.dom;
     requires java.sql;
 
     opens it.polimi.ingsw.networking to javafx.fxml;
@@ -25,8 +26,6 @@ module com.example.mesos {
     opens it.polimi.ingsw.model.effects to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.controller;
     opens it.polimi.ingsw.controller to javafx.fxml;
-    exports it.polimi.ingsw.networking.DB;
-    opens it.polimi.ingsw.networking.DB to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.controller.actions;
     opens it.polimi.ingsw.controller.actions to javafx.fxml, com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.controller.states;

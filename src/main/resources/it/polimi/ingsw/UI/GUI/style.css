@@ -1,0 +1,19 @@
+.dark-panel {
+    -fx-background-color: #171717ee;
+    -fx-background-radius: 10;
+
+    -fx-border-color: #000;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+}
+
+.big-button {
+    -fx-background-color: #2D203D;
+    -fx-background-radius: 5;
+
+    -fx-border-color: #000219;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+
+    -fx-text-fill: #fff;
+}

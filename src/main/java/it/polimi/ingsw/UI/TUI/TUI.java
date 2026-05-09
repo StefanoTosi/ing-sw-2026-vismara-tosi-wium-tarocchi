@@ -182,6 +182,12 @@ public class TUI implements UIObserver {
         updates.offer(game);
     }
 
+    @Override
+    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+        System.out.println("Sorry, the server crashed\n");
+        System.exit(1);
+    }
+
     public void handleState() throws InterruptedException, IllegalActionException, IOException, ClassNotFoundException {
         while(true){
             game = updates.take();
