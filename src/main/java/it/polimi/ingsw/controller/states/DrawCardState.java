@@ -200,7 +200,6 @@ public class DrawCardState extends GameState {
 
             // Go to next player or next state
             if (!drawOrder.isEmpty()) {
-                System.out.println("\ncambio giocatore" + drawOrder.getFirst().getName());
                 game.setPlayerTurn(drawOrder.removeFirst());
             } else {
                 // When all players have drawn, transition to ResolveEventsState
@@ -210,8 +209,6 @@ public class DrawCardState extends GameState {
                 ResolveEventsState r = new ResolveEventsState(game);
                 r.resolveEvents();
             }
-        }else{
-            System.out.println("Siamo fuori dall'if");
         }
     }
 }

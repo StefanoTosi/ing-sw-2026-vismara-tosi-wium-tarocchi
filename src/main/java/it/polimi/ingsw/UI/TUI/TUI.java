@@ -259,32 +259,38 @@ public class TUI implements UIObserver {
                             }
                         }
                         char chosenRow;
+                        int drawn = 0;
                         int drawTop = playerOffer.getDrawTop();
                         int drawBottom = playerOffer.getDrawBottom();
 
                         while (drawTop + drawBottom > 0) {
+                            drawn = 0;
                             if (drawTop != 0 && drawBottom != 0) {
                                 System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
                                 chosenRow = readChar();
                                 System.out.println("this is the cards the player has to draw  before drawing " + drawTop + drawBottom + "\n");
                                 if (chosenRow == 'T') {
-                                    drawTop += drawCardTopRow();
+                                    drawn = drawCardTopRow();
+                                    drawTop += drawn;
                                     System.out.println("after drawing from top" + drawTop + "\n");
                                 }
                                 if (chosenRow == 'B') {
-                                    drawBottom += drawCardBottomRow();
+                                    drawn = drawCardBottomRow();
+                                    drawBottom += drawn;
                                     System.out.println("after drawing from bottom" + drawBottom + "\n");
                                 }
                             } else if (drawTop != 0) {
-                                drawTop += drawCardTopRow();
+                                drawn = drawCardTopRow();
+                                drawTop += drawn;
                                 System.out.println("after drawing from top" + drawTop + "\n");
                             } else {
-                                drawBottom += drawCardBottomRow();
+                                drawn = drawCardBottomRow();
+                                drawBottom += drawn;
                                 System.out.println("after drawing from bottom" + drawBottom+ "\n");
                             }
-                            /*if (drawTop + drawBottom > 0) {  CRASHA SE METTO NUMERO SBAGLIATO PER COLPA DI QUESTO
+                            if (drawTop + drawBottom > 0 && client.getNickname().equals(game.getPlayerTurn().getName()) && drawn != 0) { // CRASHA SE METTO NUMERO SBAGLIATO PER COLPA DI QUESTO
                                 game = updates.take();
-                            }*/
+                            }
                         }
                     }
                     else {
@@ -346,13 +352,13 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
-                try {
-                    client.executeAction(new DrawCardFromBottomAction(card));
-                } catch (IllegalActionException e) {
-                    System.out.println("You chose a card out of range\n");
-                    return 0;
-                }
-
+                    try{
+                        client.executeAction(new DrawCardFromBottomAction(card));
+                    }catch(Exception e){
+                        //e.printStackTrace();
+                        System.out.println(e.getMessage());
+                        return 0;
+                    }
                 return -1;
             }
             return -10;
@@ -370,11 +376,11 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
-                try {
+                try{
                     client.executeAction(new DrawCardFromTopAction(card));
-                } catch (IllegalActionException e) {
-
-                    System.out.println("You chose a card out of range\n");
+                }catch(Exception e){
+                    //e.printStackTrace();
+                    System.out.println(e.getMessage());
                     return 0;
                 }
                 return -1;
@@ -853,6 +859,10 @@ public class TUI implements UIObserver {
         switch (input.toLowerCase()){
             case "exit":
             case "quit":
+                if(gameClosed){
+                    client.leaveGame();
+                    System.exit(0);
+                }
                 client.stopGame(client.getNickname());
                 anotherGame();
             case "board":
