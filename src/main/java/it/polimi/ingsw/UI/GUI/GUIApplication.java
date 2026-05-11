@@ -17,8 +17,8 @@ public class GUIApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
         UISession.setObserver(fxmlLoader.getController());
 
-        PerspectiveCamera camera = new PerspectiveCamera();
-        scene.setCamera(camera);
+        /*PerspectiveCamera camera = new PerspectiveCamera();
+        scene.setCamera(camera);*/
 
         stage.setTitle("Mesos");
         stage.setScene(scene);

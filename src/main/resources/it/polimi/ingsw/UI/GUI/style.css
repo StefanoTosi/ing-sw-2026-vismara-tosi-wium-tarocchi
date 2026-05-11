@@ -17,3 +17,11 @@
 
     -fx-text-fill: #fff;
 }
+
+.image-label {
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover; /* Stretches to fill the label */
+    -fx-background-position: center;
+    -fx-padding: 10; /* Adds space so text isn't touching edges */
+    -fx-text-fill: white; /* Contrast for the text */
+}

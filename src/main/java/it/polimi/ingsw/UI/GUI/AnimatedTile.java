@@ -1,13 +1,11 @@
 package it.polimi.ingsw.UI.GUI;
 
-import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.board.OfferDTO;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
@@ -15,15 +13,13 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.TriangleMesh;
 
-import java.lang.ref.Reference;
-
 public class AnimatedTile extends AnimatedObject {
     private OfferDTO tile;
 
     public final static int tileW = 391 / 3;
     public final static int tileH = 627 / 3;
 
-    public AnimatedTile(OfferDTO tile, HBox path, Pane cardsContainer, EventHandler<MouseEvent> clickHandler) {
+    public AnimatedTile(OfferDTO tile, HBox path, Group cardsContainer, EventHandler<MouseEvent> clickHandler) {
         this.tile = tile;
         super(null, null);
 

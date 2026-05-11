@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(&quot;/background.png&quot;); -fx-background-position: center; -fx-background-size: cover;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.UI.GUI.StartGameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(&quot;/background.png&quot;); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.UI.GUI.StartGameController">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -67,6 +67,24 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
+            </VBox>
+            <VBox fx:id="playAgain" alignment="CENTER" layoutX="160.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" styleClass="dark-panel" stylesheets="@style.css" visible="false">
+               <children>
+                  <Label fx:id="label1" text="Want to play again?" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#playAgain" styleClass="big-button" text="Play again" />
+                        <Button mnemonicParsing="false" onAction="#quit" styleClass="big-button" text="Quit" />
+                     </children>
+                  </HBox>
+               </children>
             </VBox>
          </children>
       </StackPane>

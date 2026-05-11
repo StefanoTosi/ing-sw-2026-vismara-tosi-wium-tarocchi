@@ -3,6 +3,7 @@ package it.polimi.ingsw.UI.GUI;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
@@ -23,6 +24,10 @@ public class AnimatedObject {
     }
 
     public void animatePosition(Duration d) {
+        animatePosition(d, Duration.seconds(0));
+    }
+
+    public void animatePosition(Duration d, Duration delay) {
         TranslateTransition trans = new TranslateTransition(d, mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
@@ -31,6 +36,8 @@ public class AnimatedObject {
 
         trans.setFromY(0);
         trans.setToY(reference.localToScene(0, 0).getY() - mesh.getLayoutY());
+
+        trans.setDelay(delay);
 
         trans.setOnFinished(event -> {
             double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
@@ -43,15 +50,6 @@ public class AnimatedObject {
             mesh.setTranslateY(0);
         });
         trans.play();
-
-        // 3D flip
-        /*RotateTransition rotator = new RotateTransition(Duration.seconds(2), mesh);
-        rotator.setAxis(Rotate.Y_AXIS);
-        rotator.setFromAngle(180);
-        rotator.setToAngle(0);
-        rotator.setDelay(Duration.seconds(0.2));
-        rotator.setInterpolator(Interpolator.EASE_BOTH);
-        rotator.play();*/
     }
 
     public void animatePosition(Duration d, double x, double y) {
@@ -86,10 +84,22 @@ public class AnimatedObject {
         rotator.play();
     }
 
+    public void flip(Duration delay) {
+        RotateTransition rotator = new RotateTransition(Duration.seconds(0.5), mesh);
+        rotator.setAxis(Rotate.Y_AXIS);
+        rotator.setFromAngle(mesh.getRotate());
+        rotator.setToAngle(mesh.getRotate() + 180);
+        rotator.setInterpolator(Interpolator.EASE_BOTH);
+        rotator.setDelay(delay);
+        rotator.play();
+    }
+
     public void shake() {
-        for (int i = 0; i < 4; i++) {
+        TranslateTransition prev = null;
+        int shakes = 4;
+        for (int i = 0; i < shakes; i++) {
             int dest = 20;
-            if (i == 0 || i == 3){
+            if (i == 0 || i == shakes - 1){
                 dest = 10;
             }
 
@@ -101,8 +111,36 @@ public class AnimatedObject {
             trans.setInterpolator(Interpolator.EASE_BOTH);
             trans.setFromX(0);
             trans.setToX(dest);
-            trans.setDelay(Duration.seconds(0.11 * i));
-            trans.play();
+            if (i != 0) {
+                prev.setOnFinished((ActionEvent e) -> {
+                    double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
+                    double newLayoutY = mesh.getLayoutY() + mesh.getTranslateY();
+
+                    mesh.setLayoutX(newLayoutX);
+                    mesh.setLayoutY(newLayoutY);
+
+                    mesh.setTranslateX(0);
+                    mesh.setTranslateY(0);
+
+                    trans.play();
+                });
+            } else {
+                trans.play();
+            }
+
+            if (i == shakes - 1) {
+                trans.setOnFinished((ActionEvent e) -> {
+                    double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
+                    double newLayoutY = mesh.getLayoutY() + mesh.getTranslateY();
+
+                    mesh.setLayoutX(newLayoutX);
+                    mesh.setLayoutY(newLayoutY);
+
+                    mesh.setTranslateX(0);
+                    mesh.setTranslateY(0);
+                });
+            }
+            prev = trans;
         }
     }
 

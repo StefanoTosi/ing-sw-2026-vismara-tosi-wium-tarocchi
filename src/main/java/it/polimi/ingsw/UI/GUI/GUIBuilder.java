@@ -47,10 +47,16 @@ public class GUIBuilder {
         VBox v = new VBox();
         v.setPadding(new Insets(5, 5, 5, 5));
         v.setMinWidth(200);
+
         Label pp = new Label("Prestige points: " + p.getPp());
         pp.setId(p.getName() + "Pp");
         pp.setTextFill(Color.valueOf("#fff"));
+        // pp.setStyle("-fx-background-image: url(\"/../../../pp.png\")");
+        // pp.getStyleClass().add(".image-label");
+
         Label food = new Label("Food: " + p.getFood());
+        // food.setStyle("-fx-background-image: url(\"/../../../food.png\")");
+        // food.getStyleClass().add(".image-label");
         food.setId(p.getName() + "Food");
         food.setTextFill(Color.valueOf("#fff"));
         v.getChildren().add(pp);

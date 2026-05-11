@@ -37,9 +37,9 @@ public class AnimatedTotem extends AnimatedObject {
 
         // Define card points
         frontMesh.getPoints().addAll(
-                0, 0, 0.01f,  // Point 0 (Top Left)
-                (float) width, 0, 0.01f,  // Point 1 (Top Right)
-                0, (float) height, 0.01f,  // Point 2 (Bottom Left)
+                0, 0, -0.01f,  // Point 0 (Top Left)
+                (float) width, 0, -0.01f,  // Point 1 (Top Right)
+                0, (float) height, -0.01f,  // Point 2 (Bottom Left)
                 (float) width, (float) height, 0.01f   // Point 3 (Bottom Right)
         );
 

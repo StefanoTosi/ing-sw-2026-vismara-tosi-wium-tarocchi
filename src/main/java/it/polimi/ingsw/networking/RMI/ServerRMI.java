@@ -76,7 +76,6 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public synchronized void ping(String name) throws RemoteException {
         lastSeen.put(name, System.currentTimeMillis());
-        System.out.println("ping " + name);
     }
 
     public void checkTimeouts(){

@@ -26,6 +26,7 @@ public class StartGameController implements UIObserver {
     @FXML VBox newGame;
     @FXML VBox errorToast;
     @FXML VBox waiting;
+    @FXML VBox playAgain;
 
     @FXML Label label;
 
@@ -74,7 +75,8 @@ public class StartGameController implements UIObserver {
         }
     }
 
-    @FXML void createGame() {
+    @FXML
+    void createGame() {
         try {
             int num = Integer.parseInt(numPlayers.getText());
             if (num  < 2 || num > 5) {
@@ -92,6 +94,29 @@ public class StartGameController implements UIObserver {
             errorToast.setVisible(true);
             ((Label) errorToast.getChildren().get(0)).setText("Invalid number of players");
         }
+    }
+
+    @FXML
+    void playAgain() {
+        try {
+            if (!UISession.getClient().joinGame()) {
+                playAgain.setVisible(false);
+                newGame.setVisible(true);
+                errorToast.setVisible(false);
+            } else {
+                playAgain.setVisible(false);
+                waiting.setVisible(true);
+                errorToast.setVisible(false);
+                waiting.getChildren().add(new Label(username.getText()));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void quit() {
+        System.exit(0);
     }
 
     @Override

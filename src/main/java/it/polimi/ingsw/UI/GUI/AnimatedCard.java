@@ -31,7 +31,7 @@ public class AnimatedCard extends AnimatedObject {
 
     private final Image mask = new Image("card-mask.png");
 
-    public AnimatedCard(CardDTO card, EventHandler<MouseEvent> clickHandler) {
+    public AnimatedCard(CardDTO card, EventHandler<MouseEvent> clickHandler, double deckX, double deckY) {
         super(null, null);
         this.card = card;
 
@@ -46,9 +46,11 @@ public class AnimatedCard extends AnimatedObject {
         setReference(reference);
 
         Group mesh = createCardMesh(front, back, cardW, cardH);
-        mesh.setLayoutX(-cardW);
-        mesh.setLayoutY(-cardH);
+        mesh.setLayoutX(deckX);
+        mesh.setLayoutY(deckY);
         mesh.setOnMouseClicked(clickHandler);
+        mesh.setRotationAxis(Rotate.Y_AXIS);
+        mesh.setRotate(180);
         setMesh(mesh);
     }
 

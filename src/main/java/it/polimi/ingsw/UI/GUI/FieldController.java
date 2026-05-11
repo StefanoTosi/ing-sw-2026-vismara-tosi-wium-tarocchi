@@ -15,9 +15,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -41,11 +39,15 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class FieldController implements UIObserver {
+    @FXML AnchorPane anchor;
     @FXML HBox topRow;
     @FXML HBox offerPath;
+    ImageView order;
     @FXML HBox bottomRow;
 
-    @FXML Pane cardsContainer;
+    @FXML SubScene subScene;
+    Group cardsContainer;
+    PerspectiveCamera camera;
     @FXML Label debugLabel;
 
     @FXML TabPane playerTabs;
@@ -67,6 +69,7 @@ public class FieldController implements UIObserver {
 
     @FXML
     void initialize() {
+        // Initialize structures
         topRowAnim = new ArrayList<>();
         bottomRowAnim = new ArrayList<>();
         offerPathAnim = new ArrayList<>();
@@ -78,9 +81,18 @@ public class FieldController implements UIObserver {
         GameDTO game = UISession.getGame();
         BoardDTO board = UISession.getGame().getBoard();
 
+        // Create 3D environment
+        subScene.widthProperty().bind(anchor.widthProperty());
+        subScene.heightProperty().bind(anchor.heightProperty());
+        cardsContainer = new Group();
+        camera = new PerspectiveCamera(true); // 'true' enables fixed eye position
+
+        subScene.setRoot(cardsContainer);
+        subScene.setCamera(camera);
+
         // Load offer path
         Image o = new Image(getClass().getResource("/order/" + game.getNumPlayers() + ".png").toExternalForm());
-        ImageView order = new ImageView();
+        order = new ImageView();
         order.setImage(o);
         order.setFitWidth(AnimatedTile.tileW);
         order.setFitHeight(AnimatedTile.tileH);
@@ -131,22 +143,45 @@ public class FieldController implements UIObserver {
             for (AnimatedObject t : totems) {
                 t.resetPosition();
             }
+            alignCameraToScreenSpace();
 
             // React to window resizes
             cardsContainer.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
                 Platform.runLater(this::resetAll);
+                alignCameraToScreenSpace();
             });
             cardsContainer.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
                 Platform.runLater(this::resetAll);
+                alignCameraToScreenSpace();
             });
             ((Stage) cardsContainer.getScene().getWindow()).maximizedProperty().addListener((observable, oldValue, isMaximized) -> {
                 Platform.runLater(this::resetAll);
+                alignCameraToScreenSpace();
             });
 
             ((Stage) cardsContainer.getScene().getWindow()).setOnCloseRequest(event -> {
+                try {
+                    UISession.getClient().stopGame(UISession.getClient().getNickname());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 System.exit(0);
             });
         });
+    }
+
+    private void alignCameraToScreenSpace() {
+        // Align the camera to pixels
+        double fov = camera.getFieldOfView(); // Default is 30.0
+        double halfHeight = subScene.getHeight() / 2.0;
+        double distance = halfHeight / Math.tan(Math.toRadians(fov / 2.0));
+        camera.setTranslateZ(-distance);
+        camera.setTranslateX(subScene.getWidth() / 2.0);
+        camera.setTranslateY(subScene.getHeight() / 2.0);
+
+        // Set Clipping Planes
+        camera.setNearClip(0.01);
+        camera.setFarClip(distance * 2);
     }
 
     private void resetAll() {
@@ -253,14 +288,12 @@ public class FieldController implements UIObserver {
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         Platform.runLater(() -> {
-            System.out.println("ok1");
             try {
                 UISession.getClient().leaveMatch();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            System.out.println("ok2");
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("start-game.fxml"));
             Parent startRoot = null;
 
@@ -270,12 +303,11 @@ public class FieldController implements UIObserver {
                 throw new RuntimeException(e);
             }
 
-            System.out.println("ok3");
             VBox errorToastStart = (VBox) startRoot.lookup("#errorToast");
             errorToastStart.setVisible(true);
             ((Label) errorToastStart.getChildren().get(0)).setText("Sorry, the game as been closed due to a disconnection of a player");
 
-            startRoot.lookup("#login").setVisible(true);
+            startRoot.lookup("#playAgain").setVisible(true);
             startRoot.lookup("#clientSelect").setVisible(false);
 
             cardsContainer.getScene().setRoot(startRoot);
@@ -435,6 +467,9 @@ public class FieldController implements UIObserver {
      */
     private void reconcile(GameDTO game) {
         Platform.runLater(() -> {
+            List<AnimatedCard> oldCards = new ArrayList<>();
+            List<AnimatedCard> newCards = new ArrayList<>();
+
             // Reconcile top row
             List<AnimatedCard> newTopRowAnim = new ArrayList<>();
             List<AnimatedCard> newBottomRowAnim = new ArrayList<>();
@@ -444,10 +479,13 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked);
+                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
+                    newCards.add(anim);
+                } else {
+                    oldCards.add(anim);
                 }
 
                 newTopRowAnim.add(anim);
@@ -458,10 +496,13 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not found, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked);
+                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
+                    newCards.add(anim);
+                } else {
+                    oldCards.add(anim);
                 }
 
                 newTopRowAnim.add(anim);
@@ -474,10 +515,13 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked);
+                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
+                    newCards.add(anim);
+                } else {
+                    oldCards.add(anim);
                 }
 
                 newBottomRowAnim.add(anim);
@@ -488,10 +532,13 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked);
+                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
+                    newCards.add(anim);
+                } else {
+                    oldCards.add(anim);
                 }
 
                 newBottomRowAnim.add(anim);
@@ -535,7 +582,22 @@ public class FieldController implements UIObserver {
             cardsContainer.getScene().getRoot().layout();
 
             Platform.runLater(()-> {
-                animateAll(Duration.seconds(0.5));
+                for (AnimatedCard a : oldCards) {
+                    a.animatePosition(Duration.seconds(0.5));
+                }
+
+                for (int i = 0; i < newCards.size(); i++) {
+                    newCards.get(i).animatePosition(Duration.seconds(0.5), Duration.seconds(0.1 * i));
+                    newCards.get(i).flip(Duration.seconds(0.1 * i));
+                }
+
+                for (AnimatedTile a : offerPathAnim) {
+                    a.resetPosition();
+                }
+
+                for (AnimatedObject t : totems) {
+                    t.getMesh().toFront();
+                }
             });
         });
     }
