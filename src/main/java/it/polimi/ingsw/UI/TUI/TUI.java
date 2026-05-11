@@ -339,7 +339,13 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
-                client.executeAction(new DrawCardFromBottomAction(card));
+                try {
+                    client.executeAction(new DrawCardFromBottomAction(card));
+                } catch (IllegalActionException e) {
+                    System.out.println("You chose a card out of range\n");
+                    return 0;
+                }
+
                 return -1;
             }
             return -10;
@@ -357,7 +363,13 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
-                client.executeAction(new DrawCardFromTopAction(card));
+                try {
+                    client.executeAction(new DrawCardFromTopAction(card));
+                } catch (IllegalActionException e) {
+
+                    System.out.println("You chose a card out of range\n");
+                    return 0;
+                }
                 return -1;
             }
             return -10;

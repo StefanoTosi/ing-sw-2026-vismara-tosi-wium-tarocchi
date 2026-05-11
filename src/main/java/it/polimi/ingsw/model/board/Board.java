@@ -465,33 +465,17 @@ public class Board {
     }
 
     /**
-     * Calculates available cards the player can actually draw (subtracting events and unaffordable buildings)
+     * Calculates available cards the player is allowed to draw from the top row (subtracting events and unaffordable buildings)
      * @param player
      * @return int
      */
-    public int drawableCards(Player player) {
-        int drawTop = 0;
-        int drawBottom = 0;
-        int topRowSize = topRowTribe.size();
-        int bottomRowSize = bottomRowTribe.size();
-
-        //Look for the player's drawTop and bottomTop numbers
-        for(Offer o : this.offerPath) {
-            if(o.getOrder() == player.getOffer()) {
-                drawTop =  o.getDrawTop();
-                drawBottom = o.getDrawBottom();
-            }
-        }
+    public int drawableCardsFromTop(Player player) {
+        int topRowSize = topRowTribe.size() + topRowBuilding.size();
 
         // Subtract event cards
         for(Card card : this.topRowTribe) {
-            if(card instanceof Event) {
+            if (card instanceof Event) {
                 topRowSize--;
-            }
-        }
-        for(Card card : this.bottomRowTribe) {
-            if(card instanceof Event) {
-                bottomRowSize--;
             }
         }
 
@@ -501,26 +485,60 @@ public class Board {
                 topRowSize--;
             }
         }
+
+        return topRowSize;
+    }
+
+    public int drawableCardsFromBottom(Player player) {
+        int bottomRowSize = bottomRowTribe.size() + bottomRowBuilding.size();
+
+        // Subtract event cards
+        for(Card card : this.bottomRowTribe) {
+            if(card instanceof Event) {
+                bottomRowSize--;
+            }
+        }
+
+        //Subtract unaffordable buildings
         for(Building building : this.bottomRowBuilding) {
             if(building.discountedCost(player) > player.getFood()) {
                 bottomRowSize--;
             }
         }
 
-        if(topRowSize < 0){
-            topRowSize = 0;
-        }
-        if(bottomRowSize < 0){
-            bottomRowSize = 0;
+        return bottomRowSize;
+    }
+
+    /**
+     * Verifies if the player can draw at least one available card
+     * @param player
+     * @param drawnTop number of cards the player has already drawn from the top row
+     * @param drawnBottom number of cards the player has already drawn from the bottom row
+     * @return boolean
+     */
+    public boolean playerCanDraw(Player player, int drawnTop, int drawnBottom) {
+        int drawTop = 0;
+        int drawBottom = 0;
+
+        //Look for the player's drawTop and drawBottom numbers
+        for(Offer o : this.offerPath) {
+            if(o.getOrder() == player.getOffer()) {
+                drawTop =  o.getDrawTop();
+                drawBottom = o.getDrawBottom();
+            }
         }
 
-        if(drawTop > 0){
-            return Math.min(topRowSize, drawTop);
-        } else if(drawBottom > 0){
-            return Math.min(bottomRowSize, drawBottom);
-        } else {
-            return 0;
+        drawTop -= drawnTop;
+        drawBottom -= drawnBottom;
+
+        if(drawTop > 0 && drawableCardsFromTop(player) > 0) {
+            return true;
         }
+        if(drawBottom > 0 && drawableCardsFromBottom(player) > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public BoardDTO toDTO(){
