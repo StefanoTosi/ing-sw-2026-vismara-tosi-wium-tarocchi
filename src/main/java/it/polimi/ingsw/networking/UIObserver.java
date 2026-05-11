@@ -10,4 +10,5 @@ import java.rmi.RemoteException;
 public interface UIObserver {
     void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException;
     void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException;
+    void serverCrashed() throws IOException, IllegalActionException, InterruptedException;
 }

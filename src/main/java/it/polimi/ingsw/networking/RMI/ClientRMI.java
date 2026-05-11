@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
 import javafx.css.converter.LadderConverter;
 
@@ -11,7 +12,10 @@ import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
+import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.spec.ECField;
+import java.util.List;
 
 
 public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Client {
@@ -34,14 +38,16 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
                 try {
                     controller.ping(getNickname());
                     Thread.sleep(3000);
-                } catch (RemoteException e) {
-                    System.out.println("\nSorry the server crashed\n");
-                    System.exit(1);
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    System.out.println("\nSorry the server crashed\n");
-                    System.exit(1);
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    try {
+                        observer.serverCrashed();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (IllegalActionException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         }).start();
@@ -119,5 +125,10 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     @Override
     public void setObserver(UIObserver observer) {
         this.observer = observer;
+    }
+
+    @Override
+    public List<LeaderboardDTO> getLeaderboard() throws RemoteException {
+        return controller.getLeaderboard();
     }
 }

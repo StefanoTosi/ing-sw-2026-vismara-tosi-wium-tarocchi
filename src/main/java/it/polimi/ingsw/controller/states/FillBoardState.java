@@ -32,6 +32,7 @@ public class FillBoardState extends GameState {
      */
     public void refillBoard() throws IllegalActionException, RemoteException {
         if (game.getTurnNumber() > 10) {
+            game.setPlayerTurn(null);
             game.setState(new EndGameState(game));
             game.getState().calculateRankings();
             return;

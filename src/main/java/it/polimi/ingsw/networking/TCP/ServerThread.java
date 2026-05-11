@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
-import it.polimi.ingsw.controller.actions.ChooseOfferAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.DB.UserDAO;
 import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.User;
 
@@ -18,7 +16,6 @@ import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerThread implements Runnable, ObserverTCP {
     private Socket client;
@@ -123,6 +120,9 @@ public class ServerThread implements Runnable, ObserverTCP {
                     case CLOSEGAME:
                         closeGame();
                         break;
+                    case PRINTLEADERBOARD:
+                        getLeaderboard();
+                        break;
                     default:
                         break;
                 }
@@ -164,6 +164,7 @@ public class ServerThread implements Runnable, ObserverTCP {
                 user = new User(nickname, psw);
                 user.setActive(true);
                 users.put(nickname, user);
+                UserDAO.addUsers(user);
                 setNickname(nickname);
                 message = "Welcome " + nickname;
                 success = 0;
@@ -247,6 +248,12 @@ public class ServerThread implements Runnable, ObserverTCP {
     public void closingGame(GameDTO game) throws Exception {
         JsonNode payload = mapper.valueToTree(game);
         Message response = new Message(RequestType.CLOSEGAME, payload);
+        sendResponse(response);
+    }
+
+    public void getLeaderboard() throws IOException {
+        JsonNode payload = mapper.valueToTree(UserDAO.printLeaderBoard());
+        Message response = new Message(RequestType.PRINTLEADERBOARD, payload);
         sendResponse(response);
     }
 }

@@ -17,13 +17,14 @@ public class GUIApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
         UISession.setObserver(fxmlLoader.getController());
 
-        PerspectiveCamera camera = new PerspectiveCamera();
-        scene.setCamera(camera);
+        /*PerspectiveCamera camera = new PerspectiveCamera();
+        scene.setCamera(camera);*/
 
         stage.setTitle("Mesos");
         stage.setScene(scene);
         Image icon = new Image("icon.png");
         stage.getIcons().add(icon);
-        scene.getRoot().setStyle("-fx-background-image: url('/cover.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat;");        stage.show();
+        // scene.getRoot().setStyle("-fx-background-image: url('/cover.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat;");
+        stage.show();
     }
 }

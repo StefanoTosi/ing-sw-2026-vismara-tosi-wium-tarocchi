@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
 import it.polimi.ingsw.networking.UIObserver;
@@ -179,6 +180,12 @@ public class TUI implements UIObserver {
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         setGameClosed(true);
         updates.offer(game);
+    }
+
+    @Override
+    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+        System.out.println("Sorry, the server crashed\n");
+        System.exit(1);
     }
 
     public void handleState() throws InterruptedException, IllegalActionException, IOException, ClassNotFoundException {

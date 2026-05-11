@@ -4,11 +4,14 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.actions.Action;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
+import it.polimi.ingsw.networking.DB.UserDAO;
 import it.polimi.ingsw.networking.User;
 
 import java.io.IOException;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,6 +59,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                 user.setActive(true);
                 users.put(nickname, user);
                 clients.put(nickname, client);
+                UserDAO.addUsers(user);
                 message = "Welcome " + nickname;
                 success = true;
             }
@@ -158,5 +162,10 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public void stopGame(String name) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         gamesController.removeGame(name);
+    }
+
+    @Override
+    public List<LeaderboardDTO> getLeaderboard() {
+        return UserDAO.printLeaderBoard();
     }
 }
