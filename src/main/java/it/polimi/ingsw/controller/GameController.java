@@ -99,7 +99,12 @@ public class GameController {
 
     public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, IOException, InterruptedException {
         getPlayer(player).getGame().setErrorFlag("");
-        action.execute(getPlayer(player));
+        try{
+            action.execute(getPlayer(player));
+        }catch(IllegalActionException e){
+            getPlayer(player).getGame().setErrorFlag(e.getReason());
+            throw e;
+        }
         getPlayer(player).getGame().notifyObserver();
     }
 
