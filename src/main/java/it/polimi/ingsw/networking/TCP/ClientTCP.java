@@ -75,7 +75,7 @@ public class ClientTCP implements Client {
         try {
             mySocket=new Socket(serverAdress, serverPort);
 
-            //link to socket the object for reading/wriding
+            //link to socket the object for reading/writing
             out = new PrintWriter(mySocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
         } catch (IOException ex) {

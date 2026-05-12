@@ -52,7 +52,7 @@ public abstract class Card {
      */
     public void addToPlayer (Player player) throws IllegalActionException {}
 
-    public CardDTO cardToDTO(){
+    public CardDTO toDTO(){
         return new CardDTO(getEra().name(), getType(), getName(), getId());
     }
 
