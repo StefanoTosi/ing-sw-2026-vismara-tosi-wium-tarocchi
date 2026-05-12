@@ -166,6 +166,6 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
 
     @Override
     public List<LeaderboardDTO> getLeaderboard() {
-        return UserDAO.printLeaderBoard();
+        return UserDAO.getLeaderBoard();
     }
 }

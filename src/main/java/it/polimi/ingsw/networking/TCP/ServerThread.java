@@ -252,7 +252,7 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     public void getLeaderboard() throws IOException {
-        JsonNode payload = mapper.valueToTree(UserDAO.printLeaderBoard());
+        JsonNode payload = mapper.valueToTree(UserDAO.getLeaderBoard());
         Message response = new Message(RequestType.PRINTLEADERBOARD, payload);
         sendResponse(response);
     }
