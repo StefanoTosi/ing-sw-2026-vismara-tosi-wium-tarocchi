@@ -37,6 +37,7 @@ public class DrawCardState extends GameState {
         game.setPlayerTurn(drawOrder.removeFirst());
 
         // Tile A does not allow you to draw any cards
+        //TODO: può essere eliminato se compreso nel controllo successivo?
         if (game.getPlayerTurn().getOffer() == 'A') {
             game.setPlayerTurn(drawOrder.removeFirst());
         }
@@ -44,10 +45,24 @@ public class DrawCardState extends GameState {
         // Verify if at least one player can draw cards
         boolean found = false;
         while(!found && !drawOrder.isEmpty()) {
-            if(game.getBoard().drawableCards(drawOrder.getFirst()) > 0) {
+            if(game.getBoard().playerCanDraw(drawOrder.getFirst(), drawTopCount, drawBottomCount)) {
                 found = true;
             } else {
+                System.out.println("No cards available to draw");
                 game.setPlayerTurn(drawOrder.removeFirst());
+                // Move back to the order tile
+                int availableOrder = (int) game.getPlayers()
+                        .stream()
+                        .filter(p -> p.getOffer() == '\0')
+                        .count();
+
+                game.getPlayerTurn().setOrder(availableOrder);
+                game.getPlayerTurn().setOffer('\0');
+
+                // Execute the ET1 effect
+                game.getPlayerTurn().getBuildings()
+                        .stream()
+                        .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
             }
         }
 
@@ -65,7 +80,7 @@ public class DrawCardState extends GameState {
 
     /**
      * Draw a card from the top row,
-     * not the Event one
+     * not an Event one
      * @param player
      * @param pos
      * @throws IllegalActionException
@@ -81,7 +96,7 @@ public class DrawCardState extends GameState {
                 Card character = game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
             } else {
-                Building building = game.getBoard().getTopRowBuilding().get(pos);
+                Building building = game.getBoard().getTopRowBuilding().get(pos-index);
                 int buildingCost = building.discountedCost(player);
 
                 if(buildingCost <= player.getFood()) {
@@ -94,37 +109,13 @@ public class DrawCardState extends GameState {
                 }
             }
 
-            // When all cards have been drawn, go to the next player
-            drawTopCount += 1;
-            if (drawTopCount == offer.getDrawTop() && drawBottomCount == offer.getDrawBottom()) {
-                drawTopCount = 0;
-                drawBottomCount = 0;
+            drawTopCount++;
 
-                // Move back to the order tile
-                int availableOrder = (int) game.getPlayers()
-                        .stream()
-                        .filter(p -> p.getOffer() == '\0')
-                        .count();
+            //TODO: throw an exception/print when no cards are available
 
-                game.getPlayerTurn().setOrder(availableOrder);
-                game.getPlayerTurn().setOffer('\0');
+            // When all cards have been drawn or there are no more cards available, go to the next player
+            transitionIfNeeded(player);
 
-                // Execute the ET1 effect
-                game.getPlayerTurn().getBuildings()
-                    .stream()
-                    .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
-
-                // Go to next player or next state
-                if (!drawOrder.isEmpty()) {
-                    game.setPlayerTurn(drawOrder.removeFirst());
-                } else {
-                    // When all players have drawn, transition to ResolveEventsState
-                    game.setPlayerTurn(null);
-
-                    ResolveEventsState r = new ResolveEventsState(game);
-                    r.resolveEvents();
-                }
-            }
         } else {
             throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawTop() + ")");
         }
@@ -132,7 +123,7 @@ public class DrawCardState extends GameState {
 
     /**
      * Draw a card from the bottom row,
-     * not the Event one
+     * not an Event one
      * @param player
      * @param pos
      * @throws IllegalActionException
@@ -148,16 +139,8 @@ public class DrawCardState extends GameState {
                 Card character = game.getBoard().drawFromBottomRowTribe(pos);
                 afterDrawn(player, character);
             } else {
-                Building building;
-                int buildingCost = game.getBoard().getBottomRowBuilding().get(pos).getCost();
-
-                //Calculate discount provided by builders in the tribe
-                for(Builder b : player.getBuilders()) {
-                    buildingCost -= b.getFoodDiscount();
-                }
-                if(buildingCost <= 0) {
-                    buildingCost = 0;
-                }
+                Building building = game.getBoard().getBottomRowBuilding().get(pos-index);
+                int buildingCost = building.discountedCost(player);
 
                 if(buildingCost <= player.getFood()) {
                     building = game.getBoard().drawFromBottomRowBuilding(pos-index);
@@ -169,38 +152,11 @@ public class DrawCardState extends GameState {
                 }
             }
 
-            // When all cards have been drawn, go to the next player
             drawBottomCount += 1;
-            if (drawTopCount == offer.getDrawTop() && drawBottomCount == offer.getDrawBottom()) {
-                drawTopCount = 0;
-                drawBottomCount = 0;
 
-                // Move back to the order tile
-                int availableOrder = (int) game.getPlayers()
-                        .stream()
-                        .filter(p -> p.getOffer() == '\0')
-                        .count();
+            // When all cards have been drawn, go to the next player
+            transitionIfNeeded(player);
 
-                game.getPlayerTurn().setOrder(availableOrder);
-                game.getPlayerTurn().setOffer('\0');
-
-                // Execute the ET1 effect
-                game.getPlayerTurn().getBuildings()
-                        .stream()
-                        .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
-
-                // Go to next player or next state
-                if (drawOrder.size() > 0) {
-                    game.setPlayerTurn(drawOrder.remove(0));
-                } else {
-                    // When all players have draw, transition to ResolveEventsState
-                    System.out.println("Finished drawing cards");
-                    game.setPlayerTurn(null);
-
-                    ResolveEventsState r = new ResolveEventsState(game);
-                    r.resolveEvents();
-                }
-            }
         } else {
             throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawBottom() + ")");
         }
@@ -220,6 +176,39 @@ public class DrawCardState extends GameState {
             }
         } else {
             throw new IllegalActionException("Player " + player.getName() + " tried to draw an event card");
+        }
+    }
+
+    private void transitionIfNeeded(Player player) throws IllegalActionException, RemoteException {
+        if (!game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount)) {
+            drawTopCount = 0;
+            drawBottomCount = 0;
+
+            // Move back to the order tile
+            int availableOrder = (int) game.getPlayers()
+                    .stream()
+                    .filter(p -> p.getOffer() == '\0')
+                    .count();
+
+            game.getPlayerTurn().setOrder(availableOrder);
+            game.getPlayerTurn().setOffer('\0');
+
+            // Execute the ET1 effect
+            game.getPlayerTurn().getBuildings()
+                    .stream()
+                    .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
+
+            // Go to next player or next state
+            if (!drawOrder.isEmpty()) {
+                game.setPlayerTurn(drawOrder.removeFirst());
+            } else {
+                // When all players have drawn, transition to ResolveEventsState
+                System.out.println("Finished drawing cards");
+                game.setPlayerTurn(null);
+
+                ResolveEventsState r = new ResolveEventsState(game);
+                r.resolveEvents();
+            }
         }
     }
 }

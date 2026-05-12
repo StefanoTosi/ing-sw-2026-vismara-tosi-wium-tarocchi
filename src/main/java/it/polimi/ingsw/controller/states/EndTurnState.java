@@ -31,10 +31,18 @@ public class EndTurnState extends GameState {
                 .toList());
 
         game.setTurnNumber(game.getTurnNumber() + 1);
-        if (drawOrder.size() > 0) {
+        if (!drawOrder.isEmpty()) {
             System.out.println("Resolving end turn phase");
-            game.setPlayerTurn(drawOrder.remove(0));
-            game.setState(this);
+            if(game.getBoard().drawableCardsFromTop(drawOrder.getFirst()) > 0) {
+                game.setPlayerTurn(drawOrder.removeFirst());
+                game.setState(this);
+            } else {
+                System.out.println("No cards available to draw");
+                game.setPlayerTurn(null);
+
+                FillBoardState f = new FillBoardState(game);
+                f.refillBoard();
+            }
         } else {
             System.out.println("Finished end turn phase");
             game.setPlayerTurn(null);
@@ -63,15 +71,21 @@ public class EndTurnState extends GameState {
                 Card character= game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
             } else {
-                Building building = game.getBoard().drawFromTopRowBuilding(pos-index);
-                player.addCard(building);
-                building.getEffect().whenDrawn(player);
+                Building building = game.getBoard().getTopRowBuilding().get(pos-index);
+                int buildingCost = building.discountedCost(player);
+
+                if(buildingCost <= player.getFood()) {
+                    building = game.getBoard().drawFromTopRowBuilding(pos-index);
+                    player.addCard(building);
+                    player.addFood(-buildingCost);
+                    building.getEffect().whenDrawn(player);
+                }
             }
 
-            if (drawOrder.size() > 0) {
-                game.setPlayerTurn(drawOrder.remove(0));
+            if (!drawOrder.isEmpty()) {
+                game.setPlayerTurn(drawOrder.removeFirst());
             } else {
-                // When all players have draw, transition to FillBoardState
+                // When all players have drawn, transition to FillBoardState
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
                 game.newTurn();
