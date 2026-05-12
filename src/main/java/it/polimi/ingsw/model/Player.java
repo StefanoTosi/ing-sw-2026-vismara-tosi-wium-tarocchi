@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +64,34 @@ public class Player {
         this.game = null;
     }
 
+    public Player(String name, List<Artist> artists, List<Gatherer> gatherers, List<Hunter> hunters, List<Inventor> inventors, List<Shaman> shamans, List<Builder> builders,
+                  List<Building> buildings, int pp, int food, int foodDiscount, int additionalStars, boolean dontLosePp, boolean doublePp, boolean canPickFromTop,
+                  int order, char offer, Game game) {
+        this.name = name;
+
+        this.artists = artists;
+        this.gatherers = gatherers;
+        this.hunters = hunters;
+        this.inventors = inventors;
+        this.shamans = shamans;
+        this.builders = builders;
+        this.buildings = buildings;
+
+        this.pp = pp;
+        this.food = food;
+
+        this.foodDiscount = foodDiscount;
+        this.additionalStars = additionalStars;
+        this.dontLosePp = dontLosePp;
+        this.doublePp = doublePp;
+        this.canPickFromTop = canPickFromTop;
+
+        this.order = order;
+        this.offer = offer;
+
+        this.game = game;
+    }
+
     public void setGame(Game game) {
         this.game = game;
     }
@@ -109,7 +138,7 @@ public class Player {
         this.food += food;
     }
 
-    public void addCard(Card card) {
+    public void addCard(Card card) throws IllegalActionException {
         card.addToPlayer(this);
     }
 

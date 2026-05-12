@@ -10,17 +10,25 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class AnimatedObject {
-    private Group mesh;
-    private Rectangle reference;
+    protected Group mesh;
+    protected Rectangle reference;
 
     AnimatedObject(Group mesh, Rectangle reference) {
         this.mesh = mesh;
         this.reference = reference;
     }
 
+    protected double getRefX() {
+        return reference.localToScene(0, 0).getX();
+    }
+
+    protected double getRefY() {
+        return reference.localToScene(0, 0).getY();
+    }
+
     public void resetPosition() {
-        mesh.setLayoutX(reference.localToScene(0, 0).getX());
-        mesh.setLayoutY(reference.localToScene(0, 0).getY());
+        mesh.setLayoutX(getRefX());
+        mesh.setLayoutY(getRefY());
     }
 
     public void animatePosition(Duration d) {
@@ -32,10 +40,10 @@ public class AnimatedObject {
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
         trans.setFromX(0);
-        trans.setToX(reference.localToScene(0, 0).getX() - mesh.getLayoutX());
+        trans.setToX(getRefX() - mesh.getLayoutX());
 
         trans.setFromY(0);
-        trans.setToY(reference.localToScene(0, 0).getY() - mesh.getLayoutY());
+        trans.setToY(getRefY() - mesh.getLayoutY());
 
         trans.setDelay(delay);
 

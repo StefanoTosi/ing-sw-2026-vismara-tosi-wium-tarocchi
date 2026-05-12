@@ -26,8 +26,8 @@ import java.util.function.Consumer;
 public class AnimatedCard extends AnimatedObject {
     private CardDTO card;
 
-    final int cardW = 575 / 5;
-    final int cardH = 810 / 5;
+    public static final int cardW = 575 / 5;
+    public static final int cardH = 810 / 5;
 
     private final Image mask = new Image("card-mask.png");
 
@@ -51,6 +51,7 @@ public class AnimatedCard extends AnimatedObject {
         mesh.setOnMouseClicked(clickHandler);
         mesh.setRotationAxis(Rotate.Y_AXIS);
         mesh.setRotate(180);
+        mesh.setTranslateZ(-0.2);
         setMesh(mesh);
     }
 
@@ -68,10 +69,10 @@ public class AnimatedCard extends AnimatedObject {
 
         // Define card points
         frontMesh.getPoints().addAll(
-                0, 0, 0f,  // Point 0 (Top Left)
-                (float) width, 0, 0f,  // Point 1 (Top Right)
-                0, (float) height, 0f,  // Point 2 (Bottom Left)
-                (float) width, (float) height, 0f   // Point 3 (Bottom Right)
+                0, 0, 0,  // Point 0 (Top Left)
+                (float) width, 0, 0,  // Point 1 (Top Right)
+                0, (float) height, 0,  // Point 2 (Bottom Left)
+                (float) width, (float) height, 0   // Point 3 (Bottom Right)
         );
 
         // Define texture coordinates
@@ -103,10 +104,10 @@ public class AnimatedCard extends AnimatedObject {
 
         // Define card points
         backMesh.getPoints().addAll(
-                0, 0, 0f,  // Point 0 (Top Left)
-                (float) width, 0, 0f,  // Point 1 (Top Right)
-                0, (float) height, 0f,  // Point 2 (Bottom Left)
-                (float) width, (float) height, 0f   // Point 3 (Bottom Right)
+                0, 0, 0,  // Point 0 (Top Left)
+                (float) width, 0, 0,  // Point 1 (Top Right)
+                0, (float) height, 0,  // Point 2 (Bottom Left)
+                (float) width, (float) height, 0   // Point 3 (Bottom Right)
         );
 
         // Define texture coordinates

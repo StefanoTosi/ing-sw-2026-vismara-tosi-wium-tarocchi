@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.Effect;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -31,25 +32,47 @@ class CavePaintingsTest {
         ef.applyEffect(players);
         assertEquals(16, p1.getPp());
 
-        p1.addCard(a1);
+        try {
+            p1.addCard(a1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         ef.applyEffect(players);
         assertEquals(12, p1.getPp());
 
-        p1.addCard(a2);
+        try {
+            p1.addCard(a2);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
         ef.applyEffect(players);
         assertEquals(17, p1.getPp());
 
-        p1.addCard(a3);
+        try {
+            p1.addCard(a3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
         ef.applyEffect(players);
         assertEquals(22, p1.getPp());
 
         //Test building effect
         Building building = new Building(Era.I, 2, 3, 0, null, Effect.ECP);
-        p1.addCard(building);
+        try {
+            p1.addCard(building);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         ef.applyEffect(players);
         assertEquals(3, p1.getFood());
-        p1.addCard(a1);
+        try {
+            p1.addCard(a1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         ef.applyEffect(players);
         assertEquals(7, p1.getFood());
     }

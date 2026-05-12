@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.*;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -90,9 +91,13 @@ class EffectTest {
         Shaman s2 = new Shaman(3, Era.I);
         Shaman s3 = new Shaman(3, Era.I);
 
-        p3.addCard(s1);
-        p3.addCard(s2);
-        p4.addCard(s3);
+        try {
+            p3.addCard(s1);
+            p3.addCard(s2);
+            p4.addCard(s3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // A player without the fewest number of stars still lose pp
         b1.getEffect().applyEffectEventShamanicRitual(p3, b1);
@@ -126,15 +131,24 @@ class EffectTest {
         assertEquals(false, p1.getDoublePp());
 
         // A player with the most shamans gets double pp
-        p1.addCard(s1);
-        p1.addCard(s2);
-        p2.addCard(s3);
+
+        try {
+            p1.addCard(s1);
+            p1.addCard(s2);
+            p2.addCard(s3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         b.getEffect().applyEffectEventShamanicRitual(p1, b);
         assertEquals(true, p1.getDoublePp());
 
         // A player with equal number of shamans as other players gets no double pp
-        p2.addCard(s1);
+        try {
+            p2.addCard(s1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         b.getEffect().applyEffectEventShamanicRitual(p1, b);
         assertEquals(false, p1.getDoublePp());
@@ -202,23 +216,33 @@ class EffectTest {
         assertEquals(0, player.getFood());
 
         // A player with a set gets food
-        player.addCard(a1);
-        player.addCard(b1);
-        player.addCard(g1);
-        player.addCard(h1);
-        player.addCard(inv1);
-        player.addCard(s1);
+        try {
+            player.addCard(a1);
+            player.addCard(b1);
+            player.addCard(g1);
+            player.addCard(h1);
+            player.addCard(inv1);
+            player.addCard(s1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
 
         building.getEffect().applyEffectDraw(player, 0, s2);
         assertEquals(5, player.getFood());
 
         // A player with a set gets food
-        player.addCard(s2);
-        player.addCard(a2);
-        player.addCard(b2);
-        player.addCard(g2);
-        player.addCard(h2);
-        player.addCard(inv2);
+        try {
+            player.addCard(s2);
+            player.addCard(a2);
+            player.addCard(b2);
+            player.addCard(g2);
+            player.addCard(h2);
+            player.addCard(inv2);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
 
         building.getEffect().applyEffectDraw(player, 0, s2);
         assertEquals(10, player.getFood());
@@ -236,18 +260,31 @@ class EffectTest {
         Inventor inv3 = new Inventor(Icon.LEATHER, Era.I);
         Inventor inv4 = new Inventor(Icon.LEATHER, Era.I);
         Inventor inv5 = new Inventor(Icon.SOUP, Era.I);
-        player.addCard(inv3);
-        player.addCard(inv5);
+        try {
+            player.addCard(inv3);
+            player.addCard(inv5);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
 
         // A player with a LEATHER that draws a LEATHER completes a pair and thus gains food
         building.getEffect().applyEffectDraw(player, 0, inv4);
         assertEquals(3, player.getFood());
-        player.addCard(inv4);
+        try {
+            player.addCard(inv4);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // A player without a HOOK that draws a HOOK does not complete a pair and thus does not gain food
         building.getEffect().applyEffectDraw(player, 0, inv1);
         assertEquals(3, player.getFood());
-        player.addCard(inv1);
+        try {
+            player.addCard(inv1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // A player with a SOUP that draws a SOUP completes a pair and thus gains food
         building.getEffect().applyEffectDraw(player, 0, inv2);
@@ -270,7 +307,12 @@ class EffectTest {
         // A player with builders should see double the number of pp the builder gives
         // We test only half of it, since the other half is granted by the EndGameState
         Builder b3 = new Builder(2,4,Era.I);
-        player3.addCard(b3);
+        try {
+            player3.addCard(b3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
         building.getEffect().applyEffectEndGame(player3, building);
         assertEquals(4, player3.getPp());
 
@@ -297,12 +339,16 @@ class EffectTest {
         Inventor inv = new Inventor(Icon.ARROW, Era.I);
         Shaman s = new Shaman(2, Era.I);
 
-        player.addCard(a);
-        player.addCard(b);
-        player.addCard(g);
-        player.addCard(inv);
-        player.addCard(s);
-        player.addCard(h);
+        try {
+            player.addCard(a);
+            player.addCard(b);
+            player.addCard(g);
+            player.addCard(inv);
+            player.addCard(s);
+            player.addCard(h);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         building.getEffect().applyEffectEndGame(player, building);
         assertEquals(6, player.getPp());
@@ -315,12 +361,16 @@ class EffectTest {
         Inventor inv1 = new Inventor(Icon.ARROW, Era.I);
         Shaman s1 = new Shaman(2, Era.I);
 
-        player.addCard(a1);
-        player.addCard(b1);
-        player.addCard(g1);
-        player.addCard(inv1);
-        player.addCard(s1);
-        player.addCard(h1);
+        try {
+            player.addCard(a1);
+            player.addCard(b1);
+            player.addCard(g1);
+            player.addCard(inv1);
+            player.addCard(s1);
+            player.addCard(h1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         building.getEffect().applyEffectEndGame(player, building);
         assertEquals( 6 + 12, player.getPp());
@@ -333,12 +383,16 @@ class EffectTest {
         Inventor inv2 = new Inventor(Icon.ARROW, Era.I);
         Shaman s2 = new Shaman(2, Era.I);
 
-        player.addCard(a2);
-        player.addCard(b2);
-        player.addCard(g2);
-        player.addCard(inv2);
-        player.addCard(s2);
-        player.addCard(h2);
+        try {
+            player.addCard(a2);
+            player.addCard(b2);
+            player.addCard(g2);
+            player.addCard(inv2);
+            player.addCard(s2);
+            player.addCard(h2);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         building.getEffect().applyEffectEndGame(player, building);
         assertEquals(6 + 12 + 18, player.getPp());
@@ -435,9 +489,13 @@ class EffectTest {
         Shaman s2 = new Shaman(3, Era.I);
         Shaman s3 = new Shaman(3, Era.I);
 
-        p1.addCard(s1);
-        p1.addCard(s2);
-        p2.addCard(s3);
+        try {
+            p1.addCard(s1);
+            p1.addCard(s2);
+            p2.addCard(s3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(3, p1.getAdditionalStars());
 

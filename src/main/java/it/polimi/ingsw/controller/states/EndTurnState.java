@@ -15,7 +15,9 @@ public class EndTurnState extends GameState {
     private final Game game;
     private List<Player> drawOrder;
 
-    EndTurnState(Game game) throws IllegalActionException, RemoteException {
+    public EndTurnState(Game game) throws IllegalActionException, RemoteException {
+        this.game = game;
+
         // Resolve end turn effects
         for (Player p : game.getPlayers()) {
             for (Building b : p.getBuildings()) {
@@ -23,7 +25,24 @@ public class EndTurnState extends GameState {
             }
         }
 
+        resolveEndTurn();
+    }
+
+    public EndTurnState(Game game, List<Player> drawOrder) throws IllegalActionException, RemoteException {
         this.game = game;
+        this.drawOrder = drawOrder;
+
+        // Resolve end turn effects
+        for (Player p : game.getPlayers()) {
+            for (Building b : p.getBuildings()) {
+                b.getEffect().applyEffectEndTurn(p);
+            }
+        }
+
+        resolveEndTurn();
+    }
+
+    private void resolveEndTurn() throws IllegalActionException, RemoteException {
         this.drawOrder = new ArrayList<>(game.getPlayers()
                 .stream()
                 .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())

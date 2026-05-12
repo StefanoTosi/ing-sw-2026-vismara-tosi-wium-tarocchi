@@ -59,6 +59,22 @@ public class Board {
         this.rng = rng;
     }
 
+    public Board(List<Card> topRowTribe, List<Building> topRowBuilding, List<Card> bottomRowTribe, List<Building> bottomRowBuilding,
+                 Deck deckTribe, Deck deckE1Building, Deck deckE2Building, Deck deckE3Building, Order order, List<Offer> offerPath) {
+        this.topRowTribe = topRowTribe;
+        this.topRowBuilding = topRowBuilding;
+        this.bottomRowTribe = bottomRowTribe;
+        this.bottomRowBuilding = bottomRowBuilding;
+
+        this.deckTribe = deckTribe;
+        this.deckE1Building = deckE1Building;
+        this.deckE2Building = deckE2Building;
+        this.deckE3Building = deckE3Building;
+
+        this.order = order;
+        this.offerPath = offerPath;
+    }
+
     /**
      * Initializes a starting board given the number of players
      */
@@ -400,8 +416,6 @@ public class Board {
     public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= topRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
-        } else if (topRowTribe.get(pos) instanceof Event) {
-            throw new IllegalActionException("Events can't be drawn");
         } else {
             return topRowTribe.remove(pos);
         }
@@ -423,8 +437,6 @@ public class Board {
     public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
-        } else if (bottomRowTribe.get(pos) instanceof Event) {
-            throw new IllegalActionException("Events can't be drawn");
         } else {
             return bottomRowTribe.remove(pos);
         }
@@ -473,6 +485,7 @@ public class Board {
         int topRowSize = topRowTribe.size() + topRowBuilding.size();
 
         // Subtract event cards
+        //TODO: si può sostituire l'instance of?
         for(Card card : this.topRowTribe) {
             if (card instanceof Event) {
                 topRowSize--;
@@ -493,6 +506,7 @@ public class Board {
         int bottomRowSize = bottomRowTribe.size() + bottomRowBuilding.size();
 
         // Subtract event cards
+        //TODO: si può sostituire l'instance of?
         for(Card card : this.bottomRowTribe) {
             if(card instanceof Event) {
                 bottomRowSize--;
