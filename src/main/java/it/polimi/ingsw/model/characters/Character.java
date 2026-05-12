@@ -11,7 +11,13 @@ public abstract class Character extends Card {
 
     public Character(Era era) {
         super(era);
-        this.TYPE="Character";
+        this.TYPE = "Character";
+    }
+
+    public Character(Era era, String name) {
+        super(era);
+        this.TYPE = "Character";
+        this.name = name;
     }
 
     @Override

@@ -29,6 +29,11 @@ public class ChooseOfferState extends GameState {
         game.setPlayerTurn(drawOrder.remove(0));
     }
 
+    public ChooseOfferState(Game game, List<Player> drawOrder) throws IllegalActionException, RemoteException {
+        this.game = game;
+        this.drawOrder = drawOrder;
+    }
+
     public StateDTO getStateDTO() {
         return StateDTO.CHOOSEOFFER;
     }

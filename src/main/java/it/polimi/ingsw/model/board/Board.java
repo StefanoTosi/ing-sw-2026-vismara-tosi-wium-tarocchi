@@ -59,6 +59,22 @@ public class Board {
         this.rng = rng;
     }
 
+    public Board(List<Card> topRowTribe, List<Building> topRowBuilding, List<Card> bottomRowTribe, List<Building> bottomRowBuilding,
+                 Deck deckTribe, Deck deckE1Building, Deck deckE2Building, Deck deckE3Building, Order order, List<Offer> offerPath) {
+        this.topRowTribe = topRowTribe;
+        this.topRowBuilding = topRowBuilding;
+        this.bottomRowTribe = bottomRowTribe;
+        this.bottomRowBuilding = bottomRowBuilding;
+
+        this.deckTribe = deckTribe;
+        this.deckE1Building = deckE1Building;
+        this.deckE2Building = deckE2Building;
+        this.deckE3Building = deckE3Building;
+
+        this.order = order;
+        this.offerPath = offerPath;
+    }
+
     /**
      * Initializes a starting board given the number of players
      */
