@@ -36,6 +36,14 @@ public class StartGameController implements UIObserver {
     @FXML TextField numPlayers;
 
     @FXML
+    void initialize() {
+        Platform.runLater(() -> {
+            String css = this.getClass().getResource("/it/polimi/ingsw/UI/GUI/style.css").toExternalForm();
+            label.getScene().getStylesheets().add(css);
+        });
+    }
+
+    @FXML
     void selectRMI() throws NotBoundException, IOException {
         UISession.setClient(new ClientRMI(UISession.getObserver(), UISession.getPortRMI(), UISession.getAddr()));
         System.out.println("RMI selected");
@@ -67,7 +75,9 @@ public class StartGameController implements UIObserver {
                 login.setVisible(false);
                 waiting.setVisible(true);
                 errorToast.setVisible(false);
-                waiting.getChildren().add(new Label(username.getText()));
+                Label l = new Label(username.getText());
+                l.getStyleClass().add("waiting-name");
+                waiting.getChildren().add(l);
             }
         } else {
             errorToast.setVisible(true);
@@ -107,7 +117,9 @@ public class StartGameController implements UIObserver {
                 playAgain.setVisible(false);
                 waiting.setVisible(true);
                 errorToast.setVisible(false);
-                waiting.getChildren().add(new Label(username.getText()));
+                Label l = new Label(username.getText());
+                l.getStyleClass().add("waiting-name");
+                waiting.getChildren().add(l);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

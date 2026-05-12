@@ -15,6 +15,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -42,7 +43,6 @@ public class FieldController implements UIObserver {
     @FXML AnchorPane anchor;
     @FXML HBox topRow;
     @FXML HBox offerPath;
-    ImageView order;
     @FXML HBox bottomRow;
 
     @FXML SubScene subScene;
@@ -59,6 +59,8 @@ public class FieldController implements UIObserver {
     private Map<Integer, AnimatedCard> idRegistry;
 
     private List<AnimatedCard> topRowAnim;
+    private Rectangle deck;
+    private AnimatedObject order;
     private List<AnimatedTile> offerPathAnim;
     private List<AnimatedCard> bottomRowAnim;
 
@@ -90,14 +92,27 @@ public class FieldController implements UIObserver {
         subScene.setRoot(cardsContainer);
         subScene.setCamera(camera);
 
-        // Load offer path
-        Image o = new Image(getClass().getResource("/order/" + game.getNumPlayers() + ".png").toExternalForm());
-        order = new ImageView();
-        order.setImage(o);
-        order.setFitWidth(AnimatedTile.tileW);
-        order.setFitHeight(AnimatedTile.tileH);
-        offerPath.getChildren().add(order);
+        // Create deck
+        deck = new Rectangle(AnimatedCard.cardW, AnimatedCard.cardH);
+        deck.setFill(Color.TRANSPARENT);
+        offerPath.getChildren().add(deck);
+        offerPath.setMargin(deck, new Insets(0, 20, 0, 0));
 
+        // Load order tile
+        Image o = new Image(getClass().getResource("/order/" + game.getNumPlayers() + ".png").toExternalForm());
+        ImageView iv = new ImageView();
+        iv.setImage(o);
+        iv.setFitWidth(AnimatedTile.tileW);
+        iv.setFitHeight(AnimatedTile.tileH);
+
+        Rectangle ref = new Rectangle(AnimatedTile.tileW, AnimatedTile.tileH);
+        ref.setFill(Color.TRANSPARENT);
+
+        order = new AnimatedObject(new Group(iv), ref);
+        offerPath.getChildren().add(ref);
+        cardsContainer.getChildren().add(order.getMesh());
+
+        // Load offer path
         for (int i = 0; i < board.getOfferPath().size(); i++) {
             offerPathAnim.add(new AnimatedTile(board.getOfferPath().get(i), offerPath, cardsContainer, this::tileClicked));
         }
@@ -110,6 +125,14 @@ public class FieldController implements UIObserver {
             cardsContainer.getChildren().add(totems.get(i).getReference());
             totems.get(i).resetPosition();
         }
+
+        Platform.runLater(() -> {
+            cardsContainer.getScene().getRoot().applyCss();
+            cardsContainer.getScene().getRoot().layout();
+            for (AnimatedObject t : totems) {
+                t.resetPosition();
+            }
+        });
 
         // Add all cards
         reconcile(game);
@@ -139,11 +162,9 @@ public class FieldController implements UIObserver {
 
         // Place animated cards in the cards container
         Platform.runLater(() -> {
-            debugLabel.setText("Its the turn of " + UISession.getGame().getPlayerTurn().getName());
-            for (AnimatedObject t : totems) {
-                t.resetPosition();
-            }
+            updateInstructionLabel();
             alignCameraToScreenSpace();
+            order.resetPosition();
 
             // React to window resizes
             cardsContainer.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -170,6 +191,25 @@ public class FieldController implements UIObserver {
         });
     }
 
+    private void updateInstructionLabel() {
+        GameDTO game = UISession.getGame();
+        String instructions = "Its " + UISession.getGame().getPlayerTurn().getName() + "'s turn to ";
+        switch (game.getState()) {
+            case CHOOSEOFFER:
+                instructions += "choose an offer tile";
+                break;
+            case DRAWCARD:
+                instructions += "draw a card";
+                break;
+            case ENDTURN:
+                instructions += "draw a card from the top row";
+                break;
+            default:
+                break;
+        }
+        debugLabel.setText(instructions);
+    }
+
     private void alignCameraToScreenSpace() {
         // Align the camera to pixels
         double fov = camera.getFieldOfView(); // Default is 30.0
@@ -193,12 +233,12 @@ public class FieldController implements UIObserver {
             a.resetPosition();
         }
 
+        order.resetPosition();
         for (AnimatedTile a : offerPathAnim) {
             a.resetPosition();
         }
 
         for (AnimatedObject t : totems) {
-            t.getMesh().toFront();
             t.resetPosition();
         }
     }
@@ -215,16 +255,10 @@ public class FieldController implements UIObserver {
         for (AnimatedTile a : offerPathAnim) {
             a.resetPosition();
         }
-
-        for (AnimatedObject t : totems) {
-            t.getMesh().toFront();
-        }
     }
 
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
-        UISession.setGame(game);
-
         // Reset counters
         if (game.getState() != StateDTO.DRAWCARD) {
             drawBottomCount = 0;
@@ -233,33 +267,28 @@ public class FieldController implements UIObserver {
 
         System.out.println(game.getState());
 
-        // Move totems
-        for (int i = 0; i < game.getPlayers().size(); i++) {
-            if (game.getPlayers().get(i).getOffer() != '\0') {
-                AnimatedObject totem = totems.get(i);
-                PlayerDTO p = game.getPlayers().get(i);
-                AnimatedTile offer = offerPathAnim
-                        .stream()
-                        .filter(o -> o.getTile().getOrder() == p.getOffer())
-                        .findFirst()
-                        .get();
-                totem.getReference().setLayoutX(offer.getReference().localToScene(0, 0).getX());
-                totem.getReference().setLayoutY(offer.getReference().localToScene(0, 0).getY());
-                totem.animatePosition(Duration.seconds(0.6));
-            } else {
-                AnimatedObject totem = totems.get(i);
-                totem.getReference().setLayoutX(offerPathAnim.get(0).getReference().localToScene(0, 0).getX() - AnimatedTile.tileW);
-                totem.getReference().setLayoutY(offerPathAnim.get(0).getReference().localToScene(0, 0).getY());
-                totem.animatePosition(Duration.seconds(0.6));
+        if (game.getState() == StateDTO.CHOOSEOFFER || game.getState() == StateDTO.ENDTURN) {
+            // Find events
+            List<CardDTO> events = new ArrayList<>();
+            for (CardDTO c : UISession.getGame().getBoard().getBottomRowTribe()) {
+                if (c.getType().equals("Event")) {
+                    events.add(c);
+                }
             }
+
+            // Order them
+            // Animate them
+
+            // Continue with the reconciliation
         }
 
         // Reconcile the playing field with the new GameDTO
+        UISession.setGame(game);
         reconcile(game);
 
         Platform.runLater(() -> {
             // Update toasts
-            debugLabel.setText("Its the turn of " + game.getPlayerTurn().getName() + " : " + game.getState());
+            updateInstructionLabel();
             if (!game.getErrorFlag().equals("")) {
                 errorToast.setVisible(true);
                 ((Label) errorToast.getChildren().get(0)).setText(game.getErrorFlag());
@@ -456,10 +485,6 @@ public class FieldController implements UIObserver {
         // Animate the cards
         cardsContainer.getScene().getRoot().applyCss();
         cardsContainer.getScene().getRoot().layout();
-
-        // c.animatePosition(Duration.seconds(0.5));
-        // c.spin();
-        // c.getMesh().toFront();
     }
 
     /**
@@ -467,6 +492,31 @@ public class FieldController implements UIObserver {
      */
     private void reconcile(GameDTO game) {
         Platform.runLater(() -> {
+            // Move totems
+            for (int i = 0; i < game.getPlayers().size(); i++) {
+                AnimatedTotem totem = totems.get(i);
+                PlayerDTO p = game.getPlayers().get(i);
+                if (game.getPlayers().get(i).getOffer() != '\0') {
+                    // When on the offer path
+                    AnimatedTile offer = offerPathAnim
+                            .stream()
+                            .filter(o -> o.getTile().getOrder() == p.getOffer())
+                            .findFirst()
+                            .get();
+                    totem.setReference(offer.getReference());
+                    totem.setOffsetOffer();
+                    totem.animatePosition(Duration.seconds(0.6));
+                } else {
+                    // When on the order tile
+                    totem.setReference(order.getReference());
+                    totem.setOffsetOrder(p.getOrder(), game.getNumPlayers());
+                    totem.getMesh().setTranslateZ(-0.01 * (6 - p.getOrder()));
+                    totem.getMesh().toFront();
+                    totem.animatePosition(Duration.seconds(0.6));
+                }
+            }
+
+            // Reconcile cards
             List<AnimatedCard> oldCards = new ArrayList<>();
             List<AnimatedCard> newCards = new ArrayList<>();
 
@@ -479,7 +529,7 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
+                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
@@ -496,7 +546,7 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not found, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
+                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
@@ -515,7 +565,7 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
+                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
@@ -532,7 +582,7 @@ public class FieldController implements UIObserver {
 
                 if (anim == null) {
                     // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, order.localToScene(0, 0).getX(), order.localToScene(0, 0).getY());
+                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
                     meshRegistry.put(anim.getMesh(), anim);
                     refRegistry.put(anim.getReference(), anim);
                     idRegistry.put(anim.getCard().getId(), anim);
@@ -588,15 +638,11 @@ public class FieldController implements UIObserver {
 
                 for (int i = 0; i < newCards.size(); i++) {
                     newCards.get(i).animatePosition(Duration.seconds(0.5), Duration.seconds(0.1 * i));
-                    newCards.get(i).flip(Duration.seconds(0.1 * i));
+                    newCards.get(i).flip(Duration.seconds(0.1 * (i + 1)));
                 }
 
                 for (AnimatedTile a : offerPathAnim) {
                     a.resetPosition();
-                }
-
-                for (AnimatedObject t : totems) {
-                    t.getMesh().toFront();
                 }
             });
         });
