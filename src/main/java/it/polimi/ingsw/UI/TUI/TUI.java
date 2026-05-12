@@ -148,9 +148,9 @@ public class TUI implements UIObserver {
                 System.out.print("(2 to 5 players): ");
                 num = readInt();
             } while(num < 2 || num > 5);
-            System.out.print("Waiting for other players to connect...");
             client.createGame(num);
         }
+        System.out.print("Waiting for other players to connect...\n");
         handleState();
     }
 
