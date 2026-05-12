@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.events.ShamanicRitual;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -109,18 +110,38 @@ class PlayerTest {
         assertEquals(0, player.countNumCharacters());
         Effect effect = Effect.EG2;
         Card card = new Building(Era.II,2,2, 2, (p) -> null, effect);
-        player.addCard(card);
+        try {
+            player.addCard(card);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         assertEquals(1,player.countNumBuildings());
         Card card3 = new Building(Era.II,2,2, 2, (p) -> null, effect);
-        player.addCard(card3);
+        try {
+            player.addCard(card3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         assertEquals(2,player.countNumBuildings());
         Card card1 = new Artist(Era.II);
-        player.addCard(card1);
+        try {
+            player.addCard(card1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         Card card2 = new ShamanicRitual(2, 2, Era.II);
-        player.addCard(card2);
+        try {
+            player.addCard(card2);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         assertEquals(1, player.countNumCharacters());
         Card card4 = new Artist(Era.II);
-        player.addCard(card4);
+        try {
+            player.addCard(card4);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         assertEquals(2, player.countNumCharacters());
     }
 

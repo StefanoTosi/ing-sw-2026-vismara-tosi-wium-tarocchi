@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public abstract class Event extends Card {
 
     // TODO: questa funzione dovrebbe lanciare un'eccezione
     @Override
-    public void addToPlayer(Player player) {
-        return;
+    public void addToPlayer(Player player) throws IllegalActionException {
+        throw new IllegalActionException("Player " + player + " tried to draw an event");
     }
 }

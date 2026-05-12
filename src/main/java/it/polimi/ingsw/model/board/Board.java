@@ -400,8 +400,6 @@ public class Board {
     public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= topRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
-        } else if (topRowTribe.get(pos) instanceof Event) {
-            throw new IllegalActionException("Events can't be drawn");
         } else {
             return topRowTribe.remove(pos);
         }
@@ -423,8 +421,6 @@ public class Board {
     public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
-        } else if (bottomRowTribe.get(pos) instanceof Event) {
-            throw new IllegalActionException("Events can't be drawn");
         } else {
             return bottomRowTribe.remove(pos);
         }
@@ -473,6 +469,7 @@ public class Board {
         int topRowSize = topRowTribe.size() + topRowBuilding.size();
 
         // Subtract event cards
+        //TODO: si può sostituire l'instance of?
         for(Card card : this.topRowTribe) {
             if (card instanceof Event) {
                 topRowSize--;
@@ -493,6 +490,7 @@ public class Board {
         int bottomRowSize = bottomRowTribe.size() + bottomRowBuilding.size();
 
         // Subtract event cards
+        //TODO: si può sostituire l'instance of?
         for(Card card : this.bottomRowTribe) {
             if(card instanceof Event) {
                 bottomRowSize--;

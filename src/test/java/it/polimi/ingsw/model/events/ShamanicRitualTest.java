@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Shaman;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -31,9 +32,13 @@ class ShamanicRitualTest {
         Shaman s2 = new Shaman(2, Era.I);
         Shaman s3 = new Shaman(1, Era.I);
 
-        p1.addCard(s1);
-        p2.addCard(s1);
-        p3.addCard(s2);
+        try {
+            p1.addCard(s1);
+            p2.addCard(s1);
+            p3.addCard(s2);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         sr.applyEffect(new ArrayList<Player>(Arrays.asList(p1, p2, p3)));
         assertEquals(5, p1.getPp());
@@ -44,9 +49,13 @@ class ShamanicRitualTest {
         Player p5 = new Player("Lisa");
         Player p6 = new Player("Gilles");
 
-        p4.addCard(s2);
-        p5.addCard(s2);
-        p6.addCard(s1);
+        try {
+            p4.addCard(s2);
+            p5.addCard(s2);
+            p6.addCard(s1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         sr.applyEffect(new ArrayList<Player>(Arrays.asList(p4, p5, p6)));
 
@@ -58,9 +67,13 @@ class ShamanicRitualTest {
         Player p8 = new Player("Lisa");
         Player p9 = new Player("Gilles");
 
-        p7.addCard(s1);
-        p8.addCard(s2);
-        p9.addCard(s3);
+        try {
+            p7.addCard(s1);
+            p8.addCard(s2);
+            p9.addCard(s3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         sr.applyEffect(new ArrayList<Player>(Arrays.asList(p7, p8, p9)));
 
@@ -73,10 +86,14 @@ class ShamanicRitualTest {
         Player p12 = new Player("Gilles");
         Player p13 = new Player("Gilles");
 
-        p10.addCard(s2);
-        p11.addCard(s2);
-        p12.addCard(s1);
-        p13.addCard(s1);
+        try {
+            p10.addCard(s2);
+            p11.addCard(s2);
+            p12.addCard(s1);
+            p13.addCard(s1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         sr.applyEffect(new ArrayList<Player>(Arrays.asList(p10, p11, p12, p13)));
 
@@ -88,8 +105,12 @@ class ShamanicRitualTest {
         Player p14 = new Player("Elisa");
         Player p15 = new Player("Lisa");
 
-        p14.addCard(s1);
-        p15.addCard(s1);
+        try {
+            p14.addCard(s1);
+            p15.addCard(s1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         sr.applyEffect(new ArrayList<Player>(Arrays.asList(p14, p15)));
 

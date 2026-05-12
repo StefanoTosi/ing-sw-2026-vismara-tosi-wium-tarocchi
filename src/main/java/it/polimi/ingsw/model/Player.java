@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,7 +110,7 @@ public class Player {
         this.food += food;
     }
 
-    public void addCard(Card card) {
+    public void addCard(Card card) throws IllegalActionException {
         card.addToPlayer(this);
     }
 

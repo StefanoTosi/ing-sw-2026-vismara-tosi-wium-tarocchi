@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Effect;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -29,14 +30,22 @@ class HuntTest {
         assertEquals(0, p1.getFood());
         assertEquals(0, p1.getPp());
 
-        p1.addCard(h1);
+        try {
+            p1.addCard(h1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         h.applyEffect(players);
         assertEquals(1, p1.getFood());
         assertEquals(1, p1.getPp());
 
-        p1.addCard(h2);
-        p1.addCard(h3);
-        p1.addCard(h4);
+        try {
+            p1.addCard(h2);
+            p1.addCard(h3);
+            p1.addCard(h4);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
         h.applyEffect(players);
         assertEquals(5, p1.getFood());
         assertEquals(5, p1.getPp());

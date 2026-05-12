@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
+
 /**
  * Define the common method of the Card,
  * either they are Characters, Buildings or Events
@@ -41,7 +43,7 @@ public abstract class Card {
      * Add the card to the tribe of the specified player
      * @param player
      */
-    public void addToPlayer (Player player){}
+    public void addToPlayer (Player player) throws IllegalActionException {}
 
     public CardDTO cardToDTO(){
         return new CardDTO(getEra().name(), getType(), getName(), getId());

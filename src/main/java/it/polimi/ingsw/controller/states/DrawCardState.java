@@ -168,14 +168,10 @@ public class DrawCardState extends GameState {
      * @param character
      */
     private void afterDrawn(Player player, Card character) throws IllegalActionException {
-        if (!character.getType().equals("Event")) {
-            int tmp_numSets = player.countSets();
-            player.addCard(character);
-            for (Building building : player.getBuildings()) {
-                building.getEffect().applyEffectDraw(player, tmp_numSets, (Character)character);
-            }
-        } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to draw an event card");
+        int tmp_numSets = player.countSets();
+        player.addCard(character);
+        for (Building building : player.getBuildings()) {
+            building.getEffect().applyEffectDraw(player, tmp_numSets, (Character)character);
         }
     }
 

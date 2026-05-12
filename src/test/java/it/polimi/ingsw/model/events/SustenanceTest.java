@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.characters.Gatherer;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -27,41 +28,62 @@ class SustenanceTest {
         Player p1 = new Player("Elisa");
         p1.setFood(5);
         p1.setPp(10);
-        p1.addCard(a1);
+        try {
+            p1.addCard(a1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // P2 is unable to pay all the food
         Player p2 = new Player("Lisa");
         p2.setFood(1);
         p2.setPp(10);
-        p2.addCard(a1);
-        p2.addCard(a2);
-        p2.addCard(a3);
+        try {
+            p2.addCard(a1);
+            p2.addCard(a2);
+            p2.addCard(a3);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // P3 is able to pay with gatherers
         Player p3 = new Player("Gilles");
         p3.setFood(5);
         p3.setPp(10);
-        p3.addCard(a1);
-        p3.addCard(g);
+        try {
+            p3.addCard(a1);
+            p3.addCard(g);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // P4 is unable to pay even with gatherers
         Player p4 = new Player("Stefano");
         p4.setFood(0);
         p4.setPp(10);
-        p4.addCard(a1);
-        p4.addCard(a2);
-        p4.addCard(a3);
-        p4.addCard(a4);
-        p4.addCard(g);
+        try {
+            p4.addCard(a1);
+            p4.addCard(a2);
+            p4.addCard(a3);
+            p4.addCard(a4);
+            p4.addCard(g);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
 
         // P5 is able to pay thanks to the food discount from a building
         Player p5 = new Player("Tomasulo");
         p5.setFood(0);
         p5.setPp(10);
-        p5.addCard(a1);
-        p5.addCard(a2);
-        p5.addCard(a3);
-        p5.addCard(a4);
+        try {
+            p5.addCard(a1);
+            p5.addCard(a2);
+            p5.addCard(a3);
+            p5.addCard(a4);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
         p5.setFoodDiscount(4);
 
         List<Player> players = Arrays.asList(p1, p2, p3, p4, p5);
