@@ -18,6 +18,24 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
         this.loserPp = loserPp;
     }
 
+    @Override
+    public StringBuilder[] printCard(){
+        StringBuilder[] event = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            event[i] = new StringBuilder();
+        }
+        event[0].append(String.format("|%-10s|"));
+        event[1].append("|Shamanic  |");
+        event[2].append("|Ritual    |");
+        event[3].append(String.format("|%-10s|", getWinnerPp()));
+        event[4].append(String.format("|%-10s|", getLoserPp()));
+        event[5].append(String.format("|%-10s|", getEra()));
+        event[6].append("+----------+");
+
+        return event;
+
+    }
+
     public int getWinnerPp() {
         return winnerPp;
     }

@@ -4,16 +4,40 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
 import java.io.Serializable;
+import java.util.List;
 
 public class HunterDTO extends CardDTO implements Serializable {
     private final boolean icon;
 
     @JsonCreator
     public HunterDTO(@JsonProperty("icon") boolean icon, @JsonProperty("era") String era, @JsonProperty("id") int id){
-        this.icon = icon;
         super(era, "Character", "Hunter", id);
+        this.icon = icon;
     }
 
+    /**
+     * Function to print the Hunter cards of a player
+     */
+    @Override
+    public StringBuilder[] printCard() {
+        StringBuilder[] lines = new StringBuilder[7];
+
+        for(int i=0; i < 7; i++){
+            lines[i] = new StringBuilder();
+        }
+
+        lines[0].append("+----------+");
+        lines[1].append(String.format("|%-10s|", "Hunter"));
+        lines[2].append(String.format("|%-10s|", getIcon()));
+        lines[3].append("|          |");
+        lines[4].append("|          |");
+        lines[5].append(String.format("|%-10s|", getEra()));
+        lines[6].append("+----------+");
+
+        return lines;
+    }
+
+    @Override
     public boolean getIcon() {
         return icon;
     }

@@ -23,6 +23,13 @@ public class Deck {
         this.rng = rng;
     }
 
+    public Deck(List<Card> deck) throws IllegalArgumentException {
+        if (deck == null) {
+            throw new IllegalArgumentException("'deck' is null");
+        }
+        this.deck = deck;
+    }
+
     /**
      * Shuffles the deck
      */

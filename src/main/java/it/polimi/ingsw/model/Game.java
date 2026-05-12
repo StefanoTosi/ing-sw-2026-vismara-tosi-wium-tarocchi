@@ -22,17 +22,13 @@ public class Game {
     private String errorFlag;
     private Random rng;
     private int turnNumber;
-    private Object lockRMI = new Object();
-    private Object lockTCP = new Object();
+    private final Object lockRMI;
+    private final Object lockTCP;
 
     public Game (List<Player> players, Random rng) throws IllegalArgumentException {
         this.players = players;
         this.numPlayers = 0;
         this.board = new Board(rng);
-        for(int i = 0; i < numPlayers; i++){
-            players.get(i).setGame(this);
-        }
-
         this.state = new SetupGameState();
         this.observersRMI = new ArrayList<>();
         this.observersTCP = new ArrayList<>();
@@ -41,6 +37,28 @@ public class Game {
         this.rng = rng;
         this.turnNumber = 1;
         this.rankings = new ArrayList<>();
+        this.lockRMI = new Object();
+        this.lockTCP = new Object();
+    }
+
+    public Game (List<Player> players, int numPlayers, Board board, GameState state, List<Player> rankings, List<ClientCallBack> observersRMI,
+                 List<ObserverTCP> observersTCP, Player playerTurn, String errorFlag, int turnNumber) throws IllegalArgumentException {
+        this.players = players;
+        this.numPlayers = numPlayers;
+        this.board = board;
+        for(int i = 0; i < numPlayers; i++){
+            players.get(i).setGame(this);
+        }
+
+        this.state = state;
+        this.observersRMI = observersRMI;
+        this.observersTCP = observersTCP;
+        this.playerTurn = playerTurn;
+        this.errorFlag = errorFlag;
+        this.turnNumber = turnNumber;
+        this.rankings = rankings;
+        this.lockRMI = new Object();
+        this.lockTCP = new Object();
     }
 
     public void addObserverRMI(ClientCallBack observer){
