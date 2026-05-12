@@ -197,7 +197,6 @@ public class TUI implements UIObserver {
                 System.out.println("\nSorry, the game as been closed due to a disconnection of a player\n");
                 anotherGame();
             }
-            printBoard();
             System.out.println(BLUE + "Current state: " + game.getState());
             System.out.println("Current turn " + game.getTurnNumber());
 
@@ -217,6 +216,7 @@ public class TUI implements UIObserver {
                     System.out.print("Filling board - this message should never be printed...");
                     break;
                 case StateDTO.CHOOSEOFFER:
+                    printBoard();
                     // ChooseOfferState
                     if (client.getNickname().equals(game.getPlayerTurn().getName())){
                         List<OfferDTO> offerTiles = game.getBoard().getOfferPath();
