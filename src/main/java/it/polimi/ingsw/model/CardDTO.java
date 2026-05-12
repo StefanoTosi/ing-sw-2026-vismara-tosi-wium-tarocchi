@@ -42,6 +42,10 @@ public class CardDTO implements Serializable {
         this.id = id;
     }
 
+    public  StringBuilder[] printCard(){
+        return null;
+    };
+
     public String getEra() {
         return era;
     }
