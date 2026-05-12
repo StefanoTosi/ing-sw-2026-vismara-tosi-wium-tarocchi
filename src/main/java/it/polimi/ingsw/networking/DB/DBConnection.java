@@ -35,7 +35,7 @@ public class DBConnection {
                     + " FOREIGN KEY (nickname) REFERENCES users(nickname)\n"
                     + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;\n");
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -44,7 +44,7 @@ public class DBConnection {
             System.out.println("Connected to the database");
             return DriverManager.getConnection(DB_URL, USER, PASSWORD);
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Connection Failed!");
             return null;
         }
     }

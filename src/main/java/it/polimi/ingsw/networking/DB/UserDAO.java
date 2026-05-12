@@ -1,5 +1,10 @@
 package it.polimi.ingsw.networking.DB;
 
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameDTO;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.User;
 
 import java.sql.Connection;
@@ -26,10 +31,10 @@ public class UserDAO {
 
                 users.put(nickname,user);
 
-                System.out.println("Loaded user from the DB\n");
+                System.out.println("Loaded user from the DB");
             }
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("The DB is not reachable");
         }
     }
 
@@ -44,7 +49,7 @@ public class UserDAO {
 
             ps.executeUpdate();
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("The DB is not reachable");
         }
     }
 
@@ -60,11 +65,11 @@ public class UserDAO {
 
             ps.executeUpdate();
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("The DB is not reachable");
         }
     }
 
-    public static List<LeaderboardDTO> printLeaderBoard(){
+    public static List<LeaderboardDTO> getLeaderBoard(){
         String sql = "SELECT nickname, num_player, SUM(score) AS total_score FROM leaderboard\n"
                 +"GROUP BY nickname, num_player\n"
                 +"ORDER BY num_player ASC, total_score DESC";
@@ -84,7 +89,7 @@ public class UserDAO {
                 leaderboard.add(new LeaderboardDTO(nickname, score, num_players));
             }
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("The DB is not reachable");
         }
         return leaderboard;
     }
