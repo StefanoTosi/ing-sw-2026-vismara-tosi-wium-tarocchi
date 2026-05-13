@@ -127,6 +127,17 @@ public class Game {
         }
     }
 
+    public void canResume(){
+        //check if all the players have reconnected
+        if(observersRMI.size() + observersTCP.size() == numPlayers){
+            try {
+                notifyObserver();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }

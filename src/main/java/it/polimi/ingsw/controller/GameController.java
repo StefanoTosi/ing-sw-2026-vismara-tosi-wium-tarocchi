@@ -122,9 +122,15 @@ public class GameController {
 
     public void reconnectGameTCP(String player, ObserverTCP client) throws RemoteException {
         getPlayer(player).getGame().addObserverTCP(client);
+        canResume(getPlayer(player).getGame());
     }
 
     public void reconnectGameRMI(String player, ClientCallBack client) throws RemoteException {
         getPlayer(player).getGame().addObserverRMI(client);
+        canResume(getPlayer(player).getGame());
+    }
+
+    private void canResume(Game game) throws RemoteException {
+        game.canResume();
     }
 }

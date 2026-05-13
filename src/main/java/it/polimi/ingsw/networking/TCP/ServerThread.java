@@ -200,12 +200,8 @@ public class ServerThread implements Runnable, ObserverTCP {
             user = users.get(name);
         }
         boolean result = true;
-        if(!user.getInGame()){
-            result = gameController.joinGameTCP(new Player(name), this);
-            user.setInGame(true);
-        }else{
-            gameController.reconnectGameTCP(name, this);
-        }
+        result = gameController.joinGameTCP(new Player(name), this);
+        user.setInGame(true);
 
         ObjectNode payload = mapper.createObjectNode();
         payload.put("result", result);
