@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +25,7 @@ public class FillBoardState extends GameState {
      * Refills the top and bottom rows until they are full again. It also moves players back to the order tile and resolves the associated effects
      * @throws IllegalActionException
      */
-    public void refillBoard() throws IllegalActionException, RemoteException {
+    public void refillBoard() throws IllegalActionException {
         if (game.getTurnNumber() > 10) {
             game.setPlayerTurn(null);
             game.setState(new EndGameState(game));
@@ -36,12 +35,13 @@ public class FillBoardState extends GameState {
         Board board = game.getBoard();
 
         // Used to initially insert buildings from era I
-        boolean boardUninitialized = board.getTopRowTribe().size() == 0 &&
-                board.getBottomRowTribe().size() == 0 &&
-                board.getTopRowBuilding().size() == 0 &&
-                board.getBottomRowBuilding().size() == 0;
+        boolean boardUninitialized = board.getTopRowTribe().isEmpty() &&
+                board.getBottomRowTribe().isEmpty() &&
+                board.getTopRowBuilding().isEmpty() &&
+                board.getBottomRowBuilding().isEmpty();
 
         // At the beginning of the game, randomly put players on the order tile
+        // The 1st player receives 2 food tokens, the 2nd & 3rd receive 3 and the 4th & 5th receive 5.
         List<Player> ordered;
         if (boardUninitialized) {
             ordered = new ArrayList<>(game.getPlayers());
@@ -50,6 +50,13 @@ public class FillBoardState extends GameState {
             for (int i = 0; i < ordered.size(); i++) {
                 ordered.get(i).setOrder(i);
                 ordered.get(i).setOffer('\0');
+                if(i<1) {
+                    ordered.get(i).addFood(2);
+                } else if(i<3) {
+                    ordered.get(i).addFood(3);
+                } else {
+                    ordered.get(i).addFood(4);
+                }
             }
         }
 
@@ -58,10 +65,10 @@ public class FillBoardState extends GameState {
         if (boardUninitialized) {
             currentEra = Era.I;
         } else {
-            if (board.getTopRowTribe().size() == 0) {
+            if (board.getTopRowTribe().isEmpty()) {
                 currentEra = Era.III;
             } else {
-                currentEra = board.getTopRowTribe().get(board.getTopRowTribe().size() - 1).getEra();
+                currentEra = board.getTopRowTribe().getLast().getEra();
             }
         }
 

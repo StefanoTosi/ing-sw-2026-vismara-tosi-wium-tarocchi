@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-
 import java.util.List;
-import java.util.Map;
 
 public abstract class Event extends Card {
     protected String name;

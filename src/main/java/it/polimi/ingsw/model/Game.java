@@ -88,7 +88,7 @@ public class Game {
         }
     }
 
-    public void notifyObserver() throws IOException, IllegalActionException, InterruptedException {
+    public void notifyObserver() {
         synchronized (lockRMI){
             for (ClientCallBack observer : observersRMI) {
                 try{

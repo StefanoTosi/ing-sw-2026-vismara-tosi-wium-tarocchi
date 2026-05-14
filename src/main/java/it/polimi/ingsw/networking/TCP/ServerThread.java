@@ -56,19 +56,13 @@ public class ServerThread implements Runnable, ObserverTCP {
                     if(now - lastSeen > 10000 && lastSeen != 0){
                         users.get(getNickname()).setActive(false);
                         users.get(getNickname()).setInGame(false);
-                        System.out.println("connessione chiusa con successo "+getNickname());
+                        System.out.println("Connection successfully closed " + getNickname());
                         try {
                             leaveMatch(getNickname());
                             closeGame();
                             this.clientOn = false;
                             client.close();
-                        } catch (IllegalActionException e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        } catch (InterruptedException e) {
+                        } catch (IllegalActionException | IOException | ClassNotFoundException | InterruptedException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -128,7 +122,7 @@ public class ServerThread implements Runnable, ObserverTCP {
                 }
             }
         }catch(Exception e){
-            System.out.println("Non sto ricevendo messaggi da " + getNickname());
+            System.out.println("Not receiving messages from " + getNickname());
             e.printStackTrace();
         }
     }

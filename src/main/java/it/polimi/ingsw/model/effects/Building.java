@@ -12,8 +12,8 @@ import java.util.function.Function;
  */
 public class Building extends Card {
     // Building properties
-    private int cost;
-    private int pp;
+    private final int cost;
+    private final int pp;
 
     // Effect properties
     protected int effectPp;

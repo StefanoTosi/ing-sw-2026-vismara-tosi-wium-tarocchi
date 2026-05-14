@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.RemoteException;
-import java.util.List;
 
 public abstract class GameState {
     // SetupGameState
@@ -14,21 +13,21 @@ public abstract class GameState {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void startGame(Game game) throws IllegalActionException, RemoteException {
+    public void startGame(Game game) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
     // ChooseTotemState
-    public void chooseTotem(Player player, Totem totem) throws IllegalActionException, RemoteException {
+    public void chooseTotem(Player player, Totem totem) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
     // FillBoardState
-    public void movePlayersBackToOrder() throws IllegalActionException, RemoteException {
+    public void movePlayersBackToOrder() throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void refillBoard() throws IllegalActionException, RemoteException {
+    public void refillBoard() throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -46,7 +45,7 @@ public abstract class GameState {
         throw new IllegalActionException("Illegal action");
     }
 
-    // ResoveEventsState
+    // ResolveEventsState
     public void resolveEvents() throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }

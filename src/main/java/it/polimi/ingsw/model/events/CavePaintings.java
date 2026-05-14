@@ -30,8 +30,8 @@ public class CavePaintings extends Event {
     @Override
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();
-        int deltaPp = 0;
-        int deltaFood = 0;
+        int deltaPp;
+        int deltaFood;
         int prevFood;
 
         for (Player player : players){

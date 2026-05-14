@@ -16,7 +16,7 @@ import static java.lang.Math.max;
  * Points indicated on the Event card for each Character card you couldn’t feed
  */
 public class Sustenance extends Event {
-    private int pp;
+    private final int pp;
 
     public Sustenance(int pp, Era era){
         super(era);
@@ -28,7 +28,7 @@ public class Sustenance extends Event {
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();
         int deltaPp = 0;
-        int deltaFood = 0;
+        int deltaFood;
 
         // Apply building effects for sustenance
         for (Player player : players){

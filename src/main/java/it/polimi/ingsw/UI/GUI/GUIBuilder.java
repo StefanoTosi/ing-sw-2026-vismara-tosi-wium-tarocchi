@@ -1,8 +1,6 @@
 package it.polimi.ingsw.UI.GUI;
 
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerDTO;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -14,8 +12,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
-
-import java.awt.font.ImageGraphicAttribute;
 
 public class GUIBuilder {
     public static Tab createPlayerTab(PlayerDTO p) {

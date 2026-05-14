@@ -8,13 +8,13 @@ import java.rmi.RemoteException;
 public enum StateDTO {
     CHOOSEOFFER {
         @Override
-        public GameState getNewState(Game game) throws IllegalActionException, RemoteException {
+        public GameState getNewState(Game game) {
             return new ChooseOfferState(game);
         }
     },
     CHOOSETOTEM {
         @Override
-        public GameState getNewState(Game game) throws IllegalActionException, RemoteException {
+        public GameState getNewState(Game game)  {
             return new ChooseTotemState(game);
         }
     },

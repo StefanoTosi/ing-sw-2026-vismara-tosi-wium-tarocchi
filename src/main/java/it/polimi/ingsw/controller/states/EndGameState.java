@@ -47,6 +47,6 @@ public class EndGameState extends GameState {
         );
 
         game.setRankings(rankings);
-        System.out.println("Calulcated ranking, ended game");
+        System.out.println("Calculated ranking, ended game");
     }
 }

@@ -81,7 +81,7 @@ public class StartGameController implements UIObserver {
             }
         } else {
             errorToast.setVisible(true);
-            ((Label) errorToast.getChildren().get(0)).setText("Invalid login info");
+            ((Label) errorToast.getChildren().getFirst()).setText("Invalid login info");
         }
     }
 
@@ -91,7 +91,7 @@ public class StartGameController implements UIObserver {
             int num = Integer.parseInt(numPlayers.getText());
             if (num  < 2 || num > 5) {
                 errorToast.setVisible(true);
-                ((Label) errorToast.getChildren().get(0)).setText("Number of players must be between 2 and 5");
+                ((Label) errorToast.getChildren().getFirst()).setText("Number of players must be between 2 and 5");
             } else {
                 UISession.getClient().createGame(num);
                 newGame.setVisible(false);
@@ -102,7 +102,7 @@ public class StartGameController implements UIObserver {
             }
         } catch (Exception e) {
             errorToast.setVisible(true);
-            ((Label) errorToast.getChildren().get(0)).setText("Invalid number of players");
+            ((Label) errorToast.getChildren().getFirst()).setText("Invalid number of players");
         }
     }
 
@@ -138,9 +138,7 @@ public class StartGameController implements UIObserver {
             for (PlayerDTO p : game.getPlayers()) {
                 if (waiting.getChildren()
                         .stream()
-                        .map(n -> (Label) n)
-                        .filter(l -> l.getText().equals(p.getName()))
-                        .count() == 0
+                        .map(n -> (Label) n).noneMatch(l -> l.getText().equals(p.getName()))
                 ) {
                     waiting.getChildren().add(new Label(p.getName()));
                 }
@@ -166,9 +164,8 @@ public class StartGameController implements UIObserver {
 
     }
 
-
     @Override
-    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+    public void serverCrashed() {
         System.out.println("Sorry, the server crashed\n");
         System.exit(1);
     }
