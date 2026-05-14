@@ -103,7 +103,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public int addUser(String password, String username) throws RemoteException {
+    public boolean addUser(String password, String username) throws RemoteException {
         return controller.addUser(password, username, this);
     }
 

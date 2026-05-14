@@ -31,7 +31,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     @Override
-    public int addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
+    public boolean addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
         boolean success;
         String message;
         User user;
@@ -70,7 +70,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         }
         client.receiveMessage(message);
 
-        return success? 0 : -1;
+        return success;
     }
 
     @Override

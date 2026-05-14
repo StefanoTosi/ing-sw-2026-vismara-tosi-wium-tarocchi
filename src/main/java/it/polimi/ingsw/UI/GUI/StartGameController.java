@@ -65,7 +65,7 @@ public class StartGameController implements UIObserver {
     void login() throws IOException, ClassNotFoundException, IllegalActionException, InterruptedException {
         System.out.println(username.getText() + " " + password.getText());
 
-        if (UISession.getClient().addUser(password.getText(), username.getText()) == 0) {
+        if (UISession.getClient().addUser(password.getText(), username.getText())) {
             UISession.getClient().ping();
             if (!UISession.getClient().joinGame()) {
                 login.setVisible(false);

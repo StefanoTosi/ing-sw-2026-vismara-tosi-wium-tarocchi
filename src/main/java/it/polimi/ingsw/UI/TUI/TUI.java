@@ -109,7 +109,7 @@ public class TUI implements UIObserver {
                     String username = readLine();
                     System.out.print(BLUE + BOLD +"Password: ");
                     String password = readLine();
-                    if(client.addUser(password, username) == 0) flag = false;
+                    flag = !client.addUser(password, username);
                 }
                 client.ping();
                 joinGame();
