@@ -138,7 +138,7 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     private void addUser(String psw, String nickname) throws IOException {
-        int success = -1;
+        boolean success = false;
         String message;
         User user;
 
@@ -149,16 +149,16 @@ public class ServerThread implements Runnable, ObserverTCP {
                     //check if the user is already logged in elsewhere
                     if(user.isActive()) {
                         message = "User " + nickname + " is already active elsewhere";
-                        success = -1;
+                        success = false;
                     } else {
                         user.setActive(true);
                         message = "Welcome back " + nickname;
                         setNickname(nickname);
-                        success = 0;
+                        success = true;
                     }
                 } else {
                     message = "Nickname already exists or wrong password";
-                    success = -1;
+                    success = false;
                 }
             } else {
                 user = new User(nickname, psw);
@@ -167,7 +167,7 @@ public class ServerThread implements Runnable, ObserverTCP {
                 UserDAO.addUsers(user);
                 setNickname(nickname);
                 message = "Welcome " + nickname;
-                success = 0;
+                success = true;
             }
         }
 

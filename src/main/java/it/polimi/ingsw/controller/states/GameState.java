@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.states;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.RemoteException;
@@ -14,6 +15,11 @@ public abstract class GameState {
     }
 
     public void startGame(Game game) throws IllegalActionException, RemoteException {
+        throw new IllegalActionException("Illegal action");
+    }
+
+    // ChooseTotemState
+    public void chooseTotem(Player player, Totem totem) throws IllegalActionException, RemoteException {
         throw new IllegalActionException("Illegal action");
     }
 

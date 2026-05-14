@@ -8,7 +8,7 @@ import java.rmi.*;
 import java.util.List;
 
 public interface Controller extends Remote{
-    public int addUser(String psw, String nickname, ClientCallBack client) throws RemoteException;
+    public boolean addUser(String psw, String nickname, ClientCallBack client) throws RemoteException;
     public void ping(String name) throws RemoteException;
     public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException;
     public void leaveGame(String name) throws RemoteException;

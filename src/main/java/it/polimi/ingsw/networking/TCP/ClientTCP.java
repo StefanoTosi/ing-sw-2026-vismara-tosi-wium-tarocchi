@@ -100,8 +100,8 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public int addUser(String password, String username) throws IOException, ClassNotFoundException {
-        int result = -1;
+    public boolean addUser(String password, String username) throws IOException, ClassNotFoundException {
+        boolean result = false;
         try{
             ObjectNode payload = mapper.createObjectNode();
             payload.put("username", username);
@@ -111,8 +111,8 @@ public class ClientTCP implements Client {
             Message response = responses.take();
             if(response.getRequest().equals(RequestType.ADDUSER)){
                 System.out.println(response.getPayload().get("msg"));
-                result = response.getPayload().get("result").asInt();
-                if(result == 0){
+                result = response.getPayload().get("result").asBoolean();
+                if(result){
                     setNickname(username);
                 }
             }

@@ -12,6 +12,12 @@ public enum StateDTO {
             return new ChooseOfferState(game);
         }
     },
+    CHOOSETOTEM {
+        @Override
+        public GameState getNewState(Game game) throws IllegalActionException, RemoteException {
+            return new ChooseTotemState(game);
+        }
+    },
     DRAWCARD {
         @Override
         public GameState getNewState(Game game) throws IllegalActionException, RemoteException {

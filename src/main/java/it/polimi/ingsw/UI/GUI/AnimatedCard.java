@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.CardDTO;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -49,6 +50,8 @@ public class AnimatedCard extends AnimatedObject {
         mesh.setLayoutX(deckX);
         mesh.setLayoutY(deckY);
         mesh.setOnMouseClicked(clickHandler);
+        mesh.setOnMouseEntered(this::zoomIn);
+        mesh.setOnMouseExited(this::zoomOut);
         mesh.setRotationAxis(Rotate.Y_AXIS);
         mesh.setRotate(180);
         mesh.setTranslateZ(-0.2);
@@ -135,5 +138,27 @@ public class AnimatedCard extends AnimatedObject {
         frontMat.setDiffuseMap(mask);
 
         return new Group(frontMeshView, backMeshView);
+    }
+
+    private void zoomIn(MouseEvent e) {
+        mesh.setTranslateZ(-0.1);
+        ScaleTransition scaler = new ScaleTransition(Duration.seconds(0.1), mesh);
+        scaler.setFromX(1.0);
+        scaler.setFromY(1.0);
+        scaler.setToX(1.2);
+        scaler.setToY(1.2);
+        scaler.setInterpolator(Interpolator.EASE_BOTH);
+        scaler.play();
+    }
+
+    private void zoomOut(MouseEvent e) {
+        mesh.setTranslateZ(0);
+        ScaleTransition scaler = new ScaleTransition(Duration.seconds(0.1), mesh);
+        scaler.setFromX(1.2);
+        scaler.setFromY(1.2);
+        scaler.setToX(1.0);
+        scaler.setToY(1.0);
+        scaler.setInterpolator(Interpolator.EASE_BOTH);
+        scaler.play();
     }
 }
