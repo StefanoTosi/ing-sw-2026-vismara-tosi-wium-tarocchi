@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardDTO;
+import it.polimi.ingsw.model.events.EventResult;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,11 +20,12 @@ public class GameDTO implements Serializable {
     private int turnNumber;
     private List<PlayerDTO> rankings;
     private String errorFlag;
+    private Map<String, List<EventResult>> eventResults;
 
     @JsonCreator
     private GameDTO() {}
 
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber, String errorFlag) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber, String errorFlag, Map<String, List<EventResult>> eventResults) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
@@ -32,11 +34,12 @@ public class GameDTO implements Serializable {
         this.rankings = List.copyOf(rankings);
         this.turnNumber = turnNumber;
         this.errorFlag = errorFlag;
+        this.eventResults = eventResults;
     }
 
     public Game fromDTO() {
         return new Game(this.players.stream().map(PlayerDTO::fromDTO).toList(), this.numPlayers, this.board.fromDTO(), null,
-                        this.rankings.stream().map(PlayerDTO::fromDTO).toList(), this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber);
+                        this.rankings.stream().map(PlayerDTO::fromDTO).toList(), this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber, this.eventResults);
     }
 
     public List<PlayerDTO> getPlayers() {
@@ -69,5 +72,9 @@ public class GameDTO implements Serializable {
 
     public String getErrorFlag() {
         return errorFlag;
+    }
+
+    public Map<String, List<EventResult>> getEventResults() {
+        return eventResults;
     }
 }

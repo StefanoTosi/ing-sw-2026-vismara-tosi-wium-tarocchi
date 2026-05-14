@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.events.DTO.HuntDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,19 +23,35 @@ public class Hunt extends Event {
     }
 
     @Override
-    public void applyEffect(List<Player> players){
+    public List<EventResult> applyEffect(List<Player> players){
+        List<EventResult> results = new ArrayList<>();
+        int deltaPp = 0;
+        int deltaFood = 0;
+        int prevFood;
+        int prevPp;
+
         for (Player player : players){
+            prevFood = player.getFood();
+            prevPp = player.getPp();
+
+            //Apply building effects
             for (Building building : player.getBuildings()){
                 building.getEffect().applyEffectEventHunt(player, building);
             }
+
+            //Calculate and add food & pp amount
+            deltaFood = player.getNumHunters();
+            player.addFood(deltaFood);
+            deltaPp = deltaFood * getPp();
+            player.addPp(deltaPp);
+
+            //Update results list
+            deltaPp = player.getPp() - prevPp;
+            deltaFood = player.getFood() - prevFood;
+            results.add(new EventResult("Hunt", player.toDTO(), deltaPp, deltaFood));
         }
 
-        for(Player player : players){
-            int numHunter = player.getNumHunters();
-            player.addFood(numHunter);
-            int ppToAdd = numHunter * getPp();
-            player.addPp(ppToAdd);
-        }
+        return results;
     }
 
     public int getPp(){

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.events.DTO.ShamanicRitualDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,54 +34,63 @@ public class ShamanicRitual extends Event {
     }
 
     @Override
-    public void applyEffect(List<Player> players){
+    public List<EventResult> applyEffect(List<Player> players){
+        List<EventResult> results = new ArrayList<>();
+        int deltaPp;
         int maxStar = Integer.MIN_VALUE;
         int minStar = Integer.MAX_VALUE;
         boolean tie = false;
         boolean winnerFound = false;
 
-        //apply building effects
+        //Apply building effects
         for (Player player : players){
             for (Building building : player.getBuildings()){
                 building.getEffect().applyEffectEventShamanicRitual(player, building);
             }
         }
 
-        //look for max & min stars
+        //Look for max & min stars
         for (Player player : players) {
             int stars = player.getNumStars();
 
             if (stars > maxStar) {
                 maxStar = stars;
             }
-
             if (stars < minStar) {
                 minStar = stars;
             }
         }
 
-        //look for winners and losers
+        //Look for winners and losers
         for (Player player : players){
-            int stars = player.getNumStars();
-
-            if(stars == maxStar){
+            if(player.getNumStars() == maxStar){
                 if(winnerFound) {
                     tie = true;
                 }
-                player.addPp(winnerPp);
                 winnerFound = true;
             }
 
-            if(stars == minStar && !player.getDontLosePp()){
-                player.addPp(-loserPp);
-            }
+
         }
 
         for(Player player : players) {
-            if(player.getNumStars() == maxStar && player.getDoublePp() && !tie) {
-                player.addPp(winnerPp);
+            int stars = player.getNumStars();
+            deltaPp = 0;
+
+            if(stars == maxStar && player.getDoublePp() && !tie) {
+                deltaPp = winnerPp * 2;
+            } else if (stars == maxStar) {
+                deltaPp = winnerPp;
             }
+            if(stars == minStar && !player.getDontLosePp()){
+                player.addPp(-loserPp);
+            }
+
+            player.addPp(deltaPp);
+            results.add(new EventResult("ShamanicRitual", player.toDTO(), deltaPp, 0));
         }
+
+        return results;
     }
 
     @Override
