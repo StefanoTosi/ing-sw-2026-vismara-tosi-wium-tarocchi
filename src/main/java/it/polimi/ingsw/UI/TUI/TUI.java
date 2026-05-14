@@ -400,9 +400,9 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         if(card >= 0 && card < size){
             if(!getGameClosed()){
-                try{
+                try {
                     client.executeAction(new DrawCardFromTopAction(card));
-                }catch(Exception e){
+                } catch (Exception e) {
                     //e.printStackTrace();
                     System.out.println(e.getMessage());
                     return 0;

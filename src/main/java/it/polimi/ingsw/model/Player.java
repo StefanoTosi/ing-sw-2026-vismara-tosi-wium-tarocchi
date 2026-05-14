@@ -34,6 +34,7 @@ public class Player {
 
     private int order; // Indicates the position of player on the order tile
     private char offer; // Indicates the position of player on the offer path
+    private Totem totem;
 
     private Game game;
 
@@ -60,12 +61,13 @@ public class Player {
 
         this.order = 0;
         this.offer = '\0';
+        this.totem = null;
 
         this.game = null;
     }
 
     public Player(String name, List<Artist> artists, List<Gatherer> gatherers, List<Hunter> hunters, List<Inventor> inventors, List<Shaman> shamans, List<Builder> builders,
-                  List<Building> buildings, int pp, int food, int order, char offer) {
+                  List<Building> buildings, int pp, int food, int order, char offer, Totem totem) {
         this.name = name;
 
         this.artists = artists;
@@ -87,6 +89,7 @@ public class Player {
 
         this.order = order;
         this.offer = offer;
+        this.totem = totem;
 
         this.game = null;
     }
@@ -409,7 +412,7 @@ public class Player {
                 getShamans().stream().map(Shaman::toDTO).toList(),
                 getBuilders().stream().map(Builder::toDTO).toList(),
                 getBuildings().stream().map(Building::toDTO).toList(),
-                getPp(), getFood(), getOrder(), getOffer(), getCanPickFromTop());
+                getPp(), getFood(), getOrder(), getOffer(), getCanPickFromTop(), totem);
     }
 
     public void setCanPickFromTop(boolean canPickFromTop) {
@@ -418,5 +421,13 @@ public class Player {
 
     public boolean getCanPickFromTop() {
         return canPickFromTop;
+    }
+
+    public Totem getTotem() {
+        return totem;
+    }
+
+    public void setTotem(Totem totem) {
+        this.totem = totem;
     }
 }

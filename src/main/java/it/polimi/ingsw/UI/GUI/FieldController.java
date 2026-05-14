@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -24,13 +25,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.w3c.dom.css.Rect;
@@ -51,6 +50,8 @@ public class FieldController implements UIObserver {
     @FXML Label debugLabel;
 
     @FXML TabPane playerTabs;
+    @FXML TilePane players;
+    @FXML HBox hands;
     @FXML VBox errorToast;
     @FXML VBox ranking;
 
@@ -137,16 +138,23 @@ public class FieldController implements UIObserver {
         // Add all cards
         reconcile(game);
 
-        // Style player tabs
-        Platform.runLater(() -> {
-            Node headerBackground = playerTabs.lookup(".tab-header-background");
-            if (headerBackground != null) {
-                headerBackground.setStyle("-fx-background-color: transparent;");
-            }
-        });
-
         // Create player tabs
-        playerTabs.getTabs().clear();
+        for (PlayerDTO p : game.getPlayers()) {
+            players.getChildren().addAll(GUIBuilder.createPlayerCard(p));
+
+            HBox cards = new HBox();
+            cards.setId(p.getName() + "Hand");
+            cards.setSpacing(5);
+            cards.setAlignment(Pos.CENTER_LEFT);
+            cards.setFillHeight(true);
+            cards.setStyle("-fx-background-color: #00000000");
+            if (!p.getName().equals(UISession.getClient().getNickname())) {
+                cards.setVisible(false);
+            }
+            hands.getChildren().add(cards);
+        }
+
+        /*playerTabs.getTabs().clear();
         for (PlayerDTO p : game.getPlayers()) {
             playerTabs.getTabs().add(GUIBuilder.createPlayerTab(p));
         }
@@ -158,7 +166,15 @@ public class FieldController implements UIObserver {
         playerTabs.getStylesheets().add("data:text/css," +
                 ".tab-pane .tab:selected {" +
                 "    -fx-border-color: #F04D3B !important;" + // Change this to your color
-                "}");
+                "}");*/
+
+        // Style player tabs
+        Platform.runLater(() -> {
+            Node headerBackground = playerTabs.lookup(".tab-header-background");
+            if (headerBackground != null) {
+                headerBackground.setStyle("-fx-background-color: transparent;");
+            }
+        });
 
         // Place animated cards in the cards container
         Platform.runLater(() -> {
@@ -308,8 +324,8 @@ public class FieldController implements UIObserver {
 
             // Update player info
             for (PlayerDTO p : game.getPlayers()) {
-                ((Label) playerTabs.getScene().lookup("#" + p.getName() + "Pp")).setText("Prestige points: " + p.getPp());
-                ((Label) playerTabs.getScene().lookup("#" + p.getName() + "Food")).setText("Food: " + p.getFood());
+                ((Text) playerTabs.getScene().lookup("#" + p.getName() + "Pp")).setText("" + p.getPp());
+                ((Text) playerTabs.getScene().lookup("#" + p.getName() + "Food")).setText("" + p.getFood());
             }
         });
     }
@@ -523,75 +539,36 @@ public class FieldController implements UIObserver {
             // Reconcile top row
             List<AnimatedCard> newTopRowAnim = new ArrayList<>();
             List<AnimatedCard> newBottomRowAnim = new ArrayList<>();
-            for (int i = 0; i < game.getBoard().getTopRowTribe().size(); i++) {
-                CardDTO c = game.getBoard().getTopRowTribe().get(i);
-                AnimatedCard anim = idRegistry.get(c.getId());
 
-                if (anim == null) {
-                    // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
-                    meshRegistry.put(anim.getMesh(), anim);
-                    refRegistry.put(anim.getReference(), anim);
-                    idRegistry.put(anim.getCard().getId(), anim);
-                    newCards.add(anim);
-                } else {
-                    oldCards.add(anim);
+            List<List<AnimatedCard>> animRef = new ArrayList<List<AnimatedCard>>(Arrays.asList(
+                    newTopRowAnim, newTopRowAnim,
+                    newBottomRowAnim, newBottomRowAnim
+            ));
+            List<List<? extends CardDTO>> dtoRef = new ArrayList<List<? extends CardDTO>>(Arrays.asList(
+                    game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding(),
+                    game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding()
+            ));
+
+            for (int j = 0; j < animRef.size(); j++) {
+                List<AnimatedCard> anims = animRef.get(j);
+                List<? extends CardDTO> cards = dtoRef.get(j);
+                for (int i = 0; i < cards.size(); i++) {
+                    CardDTO c = cards.get(i);
+                    AnimatedCard anim = idRegistry.get(c.getId());
+
+                    if (anim == null) {
+                        // If not, create a new card
+                        anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
+                        meshRegistry.put(anim.getMesh(), anim);
+                        refRegistry.put(anim.getReference(), anim);
+                        idRegistry.put(anim.getCard().getId(), anim);
+                        newCards.add(anim);
+                    } else {
+                        oldCards.add(anim);
+                    }
+
+                    anims.add(anim);
                 }
-
-                newTopRowAnim.add(anim);
-            }
-            for (int i = 0; i < game.getBoard().getTopRowBuilding().size(); i++) {
-                CardDTO c = game.getBoard().getTopRowBuilding().get(i);
-                AnimatedCard anim = idRegistry.get(c.getId());
-
-                if (anim == null) {
-                    // If not found, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
-                    meshRegistry.put(anim.getMesh(), anim);
-                    refRegistry.put(anim.getReference(), anim);
-                    idRegistry.put(anim.getCard().getId(), anim);
-                    newCards.add(anim);
-                } else {
-                    oldCards.add(anim);
-                }
-
-                newTopRowAnim.add(anim);
-            }
-
-            // Reconcile bottom row
-            for (int i = 0; i < game.getBoard().getBottomRowTribe().size(); i++) {
-                CardDTO c = game.getBoard().getBottomRowTribe().get(i);
-                AnimatedCard anim = idRegistry.get(c.getId());
-
-                if (anim == null) {
-                    // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
-                    meshRegistry.put(anim.getMesh(), anim);
-                    refRegistry.put(anim.getReference(), anim);
-                    idRegistry.put(anim.getCard().getId(), anim);
-                    newCards.add(anim);
-                } else {
-                    oldCards.add(anim);
-                }
-
-                newBottomRowAnim.add(anim);
-            }
-            for (int i = 0; i < game.getBoard().getBottomRowBuilding().size(); i++) {
-                CardDTO c = game.getBoard().getBottomRowBuilding().get(i);
-                AnimatedCard anim = idRegistry.get(c.getId());
-
-                if (anim == null) {
-                    // If not, create a new card
-                    anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
-                    meshRegistry.put(anim.getMesh(), anim);
-                    refRegistry.put(anim.getReference(), anim);
-                    idRegistry.put(anim.getCard().getId(), anim);
-                    newCards.add(anim);
-                } else {
-                    oldCards.add(anim);
-                }
-
-                newBottomRowAnim.add(anim);
             }
 
             // Remove all old card

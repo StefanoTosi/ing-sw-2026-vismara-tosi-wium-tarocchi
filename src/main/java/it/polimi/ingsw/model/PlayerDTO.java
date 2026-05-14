@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.DTO.*;
-import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;
@@ -25,12 +23,11 @@ public class PlayerDTO implements Serializable {
     private int order;
     private char offer;
     private boolean canPickFromTop;
+    private Totem totem;
 
     @JsonCreator
-    private PlayerDTO() {}
-
     public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders,
-                     List<BuildingDTO> buildings, int pp, int food, int order, char offer, boolean canPickFromTop) {
+                     List<BuildingDTO> buildings, int pp, int food, int order, char offer, boolean canPickFromTop, Totem totem) {
         this.name = name;
         this.artists = List.copyOf(artists);
         this.gatherers = List.copyOf(gatherers);
@@ -44,6 +41,7 @@ public class PlayerDTO implements Serializable {
         this.order = order;
         this.offer = offer;
         this.canPickFromTop = canPickFromTop;
+        this.totem = totem;
     }
 
     public Player fromDTO() {
@@ -54,7 +52,7 @@ public class PlayerDTO implements Serializable {
                 this.shamans.stream().map(ShamanDTO::fromDTO).toList(),
                 this.builders.stream().map(BuilderDTO::fromDTO).toList(),
                 this.buildings.stream().map(BuildingDTO::fromDTO).toList(),
-                this.pp, this.food, this.order, this.offer);
+                this.pp, this.food, this.order, this.offer, this.totem);
     }
 
     public String getName() {
@@ -107,5 +105,9 @@ public class PlayerDTO implements Serializable {
 
     public boolean getCanPickFromTop() {
         return canPickFromTop;
+    }
+
+    public Totem getTotem() {
+        return totem;
     }
 }

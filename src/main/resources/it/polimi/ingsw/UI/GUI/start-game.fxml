@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -43,6 +44,56 @@
                   <Insets left="20.0" right="20.0" />
                </padding>
             </VBox>
+
+            <VBox fx:id="totemSelect" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" styleClass="dark-panel" stylesheets="@style.css" visible="false">
+               <children>
+                  <Label text="Choose your totem" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="10.0">
+                     <children>
+                        <ImageView fx:id="totem0" fitWidth="50" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../totems/0.png" />
+                           </image>
+                        </ImageView>
+
+                        <ImageView fx:id="totem1" fitWidth="50" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../totems/1.png" />
+                           </image>
+                        </ImageView>
+
+                        <ImageView fx:id="totem2" fitWidth="50" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../totems/2.png" />
+                           </image>
+                        </ImageView>
+
+                        <ImageView fx:id="totem3" fitWidth="50" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../totems/3.png" />
+                           </image>
+                        </ImageView>
+
+                        <ImageView fx:id="totem4" fitWidth="50" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../totems/4.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </VBox>
+
             <VBox fx:id="waiting" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="10.0" styleClass="dark-panel" visible="false">
                <children>
                   <Label alignment="CENTER" text=" Waiting for other players... " textFill="WHITE">
