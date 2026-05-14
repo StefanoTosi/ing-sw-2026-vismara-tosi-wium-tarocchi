@@ -220,7 +220,16 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     private void executeAction(Action action, String nickname) throws IllegalActionException, IOException, InterruptedException {
-        gameController.executeAction(action, nickname);
+
+        ObjectNode payload = mapper.createObjectNode();
+        payload.put("error", "");
+        try{
+            gameController.executeAction(action, nickname);
+        }catch(Exception e){
+            payload.put("error", e.getMessage());
+        }
+        Message response = new Message(RequestType.EXECUTEACTION, payload);
+        sendResponse(response);
     }
 
     private synchronized void sendResponse(Message response) throws IOException {

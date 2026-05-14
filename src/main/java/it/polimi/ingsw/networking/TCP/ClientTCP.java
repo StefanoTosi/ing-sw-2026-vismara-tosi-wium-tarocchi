@@ -162,6 +162,12 @@ public class ClientTCP implements Client {
             root.put("nickname", getNickname());
             Message request = new Message(RequestType.EXECUTEACTION, root);
             sendRequest(request);
+            Message response = responses.take();
+            if(response.getRequest().equals(RequestType.EXECUTEACTION)){
+                if(!response.getPayload().get("error").asText().equals("")){
+                    throw new IllegalActionException(response.getPayload().get("error").asText());
+                }
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
