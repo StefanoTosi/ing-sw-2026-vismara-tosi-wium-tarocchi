@@ -22,6 +22,22 @@ public class ChooseTotemState extends GameState {
 
     @Override
     public void chooseTotem(Player player, Totem totem) throws IllegalActionException, RemoteException {
+        if (player.equals(game.getPlayerTurn())) {
+            if (game.getPlayers().stream().noneMatch(p -> p.getTotem().equals(totem))) {
+                player.setTotem(totem);
+
+                if (!chooseOrder.isEmpty()) {
+                    game.setPlayerTurn(chooseOrder.removeFirst());
+                } else {
+                    game.setState(new FillBoardState(game));
+                    game.getState().refillBoard();
+                }
+            } else {
+                throw new IllegalActionException("Player " + player.getName() + " tried to choose a totem that was already taken");
+            }
+        } else {
+            throw new IllegalActionException("Player " + player.getName() + " tried to choose a totem out of order");
+        }
     }
 
     @Override

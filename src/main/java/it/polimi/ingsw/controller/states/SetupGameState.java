@@ -23,8 +23,7 @@ public class SetupGameState extends GameState {
         System.out.println("Game started");
 
         // Transition
-        game.setState(new FillBoardState(game));
-        game.getState().refillBoard();
+        game.setState(new ChooseTotemState(game));
     }
 
     public StateDTO getStateDTO() {
