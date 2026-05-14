@@ -34,6 +34,11 @@ public class GameDTO implements Serializable {
         this.errorFlag = errorFlag;
     }
 
+    public Game fromDTO() {
+        return new Game(this.players.stream().map(PlayerDTO::fromDTO).toList(), this.numPlayers, this.board.fromDTO(), null,
+                        this.rankings.stream().map(PlayerDTO::fromDTO).toList(), this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber);
+    }
+
     public List<PlayerDTO> getPlayers() {
         return players;
     }

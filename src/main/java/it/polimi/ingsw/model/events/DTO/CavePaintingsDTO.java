@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.events.DTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.events.CavePaintings;
+
 import java.io.Serializable;
 
 public class CavePaintingsDTO extends CardDTO implements Serializable {
@@ -34,6 +37,10 @@ public class CavePaintingsDTO extends CardDTO implements Serializable {
 
         return event;
 
+    }
+
+    public CavePaintings fromDTO() {
+        return new CavePaintings(this.minArtist, Era.valueOf(this.getEra()), this.topPp, this.bottomPp);
     }
 
     public int getMinArtist() {

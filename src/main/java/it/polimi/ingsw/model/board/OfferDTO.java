@@ -35,4 +35,8 @@ public class OfferDTO implements Serializable {
     public int getFoodBonus() {
         return foodBonus;
     }
+
+    public Offer fromDTO() {
+        return new Offer(this.order, this.foodBonus, this.drawTop, this.drawBottom);
+    }
 }

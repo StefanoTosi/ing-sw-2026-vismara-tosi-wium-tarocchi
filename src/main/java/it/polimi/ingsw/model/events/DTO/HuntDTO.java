@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.events.DTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.events.Hunt;
 
 import java.io.Serializable;
 
@@ -35,5 +37,9 @@ public class HuntDTO extends CardDTO implements Serializable {
 
     public int getPp() {
         return pp;
+    }
+
+    public Hunt fromDTO() {
+        return new Hunt(this.pp, Era.valueOf(this.getEra()));
     }
 }

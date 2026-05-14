@@ -10,6 +10,7 @@ module com.example.mesos {
     requires com.fasterxml.jackson.annotation;
     requires jdk.xml.dom;
     requires java.sql;
+    requires com.example.mesos;
 
     opens it.polimi.ingsw.networking to javafx.fxml;
     opens it.polimi.ingsw.model to com.fasterxml.jackson.databind, javafx.fxml;

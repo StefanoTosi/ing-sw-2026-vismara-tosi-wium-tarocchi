@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.characters.DTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.characters.Artist;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,5 +35,9 @@ public class ArtistDTO extends CardDTO implements Serializable {
         lines[6].append("+----------+");
 
         return lines;
+    }
+
+    public Artist fromDTO() {
+        return new Artist(Era.valueOf(this.getEra()));
     }
 }

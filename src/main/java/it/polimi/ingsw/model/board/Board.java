@@ -556,16 +556,14 @@ public class Board {
     }
 
     public BoardDTO toDTO(){
-        return new BoardDTO(getTopRowTribe().size(),
-                getTopRowTribe().stream().map(Card::toDTO).toList(),
+        return new BoardDTO(getTopRowTribe().stream().map(Card::toDTO).toList(),
                 getTopRowBuilding().stream().map(Building::toDTO).toList(),
-                getBottomRowTribe().size(),
                 getBottomRowTribe().stream().map(Card::toDTO).toList(),
                 getBottomRowBuilding().stream().map(Building::toDTO).toList(),
-                (getDeckTribe() != null) ? getDeckTribe().size() : 0,
-                (getDeckE1Building() != null) ? getDeckE1Building().size() : 0,
-                (getDeckE2Building() != null) ? getDeckE2Building().size() : 0,
-                (getDeckE3Building() != null) ? getDeckE3Building().size() : 0,
+                getDeckTribe().getDeck().stream().map(Card::toDTO).toList(),
+                getDeckE1Building().getDeck().stream().map(c -> (Building) c).map(Building::toDTO).toList(),
+                getDeckE2Building().getDeck().stream().map(c -> (Building) c).map(Building::toDTO).toList(),
+                getDeckE3Building().getDeck().stream().map(c -> (Building) c).map(Building::toDTO).toList(),
                 (getOrder() != null) ? getOrder().toDTO() : null,
                 (getOfferPath() != null) ? getOfferPath().stream().map(Offer::toDTO).toList() : null
         );

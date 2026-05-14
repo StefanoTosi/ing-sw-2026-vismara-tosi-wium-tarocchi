@@ -26,12 +26,7 @@ public class ChooseOfferState extends GameState {
                         .sorted((p1, p2) -> p1.getOrder() - p2.getOrder())
                         .toList());
 
-        game.setPlayerTurn(drawOrder.remove(0));
-    }
-
-    public ChooseOfferState(Game game, List<Player> drawOrder) throws IllegalActionException, RemoteException {
-        this.game = game;
-        this.drawOrder = drawOrder;
+        game.setPlayerTurn(drawOrder.removeFirst());
     }
 
     public StateDTO getStateDTO() {
@@ -44,8 +39,8 @@ public class ChooseOfferState extends GameState {
                 player.setOffer(order);
 
                 // Increment player turn or go to DrawCardsState
-                if (drawOrder.size() > 0) {
-                    game.setPlayerTurn(drawOrder.remove(0));
+                if (!drawOrder.isEmpty()) {
+                    game.setPlayerTurn(drawOrder.removeFirst());
                 } else {
                     System.out.println("Finished choosing offer tiles");
                     game.setPlayerTurn(null);

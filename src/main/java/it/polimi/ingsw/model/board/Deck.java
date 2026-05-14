@@ -11,7 +11,7 @@ public class Deck {
     private final List<Card> deck;
     private Random rng;
 
-    private List<Card> getDeck() {
+    public List<Card> getDeck() {
         return deck;
     }
 

@@ -1,14 +1,10 @@
 package it.polimi.ingsw.controller.states;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.Offer;
-import it.polimi.ingsw.model.characters.Character;
-import it.polimi.ingsw.model.characters.Hunter;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-import javafx.util.Pair;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -49,7 +45,7 @@ public class FillBoardState extends GameState {
         List<Player> ordered;
         if (boardUninitialized) {
             ordered = new ArrayList<>(game.getPlayers());
-            Collections.shuffle(ordered, game.gerRng());
+            Collections.shuffle(ordered, game.getRng());
 
             for (int i = 0; i < ordered.size(); i++) {
                 ordered.get(i).setOrder(i);

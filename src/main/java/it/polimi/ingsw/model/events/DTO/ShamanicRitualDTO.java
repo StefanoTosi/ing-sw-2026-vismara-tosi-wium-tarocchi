@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.events.ShamanicRitual;
 
 import java.io.Serializable;
 
@@ -42,5 +43,9 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
 
     public int getLoserPp() {
         return loserPp;
+    }
+
+    public ShamanicRitual fromDTO() {
+        return new ShamanicRitual(this.winnerPp, this.loserPp, Era.valueOf(this.getEra()));
     }
 }

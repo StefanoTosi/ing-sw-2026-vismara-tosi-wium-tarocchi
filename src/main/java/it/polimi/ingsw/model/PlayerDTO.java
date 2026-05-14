@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.DTO.*;
+import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;
@@ -27,7 +29,8 @@ public class PlayerDTO implements Serializable {
     @JsonCreator
     private PlayerDTO() {}
 
-    public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders, List<BuildingDTO> buildings, int pp, int food, int order, char offer ,boolean canPickFromTop) {
+    public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders,
+                     List<BuildingDTO> buildings, int pp, int food, int order, char offer, boolean canPickFromTop) {
         this.name = name;
         this.artists = List.copyOf(artists);
         this.gatherers = List.copyOf(gatherers);
@@ -41,6 +44,17 @@ public class PlayerDTO implements Serializable {
         this.order = order;
         this.offer = offer;
         this.canPickFromTop = canPickFromTop;
+    }
+
+    public Player fromDTO() {
+        return new Player(this.name, this.artists.stream().map(ArtistDTO::fromDTO).toList(),
+                this.gatherers.stream().map(GathererDTO::fromDTO).toList(),
+                this.hunters.stream().map(HunterDTO::fromDTO).toList(),
+                this.inventors.stream().map(InventorDTO::fromDTO).toList(),
+                this.shamans.stream().map(ShamanDTO::fromDTO).toList(),
+                this.builders.stream().map(BuilderDTO::fromDTO).toList(),
+                this.buildings.stream().map(BuildingDTO::fromDTO).toList(),
+                this.pp, this.food, this.order, this.offer);
     }
 
     public String getName() {
@@ -90,7 +104,6 @@ public class PlayerDTO implements Serializable {
     public char getOffer() {
         return offer;
     }
-
 
     public boolean getCanPickFromTop() {
         return canPickFromTop;

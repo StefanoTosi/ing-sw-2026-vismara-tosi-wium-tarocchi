@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.characters.DTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.characters.Gatherer;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,5 +31,9 @@ public class GathererDTO extends CardDTO implements Serializable {
         lines[6].append("+----------+");
 
         return lines;
+    }
+
+    public Gatherer fromDTO() {
+        return new Gatherer(Era.valueOf(this.getEra()));
     }
 }

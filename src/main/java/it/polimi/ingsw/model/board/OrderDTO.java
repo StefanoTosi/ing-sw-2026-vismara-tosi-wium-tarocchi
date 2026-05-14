@@ -31,4 +31,7 @@ public class OrderDTO implements Serializable {
         return numPlayers;
     }
 
+    public Order fromDTO() {
+        return new Order(this.numPlayers, this.ppBonus, this.foodBonus);
+    }
 }

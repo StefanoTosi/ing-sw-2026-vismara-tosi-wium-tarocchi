@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.events.DTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
+import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.events.Sustenance;
 
 import java.io.Serializable;
 
@@ -35,5 +37,9 @@ public class SustenanceDTO extends CardDTO implements Serializable {
 
     public int getPp() {
         return pp;
+    }
+
+    public Sustenance fromDTO() {
+        return new Sustenance(this.pp, Era.valueOf(this.getEra()));
     }
 }

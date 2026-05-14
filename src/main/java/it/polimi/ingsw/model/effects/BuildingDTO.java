@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.effects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
+import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
@@ -40,5 +41,9 @@ public class BuildingDTO extends CardDTO implements Serializable {
 
     public String getEffect() {
         return effect;
+    }
+
+    public Building fromDTO() {
+        return new Building(Era.valueOf(this.getEra()), this.cost, this.pp, this.effectPp, null /*TODO*/, Effect.valueOf(this.effect));
     }
 }

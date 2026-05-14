@@ -65,8 +65,7 @@ public class Player {
     }
 
     public Player(String name, List<Artist> artists, List<Gatherer> gatherers, List<Hunter> hunters, List<Inventor> inventors, List<Shaman> shamans, List<Builder> builders,
-                  List<Building> buildings, int pp, int food, int foodDiscount, int additionalStars, boolean dontLosePp, boolean doublePp, boolean canPickFromTop,
-                  int order, char offer, Game game) {
+                  List<Building> buildings, int pp, int food, int order, char offer) {
         this.name = name;
 
         this.artists = artists;
@@ -80,16 +79,16 @@ public class Player {
         this.pp = pp;
         this.food = food;
 
-        this.foodDiscount = foodDiscount;
-        this.additionalStars = additionalStars;
-        this.dontLosePp = dontLosePp;
-        this.doublePp = doublePp;
-        this.canPickFromTop = canPickFromTop;
+        this.foodDiscount = 0;
+        this.additionalStars = 0;
+        this.dontLosePp = false;
+        this.doublePp = false;
+        this.canPickFromTop = false;
 
         this.order = order;
         this.offer = offer;
 
-        this.game = game;
+        this.game = null;
     }
 
     public void setGame(Game game) {

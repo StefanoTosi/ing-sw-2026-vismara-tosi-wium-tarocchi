@@ -7,7 +7,6 @@ import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.TCP.ObserverTCP;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.*;
 
 public class Game {
@@ -41,8 +40,8 @@ public class Game {
         this.lockTCP = new Object();
     }
 
-    public Game (List<Player> players, int numPlayers, Board board, GameState state, List<Player> rankings, List<ClientCallBack> observersRMI,
-                 List<ObserverTCP> observersTCP, Player playerTurn, String errorFlag, int turnNumber) throws IllegalArgumentException {
+    public Game (List<Player> players, int numPlayers, Board board, GameState state, List<Player> rankings,
+                 Player playerTurn, String errorFlag, int turnNumber) throws IllegalArgumentException {
         this.players = players;
         this.numPlayers = numPlayers;
         this.board = board;
@@ -51,12 +50,12 @@ public class Game {
         }
 
         this.state = state;
-        this.observersRMI = observersRMI;
-        this.observersTCP = observersTCP;
         this.playerTurn = playerTurn;
         this.errorFlag = errorFlag;
         this.turnNumber = turnNumber;
         this.rankings = rankings;
+        this.observersRMI = new ArrayList<>();
+        this.observersTCP = new ArrayList<>();
         this.lockRMI = new Object();
         this.lockTCP = new Object();
     }
@@ -161,8 +160,8 @@ public class Game {
             turn = playerTurn;
         }
 
-        return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(),
-                getBoard().toDTO(), getState().getStateDTO(), turn.toDTO(), getRankings().stream().map(Player::toDTO).toList(), getTurnNumber(), getErrorFlag());
+        return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(), getBoard().toDTO(), getState().getStateDTO(),
+                            turn.toDTO(), getRankings().stream().map(Player::toDTO).toList(), getTurnNumber(), getErrorFlag());
     }
 
     public Player getPlayerTurn() {
@@ -181,7 +180,7 @@ public class Game {
         this.errorFlag = errorFlag;
     }
 
-    public Random gerRng() {
+    public Random getRng() {
         return rng;
     }
 
