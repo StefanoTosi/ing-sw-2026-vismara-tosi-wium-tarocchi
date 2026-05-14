@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.states.*;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.TCP.ObserverTCP;
@@ -23,6 +24,7 @@ public class Game {
     private int turnNumber;
     private final Object lockRMI;
     private final Object lockTCP;
+    private Map<String, List<EventResult>> eventResults;
 
     public Game (List<Player> players, Random rng) throws IllegalArgumentException {
         this.players = players;
@@ -38,10 +40,11 @@ public class Game {
         this.rankings = new ArrayList<>();
         this.lockRMI = new Object();
         this.lockTCP = new Object();
+        this.eventResults = null;
     }
 
     public Game (List<Player> players, int numPlayers, Board board, GameState state, List<Player> rankings,
-                 Player playerTurn, String errorFlag, int turnNumber) throws IllegalArgumentException {
+                 Player playerTurn, String errorFlag, int turnNumber, Map<String, List<EventResult>> eventResults) throws IllegalArgumentException {
         this.players = players;
         this.numPlayers = numPlayers;
         this.board = board;
@@ -58,6 +61,7 @@ public class Game {
         this.observersTCP = new ArrayList<>();
         this.lockRMI = new Object();
         this.lockTCP = new Object();
+        this.eventResults = eventResults;
     }
 
     public void addObserverRMI(ClientCallBack observer){
@@ -172,7 +176,7 @@ public class Game {
         }
 
         return new GameDTO(getPlayers().stream().map(Player::toDTO).toList(),getNumPlayers(), getBoard().toDTO(), getState().getStateDTO(),
-                            turn.toDTO(), getRankings().stream().map(Player::toDTO).toList(), getTurnNumber(), getErrorFlag());
+                            turn.toDTO(), getRankings().stream().map(Player::toDTO).toList(), getTurnNumber(), getErrorFlag(), getEventResults());
     }
 
     public Player getPlayerTurn() {
@@ -205,5 +209,13 @@ public class Game {
 
     public void newTurn() {
         this.turnNumber++;
+    }
+
+    public Map<String, List<EventResult>> getEventResults() {
+        return eventResults;
+    }
+
+    public void setEventResults(Map<String, List<EventResult>> eventResults) {
+        this.eventResults = eventResults;
     }
 }
