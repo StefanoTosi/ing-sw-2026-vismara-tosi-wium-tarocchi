@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.events.DTO.SustenanceDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.max;
@@ -15,7 +16,7 @@ import static java.lang.Math.max;
  * Points indicated on the Event card for each Character card you couldn’t feed
  */
 public class Sustenance extends Event {
-    private int pp;
+    private final int pp;
 
     public Sustenance(int pp, Era era){
         super(era);
@@ -24,7 +25,11 @@ public class Sustenance extends Event {
     }
 
     @Override
-    public void applyEffect(List<Player> players){
+    public List<EventResult> applyEffect(List<Player> players){
+        List<EventResult> results = new ArrayList<>();
+        int deltaPp = 0;
+        int deltaFood;
+
         // Apply building effects for sustenance
         for (Player player : players){
             player.setFoodDiscount(0);
@@ -36,19 +41,23 @@ public class Sustenance extends Event {
         // Take food from players
         for(Player player : players){
             // Required food
-            int numCharacter = player.countNumCharacters();
-            int reqFood = max(numCharacter - player.getNumGatherers() * 3 - player.getFoodDiscount(), 0);
+            deltaFood = max(player.countNumCharacters() - player.getNumGatherers() * 3 - player.getFoodDiscount(), 0);
 
             // Verify they can pay
-            if (player.getFood() >= reqFood) {
-                player.addFood(-reqFood);
+            if (player.getFood() >= deltaFood) {
+                player.addFood(-deltaFood);
             } else{
-                int unfedCharacters = reqFood - player.getFood();
+                int unfedCharacters = deltaFood - player.getFood();
+                deltaFood = player.getFood();
                 player.setFood(0);
-                int ppLoss = - unfedCharacters * pp;
-                player.addPp(ppLoss);
+                deltaPp = - unfedCharacters * pp;
+                player.addPp(deltaPp);
             }
+
+            results.add(new EventResult("Sustenance", player.toDTO(), deltaPp, deltaFood));
         }
+
+        return results;
     }
 
     public int getPp(){

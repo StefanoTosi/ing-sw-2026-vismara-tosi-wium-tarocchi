@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
-
 import java.util.List;
 
 public abstract class Event extends Card {
@@ -19,9 +18,10 @@ public abstract class Event extends Card {
         return "name: " + name + "\ntype: " + TYPE;
     }
 
-    public void applyEffect(List<Player> players){}
+    public List<EventResult> applyEffect(List<Player> players) {
+        return null;
+    }
 
-    // TODO: questa funzione dovrebbe lanciare un'eccezione
     @Override
     public void addToPlayer(Player player) throws IllegalActionException {
         throw new IllegalActionException("Player " + player + " tried to draw an event");

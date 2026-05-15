@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.characters.DTO.HunterDTO;
  * Each Hunter can have an icon that will eventually provide you extra food
  */
 public class Hunter extends Character {
-    private boolean icon;
+    private final boolean icon;
 
     public Hunter(boolean icon, Era era) {
         super(era);

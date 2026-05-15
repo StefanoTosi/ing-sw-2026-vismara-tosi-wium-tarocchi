@@ -3,13 +3,12 @@ package it.polimi.ingsw.controller.states;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.events.Event;
+import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class ResolveEventsState extends GameState {
     private final Game game;
@@ -22,24 +21,29 @@ public class ResolveEventsState extends GameState {
     }
 
     public void resolveEvents() throws IllegalActionException, RemoteException {
+        Map<String, List<EventResult>> eventResults = new LinkedHashMap<>();
+        game.setEventResults(null);
         List<Card> bottomRow = game.getBoard().getBottomRowTribe();
-        List<Event> events = bottomRow.stream().filter(card -> card instanceof Event).map(card -> (Event)card).toList();
+        List<Event> events = new ArrayList<>(bottomRow.stream().filter(card -> card instanceof Event).map(card -> (Event) card).toList());
 
-        List<Event> orderedEvents = new ArrayList<>(events);
+        //If it's the last turn, resolve the events in the top row too
+        if(game.getTurnNumber() == 10) {
+            events.addAll(game.getBoard().getTopRowTribe().stream().filter(card -> card instanceof Event).map(card -> (Event)card).toList());
+        }
 
         // Move Sustenance events to solve them last
-        orderedEvents.sort(
+        events.sort(
                 Comparator.comparing(
                         event -> event instanceof Sustenance)
         );
 
-
         for (Event event : events) {
-            event.applyEffect(game.getPlayers());
+            eventResults.put(event.getName(), event.applyEffect(game.getPlayers()));
             System.out.println("Resolved event " + event.getName());
         }
 
-        bottomRow.removeAll(orderedEvents);
+        game.setEventResults(eventResults);
+        bottomRow.removeAll(events);
 
         // Transition to EndTurnState
         System.out.println("Finished resolving events");

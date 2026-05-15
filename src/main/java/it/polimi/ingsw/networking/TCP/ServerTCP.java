@@ -21,7 +21,7 @@ public class ServerTCP {
     }
 
     public void waitForConnection(Map<String, User> users) throws IOException {
-        try{
+        try {
             serverSocket = new ServerSocket(port);
             while(true){
                 Socket socket = serverSocket.accept();
@@ -30,7 +30,7 @@ public class ServerTCP {
                 Thread th = new Thread(new ServerThread(socket, gameController, users, lock));
                 th.start();
             }
-        }catch(IOException e){
+        } catch(IOException e) {
             throw e;
         }
     }

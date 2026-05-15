@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.events.DTO.CavePaintingsDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,9 @@ import java.util.List;
 
 public class CavePaintings extends Event {
 
-    private int topPp;
-    private int bottomPp;
-    private int minArtist;
+    private final int topPp;
+    private final int bottomPp;
+    private final int minArtist;
 
     public CavePaintings(int minArtist, Era era, int topPp, int bottomPp){
         super(era);
@@ -27,20 +28,33 @@ public class CavePaintings extends Event {
     }
 
     @Override
-    public void applyEffect(List<Player> players){
+    public List<EventResult> applyEffect(List<Player> players){
+        List<EventResult> results = new ArrayList<>();
+        int deltaPp;
+        int deltaFood;
+        int prevFood;
+
         for (Player player : players){
+            prevFood = player.getFood();
+
+            //Apply building effects
             for (Building building : player.getBuildings()){
                 building.getEffect().applyEffectEventCavePaintings(player, building);
             }
-        }
+            deltaFood = player.getFood() - prevFood;
 
-        for(Player player : players) {
             if(player.getNumArtists() < minArtist){
                 player.addPp(-topPp);
+                deltaPp = -topPp;
             }else {
                 player.addPp(bottomPp);
+                deltaPp = bottomPp;
             }
+
+            results.add(new EventResult("CavePaintings", player.toDTO(), deltaPp, deltaFood));
         }
+
+        return results;
     }
 
     @Override

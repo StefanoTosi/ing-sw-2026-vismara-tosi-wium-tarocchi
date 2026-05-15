@@ -1,6 +1,7 @@
 package it.polimi.ingsw.UI.GUI;
 
 import it.polimi.ingsw.UI.UISession;
+import it.polimi.ingsw.controller.actions.*;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.actions.ChooseTotemAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
@@ -28,9 +29,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.w3c.dom.css.Rect;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class FieldController implements UIObserver {
     @FXML AnchorPane anchor;
@@ -324,9 +327,9 @@ public class FieldController implements UIObserver {
         Platform.runLater(() -> {
             // Update toasts
             updateInstructionLabel();
-            if (!game.getErrorFlag().equals("")) {
+            if (!game.getErrorFlag().isEmpty()) {
                 errorToast.setVisible(true);
-                ((Label) errorToast.getChildren().get(0)).setText(game.getErrorFlag());
+                ((Label) errorToast.getChildren().getFirst()).setText(game.getErrorFlag());
             } else {
                 errorToast.setVisible(false);
             }
@@ -389,7 +392,7 @@ public class FieldController implements UIObserver {
 
             VBox errorToastStart = (VBox) startRoot.lookup("#errorToast");
             errorToastStart.setVisible(true);
-            ((Label) errorToastStart.getChildren().get(0)).setText("Sorry, the game as been closed due to a disconnection of a player");
+            ((Label) errorToastStart.getChildren().getFirst()).setText("Sorry, the game as been closed due to a disconnection of a player");
 
             startRoot.lookup("#playAgain").setVisible(true);
             startRoot.lookup("#clientSelect").setVisible(false);
@@ -400,7 +403,7 @@ public class FieldController implements UIObserver {
     }
 
     @Override
-    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+    public void serverCrashed() {
         System.out.println("Sorry, the server crashed\n");
         System.exit(1);
     }
@@ -410,7 +413,7 @@ public class FieldController implements UIObserver {
         GameDTO game = UISession.getGame();
         Group g = (Group) e.getSource();
 
-        // If its my turn
+        // If it's my turn
         if (game.getPlayerTurn().getName().equals(UISession.getClient().getNickname())) {
             if (game.getState() == StateDTO.DRAWCARD) {
                 OfferDTO offer = game.getBoard().getOfferPath().stream()
@@ -511,7 +514,7 @@ public class FieldController implements UIObserver {
                     .findFirst().get();
 
             // Check its free
-            if (!game.getPlayers().stream().anyMatch(p -> p.getOffer() == c.getTile().getOrder())) {
+            if (game.getPlayers().stream().noneMatch(p -> p.getOffer() == c.getTile().getOrder())) {
                 // Choose it
                 try {
                     UISession.getClient().executeAction(new ChooseOfferAction(c.getTile().getOrder()));
@@ -637,7 +640,7 @@ public class FieldController implements UIObserver {
 
                 for (CardDTO c : hand) {
                     // If absent, insert it
-                    if (!handVBox.getChildren().stream().anyMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
+                    if (handVBox.getChildren().stream().noneMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
                         handVBox.getChildren().add(idRegistry.get(c.getId()).getMesh());
                     }
                 }

@@ -25,7 +25,7 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
         for(int i = 0; i < 7; i++){
             event[i] = new StringBuilder();
         }
-        event[0].append(String.format("|%-10s|"));
+        event[0].append("|%-10s|");
         event[1].append("|Shamanic  |");
         event[2].append("|Ritual    |");
         event[3].append(String.format("|%-10s|", getWinnerPp()));

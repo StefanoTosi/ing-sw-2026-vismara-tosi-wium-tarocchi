@@ -1,4 +1,5 @@
 package it.polimi.ingsw.UI.TUI;
+
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
@@ -8,11 +9,8 @@ import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.board.OrderDTO;
 import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
-import it.polimi.ingsw.model.events.DTO.HuntDTO;
-import it.polimi.ingsw.model.events.DTO.SustenanceDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
-import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
 import it.polimi.ingsw.networking.UIObserver;
@@ -29,9 +27,9 @@ public class TUI implements UIObserver {
     private final Scanner in = new Scanner(System.in);
     private GameDTO game;
     private Client client;
-    private int portTCP;
-    private int portRMI;
-    private String serverAddress;
+    private final int portTCP;
+    private final int portRMI;
+    private final String serverAddress;
     private boolean gameClosed;
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[33m";
@@ -50,10 +48,8 @@ public class TUI implements UIObserver {
 
     /**
      *TUI
-     * @throws RemoteException
-     * @throws NotBoundException
      */
-    public TUI (int portRMI, int portTCP, String serverAddress) throws RemoteException, NotBoundException {
+    public TUI (int portRMI, int portTCP, String serverAddress) {
         this.game = null;
         this.client = null;
         this.serverAddress = serverAddress;
@@ -109,7 +105,7 @@ public class TUI implements UIObserver {
                     String username = readLine();
                     System.out.print(BLUE + BOLD +"Password: ");
                     String password = readLine();
-                    if(client.addUser(password, username) == 0) flag = false;
+                    flag = !client.addUser(password, username);
                 }
                 client.ping();
                 joinGame();
@@ -213,7 +209,7 @@ public class TUI implements UIObserver {
     }
 
     @Override
-    public void serverCrashed() throws IOException, IllegalActionException, InterruptedException{
+    public void serverCrashed() {
         System.out.println("Sorry, the server crashed\n");
         System.exit(1);
     }
@@ -452,7 +448,7 @@ public class TUI implements UIObserver {
     public void printRowTribe(List<CardDTO> cards, List<BuildingDTO> buildings){
         StringBuilder[] lines = new StringBuilder[7];
         for(int i=0; i < 7; i++){
-            lines[i] = new StringBuilder("");
+            lines[i] = new StringBuilder();
         }
         StringBuilder[] build = new StringBuilder[7];
         for(int i=0; i < 7; i++){
@@ -516,15 +512,13 @@ public class TUI implements UIObserver {
         for(CardDTO card : cards){
             if(card.getType().equals("Event")){
                 num_card++;
-                StringBuilder[] event = new StringBuilder[7];
-                event = createEvent(card, num_card);
+                StringBuilder[] event = createEvent(card, num_card);
                 for(int i = 0; i < 7; i++){
                     lines[i].append(event[i]);
                 }
             } else if(card.getType().equals("Character")){
                 num_card++;
-                StringBuilder[] character = new StringBuilder[7];
-                character = createCharacter(card, num_card);
+                StringBuilder[] character = createCharacter(card, num_card);
                 for(int i = 0; i < 7; i++){
                     lines[i].append(character[i]);
                 }
@@ -627,7 +621,7 @@ public class TUI implements UIObserver {
         boolean isEmpty = true;
 
         for(StringBuilder line : lines){
-            if(line.length() > 0){
+            if(!line.isEmpty()){
                 isEmpty = false;
                 break;
             }
@@ -778,7 +772,7 @@ public class TUI implements UIObserver {
         }
     }
 
-    private boolean contains(char array[], char s){
+    private boolean contains(char[] array, char s){
         for(char c : array){
             if(c == s){
                 return true;
