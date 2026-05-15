@@ -2,6 +2,7 @@ package it.polimi.ingsw.UI.GUI;
 
 import it.polimi.ingsw.UI.UISession;
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
+import it.polimi.ingsw.controller.actions.ChooseTotemAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.controller.states.StateDTO;
@@ -10,8 +11,6 @@ import it.polimi.ingsw.model.board.BoardDTO;
 import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.UIObserver;
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,24 +18,19 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.w3c.dom.css.Rect;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class FieldController implements UIObserver {
     @FXML AnchorPane anchor;
@@ -48,6 +42,9 @@ public class FieldController implements UIObserver {
     Group cardsContainer;
     PerspectiveCamera camera;
     @FXML Label debugLabel;
+
+    @FXML VBox totemSelect;
+    @FXML HBox totemList;
 
     @FXML TabPane playerTabs;
     @FXML TilePane players;
@@ -77,9 +74,9 @@ public class FieldController implements UIObserver {
         bottomRowAnim = new ArrayList<>();
         offerPathAnim = new ArrayList<>();
 
-        meshRegistry = new HashMap<Group, AnimatedCard>();
-        refRegistry = new HashMap<Rectangle, AnimatedCard>();
-        idRegistry = new HashMap<Integer, AnimatedCard>();
+        meshRegistry = new HashMap<>();
+        refRegistry = new HashMap<>();
+        idRegistry = new HashMap<>();
 
         GameDTO game = UISession.getGame();
         BoardDTO board = UISession.getGame().getBoard();
@@ -97,7 +94,7 @@ public class FieldController implements UIObserver {
         deck = new Rectangle(AnimatedCard.cardW, AnimatedCard.cardH);
         deck.setFill(Color.TRANSPARENT);
         offerPath.getChildren().add(deck);
-        offerPath.setMargin(deck, new Insets(0, 20, 0, 0));
+        HBox.setMargin(deck, new Insets(0, 20, 0, 0));
 
         // Load order tile
         Image o = new Image(getClass().getResource("/order/" + game.getNumPlayers() + ".png").toExternalForm());
@@ -125,6 +122,25 @@ public class FieldController implements UIObserver {
             cardsContainer.getChildren().add(totems.get(i).getMesh());
             cardsContainer.getChildren().add(totems.get(i).getReference());
             totems.get(i).resetPosition();
+        }
+
+        for (int i = 0; i < 5; i++) {
+            ImageView imgv = new ImageView();
+            imgv.setPreserveRatio(true);
+            imgv.setImage(new Image(getClass().getResource("/totems/" + i + ".png").toExternalForm()));
+            imgv.setFitWidth(50);
+            imgv.setId(i + "totemButton");
+            imgv.setId(i + "totemButton");
+            totemList.getChildren().add(imgv);
+
+            final int j = i;
+            imgv.setOnMouseClicked((MouseEvent e) -> {
+                try {
+                    UISession.getClient().executeAction(new ChooseTotemAction(Totem.values()[j]));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
         }
 
         Platform.runLater(() -> {
@@ -169,12 +185,12 @@ public class FieldController implements UIObserver {
                 "}");*/
 
         // Style player tabs
-        Platform.runLater(() -> {
+        /*Platform.runLater(() -> {
             Node headerBackground = playerTabs.lookup(".tab-header-background");
             if (headerBackground != null) {
                 headerBackground.setStyle("-fx-background-color: transparent;");
             }
-        });
+        });*/
 
         // Place animated cards in the cards container
         Platform.runLater(() -> {
@@ -211,6 +227,9 @@ public class FieldController implements UIObserver {
         GameDTO game = UISession.getGame();
         String instructions = "Its " + UISession.getGame().getPlayerTurn().getName() + "'s turn to ";
         switch (game.getState()) {
+            case CHOOSETOTEM:
+                instructions += "choose a totem";
+                break;
             case CHOOSEOFFER:
                 instructions += "choose an offer tile";
                 break;
@@ -322,10 +341,30 @@ public class FieldController implements UIObserver {
                 }
             }
 
+            // Update chosen totems
+            game.getPlayers().stream()
+                    .map(p -> p.getTotem())
+                    .filter(t -> t != null)
+                    .forEach(t -> {
+                        totemList.getChildren().remove(cardsContainer.getScene().lookup("#" + t.getId() + "totemButton"));
+                    });
+
+            for (int i = 0; i < game.getPlayers().size(); i++) {
+                PlayerDTO p = game.getPlayers().get(i);
+                if (p.getTotem() != null) {
+                    totems.get(i).setImgae(new Image(getClass().getResource("/totems/" + p.getTotem().getId() + ".png").toExternalForm()));
+                }
+            }
+
+            // Hide totem selection
+            if (game.getState() != StateDTO.CHOOSETOTEM) {
+                totemSelect.setVisible(false);
+            }
+
             // Update player info
             for (PlayerDTO p : game.getPlayers()) {
-                ((Text) playerTabs.getScene().lookup("#" + p.getName() + "Pp")).setText("" + p.getPp());
-                ((Text) playerTabs.getScene().lookup("#" + p.getName() + "Food")).setText("" + p.getFood());
+                ((Text) anchor.getScene().lookup("#" + p.getName() + "Pp")).setText("" + p.getPp());
+                ((Text) anchor.getScene().lookup("#" + p.getName() + "Food")).setText("" + p.getFood());
             }
         });
     }

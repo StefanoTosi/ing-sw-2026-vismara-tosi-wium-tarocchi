@@ -113,9 +113,9 @@ public class AnimatedTotem extends AnimatedObject {
         PhongMaterial frontMat = new PhongMaterial();
         frontMat.setDiffuseColor(Color.BLACK);
         frontMat.setSelfIlluminationMap(front);
+        frontMat.setDiffuseMap(front);
         frontMeshView.setMaterial(frontMat);
         frontMeshView.setCullFace(CullFace.BACK);
-        frontMat.setDiffuseMap(front);
 
         return new Group(frontMeshView);
     }
@@ -143,5 +143,10 @@ public class AnimatedTotem extends AnimatedObject {
         }
         this.offsetX = orderOff.get(i).get(0);
         this.offsetY = orderOff.get(i).get(1);
+    }
+
+    public void setImgae(Image img) {
+        ((PhongMaterial) ((MeshView) mesh.getChildren().get(0)).getMaterial()).setSelfIlluminationMap(img);
+        ((PhongMaterial) ((MeshView) mesh.getChildren().get(0)).getMaterial()).setDiffuseMap(img);
     }
 }
