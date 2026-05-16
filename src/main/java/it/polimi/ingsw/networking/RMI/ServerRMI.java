@@ -134,7 +134,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public boolean joinGame(String name) throws IOException, IllegalActionException, InterruptedException {
         ClientCallBack client;
-        boolean result;
+        boolean result = false;
         synchronized (lock){
             User user = users.get(name);
             client = clients.get(name);

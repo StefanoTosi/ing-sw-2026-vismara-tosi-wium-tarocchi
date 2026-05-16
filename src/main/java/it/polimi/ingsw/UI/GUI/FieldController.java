@@ -25,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -568,8 +569,7 @@ public class FieldController implements UIObserver {
                     // When on the order tile
                     totem.setReference(order.getReference());
                     totem.setOffsetOrder(p.getOrder(), game.getNumPlayers());
-                    totem.getMesh().setTranslateZ(-0.01 * (6 - p.getOrder()));
-                    totem.getMesh().toFront();
+                    ((MeshView) totem.getMesh().getChildren().getFirst()).setTranslateZ(-0.1 * (1 + p.getOrder()));
                     totem.animatePosition(Duration.seconds(0.6));
                 }
             }

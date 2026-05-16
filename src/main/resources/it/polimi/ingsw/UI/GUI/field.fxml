@@ -58,7 +58,7 @@
            </VBox>
        </HBox>
 
-       <SubScene fx:id="subScene" height="400.0" width="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <SubScene fx:id="subScene" height="400.0" width="600.0" depthBuffer="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <root>
                <Region />
            </root>

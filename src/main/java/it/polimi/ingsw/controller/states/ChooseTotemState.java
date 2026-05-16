@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseTotemState extends GameState {
