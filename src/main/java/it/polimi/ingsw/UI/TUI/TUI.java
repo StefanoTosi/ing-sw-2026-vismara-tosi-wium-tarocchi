@@ -1,8 +1,10 @@
 package it.polimi.ingsw.UI.TUI;
 
 import it.polimi.ingsw.controller.actions.ChooseOfferAction;
+import it.polimi.ingsw.controller.actions.ChooseTotemAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
 import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
+import it.polimi.ingsw.controller.states.ChooseTotemState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.OfferDTO;
@@ -18,10 +20,9 @@ import it.polimi.ingsw.networking.UIObserver;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 public class TUI implements UIObserver {
     private final Scanner in = new Scanner(System.in);
@@ -36,6 +37,7 @@ public class TUI implements UIObserver {
     public static final String BLUE = "\u001B[34m";
     public static final String GREEN = "\u001B[32m";
     public static final String ORANGE ="\u001B[38;5;208m";
+    public static final String RESET ="\u001B[0m";
     public static final String BG_RED = "\u001B[41m";
     public static final String BG_PURPLE = "\u001B[45m";
     public static final String BG_WHITE = "\u001B[47m";
@@ -152,31 +154,6 @@ public class TUI implements UIObserver {
         handleState();
     }
 
-    public String chooseTotem() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
-        String totem = "";
-        System.out.println("Choose a totem:\n");
-        System.out.println("1. " + BG_RED + "|");
-        System.out.println("2. " + BG_YELLOW + "|");
-        System.out.println("3. " + BG_BLUE + "|");
-        System.out.println("4. " + BG_PURPLE + "|");
-        System.out.println("5. " + BG_WHITE + "|");
-        int input = readInt();
-
-        switch (input){
-            case 1:
-                totem = BG_RED;
-            case 2:
-                totem = BG_YELLOW;
-            case 3:
-                totem = BG_BLUE;
-            case 4:
-                totem = BG_PURPLE;
-            case 5:
-                totem = BG_WHITE;
-
-        }
-        return totem;
-    }
 
     /**
      * Function that changes the states throwout the game
@@ -229,6 +206,8 @@ public class TUI implements UIObserver {
             // If its this players turn, query the player for the action, otherwise do nothing
                 // TODO: sostituire con lo strategy pattern?
             switch (game.getState()) {
+                case RESOLVEEVENT:
+                    break;
                 case StateDTO.SETUPGAME:
                     // SetupGameState
                     System.out.print("Connected players: ");
@@ -240,6 +219,41 @@ public class TUI implements UIObserver {
                 case StateDTO.FILLBOARD:
                     // FillBoardState
                     System.out.print("Filling board - this message should never be printed...");
+                    break;
+                case StateDTO.CHOOSETOTEM:
+                    if (client.getNickname().equals(game.getPlayerTurn().getName())){
+                        // taken totems
+                        Set<Totem> takenTotems = game.getPlayers().stream().map(PlayerDTO::getTotem).filter(Objects::nonNull).collect(Collectors.toSet());
+
+                        // available totems
+                        List<Totem> availableTotems = Arrays.stream(Totem.values()).filter(t -> !takenTotems.contains(t)).toList();
+
+                        System.out.println("Choose a totem:\n");
+
+                        for(Totem t : Totem.values()){
+                            System.out.printf("%d. %s%n", t.getId(), t.getColor());
+                        }
+
+                        Totem chosenTotem = null;
+
+                        while(chosenTotem == null){
+                            int input = readInt();
+
+                            for(Totem t : availableTotems){
+                                if(t.getId() == input){
+                                    chosenTotem = t;
+                                    break;
+                                }
+                            }
+                            if (chosenTotem == null){
+                                System.out.println("Invalid choice\n");
+                            }
+                        }
+                        client.executeAction(new ChooseTotemAction(chosenTotem));
+                    }
+                    else {
+                        System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                    }
                     break;
                 case StateDTO.CHOOSEOFFER:
                     printBoard();
@@ -275,7 +289,7 @@ public class TUI implements UIObserver {
                     }
                     break;
                 case StateDTO.DRAWCARD:
-                    // DrawCardsState
+                    // DrawCardsState --- eliminazione del while per un approccio di esco e rientro nello state - controller sa che deve andare in drawcard due volte ecc
                     if (client.getNickname().equals(game.getPlayerTurn().getName())){
                         System.out.println("It's your turn!");
                         OfferDTO playerOffer = new OfferDTO('A', 0, 0, 0);
@@ -632,6 +646,8 @@ public class TUI implements UIObserver {
             System.out.println(player.getName() + " has no cards...\n");
         }
 
+        System.out.println("Food: " + player.getFood());
+        System.out.println("PP: " + player.getPp());
     }
 
     /**
@@ -652,33 +668,6 @@ public class TUI implements UIObserver {
     // tipo un handler della stampa a cui collego un CharacterDTO e tramite override
     // modifico la funzione stampa per il tipo di carta
 
-
-
-    /**
-     * Function to print the Gatherer cards of a player
-     * @param gatherers
-     */
-
-    public StringBuilder[] printGatherer(List<GathererDTO> gatherers) {
-        StringBuilder[] lines = new StringBuilder[7];
-
-        for(int i=0; i < 7; i++){
-            lines[i] = new StringBuilder();
-        }
-
-        for (GathererDTO gatherer : gatherers) {
-            lines[0].append("+----------+");
-            lines[1].append(String.format("|%-10s|", "Gather"));
-            lines[2].append("|          |");
-            lines[3].append("|          |");
-            lines[4].append("|          |");
-            lines[5].append(String.format("|%-10s|", gatherer.getEra()));
-            lines[6].append("+----------+");
-        }
-
-        return lines;
-    }
-
     /**
      * Function to print the order of players on the OrderTile followed by the OfferTiles
      */
@@ -695,7 +684,8 @@ public class TUI implements UIObserver {
 
         for(PlayerDTO player : game.getPlayers()) {
             if(player.getOffer() == '\0'){
-                lines[player.getOrder() + 1] =  new StringBuilder(String.format("|%-10s|", player.getName()));
+                String paddedName = String.format("|%-10s|", player.getName());
+                lines[player.getOrder() + 1] =  new StringBuilder(player.getTotem().getAscii() + paddedName + RESET + ORANGE);
             }
         }
 
