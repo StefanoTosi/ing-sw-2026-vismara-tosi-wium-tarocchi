@@ -130,7 +130,7 @@ public class EndTurnState extends GameState {
                 building.getEffect().applyEffectDraw(player, tmp_numSets, (Character) character);
             }
         } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to draw an event card");
+            throw new IllegalActionException("Player tried to draw an event card");
         }
     }
 }

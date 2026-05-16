@@ -149,7 +149,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void executeAction(Action action) {
+    public void executeAction(Action action) throws Exception {
         try{
             JsonNode payload = mapper.valueToTree(action);
             ObjectNode root = mapper.createObjectNode();
@@ -164,7 +164,7 @@ public class ClientTCP implements Client {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw e;
         }
     }
 

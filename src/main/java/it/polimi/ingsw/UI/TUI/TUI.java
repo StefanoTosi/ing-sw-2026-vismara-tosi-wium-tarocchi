@@ -92,7 +92,7 @@ public class TUI implements UIObserver {
      * @throws IllegalActionException
      */
 
-    public void start() throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+    public void start() throws Exception {
         int input;
         do{
             renderStartMenu();
@@ -120,7 +120,7 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void anotherGame() throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+    public void anotherGame() throws Exception {
         int input;
         do{
             renderMenu();
@@ -139,7 +139,7 @@ public class TUI implements UIObserver {
         }
     }
 
-    public void joinGame() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+    public void joinGame() throws Exception {
         if (!client.joinGame()) {
             int num;
             System.out.println("No game found, let's create a new one!\n");
@@ -191,7 +191,7 @@ public class TUI implements UIObserver {
         System.exit(1);
     }
 
-    public void handleState() throws InterruptedException, IllegalActionException, IOException, ClassNotFoundException {
+    public void handleState() throws Exception {
         while(true){
             game = updates.take();
             if(getGameClosed()){
@@ -653,7 +653,7 @@ public class TUI implements UIObserver {
     /**
      * Function to ask whose cards does the user wish to view
      */
-    public void choosePlayerCards () throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+    public void choosePlayerCards () throws Exception {
         List<PlayerDTO> players = game.getPlayers();
         System.out.println("Whose cards do you wish to view?");
         String name = readLine();
@@ -772,7 +772,7 @@ public class TUI implements UIObserver {
         return false;
     }
 
-    private boolean handleCommand(String input) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+    private boolean handleCommand(String input) throws Exception {
         switch (input.toLowerCase()){
             case "exit":
             case "quit":
@@ -790,7 +790,7 @@ public class TUI implements UIObserver {
         }
     }
 
-    private String readLine() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+    private String readLine() throws Exception {
         while(true){
             String input = in.nextLine().trim();
             if(handleCommand(input)){
@@ -806,11 +806,13 @@ public class TUI implements UIObserver {
                 return Integer.parseInt(readLine());
             } catch (NumberFormatException e) {
                 System.out.println(RED + "Please enter a valid number!");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    private char readChar() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+    private char readChar() throws Exception {
         while(true){
             String input = readLine().trim().toUpperCase();
             if(input.length() == 1){
