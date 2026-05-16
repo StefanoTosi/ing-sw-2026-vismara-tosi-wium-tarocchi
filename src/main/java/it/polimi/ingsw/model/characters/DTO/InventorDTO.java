@@ -9,12 +9,12 @@ import it.polimi.ingsw.model.characters.Inventor;
 import java.io.Serializable;
 
 public class InventorDTO extends CardDTO implements Serializable {
-    private final String icon;
+    private final Icon inventionIcon;
 
     @JsonCreator
-    public InventorDTO(@JsonProperty("era") String era, @JsonProperty("icon") String icon, @JsonProperty("id") int id) {
+    public InventorDTO(@JsonProperty("era") String era, @JsonProperty("inventionIcon") Icon icon, @JsonProperty("id") int id) {
         super(era, "Character", "Inventor", id);
-        this.icon = icon;
+        this.inventionIcon = icon;
     }
 
     /**
@@ -39,13 +39,12 @@ public class InventorDTO extends CardDTO implements Serializable {
         return lines;
     }
 
-
     @Override
-    public String getInventionIcon() {
-        return icon;
+    public Icon getInventionIcon() {
+        return inventionIcon;
     }
 
     public Inventor fromDTO() {
-        return new Inventor(Icon.valueOf(this.icon), Era.valueOf(this.getEra()));
+        return new Inventor(getInventionIcon(), Era.valueOf(this.getEra()));
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.states;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public enum StateDTO {
@@ -20,7 +21,7 @@ public enum StateDTO {
     },
     DRAWCARD {
         @Override
-        public GameState getNewState(Game game) throws IllegalActionException, RemoteException {
+        public GameState getNewState(Game game) throws IllegalActionException, IOException {
             return new DrawCardState(game);
         }
     },
@@ -33,7 +34,7 @@ public enum StateDTO {
     },
     ENDTURN {
         @Override
-        public GameState getNewState(Game game) throws IllegalActionException, RemoteException {
+        public GameState getNewState(Game game) throws IllegalActionException, IOException {
             return new EndTurnState(game);
         }
     },
@@ -56,7 +57,7 @@ public enum StateDTO {
         }
     };
 
-    public GameState getNewState(Game game) throws IllegalActionException, RemoteException {
+    public GameState getNewState(Game game) throws IllegalActionException, IOException {
         return null;
     }
 }

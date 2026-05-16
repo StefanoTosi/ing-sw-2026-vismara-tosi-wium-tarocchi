@@ -2,6 +2,8 @@ package it.polimi.ingsw.networking;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.SaveGames;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.DBConnection;
 import it.polimi.ingsw.networking.DB.UserDAO;
 import it.polimi.ingsw.networking.RMI.ServerRMI;
@@ -18,7 +20,7 @@ public class ServerMain {
     private static int portRMI;
     private static int portTCP;
 
-    static void main(String[] args) throws IOException, AlreadyBoundException{
+    static void main(String[] args) throws IOException, AlreadyBoundException, IllegalActionException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
 
@@ -40,6 +42,8 @@ public class ServerMain {
 
         //RMI connection
         ServerRMI server = new ServerRMI(gameController, users, lock);
+
+        SaveGames.loadSaves(gameController, users);
 
         //Bind remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(portRMI);

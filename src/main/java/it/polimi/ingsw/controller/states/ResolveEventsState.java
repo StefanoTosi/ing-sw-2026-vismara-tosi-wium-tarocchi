@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.states;
 
+import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.events.Event;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -20,7 +22,7 @@ public class ResolveEventsState extends GameState {
         return StateDTO.RESOLVEEVENT;
     }
 
-    public void resolveEvents() throws IllegalActionException, RemoteException {
+    public void resolveEvents() throws IllegalActionException, IOException {
         Map<String, List<EventResult>> eventResults = new LinkedHashMap<>();
         game.setEventResults(null);
         List<Card> bottomRow = game.getBoard().getBottomRowTribe();
@@ -48,5 +50,6 @@ public class ResolveEventsState extends GameState {
         // Transition to EndTurnState
         System.out.println("Finished resolving events");
         EndTurnState e = new EndTurnState(game);
+        SaveGames.saveGame(game.toDTO());
     }
 }
