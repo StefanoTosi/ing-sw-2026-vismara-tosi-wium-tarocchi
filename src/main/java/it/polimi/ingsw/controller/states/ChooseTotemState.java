@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseTotemState extends GameState {
@@ -12,7 +14,7 @@ public class ChooseTotemState extends GameState {
 
     public ChooseTotemState(Game game) {
         this.game = game;
-        chooseOrder = game.getPlayers().stream().toList();
+        chooseOrder = new ArrayList<>(game.getPlayers());
 
         game.setPlayerTurn(chooseOrder.removeFirst());
     }
@@ -20,7 +22,7 @@ public class ChooseTotemState extends GameState {
     @Override
     public void chooseTotem(Player player, Totem totem) throws IllegalActionException {
         if (player.equals(game.getPlayerTurn())) {
-            if (game.getPlayers().stream().noneMatch(p -> p.getTotem().equals(totem))) {
+            if (game.getPlayers().stream().filter(p -> p.getTotem() != null).noneMatch(p -> p.getTotem().equals(totem))) {
                 player.setTotem(totem);
 
                 if (!chooseOrder.isEmpty()) {

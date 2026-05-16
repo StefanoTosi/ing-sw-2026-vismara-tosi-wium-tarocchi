@@ -133,7 +133,7 @@ public class GUIBuilder {
         pp.setStrokeWidth(3);             // Border thickness
         pp.setStrokeType(StrokeType.OUTSIDE);
         pp.setStyle("-fx-font-size: 40;");
-        // pp.setId(p.getName() + "Pp");
+        pp.setId(p.getName() + "Pp");
         ImageView ppi = new ImageView();
         ppi.setImage(new Image(GUIBuilder.class.getResource("/pp.png").toExternalForm()));
         ppi.setFitWidth(100);
