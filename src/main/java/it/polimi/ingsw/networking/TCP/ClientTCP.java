@@ -47,7 +47,7 @@ public class ClientTCP implements Client {
             try{
                 while(true) {
                     String json = in.readLine();
-                    Message response = mapper.readValue(json, Message.class);
+                    Message response = JsonUtil.fromJson(json, Message.class);
                     switch (response.getRequest()){
                         case RequestType.UPDATE:
                             update(mapper.treeToValue(response.getPayload(), GameDTO.class));

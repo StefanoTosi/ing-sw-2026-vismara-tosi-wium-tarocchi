@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ChooseOfferAction.class, name = "ChooseOffer"),
+        @JsonSubTypes.Type(value = ChooseTotemAction.class, name = "ChooseTotem"),
         @JsonSubTypes.Type(value = DrawCardFromBottomAction.class, name = "DrawCardFromBottom"),
         @JsonSubTypes.Type(value = DrawCardFromTopAction.class, name = "DrawCardFromTop")
 })
