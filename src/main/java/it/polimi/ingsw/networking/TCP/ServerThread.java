@@ -194,9 +194,12 @@ public class ServerThread implements Runnable, ObserverTCP {
             user = users.get(name);
         }
         boolean result = true;
-        result = gameController.joinGameTCP(new Player(name), this);
-        user.setInGame(true);
-
+        if(!user.getInGame()){
+            result = gameController.joinGameTCP(new Player(name), this);
+            user.setInGame(true);
+        }else{
+            gameController.reconnectGameTCP(name, this);
+        }
         ObjectNode payload = mapper.createObjectNode();
         payload.put("result", result);
 
@@ -214,7 +217,16 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     private void executeAction(Action action, String nickname) throws IllegalActionException, IOException, InterruptedException {
-        gameController.executeAction(action, nickname);
+
+        ObjectNode payload = mapper.createObjectNode();
+        payload.put("error", "");
+        try{
+            gameController.executeAction(action, nickname);
+        }catch(Exception e){
+            payload.put("error", e.getMessage());
+        }
+        Message response = new Message(RequestType.EXECUTEACTION, payload);
+        sendResponse(response);
     }
 
     private synchronized void sendResponse(Message response) throws IOException {
