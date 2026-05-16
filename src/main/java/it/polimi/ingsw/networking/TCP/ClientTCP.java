@@ -13,19 +13,14 @@ import it.polimi.ingsw.networking.UIObserver;
 
 import java.io.*;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ClientTCP implements Client {
     private String nickname;
     private UIObserver observer;
-    private String serverAdress;
+    private String serverAddress;
     private int serverPort;
     private Socket mySocket;
 
@@ -37,7 +32,7 @@ public class ClientTCP implements Client {
 
     public ClientTCP(UIObserver observer, int port, String address) {
         this.observer = observer;
-        this.serverAdress = address;
+        this.serverAddress = address;
         this.serverPort = port;
         connect();
         startListener();
@@ -73,13 +68,13 @@ public class ClientTCP implements Client {
 
     public void connect(){
         try {
-            mySocket=new Socket(serverAdress, serverPort);
+            mySocket=new Socket(serverAddress, serverPort);
 
             //link to socket the object for reading/writing
             out = new PrintWriter(mySocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
         } catch (IOException ex) {
-            System.err.println("Host sconosciuto.");
+            System.err.println("Unknown host");
         }
     }
 
@@ -100,7 +95,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public boolean addUser(String password, String username) throws IOException, ClassNotFoundException {
+    public boolean addUser(String password, String username) {
         boolean result = false;
         try{
             ObjectNode payload = mapper.createObjectNode();
@@ -123,7 +118,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException {
+    public boolean joinGame() {
         boolean result = false;
         try{
             ObjectNode payload = mapper.createObjectNode();
@@ -132,7 +127,7 @@ public class ClientTCP implements Client {
             sendRequest(request);
             Message response = responses.take();
             if(response.getRequest().equals(RequestType.JOINGAME)){
-                result = (boolean)response.getPayload().get("result").asBoolean();
+                result = response.getPayload().get("result").asBoolean();
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -141,7 +136,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void createGame(int num) throws IllegalActionException, IOException {
+    public void createGame(int num) {
         try{
             ObjectNode payload = mapper.createObjectNode();
             payload.put("num", num);
@@ -154,9 +149,9 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void executeAction(Action action) throws IllegalActionException, IOException {
+    public void executeAction(Action action) {
         try{
-            JsonNode payload = mapper.valueToTree((Action)action);
+            JsonNode payload = mapper.valueToTree(action);
             ObjectNode root = mapper.createObjectNode();
             root.set("action", payload);
             root.put("nickname", getNickname());
@@ -179,7 +174,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void leaveMatch() throws InterruptedException {
+    public void leaveMatch() {
         try{
             ObjectNode payload = mapper.createObjectNode();
             payload.put("nickname", getNickname());
@@ -221,7 +216,7 @@ public class ClientTCP implements Client {
     }
 
     @Override
-    public void stopGame(String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+    public void stopGame(String name) {
         try{
             ObjectNode payload = mapper.createObjectNode();
             Message request = new Message(RequestType.CLOSEGAME, payload);
@@ -250,7 +245,6 @@ public class ClientTCP implements Client {
     public List<LeaderboardDTO> getLeaderboard() {
         List<LeaderboardDTO> result = new ArrayList<>();
         try{
-            ObjectNode payload = mapper.createObjectNode();
             Message request = new Message(RequestType.PRINTLEADERBOARD, null);
             sendRequest(request);
             Message response = responses.take();

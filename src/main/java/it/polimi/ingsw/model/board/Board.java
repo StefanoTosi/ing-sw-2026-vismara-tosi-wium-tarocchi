@@ -18,7 +18,6 @@ import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.events.*;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 /**
  * Game board, holds information about all elements present on the board
@@ -216,22 +215,22 @@ public class Board {
                         if (node.get("effect").get("character") != null) {
                             switch (node.get("effect").get("character").asText()) {
                                 case "Artist":
-                                    getNumCharacter = (p) -> p.getNumArtists();
+                                    getNumCharacter = Player::getNumArtists;
                                     break;
                                 case "Builder":
-                                    getNumCharacter = (p) -> p.getNumBuilders();
+                                    getNumCharacter = Player::getNumBuilders;
                                     break;
                                 case "Gatherer":
-                                    getNumCharacter = (p) -> p.getNumGatherers();
+                                    getNumCharacter = Player::getNumGatherers;
                                     break;
                                 case "Hunter":
-                                    getNumCharacter = (p) -> p.getNumHunters();
+                                    getNumCharacter = Player::getNumHunters;
                                     break;
                                 case "Inventor":
-                                    getNumCharacter = (p) -> p.getNumInventors();
+                                    getNumCharacter = Player::getNumInventors;
                                     break;
                                 case "Shaman":
-                                    getNumCharacter = (p) -> p.getNumShamans();
+                                    getNumCharacter = Player::getNumShamans;
                                     break;
                                 default:
                                     throw new DataFormatException("Unrecognized character '" + node.get("type").asText() + "' while parsing cards.json");
@@ -413,7 +412,7 @@ public class Board {
     /**
      * Picks the card in the top tribe row at position pos
      */
-    public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
+    public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException {
         if (pos < 0 || pos >= topRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         } else {
@@ -434,7 +433,7 @@ public class Board {
     /**
      * Picks the card in the bottom tribe row at position pos
      */
-    public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException, IllegalActionException {
+    public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         } else {

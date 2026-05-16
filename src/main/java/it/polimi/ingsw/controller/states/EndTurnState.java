@@ -42,11 +42,11 @@ public class EndTurnState extends GameState {
         resolveEndTurn();
     }
 
-    private void resolveEndTurn() throws IllegalActionException, RemoteException {
+    private void resolveEndTurn() throws IllegalActionException {
         this.drawOrder = new ArrayList<>(game.getPlayers()
                 .stream()
                 .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
-                .filter(p -> p.getCanPickFromTop())
+                .filter(Player::getCanPickFromTop)
                 .toList());
 
         game.setTurnNumber(game.getTurnNumber() + 1);
@@ -81,7 +81,7 @@ public class EndTurnState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
         Game game = player.getGame();
 
         if (player.equals(game.getPlayerTurn())) {

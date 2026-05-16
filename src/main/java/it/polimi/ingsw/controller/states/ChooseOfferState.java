@@ -6,9 +6,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class ChooseOfferState extends GameState {
     private final Game game;
@@ -19,7 +17,7 @@ public class ChooseOfferState extends GameState {
      * the playerTurn to the first of them
      * @param game
      */
-    public ChooseOfferState(Game game) throws IllegalActionException, RemoteException {
+    public ChooseOfferState(Game game) {
         this.game = game;
         drawOrder = new ArrayList<>(game.getPlayers()
                         .stream()

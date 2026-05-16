@@ -1,10 +1,5 @@
 package it.polimi.ingsw.networking.DB;
 
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameDTO;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.networking.JsonUtil;
 import it.polimi.ingsw.networking.User;
 
 import java.sql.Connection;

@@ -1,17 +1,12 @@
 package it.polimi.ingsw.UI.GUI;
 
-import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.CardDTO;
 import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
@@ -20,9 +15,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 public class AnimatedCard extends AnimatedObject {
     private CardDTO card;

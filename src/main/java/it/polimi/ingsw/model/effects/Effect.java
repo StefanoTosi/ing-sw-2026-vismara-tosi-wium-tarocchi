@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model.effects;
 
-import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Inventor;
-import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.characters.Character;
 
 public enum Effect {

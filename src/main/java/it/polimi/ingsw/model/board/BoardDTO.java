@@ -1,12 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.CardDTO;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.characters.DTO.*;
-import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;

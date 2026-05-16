@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import it.polimi.ingsw.controller.states.GameState;
 import it.polimi.ingsw.controller.states.StateDTO;
-import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardDTO;
 import it.polimi.ingsw.model.events.EventResult;
 

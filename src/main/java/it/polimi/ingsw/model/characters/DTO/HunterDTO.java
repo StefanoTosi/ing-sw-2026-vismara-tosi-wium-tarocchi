@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.Hunter;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class HunterDTO extends CardDTO implements Serializable {
     private final boolean icon;

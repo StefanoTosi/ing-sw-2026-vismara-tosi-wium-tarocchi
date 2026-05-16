@@ -17,7 +17,7 @@ public class SetupGameState extends GameState {
         }
     }
 
-    public void startGame(Game game) throws IllegalActionException, RemoteException {
+    public void startGame(Game game) {
         // Initialize board
         game.getBoard().initialize(game.getPlayers().size());
         System.out.println("Game started");

@@ -18,7 +18,7 @@ public class ServerMain {
     private static int portRMI;
     private static int portTCP;
 
-    public static void main(String[] args) throws IOException, AlreadyBoundException{
+    static void main(String[] args) throws IOException, AlreadyBoundException{
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
 

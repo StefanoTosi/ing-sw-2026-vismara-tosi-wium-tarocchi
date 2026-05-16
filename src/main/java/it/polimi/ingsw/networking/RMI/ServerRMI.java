@@ -86,18 +86,12 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
                     if(now - lastSeen.get(name) > 10000){
                         users.get(name).setActive(false);
                         try {
-                            System.out.println("Chiusa connessione con " + name);
+                            System.out.println("Connection with " + name + " closed");
                             lastSeen.remove(name);
                             leaveMatch(name);
                             clients.remove(name);
                             stopGame(name);
-                        } catch (IllegalActionException e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        } catch (InterruptedException e) {
+                        } catch (IllegalActionException | IOException | ClassNotFoundException | InterruptedException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -140,7 +134,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     @Override
     public boolean joinGame(String name) throws IOException, IllegalActionException, InterruptedException {
         ClientCallBack client;
-        boolean result = true;
+        boolean result;
         synchronized (lock){
             User user = users.get(name);
             client = clients.get(name);

@@ -6,9 +6,7 @@ import it.polimi.ingsw.model.CardDTO;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.Icon;
 import it.polimi.ingsw.model.characters.Inventor;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class InventorDTO extends CardDTO implements Serializable {
     private final String icon;

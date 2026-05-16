@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.DTO.InventorDTO;
 
 public class Inventor extends Character {
-    private Icon inventionIcon;
+    private final Icon inventionIcon;
 
     public Inventor(Icon inventionIcon, Era era) {
         super(era);

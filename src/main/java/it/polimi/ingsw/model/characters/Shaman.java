@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.characters.DTO.ShamanDTO;
  * Represents the Shaman character
  */
 public class Shaman extends Character {
-    private int stars;
+    private final int stars;
 
     public Shaman(int stars, Era era) {
         super(era);

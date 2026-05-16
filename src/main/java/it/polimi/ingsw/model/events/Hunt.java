@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Hunt extends Event {
 
-    private int pp;
+    private final int pp;
 
     public Hunt(int pp, Era era){
         super(era);
@@ -25,8 +25,8 @@ public class Hunt extends Event {
     @Override
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();
-        int deltaPp = 0;
-        int deltaFood = 0;
+        int deltaPp;
+        int deltaFood;
         int prevFood;
         int prevPp;
 

@@ -28,7 +28,7 @@ public class GameController {
         return games;
     }
 
-    public Player getPlayer(String nickname) throws RemoteException {
+    public Player getPlayer(String nickname) {
         for(Game game : games){
             for(Player player : game.getPlayers()){
                 if(player.getName().equals(nickname)){
@@ -39,7 +39,7 @@ public class GameController {
         return null;
     }
 
-    public void addGame(Game game) throws IllegalActionException {
+    public void addGame(Game game) {
         games.add(game);
     }
 
@@ -53,7 +53,7 @@ public class GameController {
         }
     }
 
-    public boolean joinGameRMI(Player player, ClientCallBack client) throws IOException, IllegalActionException, InterruptedException {
+    public boolean joinGameRMI(Player player, ClientCallBack client) throws IOException, IllegalActionException {
         for(Game game : games){
             if(game.getPlayers().size() < game.getNumPlayers()){
                 game.addObserverRMI(client);
@@ -108,29 +108,29 @@ public class GameController {
         getPlayer(player).getGame().notifyObserver();
     }
 
-    public void leaveMatchTCP(String player, ObserverTCP client) throws RemoteException {
+    public void leaveMatchTCP(String player, ObserverTCP client) {
         if(getPlayer(player) != null){
             getPlayer(player).getGame().removeObserverTCP(client);
         }
     }
 
-    public void leaveMatchRMI(String player, ClientCallBack client) throws RemoteException {
+    public void leaveMatchRMI(String player, ClientCallBack client) {
         if(getPlayer(player) != null){
             getPlayer(player).getGame().removeObserverRMI(client);
         }
     }
 
-    public void reconnectGameTCP(String player, ObserverTCP client) throws RemoteException {
+    public void reconnectGameTCP(String player, ObserverTCP client) {
         getPlayer(player).getGame().addObserverTCP(client);
         canResume(getPlayer(player).getGame());
     }
 
-    public void reconnectGameRMI(String player, ClientCallBack client) throws RemoteException {
+    public void reconnectGameRMI(String player, ClientCallBack client) {
         getPlayer(player).getGame().addObserverRMI(client);
         canResume(getPlayer(player).getGame());
     }
 
-    private void canResume(Game game) throws RemoteException {
+    private void canResume(Game game) {
         game.canResume();
     }
 }

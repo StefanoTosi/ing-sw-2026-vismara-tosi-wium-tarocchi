@@ -8,22 +8,22 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PlayerDTO implements Serializable {
-    private String name;
+    private final String name;
 
-    private List<ArtistDTO> artists;
-    private List<GathererDTO> gatherers;
-    private List<HunterDTO> hunters;
-    private List<InventorDTO> inventors;
-    private List<ShamanDTO> shamans;
-    private List<BuilderDTO> builders;
-    private List<BuildingDTO> buildings;
+    private final List<ArtistDTO> artists;
+    private final List<GathererDTO> gatherers;
+    private final List<HunterDTO> hunters;
+    private final List<InventorDTO> inventors;
+    private final List<ShamanDTO> shamans;
+    private final List<BuilderDTO> builders;
+    private final List<BuildingDTO> buildings;
 
-    private int pp;
-    private int food;
-    private int order;
-    private char offer;
-    private boolean canPickFromTop;
-    private Totem totem;
+    private final int pp;
+    private final int food;
+    private final int order;
+    private final char offer;
+    private final boolean canPickFromTop;
+    private final Totem totem;
 
     @JsonCreator
     public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders,

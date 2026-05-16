@@ -6,15 +6,12 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
-import javafx.css.converter.LadderConverter;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
-import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.spec.ECField;
 import java.util.List;
 
 
@@ -41,11 +38,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
                 } catch (Exception e) {
                     try {
                         observer.serverCrashed();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (IllegalActionException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (InterruptedException ex) {
+                    } catch (IOException | IllegalActionException | InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
                 }

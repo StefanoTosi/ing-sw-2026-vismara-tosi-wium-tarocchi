@@ -3,7 +3,6 @@ package it.polimi.ingsw.UI.GUI;
 import it.polimi.ingsw.UI.UISession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
