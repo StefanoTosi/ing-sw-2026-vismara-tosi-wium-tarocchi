@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
@@ -26,8 +27,10 @@ public class PlayerDTO implements Serializable {
     private final Totem totem;
 
     @JsonCreator
-    public PlayerDTO(String name, List<ArtistDTO> artists, List<GathererDTO> gatherers, List<HunterDTO> hunters, List<InventorDTO> inventors, List<ShamanDTO> shamans, List<BuilderDTO> builders,
-                     List<BuildingDTO> buildings, int pp, int food, int order, char offer, boolean canPickFromTop, Totem totem) {
+    public PlayerDTO(@JsonProperty("name") String name, @JsonProperty("artists") List<ArtistDTO> artists, @JsonProperty("gatherers") List<GathererDTO> gatherers, @JsonProperty("hunters") List<HunterDTO> hunters,
+                     @JsonProperty("inventors") List<InventorDTO> inventors, @JsonProperty("shamans") List<ShamanDTO> shamans, @JsonProperty("builders") List<BuilderDTO> builders,
+                     @JsonProperty("buildings") List<BuildingDTO> buildings, @JsonProperty("pp") int pp, @JsonProperty("food") int food, @JsonProperty("order") int order, @JsonProperty("offer") char offer,
+                     @JsonProperty("canPickFromTop") boolean canPickFromTop, @JsonProperty("totem") Totem totem) {
         this.name = name;
         this.artists = List.copyOf(artists);
         this.gatherers = List.copyOf(gatherers);
