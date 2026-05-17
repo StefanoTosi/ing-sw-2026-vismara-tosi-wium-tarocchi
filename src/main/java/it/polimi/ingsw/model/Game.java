@@ -43,7 +43,7 @@ public class Game {
         this.eventResults = null;
     }
 
-    public Game (List<Player> players, int numPlayers, Board board, GameState state, List<Player> rankings,
+    public Game (List<Player> players, int numPlayers, Board board, List<Player> rankings,
                  Player playerTurn, String errorFlag, int turnNumber, Map<String, List<EventResult>> eventResults) throws IllegalArgumentException {
         this.players = players;
         this.numPlayers = numPlayers;
@@ -52,7 +52,6 @@ public class Game {
             players.get(i).setGame(this);
         }
 
-        this.state = state;
         this.playerTurn = playerTurn;
         this.errorFlag = errorFlag;
         this.turnNumber = turnNumber;

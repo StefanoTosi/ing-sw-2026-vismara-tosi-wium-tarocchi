@@ -10,8 +10,11 @@ public enum Totem implements Serializable {
         }
 
         @Override
+        public String getAscii(){return "\u001B[41m";}
+
+        @Override
         public String getColor() {
-            return "";
+            return "Orange";
         }
     },
 
@@ -22,8 +25,11 @@ public enum Totem implements Serializable {
         }
 
         @Override
+        public String getAscii(){return "\u001B[43m";}
+
+        @Override
         public String getColor() {
-            return "";
+            return "Yellow";
         }
     },
 
@@ -34,8 +40,11 @@ public enum Totem implements Serializable {
         }
 
         @Override
+        public String getAscii(){return "\u001B[44m";}
+
+        @Override
         public String getColor() {
-            return "";
+            return "Blue";
         }
     },
 
@@ -46,8 +55,11 @@ public enum Totem implements Serializable {
         }
 
         @Override
+        public String getAscii(){return "\u001B[45m";}
+
+        @Override
         public String getColor() {
-            return "";
+            return "Purple";
         }
     },
 
@@ -56,10 +68,13 @@ public enum Totem implements Serializable {
         public int getId() {
             return 4;
         }
+        
+        @Override
+        public String getAscii(){return "\u001B[47m";}
 
         @Override
         public String getColor() {
-            return "";
+            return "White";
         }
     };
 
@@ -67,6 +82,10 @@ public enum Totem implements Serializable {
         return -1;
     }
 
+    public String getAscii(){
+        return "";
+    }
+    
     public String getColor() {
         return "";
     }

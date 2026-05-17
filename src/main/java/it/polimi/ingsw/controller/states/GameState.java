@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public abstract class GameState {
@@ -18,7 +19,7 @@ public abstract class GameState {
     }
 
     // ChooseTotemState
-    public void chooseTotem(Player player, Totem totem) throws IllegalActionException {
+    public void chooseTotem(Player player, Totem totem) throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -27,33 +28,33 @@ public abstract class GameState {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void refillBoard() throws IllegalActionException {
+    public void refillBoard() throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 
     // ChooseOfferState
-    public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
+    public void chooseOffer(Player player, char order) throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 
     // DrawCardState
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 
-    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, RemoteException {
+    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 
     // ResolveEventsState
-    public void resolveEvents() throws IllegalActionException, RemoteException {
+    public void resolveEvents() throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 
     // EndTurnState
 
     // EndGameState
-    public void calculateRankings() throws IllegalActionException {
+    public void calculateRankings() throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }
 

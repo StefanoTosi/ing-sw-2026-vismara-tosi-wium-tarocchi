@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class DrawCardFromTopAction implements Action {
@@ -31,7 +32,7 @@ public class DrawCardFromTopAction implements Action {
      * @throws IllegalActionException
      */
     @Override
-    public void execute(Player player) throws IllegalActionException, RemoteException {
+    public void execute(Player player) throws IllegalActionException, IOException {
         player.getGame().getState().drawCardFromTop(player, pos);
     }
 

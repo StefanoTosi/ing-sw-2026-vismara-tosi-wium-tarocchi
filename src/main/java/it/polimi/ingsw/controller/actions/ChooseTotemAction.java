@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class ChooseTotemAction implements Action {
@@ -22,7 +23,7 @@ public class ChooseTotemAction implements Action {
     }
 
     @Override
-    public void execute(Player player) throws IllegalActionException, RemoteException {
+    public void execute(Player player) throws IllegalActionException, IOException {
         player.getGame().getState().chooseTotem(player, totem);
     }
 }

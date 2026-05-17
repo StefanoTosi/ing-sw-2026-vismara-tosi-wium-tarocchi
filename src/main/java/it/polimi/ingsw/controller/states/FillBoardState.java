@@ -1,11 +1,13 @@
 package it.polimi.ingsw.controller.states;
 
+import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +27,7 @@ public class FillBoardState extends GameState {
      * Refills the top and bottom rows until they are full again. It also moves players back to the order tile and resolves the associated effects
      * @throws IllegalActionException
      */
-    public void refillBoard() throws IllegalActionException {
+    public void refillBoard() throws IllegalActionException, IOException {
         if (game.getTurnNumber() > 10) {
             game.setPlayerTurn(null);
             game.setState(new EndGameState(game));
@@ -134,5 +136,6 @@ public class FillBoardState extends GameState {
         // Once done filling, switch to ChooseOfferState
         System.out.println("Refilled board");
         game.setState(new ChooseOfferState(game));
+        SaveGames.saveGame(game.toDTO());
     }
 }
