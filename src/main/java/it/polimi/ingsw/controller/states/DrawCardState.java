@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.states;
 
+import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class DrawCardState extends GameState {
     private int drawBottomCount;
     private List<Player> drawOrder;
 
-    public DrawCardState(Game game) throws IllegalActionException, RemoteException {
+    public DrawCardState(Game game) throws IllegalActionException, IOException {
         this.game = game;
         this.drawTopCount = 0;
         this.drawBottomCount = 0;
@@ -35,7 +37,7 @@ public class DrawCardState extends GameState {
         startDrawingTurn();
     }
 
-    public DrawCardState(Game game, int drawTopCount, int drawBottomCount, List<Player> drawOrder) throws IllegalActionException, RemoteException {
+    public DrawCardState(Game game, int drawTopCount, int drawBottomCount, List<Player> drawOrder) throws IllegalActionException, IOException {
         this.game = game;
         this.drawTopCount = drawTopCount;
         this.drawBottomCount = drawBottomCount;
@@ -54,7 +56,7 @@ public class DrawCardState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, RemoteException {
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, IOException {
         Offer offer = player.getGame().getBoard().getOfferPath()
                 .stream()
                 .filter(o -> o.getOrder() == player.getOffer())
@@ -97,7 +99,7 @@ public class DrawCardState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, RemoteException {
+    public void drawCardFromBottom(Player player, int pos) throws IllegalActionException, IOException {
         Offer offer = player.getGame().getBoard().getOfferPath()
                 .stream()
                 .filter(o -> o.getOrder() == player.getOffer())
@@ -144,7 +146,7 @@ public class DrawCardState extends GameState {
         }
     }
 
-    private void startDrawingTurn() throws IllegalActionException, RemoteException {
+    private void startDrawingTurn() throws IllegalActionException, IOException {
         game.setPlayerTurn(drawOrder.removeFirst());
 
         // Tile A does not allow you to draw any cards
@@ -202,7 +204,7 @@ public class DrawCardState extends GameState {
                 .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
     }
 
-    private void transitionIfNeeded(Player player) throws IllegalActionException, RemoteException {
+    private void transitionIfNeeded(Player player) throws IllegalActionException, IOException {
         if (!game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount)) {
             drawTopCount = 0;
             drawBottomCount = 0;
@@ -218,6 +220,7 @@ public class DrawCardState extends GameState {
                 game.setPlayerTurn(null);
 
                 ResolveEventsState r = new ResolveEventsState(game);
+                SaveGames.saveGame(game.toDTO());
                 r.resolveEvents();
             }
         }

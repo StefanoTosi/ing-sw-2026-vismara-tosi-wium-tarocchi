@@ -27,6 +27,6 @@ public class Inventor extends Character {
     }
 
     public InventorDTO toDTO(){
-        return new InventorDTO(getEra().name(), getInventionIcon().name(), getId());
+        return new InventorDTO(getEra().name(), getInventionIcon(), getId());
     }
 }

@@ -18,29 +18,29 @@ public class AnimatedTotem extends AnimatedObject {
     final int totemH = 427 / 6;
 
     final List<List<Double>> order2Off = new ArrayList<List<Double>>(Arrays.asList(
-            new ArrayList<Double>(Arrays.asList(125.0, 221.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 338.0))
+            new ArrayList<Double>(Arrays.asList(135.0, 221.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 338.0))
     ));
 
     final List<List<Double>> order3Off = new ArrayList<List<Double>>(Arrays.asList(
-            new ArrayList<Double>(Arrays.asList(125.0, 192.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 310.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 426.0))
+            new ArrayList<Double>(Arrays.asList(135.0, 192.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 310.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 426.0))
     ));
 
     final List<List<Double>> order4Off = new ArrayList<List<Double>>(Arrays.asList(
-            new ArrayList<Double>(Arrays.asList(125.0, 165.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 282.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 398.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 511.0))
+            new ArrayList<Double>(Arrays.asList(135.0, 165.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 282.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 398.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 511.0))
     ));
 
     final List<List<Double>> order5Off = new ArrayList<List<Double>>(Arrays.asList(
-            new ArrayList<Double>(Arrays.asList(125.0, 119.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 236.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 352.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 466.0)),
-            new ArrayList<Double>(Arrays.asList(125.0, 581.0))
+            new ArrayList<Double>(Arrays.asList(135.0, 119.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 236.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 352.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 466.0)),
+            new ArrayList<Double>(Arrays.asList(135.0, 581.0))
     ));
 
     final List<Double> offerOff = new ArrayList<Double>(Arrays.asList(125.0, 205.0));

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.controller.states;
 
+import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class ChooseOfferState extends GameState {
         return StateDTO.CHOOSEOFFER;
     }
 
-    public void chooseOffer(Player player, char order) throws IllegalActionException, RemoteException {
+    public void chooseOffer(Player player, char order) throws IllegalActionException, IOException {
         if (player.equals(game.getPlayerTurn())) {
             if (order >= 'A' && order <= 'G') {
                 player.setOffer(order);
@@ -43,6 +45,7 @@ public class ChooseOfferState extends GameState {
                     System.out.println("Finished choosing offer tiles");
                     game.setPlayerTurn(null);
                     game.setState(new DrawCardState(game));
+                    SaveGames.saveGame(game.toDTO());
                 }
             } else {
                 throw new IllegalActionException("'order' was out of bounds");

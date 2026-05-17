@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.states;
 
+import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.characters.Character;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class EndTurnState extends GameState {
     private final Game game;
     private List<Player> drawOrder;
 
-    public EndTurnState(Game game) throws IllegalActionException, RemoteException {
+    public EndTurnState(Game game) throws IllegalActionException, IOException {
         this.game = game;
 
         // Resolve end turn effects
@@ -28,7 +30,7 @@ public class EndTurnState extends GameState {
         resolveEndTurn();
     }
 
-    public EndTurnState(Game game, List<Player> drawOrder) throws IllegalActionException, RemoteException {
+    public EndTurnState(Game game, List<Player> drawOrder) throws IllegalActionException, IOException {
         this.game = game;
         this.drawOrder = drawOrder;
 
@@ -42,7 +44,7 @@ public class EndTurnState extends GameState {
         resolveEndTurn();
     }
 
-    private void resolveEndTurn() throws IllegalActionException {
+    private void resolveEndTurn() throws IllegalActionException, IOException {
         this.drawOrder = new ArrayList<>(game.getPlayers()
                 .stream()
                 .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
@@ -81,7 +83,7 @@ public class EndTurnState extends GameState {
      * @param pos
      * @throws IllegalActionException
      */
-    public void drawCardFromTop(Player player, int pos) throws IllegalActionException {
+    public void drawCardFromTop(Player player, int pos) throws IllegalActionException, IOException {
         Game game = player.getGame();
 
         if (player.equals(game.getPlayerTurn())) {
@@ -110,6 +112,7 @@ public class EndTurnState extends GameState {
                 game.newTurn();
 
                 FillBoardState f = new FillBoardState(game);
+                SaveGames.saveGame(game.toDTO());
                 f.refillBoard();
             }
         } else {
@@ -130,7 +133,7 @@ public class EndTurnState extends GameState {
                 building.getEffect().applyEffectDraw(player, tmp_numSets, (Character) character);
             }
         } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to draw an event card");
+            throw new IllegalActionException("Player tried to draw an event card");
         }
     }
 }

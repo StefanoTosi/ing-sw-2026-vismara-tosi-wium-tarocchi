@@ -14,7 +14,7 @@ public interface Client {
     boolean addUser(String password, String username) throws IOException, ClassNotFoundException;
     boolean joinGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException;
     void createGame(int num) throws IllegalActionException, IOException;
-    void executeAction(Action action) throws IllegalActionException, IOException, InterruptedException;
+    void executeAction(Action action) throws Exception;
     String getNickname();
     void leaveMatch() throws IOException, InterruptedException, IllegalActionException, ClassNotFoundException;
     void leaveGame() throws RemoteException;

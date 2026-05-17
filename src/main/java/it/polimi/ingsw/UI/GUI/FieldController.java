@@ -90,6 +90,7 @@ public class FieldController implements UIObserver {
         subScene.heightProperty().bind(anchor.heightProperty());
         cardsContainer = new Group();
         camera = new PerspectiveCamera(true); // 'true' enables fixed eye position
+        camera.setDepthTest(DepthTest.ENABLE);
 
         subScene.setRoot(cardsContainer);
         subScene.setCamera(camera);
@@ -259,7 +260,7 @@ public class FieldController implements UIObserver {
         camera.setTranslateY(subScene.getHeight() / 2.0);
 
         // Set Clipping Planes
-        camera.setNearClip(0.01);
+        camera.setNearClip(distance - 100);
         camera.setFarClip(distance * 2);
     }
 
@@ -569,7 +570,8 @@ public class FieldController implements UIObserver {
                     // When on the order tile
                     totem.setReference(order.getReference());
                     totem.setOffsetOrder(p.getOrder(), game.getNumPlayers());
-                    ((MeshView) totem.getMesh().getChildren().getFirst()).setTranslateZ(-10 * (1 + p.getOrder()));
+                    System.out.println(p.getName() +  " " + (-10 * (1 + p.getOrder())));
+                    ((MeshView) totem.getMesh().getChildren().getFirst()).setTranslateZ(-(1 + p.getOrder()));
                     totem.animatePosition(Duration.seconds(0.6));
                 }
             }
