@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.board.Offer;
+import it.polimi.ingsw.model.board.Order;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -184,6 +185,16 @@ public class DrawCardState extends GameState {
 
         game.getPlayerTurn().setOrder(availableOrder);
         game.getPlayerTurn().setOffer('\0');
+
+        // Apply food bonus
+        Order o = game.getBoard().getOrder();
+        if (o.getFoodBonus(availableOrder) + game.getPlayerTurn().getFood() >= 0) {
+            game.getPlayerTurn().addFood(o.getFoodBonus(availableOrder));
+        } else {
+            game.getPlayerTurn().setFood(0);
+            game.getPlayerTurn().addPp(-2);
+        }
+        game.getPlayerTurn().addPp(o.getPpBonus(availableOrder));
 
         // Execute the ET1 effect
         game.getPlayerTurn().getBuildings()
