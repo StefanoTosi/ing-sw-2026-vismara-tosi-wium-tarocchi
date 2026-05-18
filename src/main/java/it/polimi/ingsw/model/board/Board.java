@@ -485,15 +485,15 @@ public class Board {
 
         // Subtract event cards
         //TODO: si può sostituire l'instance of?
-        for(Card card : this.topRowTribe) {
+        for (Card card : this.topRowTribe) {
             if (card instanceof Event) {
                 topRowSize--;
             }
         }
 
         //Subtract unaffordable buildings
-        for(Building building : this.topRowBuilding) {
-            if(building.discountedCost(player) > player.getFood()) {
+        for (Building building : this.topRowBuilding) {
+            if (building.discountedCost(player) > player.getFood()) {
                 topRowSize--;
             }
         }
@@ -544,10 +544,10 @@ public class Board {
         drawTop -= drawnTop;
         drawBottom -= drawnBottom;
 
-        if(drawTop > 0 && drawableCardsFromTop(player) > 0) {
+        if (drawTop > 0 && drawableCardsFromTop(player) > 0) {
             return true;
         }
-        if(drawBottom > 0 && drawableCardsFromBottom(player) > 0) {
+        if (drawBottom > 0 && drawableCardsFromBottom(player) > 0) {
             return true;
         }
 

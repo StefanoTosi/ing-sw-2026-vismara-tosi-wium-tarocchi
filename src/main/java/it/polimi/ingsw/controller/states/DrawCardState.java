@@ -152,18 +152,22 @@ public class DrawCardState extends GameState {
         // Tile A does not allow you to draw any cards
         //TODO: può essere eliminato se compreso nel controllo successivo?
         if (game.getPlayerTurn().getOffer() == 'A') {
+            game.getPlayerTurn().addFood(game.getBoard().getOfferPath().get(0).getFoodBonus());
+            moveBackToOrderTile();
             game.setPlayerTurn(drawOrder.removeFirst());
         }
 
         // Verify if at least one player can draw cards
         boolean found = false;
-        while(!found && !drawOrder.isEmpty()) {
-            if(game.getBoard().playerCanDraw(drawOrder.getFirst(), drawTopCount, drawBottomCount)) {
+        while (!found && !drawOrder.isEmpty()) {
+            if (game.getBoard().playerCanDraw(drawOrder.getFirst(), drawTopCount, drawBottomCount)) {
                 found = true;
             } else {
                 System.out.println("No cards available to draw");
                 game.setPlayerTurn(drawOrder.removeFirst());
                 moveBackToOrderTile();
+                drawTopCount = 0;
+                drawBottomCount = 0;
             }
         }
 
