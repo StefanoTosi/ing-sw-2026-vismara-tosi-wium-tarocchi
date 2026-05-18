@@ -41,7 +41,7 @@ public class ServerMain {
         UserDAO.loadUser(users);
 
         //RMI connection
-        ServerRMI server = new ServerRMI(gameController, users, lock);
+        ServerRMI server = new ServerRMI(gameController, users, lock, portRMI);
 
         SaveGames.loadSaves(gameController, users);
 
