@@ -93,7 +93,7 @@ public class Game {
                 try{
                     observer.update(this.toDTO());
                 }catch(Exception e){
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         }
