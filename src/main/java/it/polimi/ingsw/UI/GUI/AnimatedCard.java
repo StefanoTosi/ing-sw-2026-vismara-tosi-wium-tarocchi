@@ -30,7 +30,7 @@ public class AnimatedCard extends AnimatedObject {
 
         // Load images
         Image front = new Image(getClass().getResource("/front/" + card.getId() + ".png").toExternalForm());
-        Image back = new Image(getClass().getResource("/back/" + card.getId() + ".png").toExternalForm());
+        Image back = new Image(getClass().getResource("/back/" + card.getType() + card.getEra().toString() + ".png").toExternalForm());
 
         // Create reference
         Rectangle reference = new Rectangle(cardW, cardH);
@@ -99,10 +99,10 @@ public class AnimatedCard extends AnimatedObject {
 
         // Define card points
         backMesh.getPoints().addAll(
-                0, 0, 0,  // Point 0 (Top Left)
-                (float) width, 0, 0,  // Point 1 (Top Right)
-                0, (float) height, 0,  // Point 2 (Bottom Left)
-                (float) width, (float) height, 0   // Point 3 (Bottom Right)
+                0, 0, 1,  // Point 0 (Top Left)
+                (float) width, 0, 1,  // Point 1 (Top Right)
+                0, (float) height, 1,  // Point 2 (Bottom Left)
+                (float) width, (float) height, 1   // Point 3 (Bottom Right)
         );
 
         // Define texture coordinates

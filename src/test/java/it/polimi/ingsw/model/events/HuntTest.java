@@ -19,17 +19,21 @@ class HuntTest {
     void applyEffect() {
         Hunt h = new Hunt(1, Era.I);
         Player p1 = new Player("Elisa");
+        p1.setFood(0);
+        p1.setPp(0);
         List<Player> players = new ArrayList<Player>();
         players.add(p1);
-        Hunter h1 = new Hunter(true, Era.I);
-        Hunter h2 = new Hunter(true, Era.I);
-        Hunter h3 = new Hunter(true, Era.I);
-        Hunter h4 = new Hunter(true, Era.I);
+        Hunter h1 = new Hunter(false, Era.I);
+        Hunter h2 = new Hunter(false, Era.I);
+        Hunter h3 = new Hunter(false, Era.I);
+        Hunter h4 = new Hunter(false, Era.I);
 
+        //No hunters in the tribe
         h.applyEffect(players);
         assertEquals(0, p1.getFood());
         assertEquals(0, p1.getPp());
 
+        //1 hunter in the tribe
         try {
             p1.addCard(h1);
         } catch (IllegalActionException e) {
@@ -39,6 +43,7 @@ class HuntTest {
         assertEquals(1, p1.getFood());
         assertEquals(1, p1.getPp());
 
+        //4 hunters in the tribe
         try {
             p1.addCard(h2);
             p1.addCard(h3);
@@ -51,6 +56,17 @@ class HuntTest {
         assertEquals(5, p1.getPp());
         //0 cacciatori
         //x cacciatori
+
+        //With building effect
+        p1.setPp(0);
+        try {
+            p1.addCard(new Building(Era.I, 2, 2, 0, null, Effect.EH));
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+        h.applyEffect(players);
+        assertEquals(13, p1.getFood());
+        assertEquals(8, p1.getPp());
     }
 
     @Test

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import com.fasterxml.jackson.annotation.*;
 import it.polimi.ingsw.model.characters.DTO.*;
+import it.polimi.ingsw.model.characters.Icon;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.events.DTO.*;
 import java.io.Serializable;
@@ -86,8 +87,8 @@ public class CardDTO implements Serializable {
         return false;
     }
 
-    public String getInventionIcon() {
-        return "";
+    public Icon getInventionIcon() {
+        return Icon.ARROW;
     }
 
     public int getStars() {

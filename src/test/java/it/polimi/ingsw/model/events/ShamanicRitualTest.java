@@ -23,6 +23,7 @@ class ShamanicRitualTest {
         //1 max e 1 min
         //2 max e 2 min
         //tutti con stesse stelle, prima tutti guad e poi tutti perdono
+        //TODO: testare effetti (dontLosePp, doublePp, anche con pareggi) e pareggio di tutti i giocatori
         ShamanicRitual sr = new ShamanicRitual(5,3, Era.I);
 
         Player p1 = new Player("Elisa");

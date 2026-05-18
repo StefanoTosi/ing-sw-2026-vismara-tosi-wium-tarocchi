@@ -13,7 +13,7 @@ import java.rmi.NotBoundException;
 import java.util.Scanner;
 
 public class UIMain {
-    static void main(String[] args) throws IOException, NotBoundException, IllegalActionException, ClassNotFoundException, InterruptedException {
+    static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
 
