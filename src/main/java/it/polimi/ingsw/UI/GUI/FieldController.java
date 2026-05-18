@@ -307,7 +307,7 @@ public class FieldController implements UIObserver {
 
         System.out.println(game.getState());
 
-        if (game.getState() == StateDTO.CHOOSEOFFER || game.getState() == StateDTO.ENDTURN) {
+        /*if (game.getState() == StateDTO.CHOOSEOFFER || game.getState() == StateDTO.ENDTURN) {
             // Find events
             List<CardDTO> events = new ArrayList<>();
             for (CardDTO c : UISession.getGame().getBoard().getBottomRowTribe()) {
@@ -320,7 +320,7 @@ public class FieldController implements UIObserver {
             // Animate them
 
             // Continue with the reconciliation
-        }
+        }*/
 
         // Reconcile the playing field with the new GameDTO
         UISession.setGame(game);
@@ -662,6 +662,7 @@ public class FieldController implements UIObserver {
                     newCards.get(i).flip(Duration.seconds(0.1 * (i + 1)));
                 }
 
+                order.resetPosition();
                 for (AnimatedTile a : offerPathAnim) {
                     a.resetPosition();
                 }

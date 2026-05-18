@@ -6,6 +6,9 @@ import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -60,6 +63,9 @@ public class AnimatedCard extends AnimatedObject {
 
 
     private Group createCardMesh(Image front, Image back, double width, double height) {
+        front = applyAlphaMask(front, mask);
+        back = applyAlphaMask(back, mask);
+
         TriangleMesh frontMesh = new TriangleMesh();
 
         // Define card points
@@ -88,7 +94,7 @@ public class AnimatedCard extends AnimatedObject {
 
         // Create the materials with no shadows
         PhongMaterial frontMat = new PhongMaterial();
-        frontMat.setDiffuseColor(Color.BLACK);
+        // frontMat.setDiffuseColor(Color.BLACK);
         frontMat.setSelfIlluminationMap(front);
         frontMeshView.setMaterial(frontMat);
         frontMeshView.setCullFace(CullFace.BACK);
@@ -123,13 +129,66 @@ public class AnimatedCard extends AnimatedObject {
 
         // Create the materials with no shadows
         PhongMaterial backMat = new PhongMaterial();
-        backMat.setDiffuseColor(Color.BLACK);
+        // backMat.setDiffuseColor(Color.BLACK);
         backMat.setSelfIlluminationMap(back);
         backMeshView.setMaterial(backMat);
         backMeshView.setCullFace(CullFace.BACK);
-        frontMat.setDiffuseMap(mask);
+        backMat.setDiffuseMap(mask);
 
         return new Group(frontMeshView, backMeshView);
+    }
+
+    public Image applyAlphaMask(Image colorImage, Image maskImage) {
+        // 1. Determine target dimensions based on the color texture
+        int width = (int) colorImage.getWidth();
+        int height = (int) colorImage.getHeight();
+
+        // 2. Initialize the WritableImage and utility readers/writers
+        WritableImage outputImage = new WritableImage(width, height);
+        PixelReader colorReader = colorImage.getPixelReader();
+        PixelReader maskReader = maskImage.getPixelReader();
+        PixelWriter writer = outputImage.getPixelWriter();
+
+        // Cache mask dimensions to prevent OutOfBounds exceptions if sizes differ
+        int maskWidth = (int) maskImage.getWidth();
+        int maskHeight = (int) maskImage.getHeight();
+
+        // 3. Loop through every pixel to blend the channels
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+
+                // Read the RGB color from the main texture
+                Color colorPixel = colorReader.getColor(x, y);
+
+                // Safe coordinate check for the mask image
+                Color maskPixel;
+                if (x < maskWidth && y < maskHeight) {
+                    maskPixel = maskReader.getColor(x, y);
+                } else {
+                    maskPixel = Color.TRANSPARENT; // Fallback if mask is smaller
+                }
+
+                // OPTION A: If your mask image relies on its own Alpha channel
+                double alpha = maskPixel.getOpacity();
+
+                // OPTION B: If your mask is a grayscale image (Black = transparent, White = opaque)
+                // Un-comment the line below if you are using a black-and-white JPEG/PNG map:
+                // double alpha = maskPixel.getBrightness();
+
+                // 4. Combine RGB from the color image with the Alpha from the mask
+                Color blendedPixel = new Color(
+                        colorPixel.getRed(),
+                        colorPixel.getGreen(),
+                        colorPixel.getBlue(),
+                        alpha
+                );
+
+                // 5. Write the final pixel to the WritableImage
+                writer.setColor(x, y, blendedPixel);
+            }
+        }
+
+        return outputImage;
     }
 
     private void zoomIn(MouseEvent e) {

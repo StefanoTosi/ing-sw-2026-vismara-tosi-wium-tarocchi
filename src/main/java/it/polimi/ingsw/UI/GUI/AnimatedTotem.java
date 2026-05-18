@@ -53,17 +53,13 @@ public class AnimatedTotem extends AnimatedObject {
 
         Image img = new Image(getClass().getResource("/totems/" + i + ".png").toExternalForm());
         setMesh(createTotemMesh(img, totemW, totemH));
-        mesh.setTranslateZ(-0.01);
 
         Rectangle r = new Rectangle();
-        // r.setLayoutY(offerPathAnim.get(0).getReference().localToScene(0, 0).getX());
-        // r.setLayoutY(offerPathAnim.get(0).getReference().localToScene(0, 0).getY());
-        r.setLayoutY(0);
-        r.setLayoutY(0);
+        r.setLayoutX(-1000);
+        r.setLayoutY(-1000);
         r.setWidth(totemW);
         r.setHeight(totemH);
         r.setFill(Color.TRANSPARENT);
-        // r.setFill(Color.RED);
         setReference(r);
 
         offsetX = 0;
