@@ -63,7 +63,7 @@ public class ShamanicRitual extends Event {
         //Look for winners and losers
         for (Player player : players){
             if(player.getNumStars() == maxStar){
-                if(winnerFound) {
+                if (winnerFound) {
                     tie = true;
                 }
                 winnerFound = true;
@@ -76,14 +76,14 @@ public class ShamanicRitual extends Event {
             int stars = player.getNumStars();
             deltaPp = 0;
 
-            if(stars == maxStar && player.getDoublePp() && !tie) {
+            if (stars == maxStar && player.getDoublePp() && !tie) {
                 deltaPp = winnerPp * 2;
             } else if (stars == maxStar) {
                 deltaPp = winnerPp;
             }
 
-            if(stars == minStar && !player.getDontLosePp()){
-                player.addPp(-loserPp);
+            if (stars == minStar && !player.getDontLosePp()){
+                player.addPp(loserPp);
             }
 
             player.addPp(deltaPp);

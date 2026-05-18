@@ -570,7 +570,6 @@ public class FieldController implements UIObserver {
                     // When on the order tile
                     totem.setReference(order.getReference());
                     totem.setOffsetOrder(p.getOrder(), game.getNumPlayers());
-                    System.out.println(p.getName() +  " " + (-10 * (1 + p.getOrder())));
                     ((MeshView) totem.getMesh().getChildren().getFirst()).setTranslateZ(-(1 + p.getOrder()));
                     totem.animatePosition(Duration.seconds(0.6));
                 }

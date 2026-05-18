@@ -69,10 +69,10 @@ public enum Effect {
     D2 {
         @Override
         public void applyEffectDraw (Player player, int numSets, Character character) {
-            if(character.getName().equals("Inventor")){
+            if (character.getName().equals("Inventor")) {
                 Inventor inventor = (Inventor) character;
-                for(Inventor i : player.getInventors()){
-                    if(i.getInventionIcon().equals(inventor.getInventionIcon()) && !i.equals(inventor)){
+                for (Inventor i : player.getInventors()){
+                    if (i.getInventionIcon().equals(inventor.getInventionIcon()) && !i.equals(inventor)) {
                         player.addFood(3);
                     }
                 }

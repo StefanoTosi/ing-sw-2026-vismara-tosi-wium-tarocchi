@@ -106,10 +106,10 @@ public class Building extends Card {
         int buildingCost = this.cost;
 
         //Calculate discount provided by builders in the tribe
-        for(Builder b : player.getBuilders()) {
+        for (Builder b : player.getBuilders()) {
             buildingCost -= b.getFoodDiscount();
         }
-        if(buildingCost <= 0) {
+        if (buildingCost <= 0) {
             buildingCost = 0;
         }
 

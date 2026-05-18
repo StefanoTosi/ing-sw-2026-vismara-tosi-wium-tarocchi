@@ -70,7 +70,7 @@ public class DrawCardState extends GameState {
                 Building building = game.getBoard().getTopRowBuilding().get(pos-index);
                 int buildingCost = building.discountedCost(player);
 
-                if(buildingCost <= player.getFood()) {
+                if (buildingCost <= player.getFood()) {
                     building = game.getBoard().drawFromTopRowBuilding(pos-index);
                     player.addCard(building);
                     player.addFood(-buildingCost);
@@ -198,9 +198,8 @@ public class DrawCardState extends GameState {
             game.getPlayerTurn().addFood(o.getFoodBonus(availableOrder));
         } else {
             game.getPlayerTurn().setFood(0);
-            game.getPlayerTurn().addPp(-2);
+            game.getPlayerTurn().addPp(o.getPpBonus(availableOrder));
         }
-        game.getPlayerTurn().addPp(o.getPpBonus(availableOrder));
 
         // Execute the ET1 effect
         game.getPlayerTurn().getBuildings()

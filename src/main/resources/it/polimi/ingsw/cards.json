@@ -760,8 +760,8 @@
       "era": "I",
       "final": false,
       "type": "ShamanicRitual",
-      "loserPp": 5,
-      "winnerPp": -3
+      "winnerPp": 5,
+      "loserPp": -3
     },
 
     {
@@ -795,8 +795,8 @@
       "era": "II",
       "final": false,
       "type": "ShamanicRitual",
-      "loserPp": 10,
-      "winnerPp": -5
+      "winnerPp": 10,
+      "loserPp": -5
     },
 
     {
@@ -840,8 +840,8 @@
       "era": "III",
       "final": true,
       "type": "ShamanicRitual",
-      "loserPp": 15,
-      "winnerPp": -7
+      "winnerPp": 15,
+      "loserPp": -7
     },
 
     {
