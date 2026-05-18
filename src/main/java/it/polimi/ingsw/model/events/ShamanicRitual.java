@@ -81,6 +81,7 @@ public class ShamanicRitual extends Event {
             } else if (stars == maxStar) {
                 deltaPp = winnerPp;
             }
+
             if(stars == minStar && !player.getDontLosePp()){
                 player.addPp(-loserPp);
             }

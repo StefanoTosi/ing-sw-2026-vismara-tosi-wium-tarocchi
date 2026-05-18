@@ -43,12 +43,12 @@ public class CavePaintings extends Event {
             }
             deltaFood = player.getFood() - prevFood;
 
-            if(player.getNumArtists() < minArtist){
+            if (player.getNumArtists() < minArtist) {
                 player.addPp(-topPp);
                 deltaPp = -topPp;
             }else {
-                player.addPp(bottomPp);
-                deltaPp = bottomPp;
+                deltaPp = bottomPp * player.getNumArtists();
+                player.addPp(deltaPp);
             }
 
             results.add(new EventResult("CavePaintings", player.toDTO(), deltaPp, deltaFood));
