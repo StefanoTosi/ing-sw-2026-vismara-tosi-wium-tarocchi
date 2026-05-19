@@ -416,7 +416,7 @@ public class Board {
         if (pos < 0 || pos >= topRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         } else {
-            return topRowTribe.remove(pos);
+            return topRowTribe.get(pos);
         }
     }
 
@@ -427,7 +427,7 @@ public class Board {
         if (pos < 0 || pos >= topRowBuilding.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         }
-        return topRowBuilding.remove(pos);
+        return topRowBuilding.get(pos);
     }
 
     /**
@@ -437,7 +437,7 @@ public class Board {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         } else {
-            return bottomRowTribe.remove(pos);
+            return bottomRowTribe.get(pos);
         }
     }
 
@@ -448,7 +448,7 @@ public class Board {
         if (pos < 0 || pos >= bottomRowBuilding.size()) {
             throw new IllegalArgumentException("'pos' is not a valid index");
         }
-        return bottomRowBuilding.remove(pos);
+        return bottomRowBuilding.get(pos);
     }
 
     public Deck getDeckTribe() {

@@ -99,13 +99,15 @@ public class GameController {
 
     public void executeAction(Action action, String player) throws IllegalArgumentException, IllegalActionException, IOException, InterruptedException {
         getPlayer(player).getGame().setErrorFlag("");
-        try{
+        try {
             action.execute(getPlayer(player));
-        }catch(IllegalActionException e){
+            getPlayer(player).getGame().notifyObserver();
+        } catch (IllegalActionException e) {
             getPlayer(player).getGame().setErrorFlag(e.getReason());
+            getPlayer(player).getGame().notifyObserver();
+            System.out.println("throwing");
             throw e;
         }
-        getPlayer(player).getGame().notifyObserver();
     }
 
     public void leaveMatchTCP(String player, ObserverTCP client) {
