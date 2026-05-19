@@ -38,19 +38,7 @@
                        <Insets bottom="20.0" />
                    </VBox.margin>
                </VBox>
-               <HBox fx:id="hands" prefHeight="300.0" prefWidth="200.0">
-                   <children>
-                       <!--TabPane fx:id="playerTabs" prefHeight="272.0" prefWidth="300.0" style="-fx-background-color: #171717; -fx-background-radius: 5; -fx-tab-header-background: transparent;" tabClosingPolicy="UNAVAILABLE" tabMinWidth="50.0">
-                           <tabs>
-                           </tabs>
-                           <padding>
-                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <opaqueInsets>
-                               <Insets />
-                           </opaqueInsets>
-                       </TabPane-->
-                   </children>
+               <HBox fx:id="hand" prefHeight="300.0" prefWidth="200.0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" spacing="5" alignment="CENTER">
                </HBox>
                <padding>
                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -64,7 +52,7 @@
            </root>
        </SubScene>
 
-       <TilePane fx:id="players" alignment="CENTER" mouseTransparent="true" orientation="VERTICAL" prefColumns="1" tileAlignment="CENTER" vgap="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <TilePane fx:id="players" alignment="CENTER" pickOnBounds="true" orientation="VERTICAL" prefColumns="1" tileAlignment="CENTER" vgap="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 
            <padding>
                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

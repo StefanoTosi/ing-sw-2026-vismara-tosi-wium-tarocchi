@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.UIObserver;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -52,7 +53,7 @@ public class FieldController implements UIObserver {
 
     @FXML TabPane playerTabs;
     @FXML TilePane players;
-    @FXML HBox hands;
+    @FXML HBox hand;
     @FXML VBox errorToast;
     @FXML VBox ranking;
 
@@ -70,6 +71,7 @@ public class FieldController implements UIObserver {
 
     private int drawTopCount = 0;
     private int drawBottomCount = 0;
+    private String selectedPlayer;
 
     @FXML
     void initialize() {
@@ -81,6 +83,8 @@ public class FieldController implements UIObserver {
         meshRegistry = new HashMap<>();
         refRegistry = new HashMap<>();
         idRegistry = new HashMap<>();
+
+        selectedPlayer = UISession.getClient().getNickname();
 
         GameDTO game = UISession.getGame();
         BoardDTO board = UISession.getGame().getBoard();
@@ -159,43 +163,10 @@ public class FieldController implements UIObserver {
         // Add all cards
         reconcile(game);
 
-        // Create player tabs
+        // Create player cards
         for (PlayerDTO p : game.getPlayers()) {
-            players.getChildren().addAll(GUIBuilder.createPlayerCard(p));
-
-            HBox cards = new HBox();
-            cards.setId(p.getName() + "Hand");
-            cards.setSpacing(5);
-            cards.setAlignment(Pos.CENTER_LEFT);
-            cards.setFillHeight(true);
-            cards.setStyle("-fx-background-color: #00000000");
-            if (!p.getName().equals(UISession.getClient().getNickname())) {
-                cards.setVisible(false);
-            }
-            hands.getChildren().add(cards);
+            players.getChildren().addAll(GUIBuilder.createPlayerCard(p, this::playerClicked));
         }
-
-        /*playerTabs.getTabs().clear();
-        for (PlayerDTO p : game.getPlayers()) {
-            playerTabs.getTabs().add(GUIBuilder.createPlayerTab(p));
-        }
-        String myTab = UISession.getClient().getNickname() + "Tab";
-        playerTabs.getTabs().stream()
-                .filter(tab -> myTab.equals(tab.getId()))
-                .findFirst()
-                .ifPresent(tab -> playerTabs.getSelectionModel().select(tab));
-        playerTabs.getStylesheets().add("data:text/css," +
-                ".tab-pane .tab:selected {" +
-                "    -fx-border-color: #F04D3B !important;" + // Change this to your color
-                "}");*/
-
-        // Style player tabs
-        /*Platform.runLater(() -> {
-            Node headerBackground = playerTabs.lookup(".tab-header-background");
-            if (headerBackground != null) {
-                headerBackground.setStyle("-fx-background-color: transparent;");
-            }
-        });*/
 
         // Place animated cards in the cards container
         Platform.runLater(() -> {
@@ -629,23 +600,7 @@ public class FieldController implements UIObserver {
             bottomRowAnim = newBottomRowAnim;
 
             // Reconcile player hands
-            for (PlayerDTO p : game.getPlayers()) {
-                HBox handVBox = (HBox) cardsContainer.getScene().lookup("#" + p.getName() + "Hand");
-                List<CardDTO> hand = new ArrayList<>(p.getArtists());
-                hand.addAll(p.getBuildings());
-                hand.addAll(p.getBuilders());
-                hand.addAll(p.getGatherers());
-                hand.addAll(p.getHunters());
-                hand.addAll(p.getInventors());
-                hand.addAll(p.getShamans());
-
-                for (CardDTO c : hand) {
-                    // If absent, insert it
-                    if (handVBox.getChildren().stream().noneMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
-                        handVBox.getChildren().add(idRegistry.get(c.getId()).getMesh());
-                    }
-                }
-            }
+            reconcileSelectedHand();
 
             // Refresh layout
             cardsContainer.getScene().getRoot().applyCss();
@@ -667,5 +622,39 @@ public class FieldController implements UIObserver {
                 }
             });
         });
+    }
+
+    private void reconcileSelectedHand() {
+        GameDTO game = UISession.getGame();
+        for (PlayerDTO p : game.getPlayers()) {
+            if (p.getName().equals(selectedPlayer)) {
+                List<CardDTO> newHand = new ArrayList<>(p.getArtists());
+                newHand.addAll(p.getBuildings());
+                newHand.addAll(p.getBuilders());
+                newHand.addAll(p.getGatherers());
+                newHand.addAll(p.getHunters());
+                newHand.addAll(p.getInventors());
+                newHand.addAll(p.getShamans());
+
+                for (CardDTO c : newHand) {
+                    // If absent, insert it
+                    if (hand.getChildren().stream().noneMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
+                        hand.getChildren().add(idRegistry.get(c.getId()).getMesh());
+                    }
+                }
+            }
+        }
+    }
+
+    @FXML
+    void playerClicked(MouseEvent e) {
+        String player = ((Label) ((VBox) e.getSource()).getChildren().get(0)).getText();
+        selectedPlayer = player;
+
+        // Empty the hand
+        hand.getChildren().clear();
+
+        // Refill the hand
+        reconcileSelectedHand();
     }
 }

@@ -76,7 +76,7 @@ public class DrawCardState extends GameState {
                     player.addFood(-buildingCost);
                     building.getEffect().whenDrawn(player);
                 } else {
-                    throw new IllegalActionException("Player " + player.getName() + " tried to draw a building but has insufficient food");
+                    throw new IllegalActionException("Player tried to draw a building but has insufficient food");
                 }
             }
 
@@ -88,7 +88,7 @@ public class DrawCardState extends GameState {
             transitionIfNeeded(player);
 
         } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawTop() + ")");
+            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible (" + offer.getDrawTop() + ")");
         }
     }
 
@@ -119,7 +119,7 @@ public class DrawCardState extends GameState {
                     player.addFood(-buildingCost);
                     building.getEffect().whenDrawn(player);
                 } else {
-                    throw new IllegalActionException("Player " + player.getName() + " tried to draw a building but has insufficient food");
+                    throw new IllegalActionException("Player tried to draw a building but has insufficient food");
                 }
             }
 
@@ -129,7 +129,7 @@ public class DrawCardState extends GameState {
             transitionIfNeeded(player);
 
         } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to draw a card out of order or more cards than possible (" + offer.getDrawBottom() + ")");
+            throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible (" + offer.getDrawBottom() + ")");
         }
     }
 

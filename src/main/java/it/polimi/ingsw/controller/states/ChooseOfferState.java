@@ -51,7 +51,7 @@ public class ChooseOfferState extends GameState {
                 throw new IllegalActionException("'order' was out of bounds");
             }
         } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to choose offer tile out of order");
+            throw new IllegalActionException("Player tried to choose offer tile out of order");
         }
     }
 }
