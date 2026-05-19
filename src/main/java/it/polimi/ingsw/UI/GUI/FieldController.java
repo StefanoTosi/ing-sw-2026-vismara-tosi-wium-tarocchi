@@ -278,21 +278,6 @@ public class FieldController implements UIObserver {
 
         System.out.println(game.getState());
 
-        /*if (game.getState() == StateDTO.CHOOSEOFFER || game.getState() == StateDTO.ENDTURN) {
-            // Find events
-            List<CardDTO> events = new ArrayList<>();
-            for (CardDTO c : UISession.getGame().getBoard().getBottomRowTribe()) {
-                if (c.getType().equals("Event")) {
-                    events.add(c);
-                }
-            }
-
-            // Order them
-            // Animate them
-
-            // Continue with the reconciliation
-        }*/
-
         // Reconcile the playing field with the new GameDTO
         UISession.setGame(game);
         reconcileTotems(game);
@@ -388,88 +373,32 @@ public class FieldController implements UIObserver {
         GameDTO game = UISession.getGame();
         Group g = (Group) e.getSource();
 
-        // If it's my turn
-        if (game.getPlayerTurn().getName().equals(UISession.getClient().getNickname())) {
-            if (game.getState() == StateDTO.DRAWCARD) {
-                OfferDTO offer = game.getBoard().getOfferPath().stream()
-                        .filter(o -> o.getOrder() == game.getPlayerTurn().getOffer())
-                        .findFirst().get();
 
-                Platform.runLater(() -> {
-                    // Find the card
-                    AnimatedCard c = topRowAnim.stream()
-                            .filter(a -> a.getMesh() == g)
-                            .findFirst().orElse(null);
-
-                    if (c != null && drawTopCount < offer.getDrawTop()) {
-                        if (!c.getCard().getType().equals("Event")) {
-                            // Is in top row
-                            int i = topRowAnim.indexOf(c);
-                            topRowAnim.remove(c);
-                            topRow.getChildren().remove(c.getReference());
-
-                            // Send action
-                            try {
-                                UISession.getClient().executeAction(new DrawCardFromTopAction(i));
-                                drawCard(c);
-                                drawTopCount += 1;
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        } else {
-                            meshRegistry.get(g).shake();
-                        }
-                    } else if (drawBottomCount < offer.getDrawBottom()) {
-                        // Is in bottom row
-                        c = bottomRowAnim.stream()
-                                .filter(a -> a.getMesh() == g)
-                                .findFirst().orElse(null);
-                        if (!c.getCard().getType().equals("Event")) {
-                            int i = bottomRowAnim.indexOf(c);
-                            bottomRowAnim.remove(c);
-                            bottomRow.getChildren().remove(c.getReference());
-
-                            // Send action
-                            try {
-                                UISession.getClient().executeAction(new DrawCardFromBottomAction(i));
-                                drawCard(c);
-                                drawBottomCount += 1;
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        } else {
-                            meshRegistry.get(g).shake();
-                        }
-                    }
-
-                });
-            } else if (game.getState() == StateDTO.ENDTURN) {
-                Platform.runLater(() -> {
-                    // Find the card
-                    AnimatedCard c = topRowAnim.stream()
-                            .filter(a -> a.getMesh() == g)
-                            .findFirst().orElse(null);
-
-                    if (c != null && !c.getCard().getType().equals("Event")) {
-                        // Is in top row
-                        int i = topRowAnim.indexOf(c);
-                        topRowAnim.remove(c);
-                        topRow.getChildren().remove(c.getReference());
-
-                        // Send action
-                        try {
-                            UISession.getClient().executeAction(new DrawCardFromTopAction(i));
-                            drawCard(c);
-                            drawTopCount += 1;
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    } else {
-                        meshRegistry.get(g).shake();
-                    }
-                });
+        try {
+            // Find the card
+            AnimatedCard c = topRowAnim.stream()
+                    .filter(a -> a.getMesh() == g)
+                    .findFirst().orElse(null);
+            int i;
+            if (c != null) {
+                i = topRowAnim.indexOf(c);
+                // Try to draw it
+                UISession.getClient().executeAction(new DrawCardFromTopAction(i));
+                drawCard(c);
+            } else {
+                c = bottomRowAnim.stream()
+                        .filter(a -> a.getMesh() == g)
+                        .findFirst().orElse(null);
+                i = bottomRowAnim.indexOf(c);
+                // Try to draw it
+                UISession.getClient().executeAction(new DrawCardFromBottomAction(i));
+                drawCard(c);
             }
-        } else {
+        } catch (Exception ex) {
+            System.out.println(ex.getClass());
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getCause());
+            // Shake it if the draw was unsuccessful
             Platform.runLater(() -> {
                 meshRegistry.get(g).shake();
             });

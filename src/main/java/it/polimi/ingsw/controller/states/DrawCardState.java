@@ -66,6 +66,7 @@ public class DrawCardState extends GameState {
             if (pos < index) {
                 Card character = game.getBoard().drawFromTopRowTribe(pos);
                 afterDrawn(player, character);
+                game.getBoard().getTopRowTribe().remove(character);
             } else {
                 Building building = game.getBoard().getTopRowBuilding().get(pos-index);
                 int buildingCost = building.discountedCost(player);
@@ -73,6 +74,7 @@ public class DrawCardState extends GameState {
                 if (buildingCost <= player.getFood()) {
                     building = game.getBoard().drawFromTopRowBuilding(pos-index);
                     player.addCard(building);
+                    game.getBoard().getTopRowBuilding().remove(building);
                     player.addFood(-buildingCost);
                     building.getEffect().whenDrawn(player);
                 } else {
@@ -109,6 +111,7 @@ public class DrawCardState extends GameState {
             if (pos < index) {
                 Card character = game.getBoard().drawFromBottomRowTribe(pos);
                 afterDrawn(player, character);
+                game.getBoard().getBottomRowTribe().remove(character);
             } else {
                 Building building = game.getBoard().getBottomRowBuilding().get(pos-index);
                 int buildingCost = building.discountedCost(player);
@@ -116,6 +119,7 @@ public class DrawCardState extends GameState {
                 if(buildingCost <= player.getFood()) {
                     building = game.getBoard().drawFromBottomRowBuilding(pos-index);
                     player.addCard(building);
+                    game.getBoard().getBottomRowBuilding().remove(building);
                     player.addFood(-buildingCost);
                     building.getEffect().whenDrawn(player);
                 } else {
