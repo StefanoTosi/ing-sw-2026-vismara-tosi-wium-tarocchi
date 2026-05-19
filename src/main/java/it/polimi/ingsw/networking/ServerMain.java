@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerMain {
     private static int portRMI;
     private static int portTCP;
+    private static String host;
 
     static void main(String[] args) throws IOException, AlreadyBoundException, IllegalActionException {
         ObjectMapper mapper = new ObjectMapper();
@@ -27,6 +28,7 @@ public class ServerMain {
         try{
             portRMI = root.get("port_rmi").asInt();
             portTCP = root.get("port_tcp").asInt();
+            host = root.get("host").asText();
         }catch(Exception e){
             portRMI = 1099;
             portTCP = 1234;
@@ -40,10 +42,11 @@ public class ServerMain {
         DBConnection.initializeDB();
         UserDAO.loadUser(users);
 
-        //RMI connection
-        ServerRMI server = new ServerRMI(gameController, users, lock, portRMI);
-
         SaveGames.loadSaves(gameController, users);
+
+        //RMI connection
+        System.setProperty("java.rmi.server.hostname", host);
+        ServerRMI server = new ServerRMI(gameController, users, lock);
 
         //Bind remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(portRMI);
