@@ -32,7 +32,7 @@ public class AnimatedCard extends AnimatedObject {
         this.card = card;
 
         // Load images
-        System.out.println("/front/" + card.getId() + ".png");
+        // System.out.println("/front/" + card.getId() + ".png");
         Image front = new Image(getClass().getResource("/front/" + card.getId() + ".png").toExternalForm());
         Image back = new Image(getClass().getResource("/back/" + card.getType() + card.getEra().toString() + ".png").toExternalForm());
 

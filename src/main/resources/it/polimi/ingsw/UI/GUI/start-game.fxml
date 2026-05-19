@@ -45,7 +45,7 @@
                </padding>
             </VBox>
 
-            <VBox fx:id="waiting" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="10.0" styleClass="dark-panel" visible="false">
+            <VBox fx:id="waiting" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="10.0" styleClass="dark-panel" visible="false">
                <children>
                   <Label alignment="CENTER" text=" Waiting for other players... " textFill="WHITE">
                      <font>

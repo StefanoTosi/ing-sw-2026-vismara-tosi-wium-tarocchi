@@ -77,7 +77,6 @@ public class StartGameController implements UIObserver {
                 errorToast.setVisible(false);
                 Label l = new Label(username.getText());
                 l.getStyleClass().add("waiting-name");
-                waiting.getChildren().add(l);
             }
         } else {
             errorToast.setVisible(true);
@@ -97,8 +96,6 @@ public class StartGameController implements UIObserver {
                 newGame.setVisible(false);
                 waiting.setVisible(true);
                 errorToast.setVisible(false);
-
-                waiting.getChildren().add(new Label(username.getText()));
             }
         } catch (Exception e) {
             errorToast.setVisible(true);
@@ -119,7 +116,6 @@ public class StartGameController implements UIObserver {
                 errorToast.setVisible(false);
                 Label l = new Label(username.getText());
                 l.getStyleClass().add("waiting-name");
-                waiting.getChildren().add(l);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -135,15 +131,6 @@ public class StartGameController implements UIObserver {
     public void update(GameDTO game) throws IOException, IllegalActionException {
         UISession.setGame(game);
         Platform.runLater(() -> {
-            for (PlayerDTO p : game.getPlayers()) {
-                if (waiting.getChildren()
-                        .stream()
-                        .map(n -> (Label) n).noneMatch(l -> l.getText().equals(p.getName()))
-                ) {
-                    waiting.getChildren().add(new Label(p.getName()));
-                }
-            }
-
             if (game.getState() != StateDTO.SETUPGAME) {
                 FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("field.fxml"));
                 Parent fieldRoot = null;

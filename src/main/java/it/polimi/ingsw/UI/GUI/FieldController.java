@@ -161,7 +161,7 @@ public class FieldController implements UIObserver {
         });
 
         // Add all cards
-        reconcile(game);
+        reconcileCards(game);
 
         // Create player cards
         for (PlayerDTO p : game.getPlayers()) {
@@ -295,7 +295,9 @@ public class FieldController implements UIObserver {
 
         // Reconcile the playing field with the new GameDTO
         UISession.setGame(game);
-        reconcile(game);
+        reconcileTotems(game);
+        reconcileCards(game);
+        reconcileSelectedHand(game);
 
         Platform.runLater(() -> {
             // Update toasts
@@ -509,19 +511,15 @@ public class FieldController implements UIObserver {
      */
     private void drawCard(AnimatedCard c) {
         // Put card in the tab
-        HBox hand = (HBox) cardsContainer.getScene().lookup("#" + UISession.getClient().getNickname() + "Hand");
-        cardsContainer.getChildren().remove(c.getMesh());
-        hand.getChildren().add(c.getMesh());
-
-        // Animate the cards
-        cardsContainer.getScene().getRoot().applyCss();
-        cardsContainer.getScene().getRoot().layout();
+        Platform.runLater(() -> {
+            cardsContainer.getChildren().remove(c.getMesh());
+        });
     }
 
     /**
-     * Reconcile the rendered playing field with the one described by the given GameDTO
+     * Reconcile the rendered totem positions with the ones described by the given GameDTO
      */
-    private void reconcile(GameDTO game) {
+    private void reconcileTotems(GameDTO game) {
         Platform.runLater(() -> {
             // Move totems
             for (int i = 0; i < game.getPlayers().size(); i++) {
@@ -545,7 +543,14 @@ public class FieldController implements UIObserver {
                     totem.animatePosition(Duration.seconds(0.6));
                 }
             }
+        });
+    }
 
+    /**
+     * Reconcile the rendered playing field with the one described by the given GameDTO
+     */
+    private void reconcileCards(GameDTO game) {
+        Platform.runLater(() -> {
             // Reconcile cards
             List<AnimatedCard> oldCards = new ArrayList<>();
             List<AnimatedCard> newCards = new ArrayList<>();
@@ -599,9 +604,6 @@ public class FieldController implements UIObserver {
             cardsContainer.getChildren().addAll(newBottomRowAnim.stream().map(a -> a.getMesh()).toList());
             bottomRowAnim = newBottomRowAnim;
 
-            // Reconcile player hands
-            reconcileSelectedHand();
-
             // Refresh layout
             cardsContainer.getScene().getRoot().applyCss();
             cardsContainer.getScene().getRoot().layout();
@@ -624,26 +626,30 @@ public class FieldController implements UIObserver {
         });
     }
 
-    private void reconcileSelectedHand() {
-        GameDTO game = UISession.getGame();
-        for (PlayerDTO p : game.getPlayers()) {
-            if (p.getName().equals(selectedPlayer)) {
-                List<CardDTO> newHand = new ArrayList<>(p.getArtists());
-                newHand.addAll(p.getBuildings());
-                newHand.addAll(p.getBuilders());
-                newHand.addAll(p.getGatherers());
-                newHand.addAll(p.getHunters());
-                newHand.addAll(p.getInventors());
-                newHand.addAll(p.getShamans());
+    /**
+     * Reconcile the rendered hand of the selected player with the one described by the given GameDTO
+     */
+    private void reconcileSelectedHand(GameDTO game) {
+        Platform.runLater(() -> {
+            for (PlayerDTO p : game.getPlayers()) {
+                if (p.getName().equals(selectedPlayer)) {
+                    List<CardDTO> newHand = new ArrayList<>(p.getArtists());
+                    newHand.addAll(p.getBuildings());
+                    newHand.addAll(p.getBuilders());
+                    newHand.addAll(p.getGatherers());
+                    newHand.addAll(p.getHunters());
+                    newHand.addAll(p.getInventors());
+                    newHand.addAll(p.getShamans());
 
-                for (CardDTO c : newHand) {
-                    // If absent, insert it
-                    if (hand.getChildren().stream().noneMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
-                        hand.getChildren().add(idRegistry.get(c.getId()).getMesh());
+                    for (CardDTO c : newHand) {
+                        // If absent, insert it
+                        if (hand.getChildren().stream().noneMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
+                            hand.getChildren().add(idRegistry.get(c.getId()).getMesh());
+                        }
                     }
                 }
             }
-        }
+        });
     }
 
     @FXML
@@ -655,6 +661,6 @@ public class FieldController implements UIObserver {
         hand.getChildren().clear();
 
         // Refill the hand
-        reconcileSelectedHand();
+        reconcileSelectedHand(UISession.getGame());
     }
 }
