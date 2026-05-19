@@ -24,9 +24,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
 
     public ClientRMI(UIObserver observer, int port, String address) throws RemoteException, NotBoundException {
         this.observer = observer;
-        this.controller = connectToServer();
         this.port = port;
         this.serverAddress = address;
+        this.controller = connectToServer();
     }
 
     public void ping(){
