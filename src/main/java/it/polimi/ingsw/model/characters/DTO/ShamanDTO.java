@@ -25,7 +25,7 @@ public class ShamanDTO extends CardDTO implements Serializable {
         }
             lines[0].append("+----------+");
             lines[1].append(String.format("|%-10s|", "Shaman"));
-            lines[2].append(String.format("|Stars: %d |", getStars()));
+            lines[2].append(String.format("|Stars: %d  |", getStars()));
             lines[3].append("|          |");
             lines[4].append("|          |");
             lines[5].append(String.format("|%-10s|", getEra()));
