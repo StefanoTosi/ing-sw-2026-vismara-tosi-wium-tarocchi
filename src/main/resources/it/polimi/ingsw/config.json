@@ -1,5 +1,5 @@
 {
-  "host" : "10.65.155.89",
+  "host" : "localhost",
   "port_tcp" : 1234,
   "port_rmi" : 1099
 }
