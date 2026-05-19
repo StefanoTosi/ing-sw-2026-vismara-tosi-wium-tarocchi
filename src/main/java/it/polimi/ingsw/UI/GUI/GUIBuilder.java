@@ -1,6 +1,7 @@
 package it.polimi.ingsw.UI.GUI;
 
 import it.polimi.ingsw.model.PlayerDTO;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -8,10 +9,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
+
 
 public class GUIBuilder {
     public static Tab createPlayerTab(PlayerDTO p) {
@@ -107,13 +110,14 @@ public class GUIBuilder {
 
         return t;
     }
-    public static VBox createPlayerCard(PlayerDTO p) {
+    public static VBox createPlayerCard(PlayerDTO p, EventHandler<MouseEvent> playerClicked) {
         VBox v = new VBox();
         v.setPadding(new Insets(5, 5, 5, 5));
         v.setMinWidth(200);
         v.getStyleClass().add("player-card");
         v.setAlignment(Pos.CENTER);
         v.setMouseTransparent(false);
+        v.setOnMouseClicked(playerClicked);
 
         Label name = new Label(p.getName());
         name.setStyle("-fx-text-fill: #fff;" +
