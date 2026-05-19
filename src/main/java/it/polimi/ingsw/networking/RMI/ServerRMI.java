@@ -39,6 +39,9 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         synchronized (lock) {
             if (users.containsKey(nickname)) {
                 user = users.get(nickname);
+                if(user.getPassword() == null) {
+                    user.setPassword(psw);
+                }
                 if (user.getPassword().equals(psw)) {
                     //check if the user is already logged in elsewhere
                     if(user.isActive()) {

@@ -43,7 +43,7 @@ public class SaveGames {
         ObjectMapper mapper = new ObjectMapper();
         File file = new File("src/main/resources/it/polimi/ingsw/saves.json");
         //TypeReference used to not lose generics at run time
-        if(file.exists() && file.length() != 0 && !users.isEmpty()) {
+        if(file.exists() && file.length() != 0) {
             Map<String, GameDTO> saves = mapper.readValue(
                     file,
                     new TypeReference<Map<String, GameDTO>>(){}
@@ -53,8 +53,15 @@ public class SaveGames {
                 Game game = entry.getValue().fromDTO();
                 game.setState(state.getNewState(game));
                 gameController.addGame(game);
+                boolean flag = users.isEmpty();
                 for(PlayerDTO player : entry.getValue().getPlayers()){
-                    users.get(player.getName()).setInGame(true);
+                    if(!flag){
+                        users.get(player.getName()).setInGame(true);
+                    }else{
+                        User user = new User(player.getName());
+                        user.setInGame(true);
+                        users.put(player.getName(), user);
+                    }
                 }
             }
         }
