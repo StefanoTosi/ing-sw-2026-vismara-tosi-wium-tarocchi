@@ -35,10 +35,10 @@ public class ChooseTotemState extends GameState {
                     game.getState().refillBoard();
                 }
             } else {
-                throw new IllegalActionException("Player " + player.getName() + " tried to choose a totem that was already taken");
+                throw new IllegalActionException("Player tried to choose a totem that was already taken");
             }
         } else {
-            throw new IllegalActionException("Player " + player.getName() + " tried to choose a totem out of order");
+            throw new IllegalActionException("Player tried to choose a totem out of order");
         }
     }
 
