@@ -6,6 +6,13 @@ public class User {
     private boolean active;
     private boolean inGame;
 
+    public User(String nickname){
+        this.nickname = nickname;
+        this.password = null;
+        this.active = false;
+        this.inGame = false;
+    }
+
     public User(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
