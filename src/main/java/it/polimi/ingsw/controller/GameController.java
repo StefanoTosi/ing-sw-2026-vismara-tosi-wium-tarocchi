@@ -47,6 +47,7 @@ public class GameController {
         if(getPlayer(name) != null){
             Game game = getPlayer(name).getGame();
             if(game != null){
+                SaveGames.removeGame(game.toDTO());
                 game.closingGame();
                 games.remove(game);
             }

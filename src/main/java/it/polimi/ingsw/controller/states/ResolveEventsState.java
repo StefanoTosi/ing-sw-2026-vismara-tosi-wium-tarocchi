@@ -50,6 +50,8 @@ public class ResolveEventsState extends GameState {
         // Transition to EndTurnState
         System.out.println("Finished resolving events");
         EndTurnState e = new EndTurnState(game);
-        SaveGames.saveGame(game.toDTO());
+        if(game.getTurnNumber() != 11){
+            SaveGames.saveGame(game.toDTO());
+        }
     }
 }
