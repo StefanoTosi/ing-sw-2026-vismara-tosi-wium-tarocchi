@@ -4,6 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+/**
+ * Utility class responsible for managing the database connection
+ * and initializing the application database structure.
+ *
+ * This class creates the database and the required tables
+ * if they do not already exist.
+ */
+
 public class DBConnection {
     private static final String HOST = "jdbc:mysql://localhost:3306/";
     private static final String USER = "root";
@@ -11,6 +19,12 @@ public class DBConnection {
     private static final String DB_NAME = "gc13_mesos_db";
     private static final String DB_URL = HOST + DB_NAME;
 
+    /**
+     * Initializes the database structure.
+     * This method:
+     *   - Creates the database if it does not exist;
+     *    - Selects the database;
+     */
     public static void initializeDB(){
         try{
             Connection conn = DriverManager.getConnection(HOST, USER, PASSWORD);
@@ -39,6 +53,12 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Establishes and returns a connection to the application database.
+     *
+     * @return a {@link Connection} object if the connection succeeds;
+     *         {@code null} otherwise
+     */
     public static Connection getConnection(){
         try{
             System.out.println("Connected to the database");
