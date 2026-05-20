@@ -9,6 +9,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+/**
+ * AnimatedObject is a
+ */
 public class AnimatedObject {
     protected Group mesh;
     protected Rectangle reference;

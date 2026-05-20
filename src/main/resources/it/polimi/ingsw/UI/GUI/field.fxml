@@ -52,8 +52,7 @@
            </root>
        </SubScene>
 
-       <TilePane fx:id="players" alignment="CENTER" pickOnBounds="true" orientation="VERTICAL" prefColumns="1" tileAlignment="CENTER" vgap="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-
+       <TilePane fx:id="players" alignment="CENTER" pickOnBounds="false" orientation="VERTICAL" prefColumns="1" tileAlignment="CENTER" vgap="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
            <padding>
                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
            </padding>
@@ -94,5 +93,7 @@
                </Label>
            </children>
        </VBox>
+
+       <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">Round 1</Text>
    </children>
 </AnchorPane>

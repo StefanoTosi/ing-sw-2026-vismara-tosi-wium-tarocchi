@@ -38,7 +38,6 @@ public class AnimatedCard extends AnimatedObject {
 
         // Create reference
         Rectangle reference = new Rectangle(cardW, cardH);
-        // reference.setFill(Color.RED);
         reference.setFill(Color.TRANSPARENT);
         setReference(reference);
 
@@ -46,8 +45,10 @@ public class AnimatedCard extends AnimatedObject {
         mesh.setLayoutX(deckX);
         mesh.setLayoutY(deckY);
         mesh.setOnMouseClicked(clickHandler);
-        mesh.setOnMouseEntered(this::zoomIn);
-        mesh.setOnMouseExited(this::zoomOut);
+        if (clickHandler != null) {
+            mesh.setOnMouseEntered(this::zoomIn);
+            mesh.setOnMouseExited(this::zoomOut);
+        }
         mesh.setRotationAxis(Rotate.Y_AXIS);
         mesh.setRotate(180);
         mesh.setTranslateZ(-0.2);

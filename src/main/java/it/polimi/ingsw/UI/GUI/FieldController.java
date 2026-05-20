@@ -26,6 +26,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Mesh;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -56,6 +58,7 @@ public class FieldController implements UIObserver {
     @FXML HBox hand;
     @FXML VBox errorToast;
     @FXML VBox ranking;
+    @FXML Text round;
 
     private Map<Group, AnimatedCard> meshRegistry;
     private Map<Rectangle, AnimatedCard> refRegistry;
@@ -63,6 +66,7 @@ public class FieldController implements UIObserver {
 
     private List<AnimatedCard> topRowAnim;
     private Rectangle deck;
+    private AnimatedCard topDeck;
     private AnimatedObject order;
     private List<AnimatedTile> offerPathAnim;
     private List<AnimatedCard> bottomRowAnim;
@@ -245,6 +249,7 @@ public class FieldController implements UIObserver {
         }
 
         order.resetPosition();
+        topDeck.resetPosition();
         for (AnimatedTile a : offerPathAnim) {
             a.resetPosition();
         }
@@ -329,6 +334,9 @@ public class FieldController implements UIObserver {
                 ((Text) anchor.getScene().lookup("#" + p.getName() + "Pp")).setText("" + p.getPp());
                 ((Text) anchor.getScene().lookup("#" + p.getName() + "Food")).setText("" + p.getFood());
             }
+
+            // Round
+            round.setText("Round " + game.getTurnNumber());
         });
     }
 
@@ -395,9 +403,6 @@ public class FieldController implements UIObserver {
                 drawCard(c);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getClass());
-            System.out.println(ex.getMessage());
-            System.out.println(ex.getCause());
             // Shake it if the draw was unsuccessful
             Platform.runLater(() -> {
                 meshRegistry.get(g).shake();
@@ -507,6 +512,7 @@ public class FieldController implements UIObserver {
                     if (anim == null) {
                         // If not, create a new card
                         anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
+                        // anim.getMesh().setTranslateZ(-anim.getCard().getId());
                         meshRegistry.put(anim.getMesh(), anim);
                         refRegistry.put(anim.getReference(), anim);
                         idRegistry.put(anim.getCard().getId(), anim);
@@ -533,6 +539,18 @@ public class FieldController implements UIObserver {
             cardsContainer.getChildren().addAll(newBottomRowAnim.stream().map(a -> a.getMesh()).toList());
             bottomRowAnim = newBottomRowAnim;
 
+            // Move the card at the top of the deck to the deck
+            if (topDeck == null) {
+                topDeck = new AnimatedCard(game.getBoard().getDeckTribe().get(0), null, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
+                topDeck.setReference(deck);
+                topDeck.getMesh().setTranslateZ(10);
+                cardsContainer.getChildren().add(topDeck.getMesh());
+            } else {
+                CardDTO card = game.getBoard().getDeckTribe().get(0);
+                Image back = new Image(getClass().getResource("/back/" + card.getType() + card.getEra().toString() + ".png").toExternalForm());
+                ((PhongMaterial) ((MeshView) topDeck.getMesh().getChildren().get(1)).getMaterial()).setSelfIlluminationMap(back);
+            }
+
             // Refresh layout
             cardsContainer.getScene().getRoot().applyCss();
             cardsContainer.getScene().getRoot().layout();
@@ -548,6 +566,7 @@ public class FieldController implements UIObserver {
                 }
 
                 order.resetPosition();
+                topDeck.resetPosition();
                 for (AnimatedTile a : offerPathAnim) {
                     a.resetPosition();
                 }
