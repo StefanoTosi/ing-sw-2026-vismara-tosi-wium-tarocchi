@@ -39,7 +39,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         synchronized (lock) {
             if (users.containsKey(nickname)) {
                 user = users.get(nickname);
-                if(user.getPassword() == null) {
+                if(user.getPassword().equals("")) {
                     user.setPassword(psw);
                 }
                 if (user.getPassword().equals(psw)) {
