@@ -9,6 +9,7 @@ module com.example.mesos {
     requires jdk.jfr;
     requires jdk.xml.dom;
     requires java.sql;
+    requires net.bytebuddy;
 
     exports it.polimi.ingsw;
     exports it.polimi.ingsw.model;
