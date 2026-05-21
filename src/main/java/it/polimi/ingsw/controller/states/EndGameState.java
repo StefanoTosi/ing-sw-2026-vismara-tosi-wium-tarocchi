@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.UserDAO;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,8 +29,7 @@ public class EndGameState extends GameState {
      * in a list where the first element is the winning player.
      */
     public void calculateRankings() throws IllegalActionException, IOException {
-        List<Player> rankings = game.getPlayers();
-        Player firstPlayer = game.getPlayers().getFirst();
+        List<Player> rankings = new ArrayList<>(game.getPlayers());
 
         for (Player player : rankings) {
             player.addPp(player.countTribePp());
@@ -52,9 +52,7 @@ public class EndGameState extends GameState {
         );
 
         game.setRankings(rankings);
-        //Adding the player who create the game to the top
-        //it's the id for the game in the saves.json file
-        rankings.add(0, firstPlayer);
+
         SaveGames.removeGame(game.toDTO());
         System.out.println("Calculated ranking, ended game");
     }
