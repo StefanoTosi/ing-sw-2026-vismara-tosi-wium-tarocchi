@@ -53,11 +53,11 @@ public class FieldController implements UIObserver {
     @FXML VBox totemSelect;
     @FXML HBox totemList;
 
-    @FXML TabPane playerTabs;
     @FXML TilePane players;
     @FXML HBox hand;
     @FXML VBox errorToast;
     @FXML VBox ranking;
+    @FXML GridPane rankingGrid;
     @FXML Text round;
 
     private Map<Group, AnimatedCard> meshRegistry;
@@ -259,10 +259,21 @@ public class FieldController implements UIObserver {
             // Update ranking
             if (game.getState() == StateDTO.ENDGAME) {
                 ranking.setVisible(true);
+                int i = 0;
                 for (PlayerDTO p : game.getRankings()) {
-                    Label l = new Label(p.getName());
-                    l.setTextFill(Color.valueOf("#fff"));
-                    ranking.getChildren().add(l);
+                    Label name = new Label(p.getName());
+                    name.getStyleClass().add("ranking-lab");
+                    rankingGrid.getChildren().add(name);
+                    GridPane.setColumnIndex(name, 0);
+                    GridPane.setRowIndex(name, i);
+
+                    Label pp = new Label("" + p.getPp());
+                    pp.getStyleClass().add("ranking-lab");
+                    rankingGrid.getChildren().add(pp);
+                    GridPane.setColumnIndex(pp, 1);
+                    GridPane.setRowIndex(pp, i);
+
+                    i += 1;
                 }
             }
         });
@@ -497,6 +508,10 @@ public class FieldController implements UIObserver {
      * Reconcile the rendered totem positions with the ones described by the given GameDTO
      */
     private void reconcileTotems(GameDTO game) {
+        if (game.getState() == StateDTO.CHOOSETOTEM) {
+            return;
+        }
+
         Platform.runLater(() -> {
             // Move totems
             for (int i = 0; i < game.getPlayers().size(); i++) {
