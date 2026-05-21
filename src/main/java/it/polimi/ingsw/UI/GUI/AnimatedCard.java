@@ -19,6 +19,9 @@ import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+/**
+ * AnimateObject for cards. Creates a MeshView with a front and back texture
+ */
 public class AnimatedCard extends AnimatedObject {
     private CardDTO card;
 

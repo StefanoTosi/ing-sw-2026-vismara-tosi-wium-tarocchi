@@ -73,10 +73,12 @@ public class FieldController implements UIObserver {
 
     private List<AnimatedTotem> totems;
 
-    private int drawTopCount = 0;
-    private int drawBottomCount = 0;
     private String selectedPlayer;
 
+    /**
+     * Initializes the playing field, by initializing all structures and GUI elements needed for the game,
+     * such as totems, player information cards and offer and order tiles
+     */
     @FXML
     void initialize() {
         // Initialize structures
@@ -167,12 +169,12 @@ public class FieldController implements UIObserver {
         // Add all cards
         reconcileCards(game);
 
-        // Create player cards
+        // Create player info cards
         for (PlayerDTO p : game.getPlayers()) {
             players.getChildren().addAll(GUIBuilder.createPlayerCard(p, this::playerClicked));
         }
 
-        // Place animated cards in the cards container
+        // Update the layout
         Platform.runLater(() -> {
             updateInstructionLabel();
             alignCameraToScreenSpace();
@@ -192,6 +194,7 @@ public class FieldController implements UIObserver {
                 alignCameraToScreenSpace();
             });
 
+            // Send a close signal to the server when the player disconnects
             ((Stage) cardsContainer.getScene().getWindow()).setOnCloseRequest(event -> {
                 try {
                     UISession.getClient().stopGame(UISession.getClient().getNickname());
@@ -203,28 +206,86 @@ public class FieldController implements UIObserver {
         });
     }
 
+    /**
+     * Updates the label at the top of the screen with information regarding whose turn it is and what
+     * action is required
+     */
     private void updateInstructionLabel() {
-        GameDTO game = UISession.getGame();
-        String instructions = "Its " + UISession.getGame().getPlayerTurn().getName() + "'s turn to ";
-        switch (game.getState()) {
-            case CHOOSETOTEM:
-                instructions += "choose a totem";
-                break;
-            case CHOOSEOFFER:
-                instructions += "choose an offer tile";
-                break;
-            case DRAWCARD:
-                instructions += "draw a card";
-                break;
-            case ENDTURN:
-                instructions += "draw a card from the top row";
-                break;
-            default:
-                break;
-        }
-        debugLabel.setText(instructions);
+        Platform.runLater(() -> {
+            GameDTO game = UISession.getGame();
+            String instructions = "Its " + UISession.getGame().getPlayerTurn().getName() + "'s turn to ";
+            switch (game.getState()) {
+                case CHOOSETOTEM:
+                    instructions += "choose a totem";
+                    break;
+                case CHOOSEOFFER:
+                    instructions += "choose an offer tile";
+                    break;
+                case DRAWCARD:
+                    instructions += "draw a card";
+                    break;
+                case ENDTURN:
+                    instructions += "draw a card from the top row";
+                    break;
+                default:
+                    break;
+            }
+            debugLabel.setText(instructions);
+        });
     }
 
+    /**
+     * Updates the error toast that appears at the bottom of the screen when an IllegalActionException
+     * happened on the server
+     */
+    private void updateErrorToast() {
+        GameDTO game = UISession.getGame();
+        Platform.runLater(() -> {
+            if (!game.getErrorFlag().isEmpty()) {
+                errorToast.setVisible(true);
+                ((Label) errorToast.getChildren().getFirst()).setText(game.getErrorFlag());
+            } else {
+                errorToast.setVisible(false);
+            }
+        });
+    }
+
+    /**
+     * Updates the final ranking of the game
+     */
+    private void updateRanking() {
+        GameDTO game = UISession.getGame();
+        Platform.runLater(() -> {
+            // Update ranking
+            if (game.getState() == StateDTO.ENDGAME) {
+                ranking.setVisible(true);
+                for (PlayerDTO p : game.getRankings()) {
+                    Label l = new Label(p.getName());
+                    l.setTextFill(Color.valueOf("#fff"));
+                    ranking.getChildren().add(l);
+                }
+            }
+        });
+    }
+
+    /**
+     * Updates the food and PP information for all players
+     */
+    private void updatePlayerInfo() {
+        GameDTO game = UISession.getGame();
+        Platform.runLater(() -> {
+            // Update player info
+            for (PlayerDTO p : game.getPlayers()) {
+                ((Text) anchor.getScene().lookup("#" + p.getName() + "Pp")).setText("" + p.getPp());
+                ((Text) anchor.getScene().lookup("#" + p.getName() + "Food")).setText("" + p.getFood());
+            }
+        });
+    }
+
+    /**
+     * Corrects the 3D camera's position to be at the center of the playing field and far enough for
+     * the whole field to fit in the screen
+     */
     private void alignCameraToScreenSpace() {
         // Align the camera to pixels
         double fov = camera.getFieldOfView(); // Default is 30.0
@@ -239,6 +300,9 @@ public class FieldController implements UIObserver {
         camera.setFarClip(distance * 2);
     }
 
+    /**
+     * Instantly resets the position of all animated objects in the window
+     */
     private void resetAll() {
         for (AnimatedCard a : topRowAnim) {
             a.resetPosition();
@@ -259,28 +323,14 @@ public class FieldController implements UIObserver {
         }
     }
 
-    private void animateAll(Duration d) {
-        for (AnimatedCard a : topRowAnim) {
-            a.animatePosition(d);
-        }
-
-        for (AnimatedCard a : bottomRowAnim) {
-            a.animatePosition(d);
-        }
-
-        for (AnimatedTile a : offerPathAnim) {
-            a.resetPosition();
-        }
-    }
-
+    /**
+     * Handles server notification, by reconciling how the playing field and UI are rendered in accordance
+     * With the new GameDTO that it received
+     *
+     * @param game the GameDTO sent by the server as a notification
+     */
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
-        // Reset counters
-        if (game.getState() != StateDTO.DRAWCARD) {
-            drawBottomCount = 0;
-            drawTopCount = 0;
-        }
-
         System.out.println(game.getState());
 
         // Reconcile the playing field with the new GameDTO
@@ -289,26 +339,13 @@ public class FieldController implements UIObserver {
         reconcileCards(game);
         reconcileSelectedHand(game);
 
+        // Update toasts
+        updateInstructionLabel();
+        updateErrorToast();
+
+        // Update misc
+        updateRanking();
         Platform.runLater(() -> {
-            // Update toasts
-            updateInstructionLabel();
-            if (!game.getErrorFlag().isEmpty()) {
-                errorToast.setVisible(true);
-                ((Label) errorToast.getChildren().getFirst()).setText(game.getErrorFlag());
-            } else {
-                errorToast.setVisible(false);
-            }
-
-            // Update ranking
-            if (game.getState() == StateDTO.ENDGAME) {
-                ranking.setVisible(true);
-                for (PlayerDTO p : game.getRankings()) {
-                    Label l = new Label(p.getName());
-                    l.setTextFill(Color.valueOf("#fff"));
-                    ranking.getChildren().add(l);
-                }
-            }
-
             // Update chosen totems
             game.getPlayers().stream()
                     .map(p -> p.getTotem())
@@ -329,17 +366,14 @@ public class FieldController implements UIObserver {
                 totemSelect.setVisible(false);
             }
 
-            // Update player info
-            for (PlayerDTO p : game.getPlayers()) {
-                ((Text) anchor.getScene().lookup("#" + p.getName() + "Pp")).setText("" + p.getPp());
-                ((Text) anchor.getScene().lookup("#" + p.getName() + "Food")).setText("" + p.getFood());
-            }
-
             // Round
             round.setText("Round " + game.getTurnNumber());
         });
     }
 
+    /**
+     * Handles the closing signal form the server, when a player has disconnected
+     */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         Platform.runLater(() -> {
@@ -370,12 +404,18 @@ public class FieldController implements UIObserver {
         });
     }
 
+    /**
+     * Handles when the server crashes
+     */
     @Override
     public void serverCrashed() {
         System.out.println("Sorry, the server crashed\n");
         System.exit(1);
     }
 
+    /**
+     * Handles card click. Tries to draw the card and denies the action with an animation if an IllegalActionException is thrown
+     */
     @FXML
     void cardClicked(MouseEvent e) {
         GameDTO game = UISession.getGame();
@@ -410,6 +450,9 @@ public class FieldController implements UIObserver {
         }
     }
 
+    /**
+     * Handles tile click. Tries to choose the tile
+     */
     @FXML
     void tileClicked(MouseEvent e) {
         GameDTO game = UISession.getGame();
@@ -604,6 +647,9 @@ public class FieldController implements UIObserver {
         });
     }
 
+    /**
+     * Switches the hand that is being shown
+     */
     @FXML
     void playerClicked(MouseEvent e) {
         String player = ((Label) ((VBox) e.getSource()).getChildren().get(0)).getText();

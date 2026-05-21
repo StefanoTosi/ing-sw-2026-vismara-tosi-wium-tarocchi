@@ -35,6 +35,9 @@ public class StartGameController implements UIObserver {
 
     @FXML TextField numPlayers;
 
+    /**
+     * Loads the CSS for the scene
+     */
     @FXML
     void initialize() {
         Platform.runLater(() -> {
@@ -43,6 +46,9 @@ public class StartGameController implements UIObserver {
         });
     }
 
+    /**
+     * Creates an RMI client
+     */
     @FXML
     void selectRMI() throws NotBoundException, IOException {
         UISession.setClient(new ClientRMI(UISession.getObserver(), UISession.getPortRMI(), UISession.getAddr()));
@@ -52,6 +58,9 @@ public class StartGameController implements UIObserver {
         login.setVisible(true);
     }
 
+    /**
+     * Creates a TCP client
+     */
     @FXML
     void selectTCP() {
         UISession.setClient(new ClientTCP(UISession.getObserver(), UISession.getPortTCP(), UISession.getAddr()));
@@ -61,6 +70,9 @@ public class StartGameController implements UIObserver {
         login.setVisible(true);
     }
 
+    /**
+     * Tries to login
+     */
     @FXML
     void login() throws IOException, ClassNotFoundException, IllegalActionException, InterruptedException {
         System.out.println(username.getText() + " " + password.getText());
@@ -84,6 +96,9 @@ public class StartGameController implements UIObserver {
         }
     }
 
+    /**
+     * Tries to create a game
+     */
     @FXML
     void createGame() {
         try {
@@ -103,6 +118,9 @@ public class StartGameController implements UIObserver {
         }
     }
 
+    /**
+     * Tries to enter a new match when kicked out
+     */
     @FXML
     void playAgain() {
         try {
@@ -122,11 +140,17 @@ public class StartGameController implements UIObserver {
         }
     }
 
+    /**
+     * Exits
+     */
     @FXML
     void quit() {
         System.exit(0);
     }
 
+    /**
+     * Once all players have joined, loads the field scene
+     */
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
         UISession.setGame(game);
@@ -146,11 +170,17 @@ public class StartGameController implements UIObserver {
         });
     }
 
+    /**
+     * Handles the game closing
+     */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
-
+        // TODO: !!!
     }
 
+    /**
+     * Handles a server crash
+     */
     @Override
     public void serverCrashed() {
         System.out.println("Sorry, the server crashed\n");

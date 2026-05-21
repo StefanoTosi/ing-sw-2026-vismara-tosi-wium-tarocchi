@@ -13,6 +13,9 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.TriangleMesh;
 
+/**
+ * AnimateObject for tiles
+ */
 public class AnimatedTile extends AnimatedObject {
     private OfferDTO tile;
 

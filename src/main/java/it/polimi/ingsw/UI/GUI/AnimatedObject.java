@@ -10,7 +10,8 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 /**
- * AnimatedObject is a
+ * AnimatedObject is a class that simplifies animating MeshViews, by holding a reference to both
+ * the MeshView and an invisible reference object that gets updated by the JavaFX layout
  */
 public class AnimatedObject {
     protected Group mesh;
