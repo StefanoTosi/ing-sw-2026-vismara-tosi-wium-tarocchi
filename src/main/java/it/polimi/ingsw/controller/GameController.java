@@ -106,7 +106,6 @@ public class GameController {
         } catch (IllegalActionException e) {
             getPlayer(player).getGame().setErrorFlag(e.getReason());
             getPlayer(player).getGame().notifyObserver();
-            System.out.println("throwing");
             throw e;
         }
     }

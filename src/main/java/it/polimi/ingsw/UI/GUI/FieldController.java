@@ -546,9 +546,13 @@ public class FieldController implements UIObserver {
                 topDeck.getMesh().setTranslateZ(10);
                 cardsContainer.getChildren().add(topDeck.getMesh());
             } else {
-                CardDTO card = game.getBoard().getDeckTribe().get(0);
-                Image back = new Image(getClass().getResource("/back/" + card.getType() + card.getEra().toString() + ".png").toExternalForm());
-                ((PhongMaterial) ((MeshView) topDeck.getMesh().getChildren().get(1)).getMaterial()).setSelfIlluminationMap(back);
+                try {
+                    CardDTO card = game.getBoard().getDeckTribe().get(0);
+                    Image back = new Image(getClass().getResource("/back/" + card.getType() + card.getEra().toString() + ".png").toExternalForm());
+                    ((PhongMaterial) ((MeshView) topDeck.getMesh().getChildren().get(1)).getMaterial()).setSelfIlluminationMap(back);
+                } catch (Exception e) {
+                    cardsContainer.getChildren().remove(topDeck.getMesh());
+                }
             }
 
             // Refresh layout
