@@ -24,6 +24,6 @@ public abstract class Event extends Card {
 
     @Override
     public void addToPlayer(Player player) throws IllegalActionException {
-        throw new IllegalActionException("Player " + player + " tried to draw an event");
+        throw new IllegalActionException("Player tried to draw an event");
     }
 }

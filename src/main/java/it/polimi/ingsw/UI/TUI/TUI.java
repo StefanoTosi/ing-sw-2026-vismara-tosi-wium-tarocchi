@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
 import it.polimi.ingsw.networking.TCP.ClientTCP;
 import it.polimi.ingsw.networking.UIObserver;
@@ -32,20 +33,21 @@ public class TUI implements UIObserver {
     private final int portRMI;
     private final String serverAddress;
     private boolean gameClosed;
+    private boolean drawInitialiazed;
+    private int drawBottom;
+    private int drawTop;
+
+    // TUI design colors
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[33m";
     public static final String BLUE = "\u001B[34m";
     public static final String GREEN = "\u001B[32m";
     public static final String ORANGE ="\u001B[38;5;208m";
     public static final String RESET ="\u001B[0m";
-    public static final String BG_RED = "\u001B[41m";
-    public static final String BG_PURPLE = "\u001B[45m";
-    public static final String BG_WHITE = "\u001B[47m";
-    public static final String BG_GREEN = "\u001B[42m";
-    public static final String BG_BLUE = "\u001B[44m";
-    public static final String BG_YELLOW = "\u001B[43m";
     public static final String BOLD = "\u001B[1m";
     public static final String UNDERLINE = "\u001B[4m";
+
+    // NOTIFY QUEUE
     private final LinkedBlockingQueue<GameDTO> updates = new LinkedBlockingQueue<>();
 
     /**
@@ -86,18 +88,18 @@ public class TUI implements UIObserver {
         }
     }
 
+
     /**
      * Function that starts the game by adding the user and loading the game
      * @throws RemoteException
      * @throws IllegalActionException
      */
-
     public void start() throws Exception {
         int input;
         do{
             renderStartMenu();
             input = readInt();
-        }while(input != 1 && input != 2);
+        }while(input != 1 && input != 2 && input!=3);
 
         switch (input) {
             case 1:
@@ -113,6 +115,10 @@ public class TUI implements UIObserver {
                 joinGame();
                 break;
             case 2:
+                printScoreBoard();
+                anotherGame();
+                break;
+            case 3:
                 client.leaveGame();
                 System.exit(0);
             default:
@@ -120,18 +126,26 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Function to initialize another game after one ended
+     * @throws Exception
+     */
     public void anotherGame() throws Exception {
         int input;
         do{
             renderMenu();
             input = readInt();
-        }while(input != 1 && input != 2);
+        }while(input != 1 && input != 2 && input !=3);
 
         switch (input) {
             case 1:
                 joinGame();
                 break;
             case 2:
+                printScoreBoard();
+                anotherGame();
+                break;
+            case 3:
                 client.leaveGame();
                 System.exit(0);
             default:
@@ -139,10 +153,14 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Function to create and join a new game
+     * @throws Exception
+     */
     public void joinGame() throws Exception {
         if (!client.joinGame()) {
             int num;
-            System.out.println("No game found, let's create a new one!\n");
+            System.out.println(BLUE + "No game found, let's create a new one!\n");
             System.out.print("How many players do you want? ");
             do {
                 System.out.print("(2 to 5 players): ");
@@ -150,7 +168,7 @@ public class TUI implements UIObserver {
             } while(num < 2 || num > 5);
             client.createGame(num);
         }
-        System.out.print("Waiting for other players to connect...\n");
+        System.out.print(BLUE + "Waiting for other players to connect...\n");
         handleState();
     }
 
@@ -161,56 +179,62 @@ public class TUI implements UIObserver {
      * @throws RemoteException
      * @throws IllegalActionException
      */
-
-
-    /*
-     *
-     * TODO: aggiungi stampa turno
-     *
-     * TODO: assicurati si stampi anche la order tile iniziale con l'ordine random
-     *
-     * TODO: make prettier con aggiunta colori + rendendo centrata la stampa
-     *
-     * */
-
-
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException {
         updates.offer(game);
     }
 
+    /**
+     * Function of closing game
+     * @param game
+     * @throws IOException
+     * @throws IllegalActionException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         setGameClosed(true);
         updates.offer(game);
     }
 
+    /**
+     * Message of crashed Server
+     */
     @Override
     public void serverCrashed() {
-        System.out.println("Sorry, the server crashed\n");
+        System.out.println(RED + "Sorry, the server crashed\n");
         System.exit(1);
     }
 
+    /**
+     * Function to handle the states of the gameplay
+     * @throws Exception
+     */
     public void handleState() throws Exception {
         while(true){
-            game = updates.take();
+            game = updates.take(); // Takes the new state at the beginning of every action
+            // If a player disconnects:
             if(getGameClosed()){
                 client.leaveMatch();
                 setGameClosed(false);
-                System.out.println("\nSorry, the game as been closed due to a disconnection of a player\n");
+                System.out.println(RED + "\nSorry, the game as been closed due to a disconnection of a player\n");
                 anotherGame();
             }
+            // State of the game and Turn number:
             System.out.println(BLUE + "Current state: " + game.getState());
-            System.out.println("Current turn " + game.getTurnNumber());
+            if(!game.getState().equals(StateDTO.ENDGAME)){
+                System.out.println("Current turn " + game.getTurnNumber());
+            }
+
 
             // If its this players turn, query the player for the action, otherwise do nothing
-                // TODO: sostituire con lo strategy pattern?
             switch (game.getState()) {
                 case RESOLVEEVENT:
                     break;
                 case StateDTO.SETUPGAME:
                     // SetupGameState
-                    System.out.print("Connected players: ");
+                    System.out.print(BLUE + "Connected players: ");
                     for (PlayerDTO p : game.getPlayers()) {
                         System.out.print(p.getName() + ", ");
                     }
@@ -228,10 +252,10 @@ public class TUI implements UIObserver {
                         // available totems
                         List<Totem> availableTotems = Arrays.stream(Totem.values()).filter(t -> !takenTotems.contains(t)).toList();
 
-                        System.out.println("Choose a totem:\n");
+                        System.out.println(BLUE + "Choose a totem:\n");
 
                         for(Totem t : Totem.values()){
-                            System.out.printf("%d. %s%n", t.getId(), t.getColor());
+                            System.out.println(t.getId() + ") " + t.getColor() + BLUE);
                         }
 
                         Totem chosenTotem = null;
@@ -246,13 +270,13 @@ public class TUI implements UIObserver {
                                 }
                             }
                             if (chosenTotem == null){
-                                System.out.println("Invalid choice\n");
+                                System.out.println(RED + "Invalid choice\n");
                             }
                         }
                         client.executeAction(new ChooseTotemAction(chosenTotem));
                     }
                     else {
-                        System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                        System.out.println(BLUE + "Current player turn: " + game.getPlayerTurn().getName());
                     }
                     break;
                 case StateDTO.CHOOSEOFFER:
@@ -260,7 +284,7 @@ public class TUI implements UIObserver {
                     // ChooseOfferState
                     if (client.getNickname().equals(game.getPlayerTurn().getName())){
                         List<OfferDTO> offerTiles = game.getBoard().getOfferPath();
-                        char[] freeTiles = new char[game.getNumPlayers() * 2];
+                        char[] freeTiles = new char[game.getNumPlayers() + 2];
                         char[] occupiedTiles = new char[game.getNumPlayers()];
 
                         int i = 0;
@@ -273,7 +297,7 @@ public class TUI implements UIObserver {
                         }
 
                         char offer;
-                        System.out.println("Choose on which offer tile to go ");
+                        System.out.println(BLUE + "Choose on which offer tile to go ");
 
                         System.out.println("\nthe available tiles are: " + Arrays.toString(freeTiles));
                         do {
@@ -289,52 +313,59 @@ public class TUI implements UIObserver {
                     }
                     break;
                 case StateDTO.DRAWCARD:
-                    // DrawCardsState --- eliminazione del while per un approccio di esco e rientro nello state - controller sa che deve andare in drawcard due volte ecc
+                    // DrawCardsState
                     if (client.getNickname().equals(game.getPlayerTurn().getName())){
-                        System.out.println("It's your turn!");
+                        int drawn = 0;
                         OfferDTO playerOffer = new OfferDTO('A', 0, 0, 0);
                         for (OfferDTO offerTile : game.getBoard().getOfferPath()) {
                             if (offerTile.getOrder() == game.getPlayerTurn().getOffer()) {
                                 playerOffer = offerTile;
                             }
                         }
-                        char chosenRow;
-                        int drawn = 0;
-                        int drawTop = playerOffer.getDrawTop();
-                        int drawBottom = playerOffer.getDrawBottom();
+                        // First time the player goes into DrawCardsState we inizialize the variables drawtop and drawbottom to keep count the draws
+                        if(!drawInitialiazed){
+                            drawInitialiazed = true; // Setting flag of "first time in DrawCardsState" as true
+                            drawTop = playerOffer.getDrawTop();
+                            drawBottom = playerOffer.getDrawBottom();
+                        }
 
-                        while (drawTop + drawBottom > 0) {
-                            drawn = 0;
-                            if (drawTop != 0 && drawBottom != 0) {
-                                System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
-                                chosenRow = readChar();
-                                if (chosenRow == 'T') {
-                                    drawn = drawCardTopRow();
-                                    drawTop += drawn;
-                                }
-                                if (chosenRow == 'B') {
-                                    drawn = drawCardBottomRow();
-                                    drawBottom += drawn;
-                                }
-                            } else if (drawTop != 0) {
+                        System.out.println("It's your turn!");
+
+                        // Handling if the player has to draw from both Top and Bottom or just one
+                        if (drawTop != 0 && drawBottom != 0) {
+                            System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
+                            char chosenRow = readChar();
+                            if (chosenRow == 'T') {
                                 drawn = drawCardTopRow();
                                 drawTop += drawn;
-                            } else {
+                            }
+                            if (chosenRow == 'B') {
                                 drawn = drawCardBottomRow();
                                 drawBottom += drawn;
                             }
-                            if (drawTop + drawBottom > 0 && client.getNickname().equals(game.getPlayerTurn().getName()) && drawn != 0) { // CRASHA SE METTO NUMERO SBAGLIATO PER COLPA DI QUESTO
-                                game = updates.take();
-                            }
+                        } else if (drawTop != 0) {
+                            drawn = drawCardTopRow();
+                            drawTop += drawn;
+                        } else {
+                            drawn = drawCardBottomRow();
+                            drawBottom += drawn;
                         }
+
+                        if(drawTop == 0 && drawBottom == 0){
+                            drawInitialiazed = false;
+                        }
+
                     }
                     else {
                         System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                        drawInitialiazed = false;
                     }
                     break;
                 case StateDTO.ENDTURN:
                     // EndTurnState
                     System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
+                    drawInitialiazed = false;
+                    // Check if the player has the building with the EndTurn effect
                     if(game.getPlayerTurn().getCanPickFromTop()){
                         int effectDraw = 1;
                         effectDraw = drawCardTopRow();
@@ -349,16 +380,102 @@ public class TUI implements UIObserver {
                     System.out.println("Unhandled state id " + game.getState());
             }
         }
-        // lockUpdate.wait(); //
-        // lockUpdate.notify(); // faccio
-        // while(true){ wait(); si svolge gioco }
-        // notify
-        // attivazione metodo idk - switch case sottostante
-        // lock update -> wait(lock) finchè non
-        // appena arriva notify(lock)
-        // notify observer in game.java
     }
 
+    /**
+     * Function that handles the input from the player to draw from bottom row
+     * @return
+     * @throws IllegalActionException
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException
+     */
+    private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+        int card;
+        printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
+        System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+        card = readInt() - 1; // fixes index and pos mismatch
+        int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
+        if(!getGameClosed()){
+                try{
+                    client.executeAction(new DrawCardFromBottomAction(card));
+                }catch(Exception e){
+                    //e.printStackTrace();
+                    System.out.println(e.getMessage());
+                    return 0;
+                }
+            return -1;
+        }
+        return -10;
+    }
+
+    /**
+     * Function that handles the input from the player to draw from top row
+     * @return
+     * @throws IllegalActionException
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException
+     */
+    private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+        int card;
+        printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
+        System.out.println("Choose which card to draw from the Top Row (write its number): ");
+        card = readInt() - 1; // fixes index and pos mismatch
+        int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
+        if(card >= 0 && card < size){
+            if(!getGameClosed()){
+                try {
+                    client.executeAction(new DrawCardFromTopAction(card));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return 0;
+                }
+                return -1;
+            }
+            return -10;
+        }else{
+            System.out.println("You chose a card out of range\n");
+            return 0;
+        }
+    }
+
+
+    // -------------------------------- Render functions ---------------------------------------------------------------
+
+    //TODO : what if li uniamo?
+    public void renderStartMenu(){
+        System.out.println(GREEN + BOLD + "MENU:");
+        System.out.println("1. Login");
+        System.out.println("2. LeaderBoard");
+        System.out.println("3. Exit");
+    }
+
+    public void renderMenu(){
+        System.out.println(GREEN + BOLD + "MENU:");
+        System.out.println("1. Play again");
+        System.out.println("2. LeaderBoard");
+        System.out.println("3. Exit");
+    }
+
+    /**
+     * Calls the functions to print each part of the board
+     */
+    public void printBoard(){
+        System.out.println(ORANGE);
+        printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
+        printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
+        printOrderTile();
+        printOfferRow();
+        for(PlayerDTO player : game.getPlayers()){
+            printPlayerCards(player);
+        }
+
+    }
+
+    /**
+     * Function to print the player rankings at the end of the game
+     */
     private void printRankings(){
         List<PlayerDTO> ranking = game.getRankings();
         int displayedPos = 1;
@@ -377,81 +494,17 @@ public class TUI implements UIObserver {
             System.out.printf(YELLOW + "%d. %-15s (%d PP, %d food)%n",displayedPos, p.getName(), p.getPp(), p.getFood());
         }
     }
-
-    private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
-        int card;
-        printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
-        System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-        card = readInt() - 1; // fixes index and pos mismatch
-        int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
-        if(card >= 0 && card < size){
-            if(!getGameClosed()){
-                    try{
-                        client.executeAction(new DrawCardFromBottomAction(card));
-                    }catch(Exception e){
-                        //e.printStackTrace();
-                        System.out.println(e.getMessage());
-                        return 0;
-                    }
-                return -1;
-            }
-            return -10;
-        }else{
-            System.out.println("You chose a card out of range\n");
-            return 0;
-        }
-    }
-
-    private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
-        int card;
-        printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
-        System.out.println("Choose which card to draw from the Top Row (write its number): ");
-        card = readInt() - 1; // fixes index and pos mismatch
-        int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-        if(card >= 0 && card < size){
-            if(!getGameClosed()){
-                try {
-                    client.executeAction(new DrawCardFromTopAction(card));
-                } catch (Exception e) {
-                    //e.printStackTrace();
-                    System.out.println(e.getMessage());
-                    return 0;
-                }
-                return -1;
-            }
-            return -10;
-        }else{
-            System.out.println("You chose a card out of range\n");
-            return 0;
-        }
-    }
-
-    // -------------------------------- Render functions ---------------------------------------------------------------
-
-    public void renderStartMenu(){
-        System.out.println(GREEN + BOLD + "MENU:");
-        System.out.println("1. Login");
-        System.out.println("2. Exit");
-    }
-
-    public void renderMenu(){
-        System.out.println(GREEN + BOLD + "MENU:");
-        System.out.println("1. Play again");
-        System.out.println("2. Exit");
-    }
+    //TODO: add che se il player non è tra i primi stampi cmq il suo standing in generale
 
     /**
-     * Calls the functions to print each part of the board
+     * Prints the otherall scores of all games played available in the database
+     * @throws RemoteException
      */
-    public void printBoard(){
-        printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
-        printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
-        printOrderTile();
-        printOfferRow();
-        for(PlayerDTO player : game.getPlayers()){
-            printPlayerCards(player);
+    public void printScoreBoard() throws RemoteException {
+        List<LeaderboardDTO> scoreBoard = client.getLeaderboard();
+        for(LeaderboardDTO player : scoreBoard){
+            System.out.println(String.format("|%-25s|" + player.getNickname() + player.getTotalScore() + player.getNumPlayers()));
         }
-
     }
 
     /**
@@ -460,6 +513,7 @@ public class TUI implements UIObserver {
      * @param buildings
      */
     public void printRowTribe(List<CardDTO> cards, List<BuildingDTO> buildings){
+        System.out.println(ORANGE);
         StringBuilder[] lines = new StringBuilder[7];
         for(int i=0; i < 7; i++){
             lines[i] = new StringBuilder();
@@ -478,6 +532,7 @@ public class TUI implements UIObserver {
         printLine(lines);
     }
 
+    //TODO: SPOSTA ANCHE QUESTO IN BUILDING DTO
     public StringBuilder[] printBuildings(List<BuildingDTO> buildings, int numCard){
         StringBuilder[] lines = new StringBuilder[7];
         for(int i = 0; i < 7; i++){
@@ -507,100 +562,22 @@ public class TUI implements UIObserver {
         for(int i = 0; i < 7; i++){
             lines[i] = new StringBuilder();
         }
-        int num_card = 0;/*
+        int num_card = 1;
+
         StringBuilder[] printed = new StringBuilder[7];
         for(int i = 0; i < 7; i++){
-            printed[i] = new StringBuilder();
+            printed[i] = new StringBuilder(ORANGE);
         }
 
         for(CardDTO card : cards){
-            System.out.println(card.getClass().getSimpleName());
-            System.out.println(card.getName());
             printed = card.printCard();
             printed[0] = new StringBuilder().append(String.format("+----%d-----+", num_card++));
-            for(int i=1; i<7; i++){
+            for(int i=0; i<7; i++){
                 lines[i].append(printed[i]);
             }
-        }*/
-
-        for(CardDTO card : cards){
-            if(card.getType().equals("Event")){
-                num_card++;
-                StringBuilder[] event = createEvent(card, num_card);
-                for(int i = 0; i < 7; i++){
-                    lines[i].append(event[i]);
-                }
-            } else if(card.getType().equals("Character")){
-                num_card++;
-                StringBuilder[] character = createCharacter(card, num_card);
-                for(int i = 0; i < 7; i++){
-                    lines[i].append(character[i]);
-                }
-            }
         }
+
         return lines;
-    }
-
-    /**
-     * Function to build an Event card in order to print it
-     * @param card
-     * @return
-     */
-    public StringBuilder[] createEvent(CardDTO card, int num_card){
-        StringBuilder[] event = new StringBuilder[7];
-        for(int i = 0; i < 7; i++){
-            event[i] = new StringBuilder();
-        }
-        event[0].append(ORANGE).append(String.format("+----%d-----+", num_card));
-        if(card.getName().equals("ShamanicRitual")){
-            event[1].append("|Shamanic  |");
-            event[2].append("|Ritual    |");
-            event[3].append(String.format("|%-10s|", card.getWinnerPp()));
-            event[4].append(String.format("|%-10s|", card.getLoserPp()));
-        } else if(card.getName().equals("CavePaintings")){
-            event[1].append("|Cave      |");
-            event[2].append("|Paintings |");
-            event[3].append(String.format("|%-10s|", card.getMinArtist()));
-            event[4].append(String.format("|%-10s|", card.getTopPp()));
-        } else{
-            event[1].append(String.format("|%-10s|", card.getName()));
-            event[2].append("|          |");
-            event[3].append(ORANGE + "|          |");
-            event[4].append(ORANGE + "|          |");
-        }
-        event[5].append(ORANGE).append(String.format("|%-10s|", card.getEra()));
-        event[6].append(ORANGE + "+----------+");
-
-
-        return event;
-    }
-
-    public StringBuilder[] createCharacter(CardDTO card, int num_card){
-        StringBuilder[] character = new StringBuilder[7];
-        for(int i = 0; i < 7; i++){
-            character[i] = new StringBuilder();
-        }
-        character[0].append(ORANGE).append(String.format("+----%d-----+", num_card));
-        character[1].append(String.format("|%-10s|", card.getName()));
-        if(card.getName().equals("Shaman")){
-            character[2].append(String.format("|%-10s|", card.getStars()));
-        } else if (card.getName().equals("Inventor")){
-            character[2].append(String.format("|%-10s|", card.getInventionIcon()));
-        } /*else if (card.getName().equals("Gatherer")){
-            character[2].append(String.format("|%-10s|", card.getFoodDiscount()));
-        }*/ else if (card.getName().equals("Builder")){
-            character[2].append(String.format("|%-10s|", card.getFoodDiscount()));
-        } else if (card.getName().equals("Hunter")){
-            character[2].append(String.format("|%-10s|", card.getIcon()));
-        } else{
-            character[2].append("|          |");
-        }
-        character[3].append("|          |");
-        character[4].append("|          |");
-        character[5].append(String.format("|%-10s|", card.getEra()));
-        character[6].append("+----------+");
-
-        return character;
     }
 
     /**
@@ -608,7 +585,7 @@ public class TUI implements UIObserver {
      * @param player
      */
     public void printPlayerCards(PlayerDTO player){
-        System.out.println("\n======== " + player.getName() + " ========");
+        System.out.println(ORANGE + "\n======== " + player.getName() + " ========");
         StringBuilder[] lines = new StringBuilder[7];
         for(int i = 0; i < 7; i++){
             lines[i] = new StringBuilder();
@@ -664,10 +641,6 @@ public class TUI implements UIObserver {
         }
     }
 
-    //TODO: modifica tutte queste classi di printCharacter in un factory pattern -
-    // tipo un handler della stampa a cui collego un CharacterDTO e tramite override
-    // modifico la funzione stampa per il tipo di carta
-
     /**
      * Function to print the order of players on the OrderTile followed by the OfferTiles
      */
@@ -701,7 +674,7 @@ public class TUI implements UIObserver {
             }
             lines[0].append(String.format("+----%s-----+", offerTile.getOrder()));
             if(playerOnTile != null){
-                lines[1].append(String.format("|%-10s|", playerOnTile.getName()));
+                lines[1].append(playerOnTile.getTotem().getAscii() + String.format("|%-10s|", playerOnTile.getName())+ RESET + ORANGE);
             } else {
                 lines[1].append("|          |");
             }

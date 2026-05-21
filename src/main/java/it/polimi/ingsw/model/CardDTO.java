@@ -48,7 +48,7 @@ public class CardDTO implements Serializable {
     }
 
     public  StringBuilder[] printCard(){
-        return null;
+        return new StringBuilder[0];
     }
 
     public String getEra() {

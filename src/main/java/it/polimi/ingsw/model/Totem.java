@@ -14,7 +14,7 @@ public enum Totem implements Serializable {
 
         @Override
         public String getColor() {
-            return "Orange";
+            return "\u001B[38;5;208m" + "Orange";
         }
     },
 
@@ -29,7 +29,7 @@ public enum Totem implements Serializable {
 
         @Override
         public String getColor() {
-            return "Yellow";
+            return "\u001B[33m" + "Yellow";
         }
     },
 
@@ -44,7 +44,7 @@ public enum Totem implements Serializable {
 
         @Override
         public String getColor() {
-            return "Blue";
+            return "\u001B[34m" + "Blue";
         }
     },
 
@@ -59,7 +59,7 @@ public enum Totem implements Serializable {
 
         @Override
         public String getColor() {
-            return "Purple";
+            return "\u001B[35m" + "Purple";
         }
     },
 
@@ -74,7 +74,7 @@ public enum Totem implements Serializable {
 
         @Override
         public String getColor() {
-            return "White";
+            return "\u001B[37m" + "White";
         }
     };
 
