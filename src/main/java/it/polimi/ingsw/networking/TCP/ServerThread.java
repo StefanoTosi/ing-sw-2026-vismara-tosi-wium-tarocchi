@@ -139,7 +139,7 @@ public class ServerThread implements Runnable, ObserverTCP {
         synchronized (lock) {
             if (users.containsKey(nickname)) {
                 user = users.get(nickname);
-                if(user.getPassword().equals("")) {
+                if(user.getPassword() == null) {
                     user.setPassword(psw);
                 }
                 if (user.getPassword().equals(psw)) {

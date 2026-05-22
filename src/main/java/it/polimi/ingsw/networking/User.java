@@ -8,7 +8,7 @@ public class User {
 
     public User(String nickname){
         this.nickname = nickname;
-        this.password = "";
+        this.password = null;
         this.active = false;
         this.inGame = false;
     }
