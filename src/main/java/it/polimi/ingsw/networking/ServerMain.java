@@ -16,12 +16,34 @@ import java.rmi.registry.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Entry point of the server application.
+ *
+ * This class is responsible for initializing the game controller,
+ * loading configuration parameters, restoring persisted data,
+ * and starting both RMI and TCP networking services.
+ */
 public class ServerMain {
     private static int portRMI;
     private static int portTCP;
     private static String host;
 
-    static void main(String[] args) throws IOException, AlreadyBoundException, IllegalActionException {
+    /**
+     * Main method that bootstraps the server.
+     *
+     * It performs the following steps:
+     *     Loads configuration from JSON file
+     *     Initializes database connection
+     *     Loads persisted users and saved games
+     *     Starts RMI registry and binds remote server
+     *     Starts TCP server for socket-based clients
+     *
+     * @param args command-line arguments (not used)
+     * @throws IOException if configuration or I/O operations fail
+     * @throws AlreadyBoundException if the RMI name is already bound
+     * @throws IllegalActionException if a game restoration action fails
+     */
+     static void main(String[] args) throws IOException, AlreadyBoundException, IllegalActionException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
 
@@ -37,11 +59,13 @@ public class ServerMain {
 
         GameController gameController = new GameController();
         Map<String,User> users = new ConcurrentHashMap<>();
-        Object lock = new Object(); //lista di lock per diverse funzioni?
+        Object lock = new Object();
 
+        //create or connect to a DB if possible
         DBConnection.initializeDB();
         UserDAO.loadUser(users);
 
+        //loading eventualy saved games
         SaveGames.loadSaves(gameController, users);
 
         //RMI connection

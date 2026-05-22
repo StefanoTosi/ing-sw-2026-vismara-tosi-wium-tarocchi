@@ -17,6 +17,18 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.Map;
 
+/**
+ * Handles a single TCP client connection.
+ *
+ * This class is responsible for:
+ *     Receiving and parsing client requests
+ *     Executing game operations through GameController
+ *     Sending responses back to the client
+ *     Managing user session state (login, join, disconnect)
+ *     Monitoring client timeout (heartbeat via ping)
+ *
+ * Each client runs on its own thread.
+ */
 public class ServerThread implements Runnable, ObserverTCP {
     private Socket client;
 
@@ -32,6 +44,14 @@ public class ServerThread implements Runnable, ObserverTCP {
     private boolean clientOn;
 
 
+    /**
+     * Creates a new server-side handler for a TCP client.
+     *
+     * @param client client socket
+     * @param game game controller
+     * @param users shared user map
+     * @param lock synchronization lock
+     */
     public ServerThread(Socket client, GameController game, Map<String, User> users, Object lock) {
         this.gameController = game;
         this.users = users;
@@ -49,6 +69,14 @@ public class ServerThread implements Runnable, ObserverTCP {
         checkTimeouts();
     }
 
+    /**
+     * Monitors client inactivity.
+     *
+     * If no ping is received for more than 10 seconds:
+     *     User is marked inactive
+     *     Game session is closed
+     *     Socket is closed
+     */
     public void checkTimeouts(){
         new Thread(() -> {
             while(clientOn){
@@ -83,6 +111,12 @@ public class ServerThread implements Runnable, ObserverTCP {
         return this.nickname;
     }
 
+    /**
+     * Main loop that receives and processes client messages.
+     *
+     * It deserializes JSON messages and dispatches them to
+     * the correct handler based on RequestType.
+     */
     private void comunicate(){
         try{
             while(clientOn){
@@ -127,11 +161,19 @@ public class ServerThread implements Runnable, ObserverTCP {
         }
     }
 
+    /** Closes current game session for this user */
     private void closeGame() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         gameController.removeGame(getNickname());
     }
 
-    private void addUser(String psw, String nickname) throws IOException {
+    /**
+     * Handles user login/registration.
+     *
+     * Sends back:
+     * - success flag
+     * - message explaining result
+     */
+    private void addUser(String psw, String nickname) throws Exception {
         boolean success = false;
         String message;
         User user;
@@ -191,6 +233,11 @@ public class ServerThread implements Runnable, ObserverTCP {
         }
     }
 
+    /**
+     * Adds player to a game or reconnects if already in match.
+     *
+     * Sends back join result to client.
+     */
     private void joinGame(String name) throws Exception {
         User user;
         synchronized (lock){
@@ -210,6 +257,13 @@ public class ServerThread implements Runnable, ObserverTCP {
         sendResponse(response);
     }
 
+    /**
+     * Create a game with the numbers of players specified
+     * @param num numbers of players
+     * @param name nickname of the match's creator
+     * @throws IllegalActionException
+     * @throws RemoteException
+     */
     private void createGame(int num, String name) throws IllegalActionException, RemoteException {
         User user;
         synchronized (lock){
@@ -219,7 +273,12 @@ public class ServerThread implements Runnable, ObserverTCP {
         gameController.createGameTCP(new Player(name), num, this);
     }
 
-    private void executeAction(Action action, String nickname) throws IllegalActionException, IOException, InterruptedException {
+    /**
+     * Executes a player action in the game.
+     *
+     * Any exception is captured and sent back as error message.
+     */
+    private void executeAction(Action action, String nickname) throws Exception {
 
         ObjectNode payload = mapper.createObjectNode();
         payload.put("error", "");
@@ -232,11 +291,15 @@ public class ServerThread implements Runnable, ObserverTCP {
         sendResponse(response);
     }
 
-    private synchronized void sendResponse(Message response) throws IOException {
-        String json = mapper.writeValueAsString(response);
+    private synchronized void sendResponse(Message response) throws Exception {
+        String json = JsonUtil.toJson(response);
         out.println(json);
     }
 
+    /**
+     * Entry point of thread execution.
+     * Starts communication loop.
+     */
     @Override
     public void run() {
         comunicate();
@@ -256,7 +319,10 @@ public class ServerThread implements Runnable, ObserverTCP {
         sendResponse(response);
     }
 
-    public void getLeaderboard() throws IOException {
+    /**
+     * Sends leaderboard data to client.
+     */
+    public void getLeaderboard() throws Exception {
         JsonNode payload = mapper.valueToTree(UserDAO.getLeaderBoard());
         Message response = new Message(RequestType.PRINTLEADERBOARD, payload);
         sendResponse(response);
