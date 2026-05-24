@@ -65,7 +65,7 @@ public class ServerMain {
         DBConnection.initializeDB();
         UserDAO.loadUser(users);
 
-        //loading eventualy saved games
+        //loading available saved games
         SaveGames.loadSaves(gameController, users);
 
         //RMI connection

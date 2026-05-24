@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 /**
- * Tile interface, used to logically link Offer and Order tiles
+ * Logically links {@code Offer} and {@code Order} tiles.
  */
 public interface Tile {
 }

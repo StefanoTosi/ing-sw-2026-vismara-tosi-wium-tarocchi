@@ -40,7 +40,7 @@ public class Board {
     private Random rng;
 
     /**
-     * Generates an empty board. Decks will be filled by initialize() and the rows will be arranged in <code>RefillBoardState</code>.
+     * Generates an empty board. Decks will be filled by {@code initialize()} and the rows will be arranged in {@code RefillBoardState}.
      */
     public Board(Random rng) {
         this.topRowTribe = new ArrayList<>();
@@ -91,7 +91,7 @@ public class Board {
     /**
      * Initializes a starting board, given the number of players.<br>
      * It parses the json file containing the cards, creating the covered decks and the offer path.
-     * The top and bottom rows are left empty as they will be filled in <code>RefillBoardState</code>.
+     * The top and bottom rows are left empty as they will be filled in {@code RefillBoardState}.
      * @param numPlayers the number of players in the current game
      */
     public void initialize(int numPlayers) throws IllegalArgumentException {
@@ -573,8 +573,9 @@ public class Board {
     }
 
     /**
-     * Converts the current board into the corresponding DTO class.
-     * @return the corresponding board in DTO format
+     * Converts the current {@code Board} object into the corresponding {@code BoardDTO},
+     * converting all of its components as well through calls to other {@code toDTO} methods.
+     * @return the {@code BoardDTO} obtained by converting all its components to DTO format
      */
     public BoardDTO toDTO(){
         return new BoardDTO(getTopRowTribe().stream().map(Card::toDTO).toList(),
