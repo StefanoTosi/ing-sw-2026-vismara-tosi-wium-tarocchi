@@ -153,7 +153,11 @@ public class Player {
     }
 
     public void addHunter(Hunter hunter) {
-        this.hunters.add(hunter);
+        try{
+            this.hunters.add(hunter);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         if (hunter.getIcon()) {
             addFood(getNumHunters());
         }

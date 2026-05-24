@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.JsonUtil;
+import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.UIObserver;
 
 import java.io.*;
@@ -17,6 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * TCP client implementation for the game.
+ *This class handles all communication with the TCP server using:
+ *     Synchronous request/response (via blocking queue)
+ *     Asynchronous server updates (via listener thread)
+ *     JSON serialization/deserialization using Jackson
+ *The client supports both:
+ *     Game actions (create game, join, execute action, etc.)
+ *     Server notifications (game updates, game closure)
+ */
 public class ClientTCP implements Client {
     private String nickname;
     private UIObserver observer;
@@ -30,6 +41,13 @@ public class ClientTCP implements Client {
 
     private final LinkedBlockingQueue<Message> responses = new LinkedBlockingQueue<>();
 
+    /**
+     * Creates a TCP client and immediately connects to the server.
+     *
+     * @param observer UI observer for game updates
+     * @param port TCP server port
+     * @param address server IP address
+     */
     public ClientTCP(UIObserver observer, int port, String address) {
         this.observer = observer;
         this.serverAddress = address;
@@ -38,10 +56,18 @@ public class ClientTCP implements Client {
         startListener();
     }
 
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Starts a background thread that listens for server messages.
+     *
+     * Messages are classified into:
+     *     Asynchronous updates (UPDATE, CLOSEGAME)
+     *     Synchronous responses (added to blocking queue)
+     */
     private void startListener(){
         new Thread(() -> {
             try{
@@ -66,6 +92,9 @@ public class ClientTCP implements Client {
         }).start();
     }
 
+    /**
+     * Opens a socket connection to the server and initializes I/O streams.
+     */
     public void connect(){
         try {
             mySocket=new Socket(serverAddress, serverPort);
@@ -78,6 +107,12 @@ public class ClientTCP implements Client {
         }
     }
 
+    /**
+     * Sends a serialized request to the server.
+     *
+     * @param request message to send
+     * @throws Exception serialization or network error
+     */
     private synchronized void sendRequest(Message request) throws Exception {
         String json = JsonUtil.toJson(request);
         out.println(json);
@@ -90,6 +125,9 @@ public class ClientTCP implements Client {
         }
     }
 
+    /**
+     * Notifies UI that the game has been closed by the server.
+     */
     private void closeGame(GameDTO game) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         observer.closingGame(game);
     }

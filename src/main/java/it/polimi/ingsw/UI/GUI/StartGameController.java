@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import net.bytebuddy.description.type.PackageDescription;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -35,6 +36,9 @@ public class StartGameController implements UIObserver {
 
     @FXML TextField numPlayers;
 
+    /**
+     * Loads the CSS for the scene
+     */
     @FXML
     void initialize() {
         Platform.runLater(() -> {
@@ -43,6 +47,9 @@ public class StartGameController implements UIObserver {
         });
     }
 
+    /**
+     * Creates an RMI client
+     */
     @FXML
     void selectRMI() throws NotBoundException, IOException {
         UISession.setClient(new ClientRMI(UISession.getObserver(), UISession.getPortRMI(), UISession.getAddr()));
@@ -52,6 +59,9 @@ public class StartGameController implements UIObserver {
         login.setVisible(true);
     }
 
+    /**
+     * Creates a TCP client
+     */
     @FXML
     void selectTCP() {
         UISession.setClient(new ClientTCP(UISession.getObserver(), UISession.getPortTCP(), UISession.getAddr()));
@@ -61,29 +71,25 @@ public class StartGameController implements UIObserver {
         login.setVisible(true);
     }
 
+    /**
+     * Tries to login
+     */
     @FXML
     void login() throws IOException, ClassNotFoundException, IllegalActionException, InterruptedException {
         System.out.println(username.getText() + " " + password.getText());
 
         if (UISession.getClient().addUser(password.getText(), username.getText())) {
             UISession.getClient().ping();
-            if (!UISession.getClient().joinGame()) {
-                login.setVisible(false);
-                newGame.setVisible(true);
-                errorToast.setVisible(false);
-            } else {
-                login.setVisible(false);
-                waiting.setVisible(true);
-                errorToast.setVisible(false);
-                Label l = new Label(username.getText());
-                l.getStyleClass().add("waiting-name");
-            }
+            tryToJoinGame(login);
         } else {
             errorToast.setVisible(true);
             ((Label) errorToast.getChildren().getFirst()).setText("Invalid login info");
         }
     }
 
+    /**
+     * Tries to create a game
+     */
     @FXML
     void createGame() {
         try {
@@ -96,6 +102,10 @@ public class StartGameController implements UIObserver {
                 newGame.setVisible(false);
                 waiting.setVisible(true);
                 errorToast.setVisible(false);
+
+                Label l = new Label(username.getText());
+                l.getStyleClass().add("waiting-name");
+                waiting.getChildren().add(l);
             }
         } catch (Exception e) {
             errorToast.setVisible(true);
@@ -103,34 +113,63 @@ public class StartGameController implements UIObserver {
         }
     }
 
+    /**
+     * Tries to enter a new match when kicked out
+     */
     @FXML
     void playAgain() {
         try {
-            if (!UISession.getClient().joinGame()) {
-                playAgain.setVisible(false);
-                newGame.setVisible(true);
-                errorToast.setVisible(false);
-            } else {
-                playAgain.setVisible(false);
-                waiting.setVisible(true);
-                errorToast.setVisible(false);
-                Label l = new Label(username.getText());
-                l.getStyleClass().add("waiting-name");
-            }
+            tryToJoinGame(playAgain);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    private void tryToJoinGame(VBox playAgain) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
+        if (!UISession.getClient().joinGame()) {
+            playAgain.setVisible(false);
+            newGame.setVisible(true);
+            errorToast.setVisible(false);
+        } else {
+            playAgain.setVisible(false);
+            waiting.setVisible(true);
+            errorToast.setVisible(false);
+
+            Label l = new Label(username.getText());
+            l.getStyleClass().add("waiting-name");
+            waiting.getChildren().add(l);
+        }
+    }
+
+    /**
+     * Exits
+     */
     @FXML
     void quit() {
         System.exit(0);
     }
 
+    /**
+     * Once all players have joined, loads the field scene
+     */
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
         UISession.setGame(game);
         Platform.runLater(() -> {
+            // Update the waiting list
+            for (PlayerDTO p : game.getPlayers()) {
+                if (waiting.getChildren()
+                        .stream()
+                        .map(n -> (Label) n)
+                        .filter(l -> l.getText().equals(p.getName()))
+                        .count() == 0
+                ) {
+                    Label l = new Label(p.getName());
+                    l.getStyleClass().add("waiting-name");
+                    waiting.getChildren().add(l);
+                }
+            }
+
             if (game.getState() != StateDTO.SETUPGAME) {
                 FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("field.fxml"));
                 Parent fieldRoot = null;
@@ -146,11 +185,17 @@ public class StartGameController implements UIObserver {
         });
     }
 
+    /**
+     * Handles the game closing
+     */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
-
+        // TODO: !!!
     }
 
+    /**
+     * Handles a server crash
+     */
     @Override
     public void serverCrashed() {
         System.out.println("Sorry, the server crashed\n");

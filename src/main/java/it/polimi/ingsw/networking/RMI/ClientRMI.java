@@ -14,7 +14,14 @@ import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-
+/**
+ * RMI client implementation.
+ * This class acts as:
+ *     Client-side proxy to communicate with the RMI server
+ *     Remote callback endpoint (implements {@link ClientCallBack})
+ * It receives updates from the server and forwards them to the UI layer
+ * via {@link UIObserver}.
+ */
 public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Client {
     private static int port;
     private static String serverAddress;
@@ -22,6 +29,15 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     private final Controller controller;
     private UIObserver observer;
 
+    /**
+     * Creates an RMI client and connects to the server registry.
+     *
+     * @param observer UI observer for updates
+     * @param port RMI registry port
+     * @param address server IP address
+     * @throws RemoteException if RMI export fails
+     * @throws NotBoundException if server object is not found in registry
+     */
     public ClientRMI(UIObserver observer, int port, String address) throws RemoteException, NotBoundException {
         this.observer = observer;
         this.port = port;
@@ -29,6 +45,10 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         this.controller = connectToServer();
     }
 
+    /**
+     * Periodically sends heartbeat messages to the server.
+     * If the server becomes unreachable, the UI is notified.
+     */
     public void ping(){
         new Thread(() -> {
             while(true) {
@@ -56,6 +76,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         System.out.println(message + "\n");
     }
 
+    /**
+     * Sets the nickname assigned by the server.
+     */
     public void setNickname(String nickname){
         this.nickname = nickname;
     }
@@ -75,6 +98,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
         controller.leaveGame(getNickname());
     }
 
+    /**
+     * Connects to the RMI registry and retrieves the server stub.
+     *
+     * @return remote Controller stub
+     */
     public Controller connectToServer() throws RemoteException, NotBoundException {
         // Getting the registry
         Registry registry = LocateRegistry.getRegistry(serverAddress, port);

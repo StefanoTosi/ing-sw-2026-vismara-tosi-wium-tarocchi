@@ -38,7 +38,7 @@
                        <Insets bottom="20.0" />
                    </VBox.margin>
                </VBox>
-               <HBox fx:id="hand" prefHeight="300.0" prefWidth="200.0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" spacing="5" alignment="CENTER">
+               <HBox fx:id="hand" alignment="CENTER" prefHeight="300.0" prefWidth="200.0" spacing="5" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                </HBox>
                <padding>
                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -46,13 +46,13 @@
            </VBox>
        </HBox>
 
-       <SubScene fx:id="subScene" height="400.0" width="600.0" depthTest="ENABLE" depthBuffer="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <SubScene fx:id="subScene" depthBuffer="true" depthTest="ENABLE" height="400.0" width="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <root>
                <Region />
            </root>
        </SubScene>
 
-       <TilePane fx:id="players" alignment="CENTER" pickOnBounds="false" orientation="VERTICAL" prefColumns="1" tileAlignment="CENTER" vgap="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <TilePane fx:id="players" alignment="CENTER" orientation="VERTICAL" pickOnBounds="false" prefColumns="1" tileAlignment="CENTER" vgap="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
            <padding>
                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
            </padding>
@@ -64,35 +64,55 @@
            </children>
        </VBox>
 
-       <VBox fx:id="totemSelect" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="20.0" styleClass="dark-panel" stylesheets="@style.css" AnchorPane.bottomAnchor="200" AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200" AnchorPane.topAnchor="200">
-           <children>
-               <Label text="Choose your totem" textFill="WHITE">
-                   <font>
-                       <Font name="System Bold" size="20.0" />
-                   </font>
-                   <opaqueInsets>
-                       <Insets />
-                   </opaqueInsets>
-               </Label>
-               <HBox fx:id="totemList" alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="10.0">
-                   <children>
-                   </children>
-               </HBox>
-           </children>
-           <padding>
-               <Insets left="10.0" right="10.0" />
-           </padding>
-       </VBox>
+       <StackPane pickOnBounds="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+           <VBox fx:id="totemSelect" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" spacing="20.0" styleClass="dark-panel" stylesheets="@style.css">
+               <children>
+                   <Label text="Choose your totem" textFill="WHITE">
+                       <font>
+                           <Font name="System Bold" size="20.0" />
+                       </font>
+                       <opaqueInsets>
+                           <Insets />
+                       </opaqueInsets>
+                   </Label>
+                   <HBox fx:id="totemList" alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="10.0">
+                       <children>
+                       </children>
+                   </HBox>
+               </children>
+               <padding>
+                   <Insets left="10.0" right="10.0" />
+               </padding>
+           </VBox>
 
-       <VBox fx:id="ranking" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #171717; -fx-background-radius: 10;" visible="false" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
-           <children>
-               <Label text="Ranking" textFill="WHITE">
-                   <font>
-                       <Font name="System Bold" size="20.0" />
-                   </font>
-               </Label>
-           </children>
-       </VBox>
+           <VBox fx:id="ranking" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #171717; -fx-background-radius: 10;" visible="false">
+               <children>
+                   <Label text="Ranking" textFill="WHITE">
+                       <font>
+                           <Font name="System Bold" size="30.0" />
+                       </font>
+                   </Label>
+
+                   <GridPane fx:id="rankingGrid" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1">
+                       <columnConstraints>
+                           <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                           <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                       </columnConstraints>
+
+                       <children>
+                       </children>
+                  <rowConstraints>
+                     <RowConstraints />
+                  </rowConstraints>
+
+                   </GridPane>
+               </children>
+
+               <padding>
+                   <Insets top="20.0" />
+               </padding>
+           </VBox>
+       </StackPane>
 
        <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">Round 1</Text>
    </children>

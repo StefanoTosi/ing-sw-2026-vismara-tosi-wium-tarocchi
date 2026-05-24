@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * AnimateObject for totems. Has some utility functions to offset their position relative to an offer tile or the order tile
+ */
 public class AnimatedTotem extends AnimatedObject {
     final int totemW = 245 / 6;
     final int totemH = 427 / 6;

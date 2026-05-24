@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 public class BoardDTO implements Serializable {
     private List<CardDTO> topRowTribe;
@@ -80,15 +82,51 @@ public class BoardDTO implements Serializable {
     }
 
     public Board fromDTO() {
-        return new Board(this.topRowTribe.stream().map(CardDTO::fromDTO).toList(),
-                this.topRowBuilding.stream().map(BuildingDTO::fromDTO).toList(),
-                this.bottomRowTribe.stream().map(CardDTO::fromDTO).toList(),
-                this.bottomRowBuilding.stream().map(BuildingDTO::fromDTO).toList(),
-                new Deck(this.deckTribe.stream().map(CardDTO::fromDTO).toList(), null),
-                new Deck(this.deckE1Building.stream().map(CardDTO::fromDTO).toList(), null),
-                new Deck(this.deckE2Building.stream().map(CardDTO::fromDTO).toList(), null),
-                new Deck(this.deckE3Building.stream().map(CardDTO::fromDTO).toList(), null),
-                (getOrder() != null) ? getOrder().fromDTO() : null,
-                (getOfferPath() != null) ? getOfferPath().stream().map(OfferDTO::fromDTO).toList() : null);
+        return new Board(
+                this.topRowTribe.stream()
+                        .map(CardDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.topRowBuilding.stream()
+                        .map(BuildingDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.bottomRowTribe.stream()
+                        .map(CardDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.bottomRowBuilding.stream()
+                        .map(BuildingDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                new Deck(
+                        this.deckTribe.stream()
+                                .map(CardDTO::fromDTO)
+                                .collect(Collectors.toCollection(ArrayList::new)),
+                        null
+                ),
+                new Deck(
+                        this.deckE1Building.stream()
+                                .map(CardDTO::fromDTO)
+                                .collect(Collectors.toCollection(ArrayList::new)),
+                        null
+                ),
+                new Deck(
+                        this.deckE2Building.stream()
+                                .map(CardDTO::fromDTO)
+                                .collect(Collectors.toCollection(ArrayList::new)),
+                        null
+                ),
+                new Deck(
+                        this.deckE3Building.stream()
+                                .map(CardDTO::fromDTO)
+                                .collect(Collectors.toCollection(ArrayList::new)),
+                        null
+                ),
+                (getOrder() != null)
+                        ? getOrder().fromDTO()
+                        : null,
+                (getOfferPath() != null)
+                        ? getOfferPath().stream()
+                          .map(OfferDTO::fromDTO)
+                          .collect(Collectors.toCollection(ArrayList::new))
+                        : null
+        );
     }
 }
