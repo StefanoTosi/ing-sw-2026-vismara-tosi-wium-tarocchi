@@ -51,7 +51,7 @@ public class CavePaintings extends Event {
                 player.addPp(deltaPp);
             }
 
-            results.add(new EventResult("CavePaintings", player.toDTO(), deltaPp, deltaFood));
+            results.add(new EventResult("CavePaintings", this.id, player.toDTO(), deltaPp, deltaFood));
         }
 
         return results;

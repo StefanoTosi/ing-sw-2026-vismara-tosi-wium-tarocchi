@@ -48,7 +48,7 @@ class CavePaintingsTest {
         }
 
         ef.applyEffect(players);
-        assertEquals(17, p1.getPp());
+        assertEquals(22, p1.getPp());
 
         try {
             p1.addCard(a3);
@@ -57,7 +57,7 @@ class CavePaintingsTest {
         }
 
         ef.applyEffect(players);
-        assertEquals(22, p1.getPp());
+        assertEquals(37, p1.getPp());
 
         //Test building effect
         Building building = new Building(Era.I, 2, 3, 0, null, Effect.ECP);

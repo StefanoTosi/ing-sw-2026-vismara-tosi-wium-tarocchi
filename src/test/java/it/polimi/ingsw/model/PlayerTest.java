@@ -130,12 +130,9 @@ class PlayerTest {
             throw new RuntimeException(e);
         }
         Card card2 = new ShamanicRitual(2, 2, Era.II);
-        try {
-            player.addCard(card2);
-        } catch (IllegalActionException e) {
-            throw new RuntimeException(e);
-        }
+        assertThrows(IllegalActionException.class, ()->player.addCard(card2));
         assertEquals(1, player.countNumCharacters());
+
         Card card4 = new Artist(Era.II);
         try {
             player.addCard(card4);

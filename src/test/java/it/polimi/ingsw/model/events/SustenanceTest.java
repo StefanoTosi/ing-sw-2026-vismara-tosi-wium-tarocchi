@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.characters.Gatherer;
+import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
@@ -75,16 +77,16 @@ class SustenanceTest {
         Player p5 = new Player("Tomasulo");
         p5.setFood(0);
         p5.setPp(10);
+        Building b = new Building(Era.I, 1, 1, 0, (_) -> 4, Effect.ES1);
         try {
             p5.addCard(a1);
             p5.addCard(a2);
             p5.addCard(a3);
             p5.addCard(a4);
+            p5.addCard(b);
         } catch (IllegalActionException e) {
             throw new RuntimeException(e);
         }
-
-        p5.setFoodDiscount(4);
 
         List<Player> players = Arrays.asList(p1, p2, p3, p4, p5);
         s.applyEffect(players);
