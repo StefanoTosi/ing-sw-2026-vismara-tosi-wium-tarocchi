@@ -100,7 +100,7 @@ public class Building extends Card {
      * @return BuildingDTO
      */
     public BuildingDTO toDTO() {
-        return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffect().name(), getEffectCharacter(), getEra().name(), getId());
+        return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffectCharacter(), getEffect().name(), getEra().name(), getId());
     }
 
     /**
