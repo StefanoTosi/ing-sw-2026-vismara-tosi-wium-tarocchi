@@ -75,6 +75,10 @@ public class CardDTO implements Serializable {
         return 0;
     }
 
+    public String getEffectCharacter() {
+        return null;
+    }
+
     public String getEffect() {
         return "";
     }

@@ -13,13 +13,15 @@ public class BuildingDTO extends CardDTO implements Serializable {
     private final int cost;
     private final int pp;
     private final int effectPp;
+    private final String effectCharacter;
     private final String effect;
 
     @JsonCreator
-    public BuildingDTO(@JsonProperty("cost") int cost, @JsonProperty("pp") int pp, @JsonProperty("effectPp") int effectPp, @JsonProperty("effect") String effect, @JsonProperty("era") String era, @JsonProperty("id") int id) {
+    public BuildingDTO(@JsonProperty("cost") int cost, @JsonProperty("pp") int pp, @JsonProperty("effectPp") int effectPp, @JsonProperty("effectCharacter") String effectCharacter, @JsonProperty("effect") String effect, @JsonProperty("era") String era, @JsonProperty("id") int id) {
         this.cost = cost;
         this.pp = pp;
         this.effectPp = effectPp;
+        this.effectCharacter = effectCharacter;
         this.effect = effect;
         super(era, "Building", "Building", id);
     }
@@ -40,7 +42,11 @@ public class BuildingDTO extends CardDTO implements Serializable {
         return effect;
     }
 
+    public String getEffectCharacter() {
+        return effectCharacter;
+    }
+
     public Building fromDTO() {
-        return new Building(Era.valueOf(this.getEra()), this.cost, this.pp, this.effectPp, null /*TODO*/, Effect.valueOf(this.effect));
+        return new Building(Era.valueOf(this.getEra()), this.cost, this.pp, this.effectPp, null /*TODO*/, this.effectCharacter, Effect.valueOf(this.effect));
     }
 }

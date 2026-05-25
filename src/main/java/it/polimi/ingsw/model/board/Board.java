@@ -203,6 +203,7 @@ public class Board {
                     case "Building":
                         Effect effect = Effect.valueOf(node.get("effect").get("effectId").asText());
                         int effectPp = 0;
+                        String effectCharacter = null;
                         Function<Player, Integer> getNumCharacter = (p) -> 0;
 
                         // Get pp bonus when present
@@ -215,28 +216,35 @@ public class Board {
                             switch (node.get("effect").get("character").asText()) {
                                 case "Artist":
                                     getNumCharacter = Player::getNumArtists;
+                                    effectCharacter = "Artist";
+
                                     break;
                                 case "Builder":
                                     getNumCharacter = Player::getNumBuilders;
+                                    effectCharacter = "Builder";
                                     break;
                                 case "Gatherer":
                                     getNumCharacter = Player::getNumGatherers;
+                                    effectCharacter = "Gatherer";
                                     break;
                                 case "Hunter":
                                     getNumCharacter = Player::getNumHunters;
+                                    effectCharacter = "Hunter";
                                     break;
                                 case "Inventor":
                                     getNumCharacter = Player::getNumInventors;
+                                    effectCharacter = "Inventor";
                                     break;
                                 case "Shaman":
                                     getNumCharacter = Player::getNumShamans;
+                                    effectCharacter = "Shaman";
                                     break;
                                 default:
                                     throw new DataFormatException("Unrecognized character '" + node.get("type").asText() + "' while parsing cards.json");
                             }
                         }
 
-                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, getNumCharacter, effect);
+                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, getNumCharacter, effectCharacter, effect);
                         building.setId(id);
 
                         switch (era) {
