@@ -10,8 +10,13 @@ import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.BoardDTO;
 import it.polimi.ingsw.model.board.OfferDTO;
+import it.polimi.ingsw.model.events.EventResult;
+import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.UIObserver;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -344,41 +349,88 @@ public class FieldController implements UIObserver {
     public void update(GameDTO game) throws IOException, IllegalActionException {
         System.out.println(game.getState());
 
-        // Reconcile the playing field with the new GameDTO
-        UISession.setGame(game);
-        reconcileTotems(game);
-        reconcileCards(game);
-        reconcileSelectedHand(game);
+        // Handle events
+        int ei = 0;
+        Transition last = null;
+        if (game.getEventResults() != null && !game.getEventResults().isEmpty()) {
+            for (String ev : game.getEventResults().keySet()) {
+                int id = game.getEventResults().get(ev).get(0).cardId();
+                idRegistry.get(id).getMesh().setTranslateZ(-10);
+                ScaleTransition s = new ScaleTransition(Duration.seconds(1), idRegistry.get(id).getMesh());
+                s.setFromX(1);
+                s.setToX(2);
+                s.setFromY(1);
+                s.setToY(2);
 
-        // Update toasts
-        updateInstructionLabel();
-        updateErrorToast();
-
-        // Update misc
-        updateRanking();
-        Platform.runLater(() -> {
-            // Update chosen totems
-            game.getPlayers().stream()
-                    .map(p -> p.getTotem())
-                    .filter(t -> t != null)
-                    .forEach(t -> {
-                        totemList.getChildren().remove(cardsContainer.getScene().lookup("#" + t.getId() + "totemButton"));
+                if (last == null) {
+                    last = s;
+                    s.play();
+                    idRegistry.get(id).spin();
+                } else {
+                    last.setOnFinished((e) -> {
+                        s.play();
+                        idRegistry.get(id).spin();
                     });
-
-            for (int i = 0; i < game.getPlayers().size(); i++) {
-                PlayerDTO p = game.getPlayers().get(i);
-                if (p.getTotem() != null) {
-                    totems.get(i).setImgae(new Image(getClass().getResource("/totems/" + p.getTotem().getId() + ".png").toExternalForm()));
+                    last = s;
                 }
+                ei += 0;
             }
+        }
 
-            // Hide totem selection
-            if (game.getState() != StateDTO.CHOOSETOTEM) {
-                totemSelect.setVisible(false);
-            }
+        if (last == null) {
+            System.out.println("null last");
+            ScaleTransition s = new ScaleTransition(Duration.seconds(0.01), deck);
+            s.setFromX(1);
+            s.setToX(1);
+            s.setFromY(1);
+            s.setToY(1);
 
-            // Round
-            round.setText("Round " + game.getTurnNumber());
+            last = s;
+
+            last.play();
+        }
+
+        last.setOnFinished((e) -> {
+            System.out.println("last done");
+            // Reconcile the playing field with the new GameDTO
+            UISession.setGame(game);
+            reconcileTotems(game);
+            reconcileCards(game);
+            reconcileSelectedHand(game);
+
+            // Update toasts
+            updateInstructionLabel();
+            updateErrorToast();
+
+            // Update misc
+            updateRanking();
+            updatePlayerInfo();
+            Platform.runLater(() -> {
+                // Update chosen totems
+                game.getPlayers().stream()
+                        .map(p -> p.getTotem())
+                        .filter(t -> t != null)
+                        .forEach(t -> {
+                            totemList.getChildren().remove(cardsContainer.getScene().lookup("#" + t.getId() + "totemButton"));
+                        });
+
+                for (int i = 0; i < game.getPlayers().size(); i++) {
+                    PlayerDTO p = game.getPlayers().get(i);
+                    if (p.getTotem() != null) {
+                        totems.get(i).setImgae(new Image(getClass().getResource("/totems/" + p.getTotem().getId() + ".png").toExternalForm()));
+                    }
+                }
+
+                // Hide totem selection
+                if (game.getState() != StateDTO.CHOOSETOTEM) {
+                    totemSelect.setVisible(false);
+                }
+
+                // Round
+                if (game.getState() != StateDTO.ENDGAME) {
+                    round.setText("Round " + game.getTurnNumber());
+                }
+            });
         });
     }
 
@@ -501,6 +553,19 @@ public class FieldController implements UIObserver {
         // Put card in the tab
         Platform.runLater(() -> {
             cardsContainer.getChildren().remove(c.getMesh());
+            c.getMesh().setOnMouseClicked(null);
+            c.getMesh().setOnMouseEntered((e) -> {
+                TranslateTransition t = new TranslateTransition(Duration.seconds(0.1), c.getMesh());
+                t.setFromY(0);
+                t.setToY(-20);
+                t.play();
+            });
+            c.getMesh().setOnMouseExited((e) -> {
+                TranslateTransition t = new TranslateTransition(Duration.seconds(0.1), c.getMesh());
+                t.setFromY(-20);
+                t.setToY(0);
+                t.play();
+            });
         });
     }
 
@@ -641,21 +706,35 @@ public class FieldController implements UIObserver {
      */
     private void reconcileSelectedHand(GameDTO game) {
         Platform.runLater(() -> {
+            hand.getChildren().clear();
             for (PlayerDTO p : game.getPlayers()) {
                 if (p.getName().equals(selectedPlayer)) {
-                    List<CardDTO> newHand = new ArrayList<>(p.getArtists());
-                    newHand.addAll(p.getBuildings());
-                    newHand.addAll(p.getBuilders());
-                    newHand.addAll(p.getGatherers());
-                    newHand.addAll(p.getHunters());
-                    newHand.addAll(p.getInventors());
-                    newHand.addAll(p.getShamans());
+                    List<List<CardDTO>> stacks = new ArrayList<List<CardDTO>>();
+                    stacks.add(p.getArtists().stream().map(c -> (CardDTO) c).toList());
+                    // stacks.add(p.getBuildings().stream().map(c -> (CardDTO) c).toList());
+                    stacks.add(p.getBuilders().stream().map(c -> (CardDTO) c).toList());
+                    stacks.add(p.getGatherers().stream().map(c -> (CardDTO) c).toList());
+                    stacks.add(p.getHunters().stream().map(c -> (CardDTO) c).toList());
+                    stacks.add(p.getInventors().stream().map(c -> (CardDTO) c).toList());
+                    stacks.add(p.getShamans().stream().map(c -> (CardDTO) c).toList());
 
-                    for (CardDTO c : newHand) {
-                        // If absent, insert it
-                        if (hand.getChildren().stream().noneMatch(m -> meshRegistry.get(m).getCard().getId() == c.getId())){
-                            hand.getChildren().add(idRegistry.get(c.getId()).getMesh());
+                    for (List<CardDTO> stack : stacks) {
+                        StackPane stackPane = new StackPane();
+                        hand.getChildren().add(stackPane);
+
+                        int i = stack.size() - 1;
+                        for (CardDTO c : stack) {
+                            Group m = idRegistry.get(c.getId()).getMesh();
+                            stackPane.getChildren().add(m);
+                            StackPane.setMargin(m, new Insets(0, 0, 70 * i, 0));
+                            i -= 1;
                         }
+                    }
+
+                    // Add buildings unstacked
+                    for (CardDTO c : p.getBuildings()) {
+                        Group m = idRegistry.get(c.getId()).getMesh();
+                        hand.getChildren().add(m);
                     }
                 }
             }
@@ -669,9 +748,6 @@ public class FieldController implements UIObserver {
     void playerClicked(MouseEvent e) {
         String player = ((Label) ((VBox) e.getSource()).getChildren().get(0)).getText();
         selectedPlayer = player;
-
-        // Empty the hand
-        hand.getChildren().clear();
 
         // Refill the hand
         reconcileSelectedHand(UISession.getGame());
