@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
+/**
+ * Holds information about the current {@code Board} in DTO format.
+ */
 public class BoardDTO implements Serializable {
     private List<CardDTO> topRowTribe;
     private List<BuildingDTO> topRowBuilding;
@@ -26,6 +29,19 @@ public class BoardDTO implements Serializable {
     @JsonCreator
     private BoardDTO() {}
 
+    /**
+     * Generates and initializes a {@code BoardDTO} object, filled with the specified parameters.
+     * @param topRowTribe the top row of Character and Event cards
+     * @param topRowBuilding the top row of Building cards
+     * @param bottomRowTribe the bottom row of Character and Event cards
+     * @param bottomRowBuilding the bottom row of Building cards
+     * @param deckTribe the covered deck of Character and Event cards
+     * @param deckE1Building the covered deck of first era buildings
+     * @param deckE2Building the covered deck of second era buildings
+     * @param deckE3Building the covered deck of third era buildings
+     * @param order the tile where totems are placed before being moved to the offer path
+     * @param offerPath the list of tiles where players can place their totem
+     */
     public BoardDTO(List<CardDTO> topRowTribe, List<BuildingDTO> topRowBuilding, List<CardDTO> bottomRowTribe, List<BuildingDTO> bottomRowBuilding,
                     List<CardDTO> deckTribe, List<BuildingDTO> deckE1Building, List<BuildingDTO> deckE2Building, List<BuildingDTO> deckE3Building,
                     OrderDTO order, List<OfferDTO> offerPath) {
@@ -81,6 +97,11 @@ public class BoardDTO implements Serializable {
         return offerPath;
     }
 
+    /**
+     * Converts the current {@code BoardDTO} object into the corresponding {@code Board},
+     * converting all of its components as well through calls to other {@code fromDTO} methods.
+     * @return the {@code Board} obtained by converting all its components from DTO to standard objects
+     */
     public Board fromDTO() {
         return new Board(
                 this.topRowTribe.stream()

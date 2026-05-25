@@ -25,7 +25,7 @@ public class HuntDTO extends CardDTO implements Serializable {
         }
         event[0].append("|%-10s|");
         event[1].append(String.format("|%-10s|", getName()));
-        event[2].append("|          |");
+        event[2].append(String.format("|%-10s|", getPp()));
         event[3].append("|          |");
         event[4].append("|          |");
         event[5].append(String.format("|%-10s|", getEra()));

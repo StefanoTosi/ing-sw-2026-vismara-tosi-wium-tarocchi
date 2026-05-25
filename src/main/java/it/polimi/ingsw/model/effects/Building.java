@@ -18,6 +18,7 @@ public class Building extends Card {
     // Effect properties
     protected int effectPp;
     protected Function<Player, Integer> getNumCharacter;
+    protected String effectCharacter = null;
     protected Effect effect;
 
     /**
@@ -29,12 +30,13 @@ public class Building extends Card {
      * @param getNumCharacter
      * @param effect
      */
-    public Building(Era era, int cost, int pp, int effectPp, Function<Player, Integer> getNumCharacter, Effect effect) {
+    public Building(Era era, int cost, int pp, int effectPp, Function<Player, Integer> getNumCharacter, String effectCharacter, Effect effect) {
         super(era);
         this.cost = cost;
         this.pp = pp;
         this.effectPp = effectPp;
         this.getNumCharacter = getNumCharacter;
+        this.effectCharacter = effectCharacter;
         this.effect = effect;
         this.TYPE = "Building";
     }
@@ -89,12 +91,16 @@ public class Building extends Card {
         return effect;
     }
 
+    public String getEffectCharacter() {
+        return effectCharacter;
+    }
+
     /**
      * Gets the building class and converts it to a DTO class, so that we can pass the data to the client
      * @return BuildingDTO
      */
     public BuildingDTO toDTO() {
-        return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffect().name(), getEra().name(), getId());
+        return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffect().name(), getEffectCharacter(), getEra().name(), getId());
     }
 
     /**

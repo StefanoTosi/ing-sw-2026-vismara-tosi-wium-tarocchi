@@ -116,7 +116,7 @@ public class TUI implements UIObserver {
                 break;
             case 2:
                 printScoreBoard();
-                anotherGame();
+                start();
                 break;
             case 3:
                 client.leaveGame();
@@ -224,7 +224,7 @@ public class TUI implements UIObserver {
             // State of the game and Turn number:
             System.out.println(BLUE + "Current state: " + game.getState());
             if(!game.getState().equals(StateDTO.ENDGAME)){
-                System.out.println("Current turn " + game.getTurnNumber());
+                System.out.println(BLUE + "Current turn " + game.getTurnNumber());
             }
 
 
@@ -291,7 +291,7 @@ public class TUI implements UIObserver {
                         for (OfferDTO offerTile : offerTiles) {
                             freeTiles[i++] = offerTile.getOrder();
                         }
-                        i=0;
+                        i = 0;
                         for(PlayerDTO p : game.getPlayers()){
                             occupiedTiles[i++] = p.getOffer();
                         }
@@ -309,7 +309,7 @@ public class TUI implements UIObserver {
                         }
                     }
                     else {
-                        System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                        System.out.println(BLUE + "Current player turn: " + game.getPlayerTurn().getName());
                     }
                     break;
                 case StateDTO.DRAWCARD:
@@ -357,7 +357,8 @@ public class TUI implements UIObserver {
 
                     }
                     else {
-                        System.out.println("Current player turn: " + game.getPlayerTurn().getName());
+                        printBoard();
+                        System.out.println(BLUE + "Current player turn: " + game.getPlayerTurn().getName());
                         drawInitialiazed = false;
                     }
                     break;
@@ -393,9 +394,11 @@ public class TUI implements UIObserver {
     private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
-        System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-        card = readInt() - 1; // fixes index and pos mismatch
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
+        do{
+            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+            card = readInt() - 1; // fixes index and pos mismatch
+        }while(card < 0 || card > size);
         if(!getGameClosed()){
                 try{
                     client.executeAction(new DrawCardFromBottomAction(card));
@@ -420,24 +423,21 @@ public class TUI implements UIObserver {
     private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
-        System.out.println("Choose which card to draw from the Top Row (write its number): ");
-        card = readInt() - 1; // fixes index and pos mismatch
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-        if(card >= 0 && card < size){
-            if(!getGameClosed()){
-                try {
-                    client.executeAction(new DrawCardFromTopAction(card));
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    return 0;
-                }
-                return -1;
+        do{
+            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+            card = readInt() - 1; // fixes index and pos mismatch
+        }while(card < 0 || card > size);
+        if(!getGameClosed()){
+            try {
+                client.executeAction(new DrawCardFromTopAction(card));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return 0;
             }
-            return -10;
-        }else{
-            System.out.println("You chose a card out of range\n");
-            return 0;
+            return -1;
         }
+        return -10;
     }
 
 
@@ -534,21 +534,25 @@ public class TUI implements UIObserver {
 
     //TODO: SPOSTA ANCHE QUESTO IN BUILDING DTO
     public StringBuilder[] printBuildings(List<BuildingDTO> buildings, int numCard){
+        numCard++;
         StringBuilder[] lines = new StringBuilder[7];
         for(int i = 0; i < 7; i++){
             lines[i] = new StringBuilder();
         }
 
-        for(BuildingDTO building : buildings) {
-            lines[0].append(ORANGE).append(String.format("+----%d-----+", numCard+1));
-            lines[1].append(ORANGE).append(String.format("|%-10s|", "Build"));
-            lines[2].append(ORANGE).append(String.format("|%-10s|", building.getCost()));
-            lines[3].append(ORANGE).append(String.format("|%-10s|", building.getEffect()));
-            lines[4].append(ORANGE).append(String.format("|%-10s|", building.getEra()));
-            lines[5].append(ORANGE + "|          |");
-            lines[6].append(ORANGE + "+----------+");
-            numCard++;
+        StringBuilder[] printed = new StringBuilder[7];
+        for(int i = 0; i < 7; i++){
+            printed[i] = new StringBuilder(ORANGE);
         }
+
+        for(BuildingDTO building : buildings){
+            printed = building.printCard();
+            printed[0] = new StringBuilder().append(String.format("+----%d-----+", numCard++));
+            for(int i=0; i<7; i++){
+                lines[i].append(printed[i]);
+            }
+        }
+
         return lines;
     }
 
@@ -758,6 +762,8 @@ public class TUI implements UIObserver {
             case "board":
                 printBoard();
                 return true;
+            case "info":
+                // TODO
             default:
                 return false;
         }
