@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import net.bytebuddy.description.type.PackageDescription;
 
 import java.io.IOException;
@@ -44,6 +45,16 @@ public class StartGameController implements UIObserver {
         Platform.runLater(() -> {
             String css = this.getClass().getResource("/it/polimi/ingsw/UI/GUI/style.css").toExternalForm();
             label.getScene().getStylesheets().add(css);
+
+            // Send a close signal to the server when the player disconnects
+            ((Stage) label.getScene().getWindow()).setOnCloseRequest(event -> {
+                try {
+                    UISession.getClient().stopGame(UISession.getClient().getNickname());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                System.exit(0);
+            });
         });
     }
 
@@ -190,7 +201,26 @@ public class StartGameController implements UIObserver {
      */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
-        // TODO: !!!
+        System.out.println("Recieved closing client");
+        Platform.runLater(() -> {
+            try {
+                UISession.getClient().leaveMatch();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            errorToast.setVisible(true);
+            ((Label) errorToast.getChildren().getFirst()).setText("Sorry, the game as been closed due to a disconnection of a player");
+
+            playAgain.setVisible(true);
+
+            clientSelect.setVisible(false);
+            login.setVisible(false);
+            waiting.setVisible(false);
+            newGame.setVisible(false);
+
+            waiting.getChildren().remove(1, waiting.getChildren().size());
+        });
     }
 
     /**
