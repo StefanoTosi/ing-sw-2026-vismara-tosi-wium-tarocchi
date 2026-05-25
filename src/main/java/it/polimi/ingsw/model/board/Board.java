@@ -20,7 +20,8 @@ import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.events.*;
 
 /**
- * Game board, holds information about all elements present on the board
+ * Holds information about all elements present on the board.<br>
+ * It contains a covered deck, a top and a bottom row of cards, an order tile and an offer path.
  */
 public class Board {
     private List<Card> topRowTribe;
@@ -39,7 +40,7 @@ public class Board {
     private Random rng;
 
     /**
-     * Generates an empty board. Decks will be filled by initialize() and the rows will be arranged in the RefillBoardState
+     * Generates an empty board. Decks will be filled by initialize() and the rows will be arranged in <code>RefillBoardState</code>.
      */
     public Board(Random rng) {
         this.topRowTribe = new ArrayList<>();
@@ -58,6 +59,19 @@ public class Board {
         this.rng = rng;
     }
 
+    /**
+     * Generates a board filled with the specified parameters.
+     * @param topRowTribe the top row of Character and Event cards
+     * @param topRowBuilding the top row of Building cards
+     * @param bottomRowTribe the bottom row of Character and Event cards
+     * @param bottomRowBuilding the bottom row of Building cards
+     * @param deckTribe the covered deck of Character and Event cards
+     * @param deckE1Building the covered deck of first era buildings
+     * @param deckE2Building the covered deck of second era buildings
+     * @param deckE3Building the covered deck of third era buildings
+     * @param order the tile where totems are placed before being moved to the offer path
+     * @param offerPath the list of tiles where players can place their totem
+     */
     public Board(List<Card> topRowTribe, List<Building> topRowBuilding, List<Card> bottomRowTribe, List<Building> bottomRowBuilding,
                  Deck deckTribe, Deck deckE1Building, Deck deckE2Building, Deck deckE3Building, Order order, List<Offer> offerPath) {
         this.topRowTribe = topRowTribe;
@@ -75,7 +89,10 @@ public class Board {
     }
 
     /**
-     * Initializes a starting board given the number of players
+     * Initializes a starting board, given the number of players.<br>
+     * It parses the json file containing the cards, creating the covered decks and the offer path.
+     * The top and bottom rows are left empty as they will be filled in <code>RefillBoardState</code>.
+     * @param numPlayers the number of players in the current game
      */
     public void initialize(int numPlayers) throws IllegalArgumentException {
         if (numPlayers < 2 || numPlayers > 5) {
@@ -184,27 +201,9 @@ public class Board {
 
                         break;
                     case "Building":
-                        //manca il passaggio di effect nel costruttore di building
                         Effect effect = Effect.valueOf(node.get("effect").get("effectId").asText());
                         int effectPp = 0;
                         Function<Player, Integer> getNumCharacter = (p) -> 0;
-                        /* switch (effect) {
-                            case D1, D2:
-                                break;
-                            case ES1, ESC1, ESC2, ESC3, EH, ECP:
-                                break;
-                            case ET1:
-                                break;
-                            case ET2:
-                                break;
-                            case EG1, EG2, EG4:
-                                break;
-                            case EG3:
-                                effectPp = node.get("effect").get("pp").asInt();
-                                break;
-                            default:
-                                throw new DataFormatException("Unrecognized effect Id '" + node.get("effect").get("effectId").asText() + "' while parsing cards.json");
-                        }*/
 
                         // Get pp bonus when present
                         if (node.get("effect").get("pp") != null) {
@@ -410,7 +409,10 @@ public class Board {
     }
 
     /**
-     * Picks the card in the top tribe row at position pos
+     * Returns the card in the top tribe row at specified position, without removing it from the row.
+     * @param pos the index of the card to be drawn
+     * @return the card present in the specified position
+     * @throws IllegalArgumentException if the specified position is not a valid index
      */
     public Card drawFromTopRowTribe(int pos) throws IllegalArgumentException {
         if (pos < 0 || pos >= topRowTribe.size()) {
@@ -421,7 +423,10 @@ public class Board {
     }
 
     /**
-     * Picks the card in the top building row at position pos
+     * Returns the card in the top building row at specified position, without removing it from the row.
+     * @param pos the index of the card to be drawn
+     * @return the card present in the specified position
+     * @throws IllegalArgumentException if the specified position is not a valid index
      */
     public Building drawFromTopRowBuilding(int pos) throws IllegalArgumentException {
         if (pos < 0 || pos >= topRowBuilding.size()) {
@@ -431,7 +436,10 @@ public class Board {
     }
 
     /**
-     * Picks the card in the bottom tribe row at position pos
+     * Returns the card in the bottom tribe row at specified position, without removing it from the row.
+     * @param pos the index of the card to be drawn
+     * @return the card present in the specified position
+     * @throws IllegalArgumentException if the specified position is not a valid index
      */
     public Card drawFromBottomRowTribe(int pos) throws IllegalArgumentException {
         if (pos < 0 || pos >= bottomRowTribe.size()) {
@@ -442,7 +450,10 @@ public class Board {
     }
 
     /**
-     * Picks the card in the bottom building row at position pos
+     * Returns the card in the bottom building row at specified position, without removing it from the row.
+     * @param pos the index of the card to be drawn
+     * @return the card present in the specified position
+     * @throws IllegalArgumentException if the specified position is not a valid index
      */
     public Building drawFromBottomRowBuilding(int pos) throws IllegalArgumentException {
         if (pos < 0 || pos >= bottomRowBuilding.size()) {
@@ -476,9 +487,9 @@ public class Board {
     }
 
     /**
-     * Calculates available cards the player is allowed to draw from the top row (subtracting events and unaffordable buildings)
+     * Calculates available cards the specified player is allowed to draw from the top row, subtracting events and unaffordable buildings.
      * @param player
-     * @return int
+     * @return the number of available cards
      */
     public int drawableCardsFromTop(Player player) {
         int topRowSize = topRowTribe.size() + topRowBuilding.size();
@@ -501,6 +512,11 @@ public class Board {
         return topRowSize;
     }
 
+    /**
+     * Calculates available cards the specified player is allowed to draw from the bottom row, subtracting events and unaffordable buildings.
+     * @param player
+     * @return the number of available cards
+     */
     public int drawableCardsFromBottom(Player player) {
         int bottomRowSize = bottomRowTribe.size() + bottomRowBuilding.size();
 
@@ -523,11 +539,13 @@ public class Board {
     }
 
     /**
-     * Verifies if the player can draw at least one available card
+     * Verifies if the player can draw at least one available card,
+     * considering the offer tile where their totem is placed and the available cards on the board.
      * @param player
-     * @param drawnTop number of cards the player has already drawn from the top row
-     * @param drawnBottom number of cards the player has already drawn from the bottom row
-     * @return boolean
+     * @param drawnTop number of cards the player has already drawn from the top row in the current turn
+     * @param drawnBottom number of cards the player has already drawn from the bottom row in the current turn
+     * @return {@code true} if the player can draw at least one card,
+     *         {@code false} otherwise
      */
     public boolean playerCanDraw(Player player, int drawnTop, int drawnBottom) {
         int drawTop = 0;
@@ -554,6 +572,10 @@ public class Board {
         return false;
     }
 
+    /**
+     * Converts the current board into the corresponding DTO class.
+     * @return the corresponding board in DTO format
+     */
     public BoardDTO toDTO(){
         return new BoardDTO(getTopRowTribe().stream().map(Card::toDTO).toList(),
                 getTopRowBuilding().stream().map(Building::toDTO).toList(),

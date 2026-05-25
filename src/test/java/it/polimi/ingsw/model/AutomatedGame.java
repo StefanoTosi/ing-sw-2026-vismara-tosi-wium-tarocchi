@@ -60,4 +60,13 @@ public class AutomatedGame {
         }
         System.out.println();
     }
+
+    public Player getCurrentPlayer() {
+        List<Player> drawOrder = new ArrayList<>(game.getPlayers()
+                .stream()
+                .sorted((p1, p2) -> p1.getOrder() - p2.getOrder())
+                .toList());
+
+        return drawOrder.getFirst();
+    }
 }

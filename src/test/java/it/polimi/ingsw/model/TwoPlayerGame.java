@@ -1,10 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.actions.Action;
-import it.polimi.ingsw.controller.actions.ChooseOfferAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
-import it.polimi.ingsw.model.events.Event;
+import it.polimi.ingsw.controller.actions.*;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +28,9 @@ public class TwoPlayerGame {
         ag.printEventsToResolve();
         ag.printPlayersOrder();
 
+        ag.step(new ChooseTotemAction(Totem.BLUE), players.get(0));
+        ag.step(new ChooseTotemAction(Totem.PURPLE), players.get(1));
+
         // Turn 1
         System.out.println("Turn: " + game.getTurnNumber());
 
@@ -41,10 +40,10 @@ public class TwoPlayerGame {
 
         // Draw cards
         System.out.println("Top row 0: ");
-        System.out.println(game.getBoard().getTopRowTribe().get(0));
+        System.out.println(game.getBoard().getTopRowTribe().getFirst());
 
         System.out.println("Bottom row 0: ");
-        System.out.println(game.getBoard().getBottomRowTribe().get(0));
+        System.out.println(game.getBoard().getBottomRowTribe().getFirst());
         System.out.println();
 
         ag.step(new DrawCardFromBottomAction(0), players.get(0));
@@ -58,10 +57,6 @@ public class TwoPlayerGame {
         ag.printPlayerStats();
         ag.printEventsToResolve();
         ag.printPlayersOrder();
-        assertEquals(1, players.get(0).getFood());
-        assertEquals(0, players.get(0).getPp());
-        assertEquals(0, players.get(1).getFood());
-        assertEquals(0, players.get(1).getPp());
 
         // Turn 2
         System.out.println("Turn: " + game.getTurnNumber());

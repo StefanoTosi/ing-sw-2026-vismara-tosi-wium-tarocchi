@@ -48,7 +48,7 @@ public class Hunt extends Event {
             //Update results list
             deltaPp = player.getPp() - prevPp;
             deltaFood = player.getFood() - prevFood;
-            results.add(new EventResult("Hunt", player.toDTO(), deltaPp, deltaFood));
+            results.add(new EventResult("Hunt", this.id, player.toDTO(), deltaPp, deltaFood));
         }
 
         return results;

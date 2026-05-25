@@ -6,7 +6,9 @@ import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerDTO implements Serializable {
     private final String name;
@@ -48,14 +50,35 @@ public class PlayerDTO implements Serializable {
     }
 
     public Player fromDTO() {
-        return new Player(this.name, this.artists.stream().map(ArtistDTO::fromDTO).toList(),
-                this.gatherers.stream().map(GathererDTO::fromDTO).toList(),
-                this.hunters.stream().map(HunterDTO::fromDTO).toList(),
-                this.inventors.stream().map(InventorDTO::fromDTO).toList(),
-                this.shamans.stream().map(ShamanDTO::fromDTO).toList(),
-                this.builders.stream().map(BuilderDTO::fromDTO).toList(),
-                this.buildings.stream().map(BuildingDTO::fromDTO).toList(),
-                this.pp, this.food, this.order, this.offer, this.totem);
+        return new Player(
+                this.name,
+                this.artists.stream()
+                        .map(ArtistDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.gatherers.stream()
+                        .map(GathererDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.hunters.stream()
+                        .map(HunterDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.inventors.stream()
+                        .map(InventorDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.shamans.stream()
+                        .map(ShamanDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.builders.stream()
+                        .map(BuilderDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.buildings.stream()
+                        .map(BuildingDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.pp,
+                this.food,
+                this.order,
+                this.offer,
+                this.totem
+        );
     }
 
     public String getName() {

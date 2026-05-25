@@ -87,7 +87,7 @@ public class ShamanicRitual extends Event {
             }
 
             player.addPp(deltaPp);
-            results.add(new EventResult("ShamanicRitual", player.toDTO(), deltaPp, 0));
+            results.add(new EventResult("ShamanicRitual", this.id, player.toDTO(), deltaPp, 0));
         }
 
         return results;

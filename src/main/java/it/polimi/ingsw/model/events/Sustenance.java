@@ -54,7 +54,7 @@ public class Sustenance extends Event {
                 player.addPp(deltaPp);
             }
 
-            results.add(new EventResult("Sustenance", player.toDTO(), deltaPp, deltaFood));
+            results.add(new EventResult("Sustenance", this.id, player.toDTO(), deltaPp, deltaFood));
         }
 
         return results;

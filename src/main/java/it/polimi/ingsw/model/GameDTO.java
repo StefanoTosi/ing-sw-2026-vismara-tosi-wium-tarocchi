@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.events.EventResult;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 public class GameDTO implements Serializable {
     private  List<PlayerDTO> players;
@@ -36,8 +38,15 @@ public class GameDTO implements Serializable {
     }
 
     public Game fromDTO() {
-        return new Game(this.players.stream().map(PlayerDTO::fromDTO).toList(), this.numPlayers, this.board.fromDTO(),
-                        this.rankings.stream().map(PlayerDTO::fromDTO).toList(), this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber, this.eventResults);
+        return new Game(
+                this.players.stream()
+                        .map(PlayerDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.numPlayers, this.board.fromDTO(),
+                this.rankings.stream()
+                        .map(PlayerDTO::fromDTO)
+                        .collect(Collectors.toCollection(ArrayList::new)),
+                this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber, this.eventResults);
     }
 
     public List<PlayerDTO> getPlayers() {

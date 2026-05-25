@@ -15,6 +15,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+/**
+ * RMI server implementation.
+ *
+ * Responsibilities:
+ * - User authentication and registration
+ * - Managing RMI client callbacks
+ * - Game lifecycle management (create, join, leave)
+ * - Client heartbeat monitoring (ping-based timeout detection)
+ *
+ * Uses a GameController for game logic and a shared user map for persistence.
+ */
 public class ServerRMI extends UnicastRemoteObject implements Controller {
     private GameController gamesController;
     private final Map<String, ClientCallBack> clients;
@@ -22,6 +34,13 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     private ConcurrentHashMap<String, Long> lastSeen = new ConcurrentHashMap<>();
     private final Object lock;
 
+    /**
+     * Constructor.
+     *
+     * @param game Game controller
+     * @param users Shared user map
+     * @param lock Global synchronization lock
+     */
     public ServerRMI(GameController game, Map<String, User> users, Object lock) throws RemoteException {
         clients = new ConcurrentHashMap<>();
         this.users = users;
@@ -30,6 +49,13 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         checkTimeouts();
     }
 
+    /**
+     * Registers a new user or performs login.
+     *
+     * - If user exists: validates password
+     * - If user does not exist: creates a new account
+     * - Stores RMI callback for later server notifications
+     */
     @Override
     public boolean addUser(String psw, String nickname, ClientCallBack client) throws RemoteException {
         boolean success;
@@ -39,7 +65,8 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         synchronized (lock) {
             if (users.containsKey(nickname)) {
                 user = users.get(nickname);
-                if(user.getPassword().equals("")) {
+                // Safety fallback in case DB offline
+                if(user.getPassword() == null) {
                     user.setPassword(psw);
                 }
                 if (user.getPassword().equals(psw)) {
@@ -76,11 +103,23 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
         return success;
     }
 
+    /**
+     * Updates the heartbeat timestamp for a client.
+     * Called periodically by the client.
+     */
     @Override
     public synchronized void ping(String name) throws RemoteException {
         lastSeen.put(name, System.currentTimeMillis());
     }
 
+    /**
+     * Background thread that checks for inactive clients.
+     *
+     * If a client does not send a ping for more than 10 seconds:
+     * - marks user as inactive
+     * - removes from active game
+     * - cleans up server state
+     */
     public void checkTimeouts(){
         new Thread(() -> {
             while(true){
@@ -102,6 +141,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
             }
         }).start();
     }
+
 
     @Override
     public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
