@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents a player in the game.
+ * Represents a player in the game.<br>
  * Each player has a name, a tribe composed by a list of character cards and a list of building cards, an amount of prestige points and food tokens.
  */
 public class Player {
@@ -38,6 +38,10 @@ public class Player {
 
     private Game game;
 
+    /**
+     * Generates a new player
+     * @param name
+     */
     public Player(String name) {
         this.name = name;
 
