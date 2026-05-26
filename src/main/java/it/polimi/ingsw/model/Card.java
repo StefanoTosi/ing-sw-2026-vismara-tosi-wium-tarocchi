@@ -3,8 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 /**
- * Defines the common methods of all Cards,
- * which are either {@code Characters}, {@code Buildings} or {@code Events}
+ * Defines the common methods of all {@code Cards},
+ * which are either {@code Characters}, {@code Buildings} or {@code Events}.
  */
 public abstract class Card {
     protected Era era;

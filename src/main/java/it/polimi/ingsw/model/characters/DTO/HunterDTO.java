@@ -7,18 +7,24 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.Hunter;
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code Hunter} card in DTO format.
+ */
 public class HunterDTO extends CardDTO implements Serializable {
     private final boolean icon;
 
+    /**
+     * Generates a {@code HunterDTO} object, filled with the specified parameters.
+     * @param icon {@code true} if the {@code Hunter} awards food when drawn, {@code false} otherwise
+     * @param era the {@code Era} the card belongs to
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public HunterDTO(@JsonProperty("icon") boolean icon, @JsonProperty("era") String era, @JsonProperty("id") int id){
         super(era, "Character", "Hunter", id);
         this.icon = icon;
     }
 
-    /**
-     * Function to print the Hunter cards of a player
-     */
     @Override
     public StringBuilder[] printCard() {
         StringBuilder[] lines = new StringBuilder[7];

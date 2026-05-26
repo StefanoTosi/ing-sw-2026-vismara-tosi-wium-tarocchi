@@ -7,7 +7,16 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.Gatherer;
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code Gatherer} card in DTO format.
+ */
 public class GathererDTO extends CardDTO implements Serializable {
+
+    /**
+     * Generates a {@code GathererDTO} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public GathererDTO(@JsonProperty("era") String era, @JsonProperty("id") int id) {
         super(era, "Character", "Gatherer", id);

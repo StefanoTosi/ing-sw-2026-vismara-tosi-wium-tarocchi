@@ -35,10 +35,6 @@ public abstract class Character extends Card {
         return name;
     }
 
-    /**
-     * Generates a {@code String} containing the {@code Character}'s information.
-     * @return a {@code String} specifying the {@code Card}'s subtypes
-     */
     public String toString() {
         return "name: " + name + "\ntype: " + TYPE;
     }

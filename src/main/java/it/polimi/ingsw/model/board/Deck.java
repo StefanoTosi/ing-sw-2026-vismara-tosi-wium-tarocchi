@@ -12,7 +12,13 @@ public class Deck {
     private final List<Card> deck;
     private Random rng;
 
-    //TODO: javadoc comment needed?
+    /**
+     * Generates a {@code Deck} object from a list of Cards.<br>
+     * This constructor is only used in testing as it requires the rng seed.
+     * @param deck the list of {@code Card} objects
+     * @param rng random number generator seed
+     * @throws IllegalArgumentException if the specified list is {@code null}
+     */
     public Deck(List<Card> deck, Random rng) throws IllegalArgumentException {
         if (deck == null) {
             throw new IllegalArgumentException("'deck' is null");

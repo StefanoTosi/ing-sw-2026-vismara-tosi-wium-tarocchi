@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import java.rmi.RemoteException;
 
 public class SetupGameState extends GameState {
-    public void registerPlayer(Game game, Player player) throws IllegalActionException, RemoteException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException {
         // Check it's a valid action
         game.getPlayers().add(player);
 

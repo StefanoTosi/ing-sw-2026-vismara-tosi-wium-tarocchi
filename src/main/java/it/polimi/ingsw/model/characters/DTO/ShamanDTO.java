@@ -6,16 +6,23 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.Shaman;
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code Shaman} card in DTO format.
+ */
 public class ShamanDTO extends CardDTO implements Serializable {
     private final int stars;
 
+    /**
+     * Generates a {@code ShamanDTO} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param stars the number of star icons stated on the {@code Card}
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     public ShamanDTO(@JsonProperty("era") String era, @JsonProperty("stars") int stars, @JsonProperty("id") int id) {
         super(era, "Character", "Shaman", id);
         this.stars = stars;
     }
-    /**
-     * Function to print the Shaman cards of a player
-     */
+
     @Override
     public StringBuilder[] printCard() {
         StringBuilder[] lines = new StringBuilder[7];
@@ -33,6 +40,7 @@ public class ShamanDTO extends CardDTO implements Serializable {
 
         return lines;
     }
+
     @Override
     public int getStars() {
         return stars;

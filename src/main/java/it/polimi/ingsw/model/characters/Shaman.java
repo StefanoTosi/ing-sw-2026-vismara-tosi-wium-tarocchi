@@ -5,11 +5,18 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.DTO.ShamanDTO;
 
 /**
- * Represents the Shaman character
+ * Represents the {@code Shaman} character.<br>
+ * Each {@code Shaman} has a certain number of star icons.
+ * During the {@code ShamanicRitual} event, the player with the most stars wins prestige points and the one with the least loses pps.
  */
 public class Shaman extends Character {
     private final int stars;
 
+    /**
+     * Generates a {@code Shaman} object, filled with the specified parameters.
+     * @param stars the number of star icons stated on the {@code Card}
+     * @param era the {@code Era} the card belongs to
+     */
     public Shaman(int stars, Era era) {
         super(era);
         this.stars = stars;
@@ -20,10 +27,6 @@ public class Shaman extends Character {
         return stars;
     }
 
-    /**
-     * Add a Shaman to the tribe of the specified player
-     * @param player
-     */
     @Override
     public void addToPlayer(Player player) {
         player.addShaman(this);

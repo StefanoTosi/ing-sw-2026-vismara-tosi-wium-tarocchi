@@ -8,18 +8,24 @@ import it.polimi.ingsw.model.characters.Icon;
 import it.polimi.ingsw.model.characters.Inventor;
 import java.io.Serializable;
 
+/**
+ * Holds information about an {@code Inventor} card in DTO format.
+ */
 public class InventorDTO extends CardDTO implements Serializable {
     private final Icon inventionIcon;
 
+    /**
+     * Generates an {@code InventorDTO} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param icon the invention {@code Icon} on the card
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public InventorDTO(@JsonProperty("era") String era, @JsonProperty("inventionIcon") Icon icon, @JsonProperty("id") int id) {
         super(era, "Character", "Inventor", id);
         this.inventionIcon = icon;
     }
 
-    /**
-     * Function to print the Inventor cards of a player
-     */
     @Override
     public StringBuilder[] printCard() {
         StringBuilder[] lines = new StringBuilder[7];
