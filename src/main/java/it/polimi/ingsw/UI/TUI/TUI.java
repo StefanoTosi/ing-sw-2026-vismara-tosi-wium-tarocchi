@@ -328,13 +328,15 @@ public class TUI implements UIObserver {
                             drawTop = playerOffer.getDrawTop();
                             drawBottom = playerOffer.getDrawBottom();
                         }
-
                         System.out.println("It's your turn!");
 
                         // Handling if the player has to draw from both Top and Bottom or just one
                         if (drawTop != 0 && drawBottom != 0) {
-                            System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
-                            char chosenRow = readChar();
+                            char chosenRow;
+                            do {
+                                System.out.println("From which row do you wish to draw your card? [T]op or [B]ottom: \n");
+                                chosenRow = readChar();
+                            }while(chosenRow != 'T' && chosenRow != 'B');
                             if (chosenRow == 'T') {
                                 drawn = drawCardTopRow();
                                 drawTop += drawn;
@@ -397,11 +399,11 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
         do{
             System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-            card = readInt() - 1; // fixes index and pos mismatch
-        }while(card < 0 || card > size);
+            card = readInt(); // fixes index and pos mismatch
+        }while(card <= 0 || card > size);
         if(!getGameClosed()){
                 try{
-                    client.executeAction(new DrawCardFromBottomAction(card));
+                    client.executeAction(new DrawCardFromBottomAction(card-1));
                 }catch(Exception e){
                     //e.printStackTrace();
                     System.out.println(e.getMessage());
@@ -426,11 +428,11 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         do{
             System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-            card = readInt() - 1; // fixes index and pos mismatch
-        }while(card < 0 || card > size);
+            card = readInt(); // fixes index and pos mismatch
+        }while(card <= 0 || card > size);
         if(!getGameClosed()){
             try {
-                client.executeAction(new DrawCardFromTopAction(card));
+                client.executeAction(new DrawCardFromTopAction(card-1));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return 0;
@@ -524,37 +526,19 @@ public class TUI implements UIObserver {
         }
         //------------- Adding the cards
         lines = handleCards(cards);
+
+        int numCard = cards.size() + 1;
         //------------- Adding the buildings
-        build = printBuildings(buildings, cards.size());
-        for(int i = 0; i < 7; i++){
-            lines[i].append(build[i]);
+        for(BuildingDTO building : buildings){
+            build = building.printCard();
+            build[0] = new StringBuilder().append(String.format("+----%d-----+", numCard++));
+            for(int i=0; i<7; i++){
+                lines[i].append(build[i]);
+            }
         }
         printLine(lines);
     }
 
-    //TODO: SPOSTA ANCHE QUESTO IN BUILDING DTO
-    public StringBuilder[] printBuildings(List<BuildingDTO> buildings, int numCard){
-        numCard++;
-        StringBuilder[] lines = new StringBuilder[7];
-        for(int i = 0; i < 7; i++){
-            lines[i] = new StringBuilder();
-        }
-
-        StringBuilder[] printed = new StringBuilder[7];
-        for(int i = 0; i < 7; i++){
-            printed[i] = new StringBuilder(ORANGE);
-        }
-
-        for(BuildingDTO building : buildings){
-            printed = building.printCard();
-            printed[0] = new StringBuilder().append(String.format("+----%d-----+", numCard++));
-            for(int i=0; i<7; i++){
-                lines[i].append(printed[i]);
-            }
-        }
-
-        return lines;
-    }
 
 
     /**
@@ -612,7 +596,9 @@ public class TUI implements UIObserver {
         for(BuilderDTO builder : player.getBuilders()){
             appendLines(lines, builder.printCard());
         }
-        appendLines(lines,printBuildings(player.getBuildings(), 0));
+        for (BuildingDTO building : player.getBuildings()){
+            appendLines(lines, building.printCard());
+        }
         boolean isEmpty = true;
 
         for(StringBuilder line : lines){
@@ -629,20 +615,6 @@ public class TUI implements UIObserver {
 
         System.out.println("Food: " + player.getFood());
         System.out.println("PP: " + player.getPp());
-    }
-
-    /**
-     * Function to ask whose cards does the user wish to view
-     */
-    public void choosePlayerCards () throws Exception {
-        List<PlayerDTO> players = game.getPlayers();
-        System.out.println("Whose cards do you wish to view?");
-        String name = readLine();
-        for(PlayerDTO player : players){
-            if(name.equals(player.getName())){
-                printPlayerCards(player);
-            }
-        }
     }
 
     /**
@@ -707,11 +679,11 @@ public class TUI implements UIObserver {
         }
 
         OrderDTO orderTile = game.getBoard().getOrder();
-        lines[0].append(ORANGE + "+----------+");
+        lines[0].append(ORANGE + "+----------------+");
         for(int i = 1; i < num-1; i++){
-            lines[i].append(String.format("|%-10s|", "Food: " + orderTile.getFoodBonus().get(i-1) + " Pp: " + orderTile.getPpBonus().get(i-1)));
+            lines[i].append(String.format("|%-16s|", "Food: " + orderTile.getFoodBonus().get(i-1) + " Pp: " + orderTile.getPpBonus().get(i-1)));
         }
-        lines[num-1].append("+----------+");
+        lines[num-1].append("+----------------+");
 
         /*
         List<PlayerDTO> players = game.getPlayers();
@@ -724,6 +696,51 @@ public class TUI implements UIObserver {
         for(StringBuilder line : lines){
             System.out.println(line);
         }
+    }
+
+    public void printInfo(){
+        System.out.println(
+                ORANGE + "Inline Commands\n" +
+                GREEN + "exit/quit: let's you exit the game when you want\n" +
+                "board: prints the board when you want to see it\n" +
+                "info: prints this info card\n" +
+                ORANGE + "Event Rules:\n" +
+                BLUE + "During Shamanic Ritual if you are the one with most stars you win N1 PPs, the losers loose N2 PPs.\n" +
+                "During Hunt for every hunter you get one food and N PPs.\n" +
+                "During CavePaintings if you have less than N artists, you loose N PPs, if you have more, you win N PPs.\n" +
+                "During Sustenance you have to pay 1 food for each of you tribe members, if you run out of food you have to pay N PPs for each.\n" +
+                ORANGE + "Building Effects:\n" +
+                BLUE + "D1: Starting from when you have this Building, every time you complete a set of 6 different \n" +
+                        "Character cards, you take 5 Food tokens. You do not receive Food tokens for sets \n" +
+                        "already completed at the time of acquiring the Building\n"+
+                "ES1: During the Sustenance Event, you have a discount of 1 Food token on the total you \n" +
+                        "would have to pay, for each of the indicated Characters in your tribe (Artists/Inventors/Gatherers).\n"+
+                "ESC1: During the Shamanic Ritual Event, you do not lose Prestige Points if you have fewer star icons \n" +
+                        "than all other players.\n"+
+                "ET1: If at the end of your turn (also during the last round), when you move your Totem back to \n" +
+                        "the Turn Order tile, you place it in a space that provides a bonus in Food, you immediately \n" +
+                        "take 1 additional Food token. If you place the Totem in the last space, you pay 1 Food token \n" +
+                        "normally, and the building has no effect.\n"+
+                "D2: Starting from when you have this Building, every time you obtain a pair of identical \n" +
+                        "Inventors (with the same Invention icon), you take 3 Food tokens. You do not take Food for \n" +
+                        "pairs already owned at the time of acquiring the Building.\n"+
+                "ESC2: During the Shamanic Ritual Event, your tribe has 3 additional  icons.\n"+
+                "ESC3: During the Shamanic Ritual Event, if you have more  icons than any of the other players, \n" +
+                        "you gain double the indicated Prestige Points. You still gain Prestige Points in case of a tie.  \n"+
+                "EH: During the Hunt Event, you take 1 Food token and gain 1 additional Prestige Point for each \n" +
+                        "Hunter in your tribe.\n"+
+                "EG1: At the end of the game, you gain double the Prestige Points indicated on the Builder cards \n" +
+                        "in your tribe.\n"+
+                "EG2: At the end of the game, you gain 6 Prestige Points for each set of 6 different Character \n" +
+                        "cards in your tribe.\n"+
+                "EG3: At the end of the game, you gain the indicated amount of Prestige Points for each Character \n" +
+                        "card of the indicated type in your tribe.\n"+
+                "ECP: During the Cave Paintings Event, you take 1 Food token for each Artist in your tribe.\n"+
+                "ET2: After resolving all actions (once all Totems have been moved back to the Turn Order tile) \n" +
+                        "and before the End of the Round phase, you can take 1 Character or 1 Building card (paying \n" +
+                        "its cost) from the top row.\n"+
+                "EG4: At the end of the game, you gain 25 Prestige Points.\n"
+        );
     }
 
     // --------------------------- Helper functions ----------------------------------------------------------
@@ -749,6 +766,12 @@ public class TUI implements UIObserver {
         return false;
     }
 
+    /**
+     * Handles manual inputs
+     * @param input
+     * @return boolean
+     * @throws Exception
+     */
     private boolean handleCommand(String input) throws Exception {
         switch (input.toLowerCase()){
             case "exit":
@@ -763,12 +786,18 @@ public class TUI implements UIObserver {
                 printBoard();
                 return true;
             case "info":
-                // TODO
+                printInfo();
+                return true;
             default:
                 return false;
         }
     }
 
+    /**
+     * Reads the input when it's a String
+     * @return String input
+     * @throws Exception
+     */
     private String readLine() throws Exception {
         while(true){
             String input = in.nextLine().trim();
@@ -779,6 +808,14 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Reads the input when it's an Int
+     * @return Int input
+     * @throws IllegalActionException
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException
+     */
     private int readInt() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
         while(true){
             try{
@@ -791,6 +828,11 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Reads the input when it's a Char
+     * @return Char
+     * @throws Exception
+     */
     private char readChar() throws Exception {
         while(true){
             String input = readLine().trim().toUpperCase();
