@@ -58,5 +58,5 @@ public abstract class GameState {
         throw new IllegalActionException("Illegal action");
     }
 
-    public abstract StateDTO getStateDTO() throws IllegalActionException;
+    public abstract StateDTO getStateDTO();
 }

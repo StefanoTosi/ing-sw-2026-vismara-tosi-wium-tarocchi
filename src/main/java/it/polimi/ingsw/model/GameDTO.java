@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
+//TODO: javadoc comments
 public class GameDTO implements Serializable {
     private  List<PlayerDTO> players;
     private int numPlayers;

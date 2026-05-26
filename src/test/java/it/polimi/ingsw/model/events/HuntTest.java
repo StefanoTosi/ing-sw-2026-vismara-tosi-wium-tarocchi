@@ -60,7 +60,7 @@ class HuntTest {
         //With building effect
         p1.setPp(0);
         try {
-            p1.addCard(new Building(Era.I, 2, 2, 0, null, Effect.EH));
+            p1.addCard(new Building(Era.I, 2, 2, 0, null, null, Effect.EH));
         } catch (IllegalActionException e) {
             throw new RuntimeException(e);
         }

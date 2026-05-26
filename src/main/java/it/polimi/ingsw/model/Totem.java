@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+/**
+ * Enumerates the available colors the players can choose for their totem.
+ */
 public enum Totem implements Serializable {
     ORANGE {
         @Override

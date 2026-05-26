@@ -39,8 +39,8 @@ public class Player {
     private Game game;
 
     /**
-     * Generates a new player
-     * @param name
+     * Generates a new player, with empty tribe and variables.
+     * @param name the player's name
      */
     public Player(String name) {
         this.name = name;
@@ -70,6 +70,22 @@ public class Player {
         this.game = null;
     }
 
+    /**
+     * Generates a {@code Player} and inizializes their tribe and variables with given parameters.
+     * @param name the player's name
+     * @param artists the list of {@code Artists} in the player's tribe
+     * @param gatherers the list of {@code Gatherers} in the player's tribe
+     * @param hunters the list of {@code Hunters} in the player's tribe
+     * @param inventors the list of {@code Inventors} in the player's tribe
+     * @param shamans the list of {@code Shamans} in the player's tribe
+     * @param builders the list of {@code Builders} in the player's tribe
+     * @param buildings the list of {@code Buildings} in the player's tribe
+     * @param pp the player's current prestige points
+     * @param food the player's current food tokens
+     * @param order the player's current position on the {@code Order} tile
+     * @param offer the player's current {@code Offer} tile
+     * @param totem the player's chosen {@code Totem} color
+     */
     public Player(String name, List<Artist> artists, List<Gatherer> gatherers, List<Hunter> hunters, List<Inventor> inventors, List<Shaman> shamans, List<Builder> builders,
                   List<Building> buildings, int pp, int food, int order, char offer, Totem totem) {
         this.name = name;
@@ -115,8 +131,8 @@ public class Player {
     }
 
     /**
-     * Adds the specified amount of prestige points, negative parameters allowed.
-     * @param pp number of prestige points to add (or subtract if negative)
+     * Adds the specified amount of prestige points. Negative parameters are allowed.
+     * @param pp number of prestige points to be added (or subtracted if negative)
      */
     public void addPp(int pp) {
         this.pp += pp;
@@ -126,6 +142,11 @@ public class Player {
         return food;
     }
 
+    /**
+     * Sets the player's food to the specified amount. Does not allow to set food to a negative number.
+     * @param food the new food amount. Cannot be negative.
+     * @throws IllegalArgumentException if the specified amount of food is negative
+     */
     public void setFood(int food) throws IllegalArgumentException {
         if (food < 0) {
             throw new IllegalArgumentException("trying to set food to a negative value");
@@ -134,8 +155,9 @@ public class Player {
     }
 
     /**
-     * Adds the specified amount of food, negative parameters allowed.
-     * @param food amount of food to add (or subtract if negative)
+     * Adds the specified amount of food. Negative parameters are allowed.
+     * @param food amount of food to be added (or subtracted if negative)
+     * @throws IllegalArgumentException if the resulting food would become negative
      */
     public void addFood(int food) throws IllegalArgumentException {
         if (this.food + food < 0) {
@@ -144,18 +166,35 @@ public class Player {
         this.food += food;
     }
 
+    /**
+     * Adds the specified {@code Card} to the player's tribe, throwing exceptions in case of {@code Event} cards or unaffordable {@code Buildings}.
+     * @param card the card to be added to the player's tribe
+     * @throws IllegalActionException if the given card is an {@code Event} or a {@code Building} the player cannot afford
+     */
     public void addCard(Card card) throws IllegalActionException {
         card.addToPlayer(this);
     }
 
+    /**
+     * Adds the specified card to the player's list of {@code Artists}.
+     * @param artist the card to be added to the player's tribe
+     */
     public void addArtist(Artist artist) {
         this.artists.add(artist);
     }
 
+    /**
+     * Adds the specified card to the player's list of {@code Gatherers}.
+     * @param gatherer the card to be added to the player's tribe
+     */
     public void addGatherer(Gatherer gatherer) {
         this.gatherers.add(gatherer);
     }
 
+    /**
+     * Adds the specified card to the player's list of {@code Hunters}, calculating and adding the bonus of food it possibly provides.
+     * @param hunter the card to be added to the player's tribe
+     */
     public void addHunter(Hunter hunter) {
         try{
             this.hunters.add(hunter);
@@ -167,21 +206,33 @@ public class Player {
         }
     }
 
+    /**
+     * Adds the specified card to the player's list of {@code Inventors}.
+     * @param inventor the card to be added to the player's tribe
+     */
     public void addInventor(Inventor inventor) {
         this.inventors.add(inventor);
     }
 
+    /**
+     * Adds the specified card to the player's list of {@code Shamans}.
+     * @param shaman the card to be added to the player's tribe
+     */
     public void addShaman(Shaman shaman) {
         this.shamans.add(shaman);
     }
 
+    /**
+     * Adds the specified card to the player's list of {@code Builders}.
+     * @param builder the card to be added to the player's tribe
+     */
     public void addBuilder(Builder builder) {
         this.builders.add(builder);
     }
 
     /**
-     * Counts the number of complete sets of six different character cards in the tribe.
-     * @return int
+     * Counts the number of complete sets of {@code Character} cards in the tribe. A set is composed of one card for each character type.
+     * @return the number of sets made of six different {@code Character} cards in the player's tribe
      */
     public int countSets() {
         int[] numCharacters = {getNumBuilders(), getNumHunters(), getNumShamans(), getNumInventors(), getNumGatherers(), getNumArtists()};
@@ -189,11 +240,11 @@ public class Player {
     }
 
     /**
-     * Adds a new building card to the list of buildings in the tribe.
-     * @param card new building to be added to the tribe
+     * Adds the specified card to the player's list of {@code Buildings}.
+     * @param building the card to be added to the player's tribe
      */
-    public void addBuilding(Building card) {
-        this.buildings.add(card);
+    public void addBuilding(Building building) {
+        this.buildings.add(building);
     }
 
     public List<Artist> getArtists() {
@@ -225,72 +276,72 @@ public class Player {
     }
 
     /**
-     * Counts the total number of character cards in the tribe.
-     * @return int
+     * Counts the total number of {@code Character} cards in the tribe.
+     * @return the count of all {@code Character} cards in the player's tribe
      */
     public int countNumCharacters() {
         return getNumArtists() + getNumGatherers() + getNumHunters() + getNumShamans() + getNumInventors() + getNumBuilders();
     }
 
     /**
-     * Counts the total number of building cards in the tribe.
-     * @return int
+     * Counts the total number of {@code Building} cards in the tribe.
+     * @return the count of {@code Buildings} owned by the player
      */
     public int countNumBuildings() {
         return buildings.size();
     }
 
     /**
-     * Counts the number of artists in the tribe.
-     * @return int
+     * Counts the number of {@code Artist} cards in the player's tribe.
+     * @return the count of {@code Artists} owned by the player
      */
     public int getNumArtists() {
         return artists.size();
     }
 
     /**
-     * Counts the number of gatherers in the tribe.
-     * @return int
+     * Counts the number of {@code Gatherer} cards in the player's tribe.
+     * @return the count of {@code Gatherers} owned by the player
      */
     public int getNumGatherers() {
         return gatherers.size();
     }
 
     /**
-     * Counts the number of inventors in the tribe.
-     * @return int
+     * Counts the number of {@code Inventor} cards in the player's tribe.
+     * @return the count of {@code Inventors} owned by the player
      */
     public int getNumInventors() {
         return inventors.size();
     }
 
     /**
-     * Counts the number of hunters in the tribe.
-     * @return int
+     * Counts the number of {@code Hunter} cards in the player's tribe.
+     * @return the count of {@code Hunters} owned by the player
      */
     public int getNumHunters() {
         return hunters.size();
     }
 
     /**
-     * Counts the number of shamans in the tribe.
-     * @return int
+     * Counts the number of {@code Shaman} cards in the player's tribe.
+     * @return the count of {@code Shamans} owned by the player
      */
     public int getNumShamans() {
         return shamans.size();
     }
 
     /**
-     * Counts the number of builders in the tribe.
-     * @return int
+     * Counts the number of {@code Builder} cards in the player's tribe.
+     * @return the count of {@code Builders} owned by the player
      */
     public int getNumBuilders() {
         return builders.size();
     }
 
     /**
-     * Counts the total number of stars provided by shamans in the tribe.
-     * @return int
+     * Counts the total number of stars provided by {@code Shamans} in the tribe.
+     * @return the count of star icons provided by the {@code Shamans} owned by the player
      */
     public int getNumStars() {
         int count = 0;
@@ -302,8 +353,8 @@ public class Player {
     }
 
     /**
-     * Calculates the amount of prestige points provided by builders in the tribe at the end of the game.
-     * @return int
+     * Calculates the amount of prestige points provided by {@code Builders} in the tribe at the end of the game.
+     * @return the count of prestige points provided by the {@code Builders} owned by the player
      */
     public int countBuildersPp() {
         int points = 0;
@@ -315,7 +366,7 @@ public class Player {
 
     /**
      * Returns total prestige points of the tribe, including both characters and buildings, without calculating any building effect.
-     * @return int
+     * @return the total amount of prestige points provided by {@code Characters} in the player's tribe
      */
     public int countTribePp() {
         int points = 0;
@@ -324,9 +375,14 @@ public class Player {
         List<Icon> seenIcons = new ArrayList<>();
         boolean found = false;
 
-        points += this.getNumArtists() * 2;
+        // 10 pps awarded every 2 artists in the tribe
+        points += 10 * (this.getNumArtists() / 2);
+
+        // Builders provide as many pps as indicated on their card
         points += this.countBuildersPp();
 
+        // Inventors provide a number of pps equal to the number of Inventors in the tribe
+        // multiplied by the number of different Invention icons
         for (Inventor inventor : inventors) {
                 found = false;
                 currIcon = inventor.getInventionIcon();
@@ -345,6 +401,7 @@ public class Player {
 
         points += numIcons * this.getNumInventors();
 
+        // Buildings provide as many pps as indicated on their card
         for(Building building : buildings) {
             points += building.getPp();
         }
@@ -412,6 +469,10 @@ public class Player {
         return game;
     }
 
+    /**
+     * Converts the current {@code Player} object into DTO format, also converting all their variables and the cards in their tribe.
+     * @return the corresponding {@code PlayerDTO} object
+     */
     public PlayerDTO toDTO(){
         return new PlayerDTO(getName(), getArtists().stream().map(Artist::toDTO).toList(),
                 getGatherers().stream().map(Gatherer::toDTO).toList(),

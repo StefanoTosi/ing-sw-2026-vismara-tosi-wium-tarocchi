@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Holds information about a {@code Player} in DTO format.
+ */
 public class PlayerDTO implements Serializable {
     private final String name;
 
@@ -28,6 +31,23 @@ public class PlayerDTO implements Serializable {
     private final boolean canPickFromTop;
     private final Totem totem;
 
+    /**
+     * Generates and initializes a {@code PlayerDTO} object, filled with the specified parameters.
+     * @param name the player's name
+     * @param artists the list of {@code Artists} in the player's tribe, in DTO format
+     * @param gatherers the list of {@code Gatherers} in the player's tribe, in DTO format
+     * @param hunters the list of {@code Hunters} in the player's tribe, in DTO format
+     * @param inventors the list of {@code Inventors} in the player's tribe, in DTO format
+     * @param shamans the list of {@code Shamans} in the player's tribe, in DTO format
+     * @param builders the list of {@code Builders} in the player's tribe, in DTO format
+     * @param buildings the list of {@code Buildings} in the player's tribe, in DTO format
+     * @param pp the amount of prestige points accumulated by the player
+     * @param food the amount of food available to the player
+     * @param order the player's current position on the {@code Order} tile
+     * @param offer the player's chosen {@code Offer} tile
+     * @param canPickFromTop {@code true} if the player is allowed to draw an additional card from the top row, thanks to a building effect, {@code false} otherwise
+     * @param totem the player's chosen {@code Totem} color
+     */
     @JsonCreator
     public PlayerDTO(@JsonProperty("name") String name, @JsonProperty("artists") List<ArtistDTO> artists, @JsonProperty("gatherers") List<GathererDTO> gatherers, @JsonProperty("hunters") List<HunterDTO> hunters,
                      @JsonProperty("inventors") List<InventorDTO> inventors, @JsonProperty("shamans") List<ShamanDTO> shamans, @JsonProperty("builders") List<BuilderDTO> builders,
@@ -49,6 +69,11 @@ public class PlayerDTO implements Serializable {
         this.totem = totem;
     }
 
+    /**
+     * Converts the current {@code PlayerDTO} object into the corresponding {@code Player},
+     * converting all of its components as well through calls to other {@code fromDTO} methods.
+     * @return the {@code Player} obtained by converting all its variables from DTO to standard objects
+     */
     public Player fromDTO() {
         return new Player(
                 this.name,

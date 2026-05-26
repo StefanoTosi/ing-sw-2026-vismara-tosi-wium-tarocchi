@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.events.ShamanicRitual;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -33,6 +34,7 @@ class BoardTest {
     void drawFromTopRowTribe() throws IllegalActionException {
         Board board = new Board(new Random(42));
         board.initialize(5);
+        Player player = new Player("Eli");
         Card card1 = new Hunter(true, Era.II);
         Card card2 = new Builder(1, 2, Era.I);
         Card card3 = new ShamanicRitual(1, 3, Era.II);
@@ -44,13 +46,13 @@ class BoardTest {
         assertThrows(IllegalArgumentException.class, ()->{board.drawFromTopRowTribe(4);});
 
         assertEquals(card4, board.drawFromTopRowTribe(3));
-        assertEquals(3, board.getTopRowTribe().size());
+        assertEquals(4, board.getTopRowTribe().size());
         assertEquals(card1, board.drawFromTopRowTribe(0));
-        assertEquals(card2, board.drawFromTopRowTribe(0));
-        assertEquals(card3, board.drawFromTopRowTribe(0));
+        assertEquals(card2, board.drawFromTopRowTribe(1));
+        assertEquals(card3, board.drawFromTopRowTribe(2));
 
         //not allowed to draw events
-        assertThrows(IllegalArgumentException.class, ()->{board.drawFromTopRowTribe(0);});
+        assertThrows(IllegalArgumentException.class, ()->{board.drawFromTopRowTribe(4);});
 
         //not allowed to draw from an empty row
         ArrayList<Card> emptyRow = new ArrayList<>(new ArrayList<>());
@@ -86,13 +88,13 @@ class BoardTest {
         assertThrows(IllegalArgumentException.class, ()->{board.drawFromBottomRowTribe(4);});
 
         assertEquals(card4, board.drawFromBottomRowTribe(3));
-        assertEquals(3, board.getBottomRowTribe().size());
+        assertEquals(4, board.getBottomRowTribe().size());
         assertEquals(card1, board.drawFromBottomRowTribe(0));
-        assertEquals(card2, board.drawFromBottomRowTribe(0));
-        assertEquals(card3, board.drawFromBottomRowTribe(0));
+        assertEquals(card2, board.drawFromBottomRowTribe(1));
+        assertEquals(card3, board.drawFromBottomRowTribe(2));
 
         //not allowed to draw events
-        assertThrows(IllegalArgumentException.class, ()->{board.drawFromBottomRowTribe(0);});
+        assertThrows(IllegalArgumentException.class, ()->{board.drawFromBottomRowTribe(4);});
 
         //not allowed to draw from an empty row
         ArrayList<Card> emptyRow = new ArrayList<>(new ArrayList<>());

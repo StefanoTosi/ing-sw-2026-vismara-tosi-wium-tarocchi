@@ -29,12 +29,23 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = ShamanicRitualDTO.class, name = "ShamanicRitual"),
         @JsonSubTypes.Type(value = SustenanceDTO.class, name = "Sustenance")
 })
+
+/**
+ * Holds information about a {@code Card} in DTO format.
+ */
 public class CardDTO implements Serializable {
     private final String era;
     private final String type;
     private final String name;
     private final int id;
 
+    /**
+     * Generates a {@code CardDTO} object, filled with the specified parameters.
+     * @param era the era the card belongs to
+     * @param type the {@code String} identifying the card's subtype
+     * @param name the {@code String} further specifying a deeper subtype, such as {@code Artist} or {@code Sustenance}
+     * @param id number which identifies the card, used to get the corresponding texture
+     */
     @JsonCreator
     public CardDTO(@JsonProperty("era") String era, @JsonProperty("type") String type, @JsonProperty("name") String name, @JsonProperty("id") int id) {
         this.era = era;
@@ -43,11 +54,19 @@ public class CardDTO implements Serializable {
         this.id = id;
     }
 
+    /**
+     * Converts the current {@code CardDTO} object into the corresponding {@code Card}.
+     * @return the {@code Card} containing the same data as the current DTO object
+     */
     public Card fromDTO() {
         return null;
     }
 
-    public  StringBuilder[] printCard(){
+    /**
+     * Prints the current {@code Card} and its variables.
+     * @return a {@code String} to visualize the card and its data
+     */
+    public StringBuilder[] printCard(){
         return new StringBuilder[0];
     }
 

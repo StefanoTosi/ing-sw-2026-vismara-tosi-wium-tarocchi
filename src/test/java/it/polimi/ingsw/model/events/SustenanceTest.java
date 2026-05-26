@@ -77,7 +77,7 @@ class SustenanceTest {
         Player p5 = new Player("Tomasulo");
         p5.setFood(0);
         p5.setPp(10);
-        Building b = new Building(Era.I, 1, 1, 0, (_) -> 4, Effect.ES1);
+        Building b = new Building(Era.I, 1, 1, 0, (_) -> 4, null, Effect.ES1);
         try {
             p5.addCard(a1);
             p5.addCard(a2);

@@ -10,6 +10,7 @@ import it.polimi.ingsw.networking.TCP.ObserverTCP;
 import java.io.IOException;
 import java.util.*;
 
+//TODO: javadoc comments
 public class Game {
     private final List<Player> players;
     private int numPlayers;
@@ -129,8 +130,11 @@ public class Game {
         }
     }
 
+    /**
+     * Notifies the {@code Observer} when all players have successfully reconnected to an interrupted game.
+     */
     public void canResume(){
-        //check if all the players have reconnected
+        // Check if all the players have reconnected
         if(observersRMI.size() + observersTCP.size() == numPlayers){
             try {
                 notifyObserver();
@@ -168,7 +172,12 @@ public class Game {
         this.state = state;
     }
 
-    public GameDTO toDTO() throws IllegalActionException {
+    /**
+     * Converts the current {@code Game} object into the corresponding {@code GameDTO},
+     * converting all of its components as well through calls to other {@code toDTO} methods.
+     * @return the {@code GameDTO} obtained by converting all its components to DTO format
+     */
+    public GameDTO toDTO() {
         Player turn = new Player("");
         if (playerTurn != null) {
             turn = playerTurn;
@@ -206,6 +215,9 @@ public class Game {
         this.turnNumber = turnNumber;
     }
 
+    /**
+     * Increments the turn number.
+     */
     public void newTurn() {
         this.turnNumber++;
     }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- * Describes the 3 possible era of the game
+ * Enumerates the eras as roman numerals, which represent the current phase of the game.
  */
 public enum Era {
     I,II,III

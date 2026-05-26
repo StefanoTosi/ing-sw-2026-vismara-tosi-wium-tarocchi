@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.characters;
 
 /**
- *Describes the possible icon for the inventor's card
+ * Enumerates the possible icons for {@code Inventor} cards.
  */
 public enum Icon {
     BOAT,

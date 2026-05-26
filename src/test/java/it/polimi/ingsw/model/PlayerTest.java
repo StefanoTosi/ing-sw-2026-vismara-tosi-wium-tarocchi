@@ -109,14 +109,14 @@ class PlayerTest {
         assertEquals(0,player.countNumBuildings());
         assertEquals(0, player.countNumCharacters());
         Effect effect = Effect.EG2;
-        Card card = new Building(Era.II,2,2, 2, (p) -> null, effect);
+        Card card = new Building(Era.II,2,2, 2, null, null, effect);
         try {
             player.addCard(card);
         } catch (IllegalActionException e) {
             throw new RuntimeException(e);
         }
         assertEquals(1,player.countNumBuildings());
-        Card card3 = new Building(Era.II,2,2, 2, (p) -> null, effect);
+        Card card3 = new Building(Era.II,2,2, 2, null, null, effect);
         try {
             player.addCard(card3);
         } catch (IllegalActionException e) {
@@ -257,7 +257,7 @@ class PlayerTest {
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         assertEquals(0, player.countNumBuildings());
         Effect effect = Effect.EG2;
-        Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
+        Building building = new Building(Era.II,2,2, 2, null, null, effect);
         building.era = Era.I;
         player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
@@ -285,7 +285,7 @@ class PlayerTest {
         Player player3 = new Player("Gilles");
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player, player2, player3)), null);
         Effect effect = Effect.EG2;
-        Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
+        Building building = new Building(Era.II,2,2, 2, null, null, effect);
         player.addBuilding(building);
         assertEquals(1, player.countNumBuildings());
     }
@@ -405,19 +405,22 @@ class PlayerTest {
         player.addBuilder(card);
         assertEquals(2, player.countTribePp());
 
-        Artist artist = new Artist(Era.I);
-        player.addArtist(artist);
-        assertEquals(4, player.countTribePp());
+        Artist artist1 = new Artist(Era.I);
+        player.addArtist(artist1);
+        assertEquals(2, player.countTribePp());
+        Artist artist2 = new Artist(Era.II);
+        player.addArtist(artist2);
+        assertEquals(12, player.countTribePp());
 
         Inventor card2 = new Inventor(Icon.ARROW, Era.II);
         player.addInventor(card2);
-        assertEquals(5, player.countTribePp());
+        assertEquals(13, player.countTribePp());
 
         Effect effect = Effect.EG2;
-        Building building = new Building(Era.II,2,2, 2, (p) -> null, effect);
+        Building building = new Building(Era.II,2,2, 2, null, null, effect);
         building.era = Era.I;
         player.addBuilding(building);
-        assertEquals(7, player.countTribePp());
+        assertEquals(15, player.countTribePp());
     }
 
     @Test

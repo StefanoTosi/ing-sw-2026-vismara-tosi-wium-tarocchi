@@ -43,7 +43,7 @@ public class ChooseTotemState extends GameState {
     }
 
     @Override
-    public StateDTO getStateDTO() throws IllegalActionException {
+    public StateDTO getStateDTO() {
         return StateDTO.CHOOSETOTEM;
     }
 }

@@ -60,7 +60,7 @@ class CavePaintingsTest {
         assertEquals(37, p1.getPp());
 
         //Test building effect
-        Building building = new Building(Era.I, 2, 3, 0, null, Effect.ECP);
+        Building building = new Building(Era.I, 2, 3, 0, null, null, Effect.ECP);
         try {
             p1.addCard(building);
         } catch (IllegalActionException e) {

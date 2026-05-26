@@ -22,7 +22,7 @@ public abstract class Card {
     /**
      * Generates a {@code Card} object, whose subtype is known, belonging to the specified era and identified by an id number.
      * @param era the era the card belongs to
-     * @param TYPE the name identifying the card's subtype
+     * @param TYPE the {@code String} identifying the card's subtype
      * @param id number which identifies the card, used to get the corresponding texture
      */
     public Card(Era era, String TYPE, int id) {
