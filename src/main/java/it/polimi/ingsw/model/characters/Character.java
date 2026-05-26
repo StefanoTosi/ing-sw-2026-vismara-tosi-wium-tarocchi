@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Era;
 
 /**
- * Represents common elements of all Characters.<br>
+ * Represents common elements of all {@code Characters}.<br>
  * Each character can be an {@code Artist}, a {@code Builder}, a {@code Gatherer}, a {@code Hunter}, an {@code Inventor} or a {@code Shaman}.
  */
 public abstract class Character extends Card {

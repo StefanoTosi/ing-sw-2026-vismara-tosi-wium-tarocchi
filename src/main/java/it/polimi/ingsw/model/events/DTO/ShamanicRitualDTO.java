@@ -8,10 +8,20 @@ import it.polimi.ingsw.model.events.ShamanicRitual;
 
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code ShamanicRitual} card in DTO format.
+ */
 public class ShamanicRitualDTO extends CardDTO implements Serializable {
     private final int winnerPp;
     private final int loserPp;
 
+    /**
+     * Generates a {@code ShamanicRitualDTO} object, filled with the specified parameters.
+     * @param winnerPp
+     * @param loserPp
+     * @param era the {@code Era} the card belongs to
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public ShamanicRitualDTO (@JsonProperty("winnerPp") int winnerPp, @JsonProperty("loserPp") int loserPp, @JsonProperty("era") String era, @JsonProperty("id") int id){
         super(era, "Event",  "ShamanicRitual", id);

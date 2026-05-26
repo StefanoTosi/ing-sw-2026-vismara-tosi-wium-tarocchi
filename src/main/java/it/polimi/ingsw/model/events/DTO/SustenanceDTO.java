@@ -8,9 +8,18 @@ import it.polimi.ingsw.model.events.Sustenance;
 
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code Sustenance} card in DTO format.
+ */
 public class SustenanceDTO extends CardDTO implements Serializable {
     private final int pp;
 
+    /**
+     * Generates a {@code SustenanceDTO} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param pp the amount of prestige points players are deducted for each unfed {@code Character}
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public SustenanceDTO(@JsonProperty("era") String era, @JsonProperty("pp") int pp, @JsonProperty("id") int id){
         super(era, "Event", "Sustenance", id);

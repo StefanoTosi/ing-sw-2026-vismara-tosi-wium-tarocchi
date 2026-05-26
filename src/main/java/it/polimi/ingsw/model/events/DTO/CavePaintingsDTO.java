@@ -8,11 +8,22 @@ import it.polimi.ingsw.model.events.CavePaintings;
 
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code CavePaintings} card in DTO format.
+ */
 public class CavePaintingsDTO extends CardDTO implements Serializable {
     private final int topPp;
     private final int bottomPp;
     private final int minArtist;
 
+    /**
+     * Generates a {@code CavePaintingsDTO} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param minArtist the minimum number of {@code Artists} players are required in order to win pps
+     * @param topPp the amount of prestige points players are deducted if they do not own enough {@code Artists}. This parameter is required to be positive.
+     * @param bottomPp the amount of prestige point awarded to players who own enough {@code Artists}
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public CavePaintingsDTO(@JsonProperty("era") String era, @JsonProperty("minArtist") int minArtist, @JsonProperty("topPp") int topPp, @JsonProperty("bottomPp") int bottomPp, @JsonProperty("id") int id){
         super(era, "Event", "CavePaintings", id);

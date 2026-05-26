@@ -8,9 +8,18 @@ import it.polimi.ingsw.model.events.Hunt;
 
 import java.io.Serializable;
 
+/**
+ * Holds information about a {@code Hunt} card in DTO format.
+ */
 public class HuntDTO extends CardDTO implements Serializable {
     private final int pp;
 
+    /**
+     * Generates a {@code HuntDTO} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param pp the amount of prestige points awarded for each {@code Hunter}
+     * @param id the {@code Card}'s id, used to get the corresponding texture
+     */
     @JsonCreator
     public HuntDTO(@JsonProperty("era") String era, @JsonProperty("pp") int pp, @JsonProperty("id") int id) {
         super(era, "Event", "Hunt", id);

@@ -9,16 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * If you have less than x Artists you lose x pps,
- * otherwise if you have more or equal than x Artists you gain x pps
+ * During this {@code Event}, each player is awarded the amount of prestige points specified in the bottom row of the card
+ * if they own at least the indicated number of {@code Artist} cards in their tribe.
+ * Otherwise, they lose the amount of prestige points specified in the top row of the card.
  */
-
 public class CavePaintings extends Event {
 
     private final int topPp;
     private final int bottomPp;
     private final int minArtist;
 
+    /**
+     * Generates a {@code CavePaintings} object, filled with the specified parameters.
+     * @param minArtist the minimum number of {@code Artists} the players are required in order to win pps
+     * @param era the {@code Era} the card belongs to
+     * @param topPp the amount of prestige points players are deducted if they do not own enough {@code Artists}. This parameter is required to be positive.
+     * @param bottomPp the amount of prestige point awarded to players who own enough {@code Artists}
+     */
     public CavePaintings(int minArtist, Era era, int topPp, int bottomPp){
         super(era);
         this.minArtist = minArtist;
@@ -27,6 +34,11 @@ public class CavePaintings extends Event {
         this.name = "CavePaintings";
     }
 
+    /**
+     * Resolves the {@code Event} effect. Each player in the specified list wins pps if they have enough {@code Artists}, otherwise they lose pps.
+     * @param players the list of {@code Players} involved in the {@code Event}
+     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     */
     @Override
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();

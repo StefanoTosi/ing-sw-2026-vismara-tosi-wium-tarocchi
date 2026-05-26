@@ -9,14 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The player with the most stars wins the pps, the one with the least loses them
+ * During this {@code Event}, the player with the most star icons, provided by {@code Shamans} and possibly {@code Building} effects in their tribe,
+ * is awarded the specified amount of prestige points. The player with the least stars is deducted the specified amount of prestige points.
  */
-
 public class ShamanicRitual extends Event {
 
     private final int winnerPp;
     private final int loserPp;
 
+    /**
+     * Generates a {@code ShamanicRitual} object, filled with the specified parameters.
+     * @param winnerPp the amount of prestige points awarder to the event winners
+     * @param loserPp the amount of prestige points deducted from the event losers. This parameter is required to be negative.
+     * @param era the {@code Era} the card belongs to
+     */
     public ShamanicRitual(int winnerPp, int loserPp, Era era){
         super(era);
         this.winnerPp = winnerPp;
@@ -32,6 +38,11 @@ public class ShamanicRitual extends Event {
         return loserPp;
     }
 
+    /**
+     * Resolves the {@code Event} effect. The player with the most stars wins the event, the player with the least stars loses.
+     * @param players the list of {@code Players} involved in the {@code Event}
+     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     */
     @Override
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();
@@ -60,7 +71,7 @@ public class ShamanicRitual extends Event {
             }
         }
 
-        //Look for winners and losers
+        //Look for winners and losers, checking for possible ties
         for (Player player : players){
             if(player.getNumStars() == maxStar){
                 if (winnerFound) {
@@ -72,6 +83,7 @@ public class ShamanicRitual extends Event {
 
         }
 
+        //Award and deduct pps, checking for possible building effects
         for(Player player : players) {
             int stars = player.getNumStars();
             deltaPp = 0;

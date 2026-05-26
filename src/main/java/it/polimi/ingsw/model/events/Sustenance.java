@@ -11,19 +11,29 @@ import java.util.List;
 import static java.lang.Math.max;
 
 /**
- * Pay 1 Food token for each Character card in your tribe (Building cards do not count). If, after
- * paying all the Food you have, you couldn’t feed all your Characters, you lose the amount of Prestige
- * Points indicated on the Event card for each Character card you couldn’t feed
+ * During this {@code Event}, players are required to pay 1 food token for each {@code Character} card in their tribe ({@code Building} cards do not count).
+ * If their food is insufficient, players are deducted the amount of prestige points indicated on the {@code Event} card
+ * multiplied by the number of {@code Characters} they couldn’t feed. Players cannot choose to lose prestige points if they own food tokens.
  */
 public class Sustenance extends Event {
     private final int pp;
 
+    /**
+     * Generates a {@code Sustenance} object, filled with the specified parameters.
+     * @param pp the amount of prestige points players are deducted for each unfed {@code Character}
+     * @param era the {@code Era} the card belongs to
+     */
     public Sustenance(int pp, Era era){
         super(era);
         this.pp = pp;
         this.name = "Sustenance";
     }
 
+    /**
+     * Resolves the {@code Event} effect. Each player in the specified list is required 1 food for each one of their {@Characters}, otherwise they lose pps.
+     * @param players the list of {@code Players} involved in the {@code Event}
+     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     */
     @Override
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();

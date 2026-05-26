@@ -9,19 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get +1 food and the Pps on the card for every Hunter in your clan
+ * During this {@code Event}, each player is awarded 1 food token and the specified amount of prestige points
+ * for every {@code Hunter} in their tribe.
  */
-
 public class Hunt extends Event {
 
     private final int pp;
 
+    /**
+     * Generates a {@code Hunt} object, filled with the specified parameters.
+     * @param pp the amount of prestige points players are awarded for each {@code Hunter} in their tribe
+     * @param era the {@code Era} the card belongs to
+     */
     public Hunt(int pp, Era era){
         super(era);
         this.pp = pp;
         this.name = "Hunt";
     }
 
+    /**
+     * Resolves the {@code Event} effect. Each player receives 1 food token and the specified amount of prestige points for every {@code Hunter} in their tribe.
+     * @param players the list of {@code Players} involved in the {@code Event}
+     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     */
     @Override
     public List<EventResult> applyEffect(List<Player> players){
         List<EventResult> results = new ArrayList<>();
