@@ -8,7 +8,11 @@ import it.polimi.ingsw.model.characters.Builder;
 import java.util.function.Function;
 
 /**
- * Represents the elements of the Building card
+ * Represents the {@code Building} card.<p>
+ * In order to draw a {@code Building}, players must pay their cost in food.
+ * At the end of the game, each {@code Building} awards a certain amount of prestige points to the player who owns it.
+ * <p>
+ * Each {@code Building} has an {@link Effect}, which can allow the player special actions or grant them additional resources in different phases of the game.
  */
 public class Building extends Card {
     // Building properties
@@ -22,9 +26,9 @@ public class Building extends Card {
     protected Effect effect;
 
     /**
-     * Represents the elements of the Building card
-     * @param era
-     * @param cost
+     * Generates a {@code Building} object, filled with the specified parameters.
+     * @param era the {@code Era} the card belongs to
+     * @param cost the {@code Building}'s food cost
      * @param pp
      * @param effectPp
      * @param getNumCharacter
@@ -41,52 +45,27 @@ public class Building extends Card {
         this.TYPE = "Building";
     }
 
-    /**
-     * Adds Building card to player
-     * @param player
-     */
     @Override
     public void addToPlayer(Player player) {
         player.addBuilding(this);
     }
 
-    /**
-     * Returns the cost of the card
-      * @return cost
-     */
-
     public int getCost() {
         return cost;
     }
 
-    /**
-     * Returns the pp of the card
-     * @return pp
-     */
     public int getPp() {
         return pp;
     }
 
-    /**
-     * Returns the pp of the effect of the card
-     * @return effectPp
-     */
     public int getEffectPp() {
         return effectPp;
     }
 
-    /**
-     * Returns the number of the character needed for the effect
-     * @return getNumCharacter
-     */
     public Function<Player, Integer> getGetNumCharacter() {
         return getNumCharacter;
     }
 
-    /**
-     * Returns the effect associated to the card
-     * @return effect
-     */
     public Effect getEffect() {
         return effect;
     }
@@ -96,17 +75,17 @@ public class Building extends Card {
     }
 
     /**
-     * Gets the building class and converts it to a DTO class, so that we can pass the data to the client
-     * @return BuildingDTO
+     * Converts the current {@code Building} object into DTO format.
+     * @return the corresponding {@code BuildingDTO} object
      */
     public BuildingDTO toDTO() {
         return new BuildingDTO(getCost(), getPp(), getEffectPp(), getEffectCharacter(), getEffect().name(), getEra().name(), getId());
     }
 
     /**
-     * Calculates the cost considering the discount applied by the builders in the players' tribe
-     * @param player
-     * @return int
+     * Calculates the {@code Building}'s cost, considering the possible discount applied by the {@code Builders} in the player's tribe.
+     * @param player the {@code Player} who is trying to draw the card
+     * @return the resulting cost after subtracting the discount provided by {@code Builders}
      */
     public int discountedCost(Player player) {
         int buildingCost = this.cost;
