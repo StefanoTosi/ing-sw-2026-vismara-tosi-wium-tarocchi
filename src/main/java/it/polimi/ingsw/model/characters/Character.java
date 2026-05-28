@@ -34,8 +34,4 @@ public abstract class Character extends Card {
     public String getName() {
         return name;
     }
-
-    public String toString() {
-        return "name: " + name + "\ntype: " + TYPE;
-    }
 }

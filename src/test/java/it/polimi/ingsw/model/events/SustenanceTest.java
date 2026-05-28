@@ -118,4 +118,14 @@ class SustenanceTest {
         Sustenance s = new Sustenance(5, Era.I);
         assertEquals("Sustenance", s.getName());
     }
+
+    @Test
+    void toDTO(){
+        Sustenance s = new Sustenance(5, Era.I);
+
+        //check manually
+        for(StringBuilder line : s.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

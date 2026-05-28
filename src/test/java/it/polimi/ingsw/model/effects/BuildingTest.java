@@ -41,7 +41,18 @@ class BuildingTest {
     }
 
     @Test
-    void getGetNumCharacter() {
+    void getEffectCharacter() {
+        Building b = new Building(Era.I, 4, 4, 0, null, "Gatherer", Effect.ES1);
+        assertEquals(b.getEffectCharacter(), b.toDTO().getEffectCharacter());
+    }
+
+    @Test
+    void toDTO() {
+        Building b = new Building(Era.I, 4, 4, 0, null, "Gatherer", Effect.ES1);
+        //check manually
+        for(StringBuilder line : b.toDTO().printCard()){
+            System.out.println(line);
+        }
     }
 
 }

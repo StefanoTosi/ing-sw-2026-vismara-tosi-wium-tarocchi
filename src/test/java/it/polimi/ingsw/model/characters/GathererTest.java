@@ -22,4 +22,13 @@ class GathererTest {
         // Check it gets counted correctly
         assertEquals(g, p.getGatherers().get(0));
     }
+
+    @Test
+    void toDTO(){
+        Gatherer g = new Gatherer(Era.I);
+        //needed to check manualy if the print is correct
+        for(StringBuilder line : g.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

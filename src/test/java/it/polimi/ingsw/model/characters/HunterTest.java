@@ -29,4 +29,13 @@ class HunterTest {
         // Check it gets counted correctly
         assertEquals(h, p.getHunters().get(0));
     }
+
+    @Test
+    void toDTO(){
+        Hunter h = new Hunter(true, Era.I);
+        //needed to check manualy if the print is correct
+        for(StringBuilder line : h.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

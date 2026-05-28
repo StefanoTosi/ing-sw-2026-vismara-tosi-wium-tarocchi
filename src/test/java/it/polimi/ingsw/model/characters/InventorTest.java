@@ -29,4 +29,13 @@ class InventorTest {
         // Check it gets counted correctly
         assertEquals(i, p.getInventors().get(0));
     }
+
+    @Test
+    void toDTO(){
+        Inventor i = new Inventor(Icon.HOOK, Era.I);
+        //needed to check manualy if the print is correct
+        for(StringBuilder line : i.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

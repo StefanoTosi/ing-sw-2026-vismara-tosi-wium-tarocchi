@@ -130,4 +130,14 @@ class ShamanicRitualTest {
         ShamanicRitual sr = new ShamanicRitual(5,3, Era.I);
         assertEquals("ShamanicRitual",sr.getName());
     }
+
+    @Test
+    void toDTO(){
+        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I);
+
+        //check manually
+        for(StringBuilder line : sr.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

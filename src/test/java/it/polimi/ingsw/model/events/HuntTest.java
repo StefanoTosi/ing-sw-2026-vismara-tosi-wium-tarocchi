@@ -80,4 +80,14 @@ class HuntTest {
         Hunt h = new Hunt(5, Era.I);
         assertEquals("Hunt", h.getName());
     }
+
+    @Test
+    void toDTO(){
+        Hunt h = new Hunt(5, Era.I);
+
+        //check manually
+        for(StringBuilder line : h.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

@@ -29,4 +29,13 @@ class ShamanTest {
         // Check it gets counted correctly
         assertEquals(s, p.getShamans().get(0));
     }
+
+    @Test
+    void toDTO(){
+        Shaman s = new Shaman(42, Era.I);
+        //needed to check manualy if the print is correct
+        for(StringBuilder line : s.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

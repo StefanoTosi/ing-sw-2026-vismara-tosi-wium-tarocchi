@@ -35,4 +35,13 @@ class BuilderTest {
         // Check it gets counted correctly
         assertEquals(b, p.getBuilders().get(0));
     }
+
+    @Test
+    void toDTO(){
+        Builder b = new Builder(4, 2, Era.I);
+        //needed to check manualy if the print is correct
+        for(StringBuilder line : b.toDTO().printCard()){
+            System.out.println(line);
+        }
+    }
 }

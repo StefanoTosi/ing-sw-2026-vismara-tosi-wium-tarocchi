@@ -17,22 +17,9 @@ public class EndTurnState extends GameState {
     private final Game game;
     private List<Player> drawOrder;
 
+
     public EndTurnState(Game game) throws IllegalActionException, IOException {
         this.game = game;
-
-        // Resolve end turn effects
-        for (Player p : game.getPlayers()) {
-            for (Building b : p.getBuildings()) {
-                b.getEffect().applyEffectEndTurn(p);
-            }
-        }
-
-        resolveEndTurn();
-    }
-
-    public EndTurnState(Game game, List<Player> drawOrder) throws IllegalActionException, IOException {
-        this.game = game;
-        this.drawOrder = drawOrder;
 
         // Resolve end turn effects
         for (Player p : game.getPlayers()) {

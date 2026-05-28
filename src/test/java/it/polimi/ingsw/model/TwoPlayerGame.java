@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.controller.actions.*;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
@@ -8,10 +9,12 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TwoPlayerGame {
     @Test
     void test() throws IllegalActionException, RemoteException {
+
         // Fix the rng
         Random rng = new Random(42);
 

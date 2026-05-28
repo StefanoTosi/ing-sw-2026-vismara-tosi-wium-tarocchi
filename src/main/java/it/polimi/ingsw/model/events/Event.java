@@ -22,10 +22,6 @@ public abstract class Event extends Card {
         this.TYPE = "Event";
     }
 
-    public String toString() {
-        return "name: " + name + "\ntype: " + TYPE;
-    }
-
     /**
      * Resolves the {@code Event} effect.
      * @param players the list of {@code Players} involved in the {@code Event}

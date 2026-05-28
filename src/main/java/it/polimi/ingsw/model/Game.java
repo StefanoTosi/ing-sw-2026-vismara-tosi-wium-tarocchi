@@ -14,7 +14,6 @@ import java.util.*;
  * Represents a game session and manages its global state,
  * including participating {@code Players}, the {@code Board}, the current turn,
  * remote observers (RMI/TCP), and {@code Event} results.
- * <p>
  * The class implements the {@code Observer} pattern in order to notify
  * connected clients about game state updates.
  */

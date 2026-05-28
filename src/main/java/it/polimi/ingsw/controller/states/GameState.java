@@ -51,8 +51,6 @@ public abstract class GameState {
         throw new IllegalActionException("Illegal action");
     }
 
-    // EndTurnState
-
     // EndGameState
     public void calculateRankings() throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");

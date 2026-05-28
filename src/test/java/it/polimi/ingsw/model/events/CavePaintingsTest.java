@@ -23,7 +23,7 @@ class CavePaintingsTest {
         p1.setPp(20);
         p1.setFood(0);
 
-        CavePaintings ef = new CavePaintings(2, Era.I, 4, 5);
+        Event ef = new CavePaintings(2, Era.I, 4, 5);
 
         Artist a1 = new Artist(Era.I);
         Artist a2 = new Artist(Era.I);
@@ -81,5 +81,15 @@ class CavePaintingsTest {
     void getName() {
         CavePaintings ef = new CavePaintings(2, Era.I, 5, 4);
         assertEquals("CavePaintings", ef.getName());
+    }
+
+    @Test
+    void toDTO(){
+        CavePaintings ef = new CavePaintings(2, Era.I, 5, 4);
+
+        //check manually
+        for(StringBuilder line : ef.toDTO().printCard()){
+            System.out.println(line);
+        }
     }
 }

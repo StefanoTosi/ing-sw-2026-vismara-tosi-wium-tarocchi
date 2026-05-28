@@ -24,6 +24,7 @@ public class DrawCardState extends GameState {
     private int drawBottomCount;
     private List<Player> drawOrder;
 
+
     public DrawCardState(Game game) throws IllegalActionException, IOException {
         this.game = game;
         this.drawTopCount = 0;
@@ -34,14 +35,6 @@ public class DrawCardState extends GameState {
                 .sorted((p1, p2) -> p1.getOffer() - p2.getOffer())
                 .toList());
 
-        startDrawingTurn();
-    }
-
-    public DrawCardState(Game game, int drawTopCount, int drawBottomCount, List<Player> drawOrder) throws IllegalActionException, IOException {
-        this.game = game;
-        this.drawTopCount = drawTopCount;
-        this.drawBottomCount = drawBottomCount;
-        this.drawOrder = drawOrder.stream().sorted((p1, p2) -> p1.getOffer() - p2.getOffer()).toList();
         startDrawingTurn();
     }
 

@@ -14,7 +14,6 @@ public class RegisterPlayerAction implements Action {
 
     @Override
     public void execute(Player player) throws IllegalActionException, RemoteException {
-        // TODO: dobbiamo passare game perché player non esiste
         player.getGame().getState().registerPlayer(player.getGame(), player);
     }
 }

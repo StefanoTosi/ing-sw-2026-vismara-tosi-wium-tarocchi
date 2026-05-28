@@ -28,7 +28,6 @@ public class AutomatedGame {
             e.printStackTrace();
             throw new IllegalActionException("");
         }
-
     }
 
     public Game getGame() {

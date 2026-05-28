@@ -483,4 +483,31 @@ class EffectTest {
 
         assertEquals(9, p1.getAdditionalStars());
     }
+
+    /**
+     * Covers values() and valueOf()
+     */
+    @Test
+    void enumUtilityMethods() {
+        assertEquals(14, Effect.values().length);
+
+        assertEquals(Effect.D1, Effect.valueOf("D1"));
+        assertEquals(Effect.ES1, Effect.valueOf("ES1"));
+        assertEquals(Effect.ESC1, Effect.valueOf("ESC1"));
+        assertEquals(Effect.ET1, Effect.valueOf("ET1"));
+        assertEquals(Effect.D2, Effect.valueOf("D2"));
+        assertEquals(Effect.ESC2, Effect.valueOf("ESC2"));
+        assertEquals(Effect.ESC3, Effect.valueOf("ESC3"));
+        assertEquals(Effect.EH, Effect.valueOf("EH"));
+        assertEquals(Effect.EG1, Effect.valueOf("EG1"));
+        assertEquals(Effect.ECP, Effect.valueOf("ECP"));
+        assertEquals(Effect.EG2, Effect.valueOf("EG2"));
+        assertEquals(Effect.EG3, Effect.valueOf("EG3"));
+        assertEquals(Effect.ET2, Effect.valueOf("ET2"));
+        assertEquals(Effect.EG4, Effect.valueOf("EG4"));
+
+        for (Effect e : Effect.values()) {
+            assertNotNull(e);
+        }
+    }
 }
