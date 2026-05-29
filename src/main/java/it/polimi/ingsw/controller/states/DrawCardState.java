@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.board.Offer;
 import it.polimi.ingsw.model.board.Order;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.characters.Character;
+import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
@@ -202,6 +203,42 @@ public class DrawCardState extends GameState {
         game.getPlayerTurn().getBuildings()
                 .stream()
                 .forEach(b -> b.getEffect().applyEffectTileBonus(game.getPlayerTurn(), b));
+    }
+
+    /**
+     * In the case there are only buildings to draw lets the player skip the draw turn
+     * @param player
+     * @throws IllegalActionException
+     * @throws IOException
+     */
+    public void skipDraw(Player player) throws IllegalActionException, IOException {
+        if (!player.equals(game.getPlayerTurn())) {
+            throw new IllegalActionException("Player tried to skip draw out of turn");
+        }
+
+        Offer offer = player.getGame().getBoard().getOfferPath().stream().filter(o -> o.getOrder() == player.getOffer()).findFirst().get();
+        boolean canSkipTop = offer.getDrawTop() > drawTopCount && checkRow(game.getBoard().getTopRowTribe());
+        boolean canSkipBottom = offer.getDrawBottom() > drawBottomCount && checkRow(game.getBoard().getBottomRowTribe());
+        boolean noDrawsLeft = !game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount);
+
+        if(canSkipBottom || canSkipTop || noDrawsLeft){
+            drawTopCount = 0;
+            drawBottomCount = 0;
+            if(!drawOrder.isEmpty()){
+                startDrawingTurn();
+            } else{
+                game.setPlayerTurn(null);
+                ResolveEventsState r = new ResolveEventsState(game);
+                r.resolveEvents();
+            }
+        } else {
+            throw new IllegalActionException("Player tried to skip draw but valid cards are available");
+        }
+
+    }
+
+    private boolean checkRow(List<Card> row){
+        return row.stream().allMatch(card -> card instanceof Event);
     }
 
     private void transitionIfNeeded(Player player) throws IllegalActionException, IOException {

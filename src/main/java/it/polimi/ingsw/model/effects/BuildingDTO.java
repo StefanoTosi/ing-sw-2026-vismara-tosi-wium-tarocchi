@@ -37,7 +37,7 @@ public class BuildingDTO extends CardDTO implements Serializable {
         lines[1].append(String.format("|%-10s|", "Build"));
         lines[2].append(String.format("|%-10s|", getCost()));
         lines[3].append(String.format("|%-10s|", getEffect()));
-        if(getEffect().equals("EG3")){ // TODO PASSAGGIO DI CHARACTER DELL'EFFETTO EG3
+        if(getEffect().equals("EG3")){
             lines[4].append(String.format("|%-10s|", getEffectCharacter()));
         } else {
             lines[4].append(String.format("|%-10s|", " "));

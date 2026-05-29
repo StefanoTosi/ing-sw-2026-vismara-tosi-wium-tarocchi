@@ -1,9 +1,6 @@
 package it.polimi.ingsw.UI.TUI;
 
-import it.polimi.ingsw.controller.actions.ChooseOfferAction;
-import it.polimi.ingsw.controller.actions.ChooseTotemAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
+import it.polimi.ingsw.controller.actions.*;
 import it.polimi.ingsw.controller.states.ChooseTotemState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
@@ -11,6 +8,7 @@ import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.board.OrderDTO;
 import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
+import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
@@ -393,23 +391,37 @@ public class TUI implements UIObserver {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+    private int drawCardBottomRow() throws Exception {
         int card;
+        boolean check = true;
+        List <CardDTO> cards = game.getBoard().getBottomRowTribe();
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
-        do{
-            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-            card = readInt(); // fixes index and pos mismatch
-        }while(card <= 0 || card > size);
-        if(!getGameClosed()){
-                try{
-                    client.executeAction(new DrawCardFromBottomAction(card-1));
-                }catch(Exception e){
+        System.out.println("Do you wish to skip this draw? [Y]es or [N]o");
+        char input = readChar();
+        if(input == 'Y') {
+            try {
+                client.executeAction(new SkipDrawAction());
+            } catch (Exception e) {
+                //e.printStackTrace();
+                System.out.println(e.getMessage());
+                return 0;
+            }
+        } else {
+            do {
+                System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+                card = readInt(); // fixes index and pos mismatch
+            } while (card <= 0 || card > size);
+            if (!getGameClosed()) {
+                try {
+                    client.executeAction(new DrawCardFromBottomAction(card - 1));
+                } catch (Exception e) {
                     //e.printStackTrace();
                     System.out.println(e.getMessage());
                     return 0;
                 }
-            return -1;
+                return -1;
+            }
         }
         return -10;
     }
