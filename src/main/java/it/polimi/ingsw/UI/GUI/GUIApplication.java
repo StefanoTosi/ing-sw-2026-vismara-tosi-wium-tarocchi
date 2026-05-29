@@ -9,21 +9,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class starts the GUI by loading the {@code start-game.fxml} scene and attaching it to the {@code Stage}
+ */
 public class GUIApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        // Load the scene
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("start-game.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
         UISession.setObserver(fxmlLoader.getController());
 
-        /*PerspectiveCamera camera = new PerspectiveCamera();
-        scene.setCamera(camera);*/
-
+        // Attach it to the stage
         stage.setTitle("Mesos");
         stage.setScene(scene);
         Image icon = new Image("icon.png");
         stage.getIcons().add(icon);
-        // scene.getRoot().setStyle("-fx-background-image: url('/cover.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat;");
         stage.show();
     }
 }

@@ -10,8 +10,8 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 /**
- * AnimatedObject is a class that simplifies animating MeshViews, by holding a reference to both
- * the MeshView and an invisible reference object that gets updated by the JavaFX layout
+ * This is a class that simplifies animating {@code MeshView}s, by holding a reference to both
+ * a {@code Group} containing the mesh and an invisible reference {@code Rectangle} object that gets updated by the JavaFX layout
  */
 public class AnimatedObject {
     protected Group mesh;
@@ -30,15 +30,27 @@ public class AnimatedObject {
         return reference.localToScene(0, 0).getY();
     }
 
+    /**
+     * Instantly aligns the position of the mesh to the position of the reference
+     */
     public void resetPosition() {
         mesh.setLayoutX(getRefX());
         mesh.setLayoutY(getRefY());
     }
 
+    /**
+     * Animates the position of the mesh to the position of the reference
+     * @param d the duration of the animation
+     */
     public void animatePosition(Duration d) {
         animatePosition(d, Duration.seconds(0));
     }
 
+    /**
+     * Animates the position of the mesh to the position of the reference with some delay
+     * @param d the duration of the animation
+     * @param delay the delay of the animation
+     */
     public void animatePosition(Duration d, Duration delay) {
         TranslateTransition trans = new TranslateTransition(d, mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
@@ -64,7 +76,7 @@ public class AnimatedObject {
         trans.play();
     }
 
-    public void animatePosition(Duration d, double x, double y) {
+    /*public void animatePosition(Duration d, double x, double y) {
         TranslateTransition trans = new TranslateTransition(d, mesh);
         trans.setInterpolator(Interpolator.EASE_BOTH);
 
@@ -85,8 +97,11 @@ public class AnimatedObject {
             mesh.setTranslateY(0);
         });
         trans.play();
-    }
+    }*/
 
+    /**
+     * Animates the mesh with a 3D vertical spin
+     */
     public void spin() {
         RotateTransition rotator = new RotateTransition(Duration.seconds(0.7), mesh);
         rotator.setAxis(Rotate.Y_AXIS);
@@ -96,6 +111,10 @@ public class AnimatedObject {
         rotator.play();
     }
 
+    /**
+     * Animates the mesh with a 3D vertical half flip
+     * @param delay the delay of the animation
+     */
     public void flip(Duration delay) {
         RotateTransition rotator = new RotateTransition(Duration.seconds(0.5), mesh);
         rotator.setAxis(Rotate.Y_AXIS);
@@ -106,6 +125,9 @@ public class AnimatedObject {
         rotator.play();
     }
 
+    /**
+     * Animates the mesh with a shake
+     */
     public void shake() {
         TranslateTransition prev = null;
         int shakes = 4;

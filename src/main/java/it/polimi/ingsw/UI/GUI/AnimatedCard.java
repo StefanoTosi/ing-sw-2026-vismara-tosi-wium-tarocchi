@@ -20,7 +20,7 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 /**
- * AnimateObject for cards. Creates a MeshView with a front and back texture
+ * {@code AnimateObject} for cards. Creates a {@code MeshView} with a front and back texture as the mesh
  */
 public class AnimatedCard extends AnimatedObject {
     private CardDTO card;
@@ -66,7 +66,14 @@ public class AnimatedCard extends AnimatedObject {
         this.card = card;
     }
 
-
+    /**
+     * Creates the mesh for the card
+     * @param front the front texture
+     * @param back the back texture
+     * @param width the width in pixels of the card
+     * @param height the height in pixels of the card
+     * @return the mesh of the card
+     */
     private Group createCardMesh(Image front, Image back, double width, double height) {
         front = applyAlphaMask(front, mask);
         back = applyAlphaMask(back, mask);
@@ -143,12 +150,18 @@ public class AnimatedCard extends AnimatedObject {
         return new Group(frontMeshView, backMeshView);
     }
 
-    public Image applyAlphaMask(Image colorImage, Image maskImage) {
-        // 1. Determine target dimensions based on the color texture
+    /**
+     * Applies a transparency mask to a texture
+     * @param colorImage the texture to be masked
+     * @param maskImage the transparency mask
+     * @return the texture with the transparency mask applied
+     */
+    private Image applyAlphaMask(Image colorImage, Image maskImage) {
+        // Determine target dimensions based on the color texture
         int width = (int) colorImage.getWidth();
         int height = (int) colorImage.getHeight();
 
-        // 2. Initialize the WritableImage and utility readers/writers
+        // Initialize the WritableImage and utility readers/writers
         WritableImage outputImage = new WritableImage(width, height);
         PixelReader colorReader = colorImage.getPixelReader();
         PixelReader maskReader = maskImage.getPixelReader();
@@ -158,7 +171,7 @@ public class AnimatedCard extends AnimatedObject {
         int maskWidth = (int) maskImage.getWidth();
         int maskHeight = (int) maskImage.getHeight();
 
-        // 3. Loop through every pixel to blend the channels
+        // Loop through every pixel to blend the channels
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
 
@@ -173,14 +186,9 @@ public class AnimatedCard extends AnimatedObject {
                     maskPixel = Color.TRANSPARENT; // Fallback if mask is smaller
                 }
 
-                // OPTION A: If your mask image relies on its own Alpha channel
                 double alpha = maskPixel.getOpacity();
 
-                // OPTION B: If your mask is a grayscale image (Black = transparent, White = opaque)
-                // Un-comment the line below if you are using a black-and-white JPEG/PNG map:
-                // double alpha = maskPixel.getBrightness();
-
-                // 4. Combine RGB from the color image with the Alpha from the mask
+                // Combine RGB from the color image with the Alpha from the mask
                 Color blendedPixel = new Color(
                         colorPixel.getRed(),
                         colorPixel.getGreen(),
@@ -188,7 +196,7 @@ public class AnimatedCard extends AnimatedObject {
                         alpha
                 );
 
-                // 5. Write the final pixel to the WritableImage
+                // Write the final pixel to the WritableImage
                 writer.setColor(x, y, blendedPixel);
             }
         }
@@ -196,6 +204,10 @@ public class AnimatedCard extends AnimatedObject {
         return outputImage;
     }
 
+    /**
+     * Zoom-in animation for cards. Used for mouse hover effect
+     * @param e the {@code MouseEvent} received from the hover event
+     */
     private void zoomIn(MouseEvent e) {
         mesh.setTranslateZ(-0.1);
         ScaleTransition scaler = new ScaleTransition(Duration.seconds(0.1), mesh);
@@ -207,6 +219,10 @@ public class AnimatedCard extends AnimatedObject {
         scaler.play();
     }
 
+    /**
+     * Zoom-out animation for cards. Used for mouse hover effect
+     * @param e the {@code MouseEvent} received from the hover event
+     */
     private void zoomOut(MouseEvent e) {
         mesh.setTranslateZ(0);
         ScaleTransition scaler = new ScaleTransition(Duration.seconds(0.1), mesh);

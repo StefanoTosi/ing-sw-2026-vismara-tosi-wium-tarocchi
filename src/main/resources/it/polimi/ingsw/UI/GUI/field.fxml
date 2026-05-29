@@ -10,7 +10,6 @@
    <children>
        <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-               <!--Pane fx:id="cardsContainer" pickOnBounds="false" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" /-->
                <Label fx:id="debugLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="499.0" text="Label" textFill="WHITE">
                    <font>
                        <Font name="System Italic" size="16.0" />
@@ -21,7 +20,7 @@
                </Label>
                <VBox fx:id="invisibleLayout" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                    <children>
-                       <HBox fx:id="topRow" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                       <HBox fx:id="topRow" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" style="-fx-background-image: url(&quot;/brush.png&quot;); -fx-background-position: center center; -fx-background-size: contain;">
                            <children>
                            </children>
                        </HBox>
@@ -29,7 +28,7 @@
                            <children>
                            </children>
                        </HBox>
-                       <HBox fx:id="bottomRow" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                       <HBox fx:id="bottomRow" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" style="-fx-background-image: url(&quot;/brush.png&quot;); -fx-background-position: center center; -fx-background-size: contain;">
                            <children>
                            </children>
                        </HBox>
@@ -40,9 +39,6 @@
                </VBox>
                <HBox fx:id="hand" alignment="CENTER" prefHeight="300.0" prefWidth="200.0" spacing="5" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                </HBox>
-               <padding>
-                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
            </VBox>
        </HBox>
 
@@ -117,6 +113,6 @@
            </VBox>
        </StackPane>
 
-       <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">Round 1</Text>
+       <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">Round 1</Text>
    </children>
 </AnchorPane>

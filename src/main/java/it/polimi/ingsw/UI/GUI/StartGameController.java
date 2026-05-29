@@ -22,6 +22,9 @@ import net.bytebuddy.description.type.PackageDescription;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
+/**
+ * JavaFX Controller for the {@code start-game.fxml} scene
+ */
 public class StartGameController implements UIObserver {
     @FXML VBox clientSelect;
     @FXML VBox login;
@@ -162,6 +165,7 @@ public class StartGameController implements UIObserver {
 
     /**
      * Once all players have joined, loads the field scene
+     * @param game the received updated game
      */
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
@@ -198,6 +202,7 @@ public class StartGameController implements UIObserver {
 
     /**
      * Handles the game closing
+     * @param game the game that is closing
      */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {

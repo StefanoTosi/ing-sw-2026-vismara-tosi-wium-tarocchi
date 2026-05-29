@@ -44,6 +44,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * JavaFX Controller for the {@code field.fxml} scene
+ */
 public class FieldController implements UIObserver {
     @FXML AnchorPane anchor;
     @FXML HBox topRow;
@@ -341,9 +344,9 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles server notification, by reconciling how the playing field and UI are rendered in accordance
-     * With the new GameDTO that it received
+     * With the new {@code GameDTO} that it received
      *
-     * @param game the GameDTO sent by the server as a notification
+     * @param game the {@code GameDTO} sent by the server as a notification
      */
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
@@ -436,6 +439,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles the closing signal form the server, when a player has disconnected
+     * @param game the game that is being closed
      */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
@@ -478,6 +482,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles card click. Tries to draw the card and denies the action with an animation if an IllegalActionException is thrown
+     * @param e the click event
      */
     @FXML
     void cardClicked(MouseEvent e) {
@@ -515,6 +520,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles tile click. Tries to choose the tile
+     * @param e the click event
      */
     @FXML
     void tileClicked(MouseEvent e) {
@@ -548,6 +554,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Move the given AnimatedCard to the hand of the current player
+     * @param c the card that is being drawn
      */
     private void drawCard(AnimatedCard c) {
         // Put card in the tab
@@ -570,7 +577,8 @@ public class FieldController implements UIObserver {
     }
 
     /**
-     * Reconcile the rendered totem positions with the ones described by the given GameDTO
+     * Reconcile the rendered totem positions with the ones described by the given {@code GameDTO}
+     * @param game the reference game for reconciliation
      */
     private void reconcileTotems(GameDTO game) {
         if (game.getState() == StateDTO.CHOOSETOTEM) {
@@ -604,7 +612,8 @@ public class FieldController implements UIObserver {
     }
 
     /**
-     * Reconcile the rendered playing field with the one described by the given GameDTO
+     * Reconcile the rendered playing field with the one described by the given {@code GameDTO}
+     * @param game the reference game for reconciliation
      */
     private void reconcileCards(GameDTO game) {
         Platform.runLater(() -> {
@@ -702,7 +711,8 @@ public class FieldController implements UIObserver {
     }
 
     /**
-     * Reconcile the rendered hand of the selected player with the one described by the given GameDTO
+     * Reconcile the rendered hand of the selected player with the one described by the given {@code GameDTO}
+     * @param game the reference game for reconciliation
      */
     private void reconcileSelectedHand(GameDTO game) {
         Platform.runLater(() -> {
@@ -743,6 +753,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Switches the hand that is being shown
+     * @param e the click event
      */
     @FXML
     void playerClicked(MouseEvent e) {
