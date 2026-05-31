@@ -104,9 +104,9 @@ public class TUI implements UIObserver {
                 boolean flag = true;
                 while (flag) {
                     System.out.print(BLUE + BOLD + "Username: ");
-                    String username = readLine();
+                    String username = in.nextLine();
                     System.out.print(BLUE + BOLD +"Password: ");
-                    String password = readLine();
+                    String password = in.nextLine();
                     flag = !client.addUser(password, username);
                 }
                 client.ping();
@@ -211,7 +211,11 @@ public class TUI implements UIObserver {
      */
     public void handleState() throws Exception {
         while(true){
-            game = updates.take(); // Takes the new state at the beginning of every action
+            game = updates.take();
+            int dim = updates.size();
+            for(int i = 0; i < dim; i++) {
+                game = updates.take(); // Takes the new state at the beginning of every action
+            }
             // If a player disconnects:
             if(getGameClosed()){
                 client.leaveMatch();
@@ -393,8 +397,6 @@ public class TUI implements UIObserver {
      */
     private int drawCardBottomRow() throws Exception {
         int card;
-        boolean check = true;
-        List <CardDTO> cards = game.getBoard().getBottomRowTribe();
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
         System.out.println("Do you wish to skip this draw? [Y]es or [N]o");
@@ -434,22 +436,34 @@ public class TUI implements UIObserver {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+    private int drawCardTopRow() throws Exception {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-        do{
-            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-            card = readInt(); // fixes index and pos mismatch
-        }while(card <= 0 || card > size);
-        if(!getGameClosed()){
+        System.out.println("Do you wish to skip this draw? [Y]es or [N]o");
+        char input = readChar();
+        if(input == 'Y') {
             try {
-                client.executeAction(new DrawCardFromTopAction(card-1));
+                client.executeAction(new SkipDrawAction());
             } catch (Exception e) {
+                //e.printStackTrace();
                 System.out.println(e.getMessage());
                 return 0;
             }
-            return -1;
+        } else {
+            do {
+                System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+                card = readInt(); // fixes index and pos mismatch
+            } while (card <= 0 || card > size);
+            if (!getGameClosed()) {
+                try {
+                    client.executeAction(new DrawCardFromTopAction(card - 1));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return 0;
+                }
+                return -1;
+            }
         }
         return -10;
     }
@@ -756,6 +770,7 @@ public class TUI implements UIObserver {
     }
 
     // --------------------------- Helper functions ----------------------------------------------------------
+
     public void printLine(StringBuilder[] lines){
         for(StringBuilder line : lines){
             System.out.println(line);
