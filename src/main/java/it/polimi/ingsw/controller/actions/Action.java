@@ -18,10 +18,10 @@ import java.rmi.RemoteException;
         @JsonSubTypes.Type(value = ChooseOfferAction.class, name = "ChooseOffer"),
         @JsonSubTypes.Type(value = ChooseTotemAction.class, name = "ChooseTotem"),
         @JsonSubTypes.Type(value = DrawCardFromBottomAction.class, name = "DrawCardFromBottom"),
-        @JsonSubTypes.Type(value = DrawCardFromTopAction.class, name = "DrawCardFromTop")
+        @JsonSubTypes.Type(value = DrawCardFromTopAction.class, name = "DrawCardFromTop"),
+        @JsonSubTypes.Type(value = SkipDrawAction.class, name = "SkipDraw")
 })
 
 public interface Action extends Serializable {
     void execute(Player player) throws IllegalActionException, IOException;
-
 }
