@@ -399,31 +399,20 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
-        System.out.println("Do you wish to skip this draw? [Y]es or [N]o");
-        char input = readChar();
-        if(input == 'Y') {
+
+        do {
+            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+            card = readInt(); // fixes index and pos mismatch
+        } while (card <= 0 || card > size);
+        if (!getGameClosed()) {
             try {
-                client.executeAction(new SkipDrawAction());
+                client.executeAction(new DrawCardFromBottomAction(card - 1));
             } catch (Exception e) {
                 //e.printStackTrace();
                 System.out.println(e.getMessage());
                 return 0;
             }
-        } else {
-            do {
-                System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-                card = readInt(); // fixes index and pos mismatch
-            } while (card <= 0 || card > size);
-            if (!getGameClosed()) {
-                try {
-                    client.executeAction(new DrawCardFromBottomAction(card - 1));
-                } catch (Exception e) {
-                    //e.printStackTrace();
-                    System.out.println(e.getMessage());
-                    return 0;
-                }
-                return -1;
-            }
+            return -1;
         }
         return -10;
     }
@@ -440,31 +429,21 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-        System.out.println("Do you wish to skip this draw? [Y]es or [N]o");
-        char input = readChar();
-        if(input == 'Y') {
+
+        do {
+            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+            card = readInt(); // fixes index and pos mismatch
+        } while (card <= 0 || card > size);
+        if (!getGameClosed()) {
             try {
-                client.executeAction(new SkipDrawAction());
+                client.executeAction(new DrawCardFromTopAction(card - 1));
             } catch (Exception e) {
-                //e.printStackTrace();
                 System.out.println(e.getMessage());
                 return 0;
             }
-        } else {
-            do {
-                System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-                card = readInt(); // fixes index and pos mismatch
-            } while (card <= 0 || card > size);
-            if (!getGameClosed()) {
-                try {
-                    client.executeAction(new DrawCardFromTopAction(card - 1));
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    return 0;
-                }
-                return -1;
-            }
+            return -1;
         }
+
         return -10;
     }
 
@@ -730,6 +709,7 @@ public class TUI implements UIObserver {
                 GREEN + "exit/quit: let's you exit the game when you want\n" +
                 "board: prints the board when you want to see it\n" +
                 "info: prints this info card\n" +
+                "skip: lets you skip the draw turn when there are only building to draw\n" +
                 ORANGE + "Event Rules:\n" +
                 BLUE + "During Shamanic Ritual if you are the one with most stars you win N1 PPs, the losers loose N2 PPs.\n" +
                 "During Hunt for every hunter you get one food and N PPs.\n" +
@@ -815,6 +795,14 @@ public class TUI implements UIObserver {
             case "info":
                 printInfo();
                 return true;
+            case "skip":
+                try {
+                    client.executeAction(new SkipDrawAction());
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                    System.out.println(e.getMessage());
+                    return true;
+                }
             default:
                 return false;
         }
