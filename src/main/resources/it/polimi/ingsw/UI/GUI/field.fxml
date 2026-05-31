@@ -148,6 +148,9 @@
        </StackPane>
 
        <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">Round 1</Text>
-       <Button fx:id="skip" mnemonicParsing="false" onMouseClicked="#skip" prefHeight="75.0" prefWidth="75.0" styleClass="big-button" text="Skip" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+       <Button fx:id="skip" mnemonicParsing="false" onMouseClicked="#skip" prefHeight="100.0" prefWidth="100.0" styleClass="big-button" text="Skip" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
    </children>
 </AnchorPane>

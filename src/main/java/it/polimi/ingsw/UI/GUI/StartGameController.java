@@ -54,7 +54,7 @@ public class StartGameController implements UIObserver {
                 try {
                     UISession.getClient().stopGame(UISession.getClient().getNickname());
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
                 System.exit(0);
             });

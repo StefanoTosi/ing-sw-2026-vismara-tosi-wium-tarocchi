@@ -16,6 +16,7 @@
     -fx-border-width: 2;
 
     -fx-text-fill: #fff;
+    /*-fx-font-size: 20;*/
 }
 
 .image-label {

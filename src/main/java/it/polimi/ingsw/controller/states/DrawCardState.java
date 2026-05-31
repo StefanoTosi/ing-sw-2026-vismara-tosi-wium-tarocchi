@@ -221,12 +221,12 @@ public class DrawCardState extends GameState {
         boolean canSkipBottom = offer.getDrawBottom() > drawBottomCount && checkRow(game.getBoard().getBottomRowTribe());
         boolean noDrawsLeft = !game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount);
 
-        if(canSkipBottom || canSkipTop || noDrawsLeft){
+        if (canSkipBottom || canSkipTop || noDrawsLeft) {
             drawTopCount = 0;
             drawBottomCount = 0;
-            if(!drawOrder.isEmpty()){
+            if (!drawOrder.isEmpty()) {
                 startDrawingTurn();
-            } else{
+            } else {
                 game.setPlayerTurn(null);
                 ResolveEventsState r = new ResolveEventsState(game);
                 r.resolveEvents();

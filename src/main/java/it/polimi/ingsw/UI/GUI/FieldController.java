@@ -166,7 +166,7 @@ public class FieldController implements UIObserver {
                 try {
                     UISession.getClient().executeAction(new ChooseTotemAction(Totem.values()[j]));
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    // ex.printStackTrace();
                 }
             });
         }
@@ -462,7 +462,7 @@ public class FieldController implements UIObserver {
                 }
 
                 // Skip button
-                if (game.getState() == StateDTO.DRAWCARD || game.getState() == StateDTO.ENDTURN) {
+                if ((game.getState() == StateDTO.DRAWCARD || game.getState() == StateDTO.ENDTURN) && UISession.getClient().getNickname().equals(game.getPlayerTurn().getName())){
                     skip.setVisible(true);
                 } else {
                     skip.setVisible(false);
