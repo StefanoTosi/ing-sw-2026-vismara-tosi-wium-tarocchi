@@ -429,9 +429,8 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-
         do {
-            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+            System.out.println("Choose which card to draw from the Top Row (write its number): ");
             card = readInt(); // fixes index and pos mismatch
         } while (card <= 0 || card > size);
         if (!getGameClosed()) {
@@ -510,7 +509,7 @@ public class TUI implements UIObserver {
     public void printScoreBoard() throws RemoteException {
         List<LeaderboardDTO> scoreBoard = client.getLeaderboard();
         for(LeaderboardDTO player : scoreBoard){
-            System.out.println(String.format("|%-25s|" + player.getNickname() + player.getTotalScore() + player.getNumPlayers()));
+            System.out.printf("|%-25s|\n", player.getNickname() + player.getTotalScore() + player.getNumPlayers());
         }
     }
 
@@ -784,7 +783,7 @@ public class TUI implements UIObserver {
             case "exit":
             case "quit":
                 if(gameClosed){
-                    client.leaveGame();
+                    //client.leaveGame();
                     System.exit(0);
                 }
                 client.stopGame(client.getNickname());
