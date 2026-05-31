@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
@@ -24,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -41,6 +43,7 @@ import javafx.util.Duration;
 import org.w3c.dom.css.Rect;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -66,7 +69,9 @@ public class FieldController implements UIObserver {
     @FXML VBox errorToast;
     @FXML VBox ranking;
     @FXML GridPane rankingGrid;
+    @FXML GridPane leaderboardGrid;
     @FXML Text round;
+    @FXML Button skip;
 
     private Map<Group, AnimatedCard> meshRegistry;
     private Map<Rectangle, AnimatedCard> refRegistry;
@@ -264,8 +269,8 @@ public class FieldController implements UIObserver {
     private void updateRanking() {
         GameDTO game = UISession.getGame();
         Platform.runLater(() -> {
-            // Update ranking
             if (game.getState() == StateDTO.ENDGAME) {
+                // Update ranking
                 ranking.setVisible(true);
                 int i = 0;
                 for (PlayerDTO p : game.getRankings()) {
@@ -273,15 +278,37 @@ public class FieldController implements UIObserver {
                     name.getStyleClass().add("ranking-lab");
                     rankingGrid.getChildren().add(name);
                     GridPane.setColumnIndex(name, 0);
-                    GridPane.setRowIndex(name, i);
+                    GridPane.setRowIndex(name, i + 1);
 
                     Label pp = new Label("" + p.getPp());
                     pp.getStyleClass().add("ranking-lab");
                     rankingGrid.getChildren().add(pp);
                     GridPane.setColumnIndex(pp, 1);
-                    GridPane.setRowIndex(pp, i);
+                    GridPane.setRowIndex(pp, i + 1);
 
                     i += 1;
+                }
+
+                // Update leaderboard
+                i = 0;
+                try {
+                    for (LeaderboardDTO l : UISession.getClient().getLeaderboard()) {
+                        Label name = new Label(l.getNickname());
+                        name.getStyleClass().add("ranking-lab");
+                        leaderboardGrid.getChildren().add(name);
+                        GridPane.setColumnIndex(name, 0);
+                        GridPane.setRowIndex(name, i + 1);
+
+                        Label pp = new Label("" + l.getTotalScore());
+                        pp.getStyleClass().add("ranking-lab");
+                        leaderboardGrid.getChildren().add(pp);
+                        GridPane.setColumnIndex(pp, 1);
+                        GridPane.setRowIndex(pp, i + 1);
+
+                        i += 1;
+                    }
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -432,6 +459,13 @@ public class FieldController implements UIObserver {
                 // Round
                 if (game.getState() != StateDTO.ENDGAME) {
                     round.setText("Round " + game.getTurnNumber());
+                }
+
+                // Skip button
+                if (game.getState() == StateDTO.DRAWCARD || game.getState() == StateDTO.ENDTURN) {
+                    skip.setVisible(true);
+                } else {
+                    skip.setVisible(false);
                 }
             });
         });
@@ -762,5 +796,38 @@ public class FieldController implements UIObserver {
 
         // Refill the hand
         reconcileSelectedHand(UISession.getGame());
+    }
+
+    /**
+     * Skip the drawing turn
+     * @param e the click event
+     */
+    @FXML
+    void skip(MouseEvent e) {
+        try {
+            UISession.getClient().executeAction(new SkipDrawAction());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the ranking
+     * @param e the click event
+     */
+    @FXML
+    void seeRanking(MouseEvent e) {
+        rankingGrid.setVisible(true);
+        leaderboardGrid.setVisible(false);
+    }
+
+    /**
+     * Shows the leaderboard
+     * @param e the click event
+     */
+    @FXML
+    void seeLeaderboard(MouseEvent e) {
+        rankingGrid.setVisible(false);
+        leaderboardGrid.setVisible(true);
     }
 }

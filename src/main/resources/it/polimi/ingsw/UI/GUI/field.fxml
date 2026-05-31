@@ -91,20 +91,54 @@
                            <Insets bottom="20.0" />
                        </padding>
                    </Label>
+                   <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0" spacing="5.0">
+                      <children>
+                         <Button mnemonicParsing="false" onMouseClicked="#seeRanking" styleClass="big-button" text="Current" />
+                         <Button mnemonicParsing="false" onMouseClicked="#seeLeaderboard" styleClass="big-button" text="History" />
+                      </children>
+                   </HBox>
 
-                   <GridPane fx:id="rankingGrid" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1">
-                       <columnConstraints>
-                           <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
-                           <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
-                       </columnConstraints>
+                   <StackPane>
+                       <GridPane fx:id="rankingGrid" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1">
+                           <columnConstraints>
+                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="200.0" minWidth="176.0" prefWidth="195.0" />
+                               <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="214.0" minWidth="190.0" prefWidth="195.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                               <RowConstraints />
+                           </rowConstraints>
+                           <children>
+                               <Label styleClass="ranking-label" text="Player" textFill="WHITE">
+                                   <font>
+                                       <Font name="System Bold" size="12.0" />
+                                   </font></Label>
+                               <Label prefHeight="17.0" prefWidth="91.0" styleClass="ranking-label" text="Prestige Points" textFill="WHITE" GridPane.columnIndex="1">
+                                   <font>
+                                       <Font name="System Bold" size="12.0" />
+                                   </font></Label>
+                           </children>
+                       </GridPane>
+                       <GridPane fx:id="leaderboardGrid" hgap="10" vgap="10" visible="false" xmlns:fx="http://javafx.com/fxml/1">
+                           <columnConstraints>
+                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="200.0" minWidth="176.0" prefWidth="195.0" />
+                               <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="214.0" minWidth="190.0" prefWidth="195.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                               <RowConstraints />
+                           </rowConstraints>
+                           <children>
+                               <Label styleClass="ranking-label" text="Player" textFill="WHITE">
+                                   <font>
+                                       <Font name="System Bold" size="12.0" />
+                                   </font></Label>
+                               <Label styleClass="ranking-label" text="Prestige Points" textFill="WHITE" GridPane.columnIndex="1">
+                                   <font>
+                                       <Font name="System Bold" size="12.0" />
+                                   </font></Label>
+                           </children>
+                       </GridPane>
+                   </StackPane>
 
-                       <children>
-                       </children>
-                  <rowConstraints>
-                     <RowConstraints />
-                  </rowConstraints>
-
-                   </GridPane>
                </children>
 
                <padding>
@@ -113,6 +147,7 @@
            </VBox>
        </StackPane>
 
-       <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">Round 1</Text>
+       <Text fx:id="round" style="-fx-font-size: 60; -fx-fill: #fff; -fx-stroke: #000; -fx-stroke-width: 2" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">Round 1</Text>
+       <Button fx:id="skip" mnemonicParsing="false" onMouseClicked="#skip" prefHeight="75.0" prefWidth="75.0" styleClass="big-button" text="Skip" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
    </children>
 </AnchorPane>
