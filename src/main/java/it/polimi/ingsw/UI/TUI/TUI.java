@@ -368,12 +368,17 @@ public class TUI implements UIObserver {
                     break;
                 case StateDTO.ENDTURN:
                     // EndTurnState
-                    System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
-                    drawInitialiazed = false;
-                    // Check if the player has the building with the EndTurn effect
-                    if(game.getPlayerTurn().getCanPickFromTop()){
-                        int effectDraw = 1;
-                        effectDraw = drawCardTopRow();
+                    if (client.getNickname().equals(game.getPlayerTurn().getName())) {
+                        System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
+                        drawInitialiazed = false;
+                        // Check if the player has the building with the EndTurn effect
+                        if (game.getPlayerTurn().getCanPickFromTop()) {
+                            int effectDraw = 1;
+                            effectDraw = drawCardTopRow();
+                        }
+                    }
+                    else {
+                        System.out.println(BLUE + "Current player turn: " + game.getPlayerTurn().getName());
                     }
                     break;
                 case StateDTO.ENDGAME:

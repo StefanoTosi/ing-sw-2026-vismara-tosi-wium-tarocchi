@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.board.Offer;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.characters.Character;
@@ -127,6 +128,29 @@ public class EndTurnState extends GameState {
             }
         } else {
             throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
+        }
+    }
+
+    /**
+     * Lets the player skip if there's no card that interests him in the top row during effect ET2
+     * @param player
+     * @throws IllegalActionException
+     * @throws IOException
+     */
+    public void skipDraw(Player player) throws IllegalActionException, IOException {
+        if (!player.equals(game.getPlayerTurn())) {
+            throw new IllegalActionException("Player tried to skip draw out of turn");
+        }
+        if(!drawOrder.isEmpty()){
+            game.setPlayerTurn(drawOrder.removeFirst());
+        } else {
+            System.out.println("Finished end Turn fase");
+            game.setPlayerTurn(null);
+            game.newTurn();
+
+            ResolveEventsState r = new ResolveEventsState(game);
+            SaveGames.saveGame(game.toDTO());
+            r.resolveEvents();
         }
     }
 
