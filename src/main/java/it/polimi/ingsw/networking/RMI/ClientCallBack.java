@@ -8,9 +8,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Remote interface used for server → client communication in RMI.
+ * Remote interface used for server → client communication in RMI.<br>
  * This interface defines callback methods that the server can invoke on the client
- * to send updates, messages, and game state changes.
+ * to send updates, messages, and game state changes.<br>
  * Every method must throw {@link RemoteException} implicitly or explicitly,
  * since it is executed over the network.
  */
@@ -40,7 +40,7 @@ public interface ClientCallBack extends Remote {
     String getNickname() throws RemoteException;
 
     /**
-     * Sends an updated game state to the client.
+     * Sends an updated game state to the client.<br>
      * This is called whenever the game model changes and
      * clients need to refresh their view.
      *
@@ -53,7 +53,7 @@ public interface ClientCallBack extends Remote {
     void update(GameDTO game) throws IOException, IllegalActionException, InterruptedException;
 
     /**
-     * Notifies the client that the game session is closing.
+     * Notifies the client that the game session is closing.<br>
      * This can be used for cleanup, final updates, or disconnection handling.
      *
      * @param game final game state before closing

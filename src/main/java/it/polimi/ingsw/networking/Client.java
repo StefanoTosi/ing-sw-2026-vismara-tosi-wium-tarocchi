@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * Represents the generic client interface used by the application
  * to interact with the server, independently of the underlying
- * communication protocol (TCP or RMI).
- *
+ * communication protocol (TCP or RMI).<br>
+ *<br>
  * This interface defines the core operations available to a player,
  * including user authentication, game lifecycle management, action execution,
  * server communication, and leaderboard retrieval.

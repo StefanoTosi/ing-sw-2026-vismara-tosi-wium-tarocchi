@@ -7,18 +7,18 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 /**
- * Action that allows a player to select one of the available totems.<br>
- * Each {@code Totem} is identified by its color.
+ * Action that allows a player to choose a totem.
+ * <p>
+ * The selected totem is stored within the action and applied to the game
+ * through the current game state when the action is executed.
+ * </p>
  */
 public class ChooseTotemAction implements Action {
     private final Totem totem;
 
-    /**
-     * Generates a new {@code ChooseTotemAction} object, identified by the totem's color.
-     * @param totem the color identifying the chosen totem
-     */
     @JsonCreator
     public ChooseTotemAction(@JsonProperty("totem") Totem totem) {
         this.totem = totem;
@@ -29,6 +29,14 @@ public class ChooseTotemAction implements Action {
         return totem;
     }
 
+    /**
+     * Executes the totem selection for the specified player.
+     *
+     * @param player the player performing the action
+     * @throws IllegalActionException if the selected totem cannot be chosen
+     *                                in the current game state
+     * @throws IOException if an I/O error occurs during execution
+     */
     @Override
     public void execute(Player player) throws IllegalActionException, IOException {
         player.getGame().getState().chooseTotem(player, totem);

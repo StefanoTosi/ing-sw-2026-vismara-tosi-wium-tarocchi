@@ -15,10 +15,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 /**
- * RMI client implementation.
- * This class acts as:
- *     Client-side proxy to communicate with the RMI server
- *     Remote callback endpoint (implements {@link ClientCallBack})
+ * RMI client implementation.<br>
+ * This class acts as:<br>
+ *     Client-side proxy to communicate with the RMI server<br>
+ *     Remote callback endpoint (implements {@link ClientCallBack})<br>
  * It receives updates from the server and forwards them to the UI layer
  * via {@link UIObserver}.
  */
@@ -46,7 +46,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     /**
-     * Periodically sends heartbeat messages to the server.
+     * Periodically sends heartbeat messages to the server.<br>
      * If the server becomes unreachable, the UI is notified.
      */
     public void ping(){

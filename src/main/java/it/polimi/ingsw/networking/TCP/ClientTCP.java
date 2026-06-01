@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * TCP client implementation for the game.
- *This class handles all communication with the TCP server using:
- *     Synchronous request/response (via blocking queue)
- *     Asynchronous server updates (via listener thread)
- *     JSON serialization/deserialization using Jackson
- *The client supports both:
- *     Game actions (create game, join, execute action, etc.)
+ * TCP client implementation for the game.<br>
+ *This class handles all communication with the TCP server using:<br>
+ *     Synchronous request/response (via blocking queue)<br>
+ *     Asynchronous server updates (via listener thread)<br>
+ *     JSON serialization/deserialization using Jackson<br>
+ *The client supports both:<br>
+ *     Game actions (create game, join, execute action, etc.)<br>
  *     Server notifications (game updates, game closure)
  */
 public class ClientTCP implements Client {
@@ -62,10 +62,10 @@ public class ClientTCP implements Client {
     }
 
     /**
-     * Starts a background thread that listens for server messages.
-     *
-     * Messages are classified into:
-     *     Asynchronous updates (UPDATE, CLOSEGAME)
+     * Starts a background thread that listens for server messages.<br>
+     *<br>
+     * Messages are classified into:<br>
+     *     Asynchronous updates (UPDATE, CLOSEGAME)<br>
      *     Synchronous responses (added to blocking queue)
      */
     private void startListener(){
@@ -287,7 +287,6 @@ public class ClientTCP implements Client {
             sendRequest(request);
             Message response = responses.take();
             if(response.getRequest().equals(RequestType.PRINTLEADERBOARD)){
-                System.out.println(response.getPayload().toString());
                 result = mapper.convertValue(
                         response.getPayload(),
                         mapper.getTypeFactory()

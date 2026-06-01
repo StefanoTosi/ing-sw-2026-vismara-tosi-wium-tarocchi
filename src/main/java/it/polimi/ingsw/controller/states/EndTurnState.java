@@ -13,11 +13,30 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Game state responsible for handling the end-of-turn phase.
+ * <p>
+ * During this phase, end-turn effects are resolved, players may perform
+ * final draws based on their offer order, and the game transitions to
+ * event resolution or the next round.
+ * </p>
+ */
 public class EndTurnState extends GameState {
     private final Game game;
     private List<Player> drawOrder;
 
-
+    /**
+     * Initializes the end-turn state and applies all end-turn effects.
+     *
+     * <p>
+     * This includes resolving building effects that trigger at the end
+     * of a turn, followed by preparation of the end-turn flow.
+     * </p>
+     *
+     * @param game the game entering the end-turn phase
+     * @throws IllegalActionException if an effect violates game rules
+     * @throws IOException if persistence or state update fails
+     */
     public EndTurnState(Game game) throws IllegalActionException, IOException {
         this.game = game;
 
@@ -31,6 +50,10 @@ public class EndTurnState extends GameState {
         resolveEndTurn();
     }
 
+    /**
+     * Computes player order for end-turn drawing and determines
+     * whether the game proceeds directly to event resolution.
+     */
     private void resolveEndTurn() throws IllegalActionException, IOException {
         this.drawOrder = new ArrayList<>(game.getPlayers()
                 .stream()

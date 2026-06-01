@@ -44,4 +44,5 @@ module com.example.mesos {
     opens it.polimi.ingsw.UI.TUI to javafx.fxml;
     opens it.polimi.ingsw.UI to javafx.fxml;
     opens it.polimi.ingsw.networking to javafx.fxml;
+    opens it.polimi.ingsw.networking.DB to com.fasterxml.jackson.databind, javafx.fxml;
 }

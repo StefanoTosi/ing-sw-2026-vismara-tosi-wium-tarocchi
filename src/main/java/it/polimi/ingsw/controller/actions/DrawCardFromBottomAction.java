@@ -6,19 +6,21 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 /**
- * Action that allows a player to draw one of the available cards from the bottom row.<br>
- * The selected {@code Card} is identified by its position in the row on the board,
- * regardless of the list ({@code Character} or {@code Building}) it belongs to.
+ * Action that allows a player to draw a card from the bottom row
+ * of the game board.
+ * <p>
+ * The position identifies which card the player wants to draw.
+ * The actual validation and execution are delegated to the current
+ * game state.
+ * </p>
  */
 public class DrawCardFromBottomAction implements Action {
     private final int pos;
 
-    /**
-     * Generates a new {@code DrawCardFromBottomAction} object, indicating the {@code Card}'s position on the board.
-     * @param pos the card's absolute position in the row, regardless of {@code Character}/{@code Building} list division
-     */
+
     @JsonCreator
     public DrawCardFromBottomAction(@JsonProperty("pos") int pos) {
         this.pos = pos;
@@ -29,8 +31,17 @@ public class DrawCardFromBottomAction implements Action {
         return pos;
     }
 
+    /**
+     * Executes the card draw action for the specified player.
+     *
+     * @param player the player performing the action
+     * @throws IllegalActionException if the selected card cannot be drawn
+     *                                in the current game state
+     * @throws IOException if an I/O error occurs during execution
+     */
     @Override
     public void execute(Player player) throws IllegalActionException, IOException {
         player.getGame().getState().drawCardFromBottom(player, pos);
     }
+
 }

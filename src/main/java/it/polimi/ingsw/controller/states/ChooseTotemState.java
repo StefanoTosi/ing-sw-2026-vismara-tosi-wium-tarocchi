@@ -10,6 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Game state responsible for the "totem selection" phase.
+ * <p>
+ * During this phase, each player selects a unique totem in turn order.
+ * Once all players have chosen, the game transitions to {@link FillBoardState}
+ * and the board is initialized.
+ * </p>
+ */
 public class ChooseTotemState extends GameState {
     private final Game game;
     private List<Player> chooseOrder;
@@ -21,6 +29,25 @@ public class ChooseTotemState extends GameState {
         game.setPlayerTurn(chooseOrder.removeFirst());
     }
 
+    /**
+     * Handles the selection of a totem by a player.
+     *
+     * <p>
+     * Enforces turn order and ensures that each totem can only be selected
+     * by a single player.
+     * Once all players have chosen, the game transitions to {@link FillBoardState},
+     * persists the game, and triggers board initialization.
+     * </p>
+     *
+     * @param player the player performing the action
+     * @param totem the selected totem
+     * @throws IllegalActionException if:
+     *         <ul>
+     *             <li>it is not the player's turn</li>
+     *             <li>the selected totem is already taken</li>
+     *         </ul>
+     * @throws IOException if an error occurs while saving the game state
+     */
     @Override
     public void chooseTotem(Player player, Totem totem) throws IllegalActionException, IOException {
         if (player.equals(game.getPlayerTurn())) {

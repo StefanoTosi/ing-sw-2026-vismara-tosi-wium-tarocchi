@@ -8,14 +8,14 @@ import java.rmi.*;
 import java.util.List;
 
 /**
- * Remote RMI interface exposed by the server.
+ * Remote RMI interface exposed by the server.<br>
  *
- * Defines all operations that a client can invoke remotely:
- * - user authentication
- * - game lifecycle management
- * - gameplay actions
- * - heartbeat mechanism
- * - leaderboard retrieval
+ * Defines all operations that a client can invoke remotely:<br>
+ * - user authentication<br>
+ * - game lifecycle management<br>
+ * - gameplay actions<br>
+ * - heartbeat mechanism<br>
+ * - leaderboard retrieval<br>
  *
  * All methods may throw RemoteException due to network communication.
  */

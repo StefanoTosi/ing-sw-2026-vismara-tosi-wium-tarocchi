@@ -16,7 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Game state responsible for the card-drawing phase of a round.
+ * <p>
+ * During this state, players take turns drawing cards from the board
+ * according to their offer tile order. Each player may draw a limited
+ * number of cards from the top and bottom rows, and must respect
+ * board constraints and resource requirements.
+ * </p>
  *
+ * <p>
+ * When all players have finished drawing, the state transitions to
+ * {@link EndTurnState}.
+ * </p>
  */
 public class DrawCardState extends GameState {
     private final Game game;

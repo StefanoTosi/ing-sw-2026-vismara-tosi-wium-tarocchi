@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Entry point of the server application.
- *
+ * Entry point of the server application.<br>
+ *<br>
  * This class is responsible for initializing the game controller,
  * loading configuration parameters, restoring persisted data,
  * and starting both RMI and TCP networking services.
@@ -29,14 +29,14 @@ public class ServerMain {
     private static String host;
 
     /**
-     * Main method that bootstraps the server.
-     *
-     * It performs the following steps:
-     *     Loads configuration from JSON file
-     *     Initializes database connection
-     *     Loads persisted users and saved games
-     *     Starts RMI registry and binds remote server
-     *     Starts TCP server for socket-based clients
+     * Main method that bootstraps the server.<br>
+     *<br>
+     * It performs the following steps:<br>
+     *    - Loads configuration from JSON file<br>
+     *    - Initializes database connection<br>
+     *    - Loads persisted users and saved games<br>
+     *    - Starts RMI registry and binds remote server<br>
+     *    - Starts TCP server for socket-based clients
      *
      * @param args command-line arguments (not used)
      * @throws IOException if configuration or I/O operations fail

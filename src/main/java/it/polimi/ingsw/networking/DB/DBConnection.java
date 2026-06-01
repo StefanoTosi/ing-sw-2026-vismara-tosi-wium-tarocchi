@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 /**
  * Utility class responsible for managing the database connection
- * and initializing the application database structure.
+ * and initializing the application database structure.<br>
  *
  * This class creates the database and the required tables
  * if they do not already exist.
@@ -21,9 +21,9 @@ public class DBConnection {
 
     /**
      * Initializes the database structure.
-     * This method:
-     *   - Creates the database if it does not exist;
-     *    - Selects the database;
+     * This method:<br>
+     *   - Creates the database if it does not exist;<br>
+     *    - Selects the database;<br>
      */
     public static void initializeDB(){
         try{

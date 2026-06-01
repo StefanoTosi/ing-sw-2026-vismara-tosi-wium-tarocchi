@@ -17,12 +17,10 @@ import java.util.Map;
 
 /**
  * Utility class used to manage game persistence.<br>
- * This class allows:
- * <ul>
- *     <li>Saving active games to a JSON file</li>
- *     <li>Removing saved games</li>
- *     <li>Loading saved games after a server restart</li>
- * </ul>
+ * This class allows:<br>
+ *     Saving active games to a JSON file<br>
+ *     Removing saved games<br>
+ *     Loading saved games after a server restart<br>
  * Games are stored as {@link GameDTO} objects serialized through Jackson.
  */
 public class SaveGames {
@@ -69,7 +67,7 @@ public class SaveGames {
     }
 
     /**
-     * Loads all saved games from disk and restores them into the game controller.
+     * Loads all saved games from disk and restores them into the game controller.<br>
      * This method also restores user states by marking players as currently in-game.
      *
      * @param gameController the controller where games are restored
