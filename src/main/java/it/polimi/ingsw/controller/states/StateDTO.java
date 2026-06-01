@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
 public enum StateDTO {
     CHOOSEOFFER {
@@ -57,6 +56,13 @@ public enum StateDTO {
         }
     };
 
+    /**
+     * Returns the corresponding {@code GameState} object.
+     * @param game
+     * @return
+     * @throws IllegalActionException
+     * @throws IOException
+     */
     public GameState getNewState(Game game) throws IllegalActionException, IOException {
         return null;
     }

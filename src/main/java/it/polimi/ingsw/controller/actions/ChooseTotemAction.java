@@ -7,11 +7,18 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
+/**
+ * Action that allows a player to select one of the available totems.<br>
+ * Each {@code Totem} is identified by its color.
+ */
 public class ChooseTotemAction implements Action {
     private final Totem totem;
 
+    /**
+     * Generates a new {@code ChooseTotemAction} object, identified by the totem's color.
+     * @param totem the color identifying the chosen totem
+     */
     @JsonCreator
     public ChooseTotemAction(@JsonProperty("totem") Totem totem) {
         this.totem = totem;

@@ -7,9 +7,6 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -21,23 +18,23 @@ public class StateTest{
     }
 
     @Test
-    void chooseOfferState() throws IllegalActionException, IOException{
+    void chooseOfferState() {
         Game game = createGame();
 
         GameState state = StateDTO.CHOOSEOFFER.getNewState(game);
 
         assertNotNull(state);
-        assertTrue(state instanceof ChooseOfferState);
+        assertInstanceOf(ChooseOfferState.class, state);
     }
 
     @Test
-    void chooseTotemState() throws IllegalActionException, IOException{
+    void chooseTotemState() {
         Game game = createGame();
 
         GameState state = StateDTO.CHOOSETOTEM.getNewState(game);
 
         assertNotNull(state);
-        assertTrue(state instanceof ChooseTotemState);
+        assertInstanceOf(ChooseTotemState.class, state);
     }
     /*
     @Test
@@ -51,13 +48,13 @@ public class StateTest{
     }*/
 
     @Test
-    void endGameState() throws IllegalActionException, IOException{
+    void endGameState() {
         Game game = createGame();
 
         GameState state = StateDTO.ENDGAME.getNewState(game);
 
         assertNotNull(state);
-        assertTrue(state instanceof EndGameState);
+        assertInstanceOf(EndGameState.class, state);
     }
     /*
     @Test
@@ -71,33 +68,33 @@ public class StateTest{
     }*/
 
     @Test
-    void fillBoardState() throws IllegalActionException, IOException{
+    void fillBoardState() {
         Game game = createGame();
 
         GameState state = StateDTO.FILLBOARD.getNewState(game);
 
         assertNotNull(state);
-        assertTrue(state instanceof FillBoardState);
+        assertInstanceOf(FillBoardState.class, state);
     }
 
     @Test
-    void resolveEventState() throws IllegalActionException, IOException{
+    void resolveEventState() {
         Game game = createGame();
 
         GameState state = StateDTO.RESOLVEEVENT.getNewState(game);
 
         assertNotNull(state);
-        assertTrue(state instanceof ResolveEventsState);
+        assertInstanceOf(ResolveEventsState.class, state);
     }
 
     @Test
-    void setupGameState() throws IllegalActionException, IOException{
+    void setupGameState() {
         Game game = createGame();
 
         GameState state = StateDTO.SETUPGAME.getNewState(game);
 
         assertNotNull(state);
-        assertTrue(state instanceof SetupGameState);
+        assertInstanceOf(SetupGameState.class, state);
     }
 
     /*
@@ -122,16 +119,15 @@ public class StateTest{
         assertThrows(IllegalActionException.class, () -> state.startGame(game));
         assertThrows(IllegalActionException.class, () -> state.chooseTotem(player, Totem.BLUE));
 
-        assertThrows(IllegalActionException.class, () -> state.movePlayersBackToOrder());
-        assertThrows(IllegalActionException.class, () -> state.refillBoard());
+        assertThrows(IllegalActionException.class, state::refillBoard);
 
         assertThrows(IllegalActionException.class, () -> state.chooseOffer(player, 'A'));
 
         assertThrows(IllegalActionException.class, () -> state.drawCardFromTop(player, 0));
         assertThrows(IllegalActionException.class, () -> state.drawCardFromBottom(player, 0));
 
-        assertThrows(IllegalActionException.class, () -> state.resolveEvents());
-        assertThrows(IllegalActionException.class, () -> state.calculateRankings());
+        assertThrows(IllegalActionException.class, state::resolveEvents);
+        assertThrows(IllegalActionException.class, state::calculateRankings);
     }
 
     @Test
@@ -140,5 +136,4 @@ public class StateTest{
 
         assertEquals(StateDTO.RESOLVEEVENT, state.getStateDTO());
     }
-
 }

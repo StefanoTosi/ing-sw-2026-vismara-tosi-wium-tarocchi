@@ -6,11 +6,10 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
 public abstract class GameState {
     // SetupGameState
-    public void registerPlayer(Game game, Player player) throws IllegalActionException, RemoteException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -24,10 +23,6 @@ public abstract class GameState {
     }
 
     // FillBoardState
-    public void movePlayersBackToOrder() throws IllegalActionException {
-        throw new IllegalActionException("Illegal action");
-    }
-
     public void refillBoard() throws IllegalActionException, IOException {
         throw new IllegalActionException("Illegal action");
     }

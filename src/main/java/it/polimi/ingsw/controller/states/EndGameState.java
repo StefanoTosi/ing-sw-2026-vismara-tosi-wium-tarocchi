@@ -2,10 +2,8 @@ package it.polimi.ingsw.controller.states;
 
 import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameDTO;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.effects.Building;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.UserDAO;
 
 import java.io.IOException;
@@ -28,7 +26,7 @@ public class EndGameState extends GameState {
      * Calculates the final PP scores for each player and orders them to form the rankings,
      * in a list where the first element is the winning player.
      */
-    public void calculateRankings() throws IllegalActionException, IOException {
+    public void calculateRankings() throws IOException {
         List<Player> rankings = new ArrayList<>(game.getPlayers());
 
         for (Player player : rankings) {
