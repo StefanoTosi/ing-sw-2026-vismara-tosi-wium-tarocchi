@@ -2,8 +2,8 @@ package it.polimi.ingsw.networking;
 
 /**
  * Represents a user of the system identified by a nickname,
- * with authentication data and session state information.
- *
+ * with authentication data and session state information.<br>
+ *<br>
  * A user can be active (logged in) and/or currently participating
  * in a game session.
  */
@@ -14,9 +14,9 @@ public class User {
     private boolean inGame;
 
     /**
-     * Creates a user with only a nickname.
-     * The password is initially unset and the user is inactive.
-     *
+     * Creates a user with only a nickname.<br>
+     * The password is initially unset and the user is inactive.<br>
+     *<br>
      * Used when the DB is unreachable and there are saved games
      * @param nickname the user's nickname
      */
@@ -28,9 +28,9 @@ public class User {
     }
 
     /**
-     * Creates a user with nickname and password.
-     * The user is initially inactive and not in a game.
-     *
+     * Creates a user with nickname and password.<br>
+     * The user is initially inactive and not in a game.<br>
+     *<br>
      * Used to load the users from the DB
      * @param nickname the user's nickname
      * @param password the user's password

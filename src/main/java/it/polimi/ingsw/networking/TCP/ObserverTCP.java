@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.GameDTO;
 import java.rmi.Remote;
 
 /**
- * TCP observer interface used for server → client updates.
- *
+ * TCP observer interface used for server → client updates.<br>
+ *<br>
  * This interface defines callback methods that the server uses
  * to notify TCP clients about game state changes.
  */

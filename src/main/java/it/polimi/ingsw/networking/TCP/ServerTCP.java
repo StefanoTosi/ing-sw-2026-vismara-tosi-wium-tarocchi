@@ -9,13 +9,13 @@ import java.net.Socket;
 import java.util.Map;
 
 /**
- * TCP server entry point.
- *
- * Responsible for:
- * - opening a ServerSocket
- * - accepting incoming client connections
- * - spawning a dedicated thread per client (ServerThread)
- *
+ * TCP server entry point.<br>
+ *<br>
+ * Responsible for:<br>
+ * - opening a ServerSocket<br>
+ * - accepting incoming client connections<br>
+ * - spawning a dedicated thread per client (ServerThread)<br>
+ *<br>
  * This is a multi-threaded blocking TCP server model.
  */
 public class ServerTCP {
@@ -38,11 +38,11 @@ public class ServerTCP {
     }
 
     /**
-     * Starts the TCP server and blocks waiting for connections.
-     *
-     * For each incoming connection:
-     * - accepts socket
-     * - prints debug message
+     * Starts the TCP server and blocks waiting for connections.<br>
+     *<br>
+     * For each incoming connection:<br>
+     * - accepts socket<br>
+     * - prints debug message<br>
      * - starts a new ServerThread to handle communication
      *
      * @param users shared map of registered users

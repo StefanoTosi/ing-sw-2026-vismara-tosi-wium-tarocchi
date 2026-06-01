@@ -3,11 +3,11 @@ package it.polimi.ingsw.networking;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Utility class for JSON serialization and deserialization.
- *
+ * Utility class for JSON serialization and deserialization.<br>
+ *<br>
  * This class provides a shared Jackson {@link ObjectMapper}
- * instance to convert Java objects to JSON strings and vice versa.
- *
+ * instance to convert Java objects to JSON strings and vice versa.<br>
+ *<br>
  * It is used across the networking layer for TCP communication
  * where messages are exchanged in JSON format.
  */

@@ -18,15 +18,15 @@ import java.rmi.RemoteException;
 import java.util.Map;
 
 /**
- * Handles a single TCP client connection.
- *
- * This class is responsible for:
- *     Receiving and parsing client requests
- *     Executing game operations through GameController
- *     Sending responses back to the client
- *     Managing user session state (login, join, disconnect)
- *     Monitoring client timeout (heartbeat via ping)
- *
+ * Handles a single TCP client connection.<br>
+ *<br>
+ * This class is responsible for:<br>
+ *    - Receiving and parsing client requests<br>
+ *    - Executing game operations through GameController<br>
+ *    - Sending responses back to the client<br>
+ *    - Managing user session state (login, join, disconnect)<br>
+ *    - Monitoring client timeout (heartbeat via ping)<br>
+ *<br>
  * Each client runs on its own thread.
  */
 public class ServerThread implements Runnable, ObserverTCP {
@@ -70,12 +70,12 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     /**
-     * Monitors client inactivity.
-     *
-     * If no ping is received for more than 10 seconds:
-     *     User is marked inactive
-     *     Game session is closed
-     *     Socket is closed
+     * Monitors client inactivity.<br>
+     *<br>
+     * If no ping is received for more than 10 seconds:<br>
+     *    - User is marked inactive<br>
+     *    - Game session is closed<br>
+     *    - Socket is closed
      */
     public void checkTimeouts(){
         new Thread(() -> {
@@ -112,8 +112,8 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     /**
-     * Main loop that receives and processes client messages.
-     *
+     * Main loop that receives and processes client messages.<br>
+     *<br>
      * It deserializes JSON messages and dispatches them to
      * the correct handler based on RequestType.
      */
@@ -167,10 +167,10 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     /**
-     * Handles user login/registration.
-     *
-     * Sends back:
-     * - success flag
+     * Handles user login/registration.<br>
+     *<br>
+     * Sends back:<br>
+     * - success flag<br>
      * - message explaining result
      */
     private void addUser(String psw, String nickname) throws Exception {
@@ -234,7 +234,7 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     /**
-     * Adds player to a game or reconnects if already in match.
+     * Adds player to a game or reconnects if already in match.<br>
      *
      * Sends back join result to client.
      */
@@ -274,7 +274,7 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     /**
-     * Executes a player action in the game.
+     * Executes a player action in the game.<br>
      *
      * Any exception is captured and sent back as error message.
      */
@@ -297,7 +297,7 @@ public class ServerThread implements Runnable, ObserverTCP {
     }
 
     /**
-     * Entry point of thread execution.
+     * Entry point of thread execution.<br>
      * Starts communication loop.
      */
     @Override

@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Data Access Object (DAO) for managing users and leaderboard data in the database.
+ * Data Access Object (DAO) for managing users and leaderboard data in the database.<br>
  *
- * Provides methods to:
- * - Load users from DB into memory
- * - Insert new users
- * - Insert leaderboard entries
- * - Retrieve aggregated leaderboard data
+ * Provides methods to:<br>
+ * - Load users from DB into memory<br>
+ * - Insert new users<br>
+ * - Insert leaderboard entries<br>
+ * - Retrieve aggregated leaderboard data<br>
  */
 public class UserDAO {
 
@@ -92,12 +92,12 @@ public class UserDAO {
     }
 
     /**
-     * Retrieves the aggregated leaderboard.
+     * Retrieves the aggregated leaderboard.<br>
      *
      * Scores are grouped by nickname and number of players,
-     * and ordered by:
-     * - number of players (ascending)
-     * - total score (descending)
+     * and ordered by:<br>
+     * - number of players (ascending)<br>
+     * - total score (descending)<br>
      *
      * @return list of leaderboard entries
      */

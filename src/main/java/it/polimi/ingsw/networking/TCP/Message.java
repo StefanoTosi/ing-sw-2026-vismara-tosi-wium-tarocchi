@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.Serializable;
 
 /**
- * Generic TCP message container used for client-server communication.
- *
- * Each message contains:
- * - a RequestType identifying the operation
- * - a JSON payload carrying the request/response data
- *
+ * Generic TCP message container used for client-server communication.<br>
+ *<br>
+ * Each message contains:<br>
+ * - a RequestType identifying the operation<br>
+ * - a JSON payload carrying the request/response data<br>
+ *<br>
  * This design allows flexible and extensible protocol messages.
  */
 public class Message implements Serializable {

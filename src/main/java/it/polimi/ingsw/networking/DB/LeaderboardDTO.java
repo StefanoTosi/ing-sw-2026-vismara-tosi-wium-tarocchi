@@ -7,13 +7,13 @@ import java.io.Serializable;
 
 /**
  * Data Transfer Object (DTO) used to represent
- * a leaderboard entry.
+ * a leaderboard entry.<br>
  *
- * This class stores information about:
- *  - The player's nickname;
- *  - The total score achieved;
- *  - The number of players involved in the match;
- *
+ * This class stores information about:<br>
+ *  - The player's nickname;<br>
+ *  - The total score achieved;<br>
+ *  - The number of players involved in the match;<br>
+ *<br>
  * It also supports JSON serialization/deserialization
  * through Jackson annotations.
  */

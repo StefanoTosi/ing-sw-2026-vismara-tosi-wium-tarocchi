@@ -6,8 +6,8 @@ import java.io.IOException;
 
 /**
  * Observer interface used by the networking layer to notify the UI
- * about changes in the game state or connection status.
- *
+ * about changes in the game state or connection status.<br>
+ *<br>
  * Implementations of this interface are responsible for updating
  * the user interface when the server sends new game data,
  * when a game session ends, or when the server becomes unreachable.

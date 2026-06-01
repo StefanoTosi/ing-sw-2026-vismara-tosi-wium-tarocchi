@@ -17,13 +17,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * RMI server implementation.
+ * RMI server implementation.<br>
  *
- * Responsibilities:
- * - User authentication and registration
- * - Managing RMI client callbacks
- * - Game lifecycle management (create, join, leave)
- * - Client heartbeat monitoring (ping-based timeout detection)
+ * Responsibilities:<br>
+ * - User authentication and registration<br>
+ * - Managing RMI client callbacks<br>
+ * - Game lifecycle management (create, join, leave)<br>
+ * - Client heartbeat monitoring (ping-based timeout detection)<br>
  *
  * Uses a GameController for game logic and a shared user map for persistence.
  */
@@ -50,10 +50,10 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     /**
-     * Registers a new user or performs login.
+     * Registers a new user or performs login.<br>
      *
-     * - If user exists: validates password
-     * - If user does not exist: creates a new account
+     * - If user exists: validates password<br>
+     * - If user does not exist: creates a new account<br>
      * - Stores RMI callback for later server notifications
      */
     @Override
@@ -104,7 +104,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     /**
-     * Updates the heartbeat timestamp for a client.
+     * Updates the heartbeat timestamp for a client.<br>
      * Called periodically by the client.
      */
     @Override
@@ -113,11 +113,11 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
     }
 
     /**
-     * Background thread that checks for inactive clients.
+     * Background thread that checks for inactive clients.<br>
      *
-     * If a client does not send a ping for more than 10 seconds:
-     * - marks user as inactive
-     * - removes from active game
+     * If a client does not send a ping for more than 10 seconds:<br>
+     * - marks user as inactive<br>
+     * - removes from active game<br>
      * - cleans up server state
      */
     public void checkTimeouts(){
