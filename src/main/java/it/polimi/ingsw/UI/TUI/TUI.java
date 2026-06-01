@@ -505,7 +505,7 @@ public class TUI implements UIObserver {
     public void printScoreBoard() throws RemoteException {
         List<LeaderboardDTO> scoreBoard = client.getLeaderboard();
         for(LeaderboardDTO player : scoreBoard){
-            System.out.println(player.getNickname() + player.getTotalScore() + player.getNumPlayers());
+            System.out.println(String.format("|%-25s|" + player.getNickname() + player.getTotalScore() + player.getNumPlayers()));
         }
     }
 

@@ -9,41 +9,38 @@ import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.BoardDTO;
-import it.polimi.ingsw.model.board.OfferDTO;
-import it.polimi.ingsw.model.events.EventResult;
-import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Mesh;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.w3c.dom.css.Rect;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.*;
-import java.util.stream.Stream;
 
+/**
+ * JavaFX Controller for the {@code field.fxml} scene
+ */
 public class FieldController implements UIObserver {
     @FXML AnchorPane anchor;
     @FXML HBox topRow;
@@ -63,7 +60,9 @@ public class FieldController implements UIObserver {
     @FXML VBox errorToast;
     @FXML VBox ranking;
     @FXML GridPane rankingGrid;
+    @FXML GridPane leaderboardGrid;
     @FXML Text round;
+    @FXML Button skip;
 
     private Map<Group, AnimatedCard> meshRegistry;
     private Map<Rectangle, AnimatedCard> refRegistry;
@@ -158,7 +157,7 @@ public class FieldController implements UIObserver {
                 try {
                     UISession.getClient().executeAction(new ChooseTotemAction(Totem.values()[j]));
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    // ex.printStackTrace();
                 }
             });
         }
@@ -261,8 +260,8 @@ public class FieldController implements UIObserver {
     private void updateRanking() {
         GameDTO game = UISession.getGame();
         Platform.runLater(() -> {
-            // Update ranking
             if (game.getState() == StateDTO.ENDGAME) {
+                // Update ranking
                 ranking.setVisible(true);
                 int i = 0;
                 for (PlayerDTO p : game.getRankings()) {
@@ -270,15 +269,37 @@ public class FieldController implements UIObserver {
                     name.getStyleClass().add("ranking-lab");
                     rankingGrid.getChildren().add(name);
                     GridPane.setColumnIndex(name, 0);
-                    GridPane.setRowIndex(name, i);
+                    GridPane.setRowIndex(name, i + 1);
 
                     Label pp = new Label("" + p.getPp());
                     pp.getStyleClass().add("ranking-lab");
                     rankingGrid.getChildren().add(pp);
                     GridPane.setColumnIndex(pp, 1);
-                    GridPane.setRowIndex(pp, i);
+                    GridPane.setRowIndex(pp, i + 1);
 
                     i += 1;
+                }
+
+                // Update leaderboard
+                i = 0;
+                try {
+                    for (LeaderboardDTO l : UISession.getClient().getLeaderboard()) {
+                        Label name = new Label(l.getNickname());
+                        name.getStyleClass().add("ranking-lab");
+                        leaderboardGrid.getChildren().add(name);
+                        GridPane.setColumnIndex(name, 0);
+                        GridPane.setRowIndex(name, i + 1);
+
+                        Label pp = new Label("" + l.getTotalScore());
+                        pp.getStyleClass().add("ranking-lab");
+                        leaderboardGrid.getChildren().add(pp);
+                        GridPane.setColumnIndex(pp, 1);
+                        GridPane.setRowIndex(pp, i + 1);
+
+                        i += 1;
+                    }
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -341,9 +362,9 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles server notification, by reconciling how the playing field and UI are rendered in accordance
-     * With the new GameDTO that it received
+     * With the new {@code GameDTO} that it received
      *
-     * @param game the GameDTO sent by the server as a notification
+     * @param game the {@code GameDTO} sent by the server as a notification
      */
     @Override
     public void update(GameDTO game) throws IOException, IllegalActionException {
@@ -430,12 +451,20 @@ public class FieldController implements UIObserver {
                 if (game.getState() != StateDTO.ENDGAME) {
                     round.setText("Round " + game.getTurnNumber());
                 }
+
+                // Skip button
+                if ((game.getState() == StateDTO.DRAWCARD || game.getState() == StateDTO.ENDTURN) && UISession.getClient().getNickname().equals(game.getPlayerTurn().getName())){
+                    skip.setVisible(true);
+                } else {
+                    skip.setVisible(false);
+                }
             });
         });
     }
 
     /**
      * Handles the closing signal form the server, when a player has disconnected
+     * @param game the game that is being closed
      */
     @Override
     public void closingGame(GameDTO game) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
@@ -478,6 +507,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles card click. Tries to draw the card and denies the action with an animation if an IllegalActionException is thrown
+     * @param e the click event
      */
     @FXML
     void cardClicked(MouseEvent e) {
@@ -515,6 +545,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Handles tile click. Tries to choose the tile
+     * @param e the click event
      */
     @FXML
     void tileClicked(MouseEvent e) {
@@ -548,6 +579,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Move the given AnimatedCard to the hand of the current player
+     * @param c the card that is being drawn
      */
     private void drawCard(AnimatedCard c) {
         // Put card in the tab
@@ -570,7 +602,8 @@ public class FieldController implements UIObserver {
     }
 
     /**
-     * Reconcile the rendered totem positions with the ones described by the given GameDTO
+     * Reconcile the rendered totem positions with the ones described by the given {@code GameDTO}
+     * @param game the reference game for reconciliation
      */
     private void reconcileTotems(GameDTO game) {
         if (game.getState() == StateDTO.CHOOSETOTEM) {
@@ -604,7 +637,8 @@ public class FieldController implements UIObserver {
     }
 
     /**
-     * Reconcile the rendered playing field with the one described by the given GameDTO
+     * Reconcile the rendered playing field with the one described by the given {@code GameDTO}
+     * @param game the reference game for reconciliation
      */
     private void reconcileCards(GameDTO game) {
         Platform.runLater(() -> {
@@ -702,7 +736,8 @@ public class FieldController implements UIObserver {
     }
 
     /**
-     * Reconcile the rendered hand of the selected player with the one described by the given GameDTO
+     * Reconcile the rendered hand of the selected player with the one described by the given {@code GameDTO}
+     * @param game the reference game for reconciliation
      */
     private void reconcileSelectedHand(GameDTO game) {
         Platform.runLater(() -> {
@@ -743,6 +778,7 @@ public class FieldController implements UIObserver {
 
     /**
      * Switches the hand that is being shown
+     * @param e the click event
      */
     @FXML
     void playerClicked(MouseEvent e) {
@@ -751,5 +787,38 @@ public class FieldController implements UIObserver {
 
         // Refill the hand
         reconcileSelectedHand(UISession.getGame());
+    }
+
+    /**
+     * Skip the drawing turn
+     * @param e the click event
+     */
+    @FXML
+    void skip(MouseEvent e) {
+        try {
+            UISession.getClient().executeAction(new SkipDrawAction());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the ranking
+     * @param e the click event
+     */
+    @FXML
+    void seeRanking(MouseEvent e) {
+        rankingGrid.setVisible(true);
+        leaderboardGrid.setVisible(false);
+    }
+
+    /**
+     * Shows the leaderboard
+     * @param e the click event
+     */
+    @FXML
+    void seeLeaderboard(MouseEvent e) {
+        rankingGrid.setVisible(false);
+        leaderboardGrid.setVisible(true);
     }
 }

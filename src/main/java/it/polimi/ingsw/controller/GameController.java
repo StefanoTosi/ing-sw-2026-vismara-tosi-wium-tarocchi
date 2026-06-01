@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//TODO: javadoc comments
 public class GameController {
     private List<Game> games;
 

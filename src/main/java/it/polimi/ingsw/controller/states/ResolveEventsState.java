@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.*;
 
 public class ResolveEventsState extends GameState {
@@ -23,7 +22,7 @@ public class ResolveEventsState extends GameState {
     }
 
     public void resolveEvents() throws IllegalActionException, IOException {
-        Map<String, List<EventResult>> eventResults = new LinkedHashMap<>();
+        List<List<EventResult>> eventResults = new ArrayList<>();
         game.setEventResults(null);
         List<Card> bottomRow = game.getBoard().getBottomRowTribe();
         List<Event> events = new ArrayList<>(bottomRow.stream().filter(card -> card instanceof Event).map(card -> (Event) card).toList());
@@ -40,16 +39,17 @@ public class ResolveEventsState extends GameState {
         );
 
         for (Event event : events) {
-            eventResults.put(event.getName(), event.applyEffect(game.getPlayers()));
+            eventResults.add(event.applyEffect(game.getPlayers()));
             System.out.println("Resolved event " + event.getName());
         }
 
         game.setEventResults(eventResults);
         bottomRow.removeAll(events);
 
-        // Transition to EndTurnState
+        // Transition to FillBoardState
         System.out.println("Finished resolving events");
-        EndTurnState e = new EndTurnState(game);
+        FillBoardState f = new FillBoardState(game);
+        f.refillBoard();
         if(game.getTurnNumber() != 11){
             SaveGames.saveGame(game.toDTO());
         }

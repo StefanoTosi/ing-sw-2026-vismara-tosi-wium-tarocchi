@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * AnimateObject for totems. Has some utility functions to offset their position relative to an offer tile or the order tile
+ * {@code AnimateObject} for totems. Has some utility functions to offset their position relative to an offer tile or the order tile
  */
 public class AnimatedTotem extends AnimatedObject {
     final int totemW = 245 / 6;
@@ -79,7 +79,13 @@ public class AnimatedTotem extends AnimatedObject {
         return reference.localToScene(0, 0).getY() + offsetY / 3 - totemH;
     }
 
-
+    /**
+     * Creates the mesh for the totem
+     * @param front the front texture
+     * @param width the width in pixels of the totem
+     * @param height the height in pixels of the totem
+     * @return the mesh of the totem
+     */
     private Group createTotemMesh(Image front, double width, double height) {
         TriangleMesh frontMesh = new TriangleMesh();
 
@@ -118,11 +124,19 @@ public class AnimatedTotem extends AnimatedObject {
         return new Group(frontMeshView);
     }
 
+    /**
+     * Sets the offset of the totem when it is on an offer tile
+     */
     public void setOffsetOffer() {
         this.offsetX = offerOff.get(0);
         this.offsetY = offerOff.get(1);
     }
 
+    /**
+     * Sets the offset of the totem when it is on an order tile
+     * @param i the order on the tile
+     * @param numPlayers the number of players of the order tile
+     */
     public void setOffsetOrder(int i, int numPlayers) {
         List<List<Double>> orderOff = null;
         switch (numPlayers) {

@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.TriangleMesh;
 
 /**
- * AnimateObject for tiles
+ * {@code AnimateObject} for tiles
  */
 public class AnimatedTile extends AnimatedObject {
     private OfferDTO tile;
@@ -51,6 +51,13 @@ public class AnimatedTile extends AnimatedObject {
         this.tile = tile;
     }
 
+    /**
+     * Creates the mesh for the tile
+     * @param front the front texture
+     * @param width the width in pixels of the tile
+     * @param height the height in pixels of the tile
+     * @return the mesh of the tile
+     */
     private Group createTileMesh(Image front, double width, double height) {
         TriangleMesh frontMesh = new TriangleMesh();
 

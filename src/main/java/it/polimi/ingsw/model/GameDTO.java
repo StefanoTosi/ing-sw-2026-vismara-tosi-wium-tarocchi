@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.events.EventResult;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class GameDTO implements Serializable {
     private int turnNumber;
     private List<PlayerDTO> rankings;
     private String errorFlag;
-    private Map<String, List<EventResult>> eventResults;
+    private List<List<EventResult>> eventResults;
 
     @JsonCreator
     private GameDTO() {}
@@ -40,7 +39,7 @@ public class GameDTO implements Serializable {
      * @param errorFlag a {@code String} containing information about the latest error
      * @param eventResults results of events resolved during the latest round
      */
-    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber, String errorFlag, Map<String, List<EventResult>> eventResults) {
+    public GameDTO(List<PlayerDTO> players, int numPlayers, BoardDTO board, StateDTO state, PlayerDTO playerTurn, List<PlayerDTO> rankings, int turnNumber, String errorFlag, List<List<EventResult>> eventResults) {
         this.players = List.copyOf(players);
         this.numPlayers = numPlayers;
         this.board = board;
@@ -101,7 +100,7 @@ public class GameDTO implements Serializable {
         return errorFlag;
     }
 
-    public Map<String, List<EventResult>> getEventResults() {
+    public List<List<EventResult>> getEventResults() {
         return eventResults;
     }
 }

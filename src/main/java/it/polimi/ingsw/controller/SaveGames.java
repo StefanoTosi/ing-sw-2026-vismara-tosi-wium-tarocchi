@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class used to manage game persistence.<br>
- * This class allows:<br>
- *    - Saving active games to a JSON file<br>
- *    - Removing saved games<br>
- *    - Loading saved games after a server restart<br>
+ * Utility class used to manage game persistence.
+ * This class allows:
+ *     Saving active games to a JSON file
+ *     Removing saved games
+ *     Loading saved games after a server restart
  * Games are stored as {@link GameDTO} objects serialized through Jackson.
  */
 public class SaveGames {
