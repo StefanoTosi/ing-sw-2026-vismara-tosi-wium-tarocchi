@@ -9,9 +9,6 @@ import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.BoardDTO;
-import it.polimi.ingsw.model.board.OfferDTO;
-import it.polimi.ingsw.model.events.EventResult;
-import it.polimi.ingsw.model.events.Sustenance;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
@@ -19,33 +16,27 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Mesh;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.w3c.dom.css.Rect;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * JavaFX Controller for the {@code field.fxml} scene

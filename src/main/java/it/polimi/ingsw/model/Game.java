@@ -3,11 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.states.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.events.EventResult;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.TCP.ObserverTCP;
-
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -31,7 +28,7 @@ public class Game {
     private int turnNumber;
     private final Object lockRMI;
     private final Object lockTCP;
-    private Map<String, List<EventResult>> eventResults;
+    private List<List<EventResult>> eventResults;
 
     /**
      * Creates a new game by initializing the {@code Board}, the initial game state, and all structures required for observer and turn management.
@@ -71,7 +68,7 @@ public class Game {
      * @throws IllegalArgumentException if the {@code Board} cannot be correctly initialized
      */
     public Game (List<Player> players, int numPlayers, Board board, List<Player> rankings,
-                 Player playerTurn, String errorFlag, int turnNumber, Map<String, List<EventResult>> eventResults) throws IllegalArgumentException {
+                 Player playerTurn, String errorFlag, int turnNumber, List<List<EventResult>> eventResults) throws IllegalArgumentException {
         this.players = players;
         this.numPlayers = numPlayers;
         this.board = board;
@@ -286,11 +283,11 @@ public class Game {
         this.turnNumber++;
     }
 
-    public Map<String, List<EventResult>> getEventResults() {
+    public List<List<EventResult>> getEventResults() {
         return eventResults;
     }
 
-    public void setEventResults(Map<String, List<EventResult>> eventResults) {
+    public void setEventResults(List<List<EventResult>> eventResults) {
         this.eventResults = eventResults;
     }
 }

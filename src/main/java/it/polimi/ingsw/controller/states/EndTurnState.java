@@ -48,15 +48,15 @@ public class EndTurnState extends GameState {
                 System.out.println("No cards available to draw");
                 game.setPlayerTurn(null);
 
-                FillBoardState f = new FillBoardState(game);
-                f.refillBoard();
+                ResolveEventsState r = new ResolveEventsState(game);
+                r.resolveEvents();
             }
         } else {
             System.out.println("Finished end turn phase");
             game.setPlayerTurn(null);
 
-            FillBoardState f = new FillBoardState(game);
-            f.refillBoard();
+            ResolveEventsState r = new ResolveEventsState(game);
+            r.resolveEvents();
         }
     }
 
@@ -93,14 +93,14 @@ public class EndTurnState extends GameState {
             if (!drawOrder.isEmpty()) {
                 game.setPlayerTurn(drawOrder.removeFirst());
             } else {
-                // When all players have drawn, transition to FillBoardState
+                // When all players have drawn, transition to ResolveEventsState
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
                 game.newTurn();
 
-                FillBoardState f = new FillBoardState(game);
+                ResolveEventsState r = new ResolveEventsState(game);
                 SaveGames.saveGame(game.toDTO());
-                f.refillBoard();
+                r.resolveEvents();
             }
         } else {
             throw new IllegalActionException("Player tried to draw a card out of order or more cards than possible");
@@ -113,6 +113,7 @@ public class EndTurnState extends GameState {
      * @param character
      */
     private void afterDrawn(Player player, Card character) throws IllegalActionException {
+        //TODO: serve davvero questo controllo eventi?
         if (!character.getType().equals("Event")) {
             int tmp_numSets = player.countSets();
             player.addCard(character);

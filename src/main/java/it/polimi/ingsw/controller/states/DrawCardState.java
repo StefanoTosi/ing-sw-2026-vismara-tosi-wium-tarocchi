@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,8 +171,7 @@ public class DrawCardState extends GameState {
         // If no player can draw any card, transition to next state
         if(drawOrder.isEmpty()) {
             game.setPlayerTurn(null);
-            ResolveEventsState r = new ResolveEventsState(game);
-            r.resolveEvents();
+            EndTurnState e = new EndTurnState(game);
         }
     }
 
@@ -228,8 +226,7 @@ public class DrawCardState extends GameState {
                 startDrawingTurn();
             } else {
                 game.setPlayerTurn(null);
-                ResolveEventsState r = new ResolveEventsState(game);
-                r.resolveEvents();
+                EndTurnState e = new EndTurnState(game);
             }
         } else {
             throw new IllegalActionException("Player tried to skip draw but valid cards are available");
@@ -252,13 +249,12 @@ public class DrawCardState extends GameState {
             if (!drawOrder.isEmpty()) {
                 game.setPlayerTurn(drawOrder.removeFirst());
             } else {
-                // When all players have drawn, transition to ResolveEventsState
+                // When all players have drawn, transition to EndTurnState
                 System.out.println("Finished drawing cards");
                 game.setPlayerTurn(null);
 
-                ResolveEventsState r = new ResolveEventsState(game);
                 SaveGames.saveGame(game.toDTO());
-                r.resolveEvents();
+                EndTurnState e = new EndTurnState(game);
             }
         }
     }
