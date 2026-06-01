@@ -10,14 +10,27 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Game state responsible for handling the "offer selection" phase.
+ * <p>
+ * During this state, players select their offer tile in turn order.
+ * Once all players have chosen, the game transitions to {@link DrawCardState}.
+ * </p>
+ */
 public class ChooseOfferState extends GameState {
     private final Game game;
     private List<Player> drawOrder;
 
     /**
-     * Initialize the state by building the order in which players will be required to choose an offer tile and setting
-     * the playerTurn to the first of them
-     * @param game
+     * Initializes the state and computes the order in which players will
+     * select their offer tiles.
+     *
+     * <p>
+     * Players are sorted by their turn order and queued for selection.
+     * The first player in the queue is immediately set as the current turn.
+     * </p>
+     *
+     * @param game the game associated with this state
      */
     public ChooseOfferState(Game game) {
         this.game = game;
@@ -33,6 +46,24 @@ public class ChooseOfferState extends GameState {
         return StateDTO.CHOOSEOFFER;
     }
 
+    /**
+     * Handles the selection of an offer tile by a player.
+     *
+     * <p>
+     * The method enforces turn order and validates the chosen offer.
+     * Once all players have selected their offers, the game transitions
+     * to {@link DrawCardState} and the game is persisted.
+     * </p>
+     *
+     * @param player the player performing the action
+     * @param order the identifier of the chosen offer tile
+     * @throws IllegalActionException if:
+     *         <ul>
+     *             <li>it is not the player's turn</li>
+     *             <li>the selected offer identifier is invalid</li>
+     *         </ul>
+     * @throws IOException if an error occurs while saving the game state
+     */
     public void chooseOffer(Player player, char order) throws IllegalActionException, IOException {
         if (player.equals(game.getPlayerTurn())) {
             if (order >= 'A' && order <= 'G') {

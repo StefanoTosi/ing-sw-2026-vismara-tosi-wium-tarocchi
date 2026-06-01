@@ -12,6 +12,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Game state responsible for refilling the board at the start of a new round.
+ * <p>
+ * This state handles:
+ * <ul>
+ *     <li>Board initialization (first round setup)</li>
+ *     <li>Transition between eras</li>
+ *     <li>Refilling tribe and building rows</li>
+ *     <li>Resetting player positions on the order tile</li>
+ *     <li>Transition to {@link ChooseOfferState}</li>
+ * </ul>
+ * </p>
+ */
 public class FillBoardState extends GameState {
     private final Game game;
 

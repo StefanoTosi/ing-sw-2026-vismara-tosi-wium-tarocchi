@@ -11,6 +11,14 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Game state responsible for resolving all event cards at the end of a round.
+ * <p>
+ * This state collects all {@link Event} cards from the board, applies their
+ * effects on players, stores the results, and removes resolved events from
+ * the board. After resolution, the game transitions to {@link FillBoardState}.
+ * </p>
+ */
 public class ResolveEventsState extends GameState {
     private final Game game;
     public ResolveEventsState(Game game) {
@@ -21,6 +29,24 @@ public class ResolveEventsState extends GameState {
         return StateDTO.RESOLVEEVENT;
     }
 
+    /**
+     * Resolves all event cards currently active in the game.
+     *
+     * <p>
+     * The method:
+     * <ul>
+     *     <li>Collects event cards from the bottom row (and top row on final turn)</li>
+     *     <li>Sorts events so that non-sustenance events resolve first</li>
+     *     <li>Applies each event effect to all players</li>
+     *     <li>Stores event results in the game state</li>
+     *     <li>Removes resolved events from the board</li>
+     *     <li>Transitions to {@link FillBoardState}</li>
+     * </ul>
+     * </p>
+     *
+     * @throws IllegalActionException if event resolution violates game rules
+     * @throws IOException if persistence or state saving fails
+     */
     public void resolveEvents() throws IllegalActionException, IOException {
         List<List<EventResult>> eventResults = new ArrayList<>();
         game.setEventResults(null);

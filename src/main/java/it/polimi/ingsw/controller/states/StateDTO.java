@@ -6,6 +6,18 @@ import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
+/**
+ * Enumeration of all possible game states in DTO form.
+ * <p>
+ * This enum is used to serialize/deserialize the current game state across
+ * network boundaries and to reconstruct the correct {@link GameState}
+ * implementation when needed.
+ * </p>
+ *
+ * <p>
+ * Each constant acts as a factory for its corresponding concrete state.
+ * </p>
+ */
 public enum StateDTO {
     CHOOSEOFFER {
         @Override
@@ -57,6 +69,15 @@ public enum StateDTO {
         }
     };
 
+    /**
+     * Factory method that returns the concrete {@link GameState}
+     * corresponding to this DTO.
+     *
+     * @param game the game instance to bind the state to
+     * @return a concrete GameState instance
+     * @throws IllegalActionException if state construction fails (rare)
+     * @throws IOException if IO-related initialization fails
+     */
     public GameState getNewState(Game game) throws IllegalActionException, IOException {
         return null;
     }

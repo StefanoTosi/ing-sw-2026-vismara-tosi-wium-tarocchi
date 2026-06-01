@@ -13,6 +13,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Final game state responsible for computing results and rankings.
+ * <p>
+ * This state is reached when the game ends. It calculates each player's
+ * final score, applies end-game effects, persists results to the database,
+ * and determines the final ranking.
+ * </p>
+ */
 public class EndGameState extends GameState {
     private final Game game;
 
