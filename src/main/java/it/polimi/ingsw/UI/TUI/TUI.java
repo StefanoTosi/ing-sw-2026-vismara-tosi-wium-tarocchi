@@ -1,9 +1,6 @@
 package it.polimi.ingsw.UI.TUI;
 
-import it.polimi.ingsw.controller.actions.ChooseOfferAction;
-import it.polimi.ingsw.controller.actions.ChooseTotemAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromBottomAction;
-import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
+import it.polimi.ingsw.controller.actions.*;
 import it.polimi.ingsw.controller.states.ChooseTotemState;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
@@ -11,6 +8,7 @@ import it.polimi.ingsw.model.board.OfferDTO;
 import it.polimi.ingsw.model.board.OrderDTO;
 import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
+import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
@@ -106,9 +104,9 @@ public class TUI implements UIObserver {
                 boolean flag = true;
                 while (flag) {
                     System.out.print(BLUE + BOLD + "Username: ");
-                    String username = readLine();
+                    String username = in.nextLine();
                     System.out.print(BLUE + BOLD +"Password: ");
-                    String password = readLine();
+                    String password = in.nextLine();
                     flag = !client.addUser(password, username);
                 }
                 client.ping();
@@ -213,7 +211,11 @@ public class TUI implements UIObserver {
      */
     public void handleState() throws Exception {
         while(true){
-            game = updates.take(); // Takes the new state at the beginning of every action
+            game = updates.take();
+            int dim = updates.size();
+            for(int i = 0; i < dim; i++) {
+                game = updates.take(); // Takes the new state at the beginning of every action
+            }
             // If a player disconnects:
             if(getGameClosed()){
                 client.leaveMatch();
@@ -366,12 +368,17 @@ public class TUI implements UIObserver {
                     break;
                 case StateDTO.ENDTURN:
                     // EndTurnState
-                    System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
-                    drawInitialiazed = false;
-                    // Check if the player has the building with the EndTurn effect
-                    if(game.getPlayerTurn().getCanPickFromTop()){
-                        int effectDraw = 1;
-                        effectDraw = drawCardTopRow();
+                    if (client.getNickname().equals(game.getPlayerTurn().getName())) {
+                        System.out.println("EndTurnState\nYou just finished round " + game.getTurnNumber());
+                        drawInitialiazed = false;
+                        // Check if the player has the building with the EndTurn effect
+                        if (game.getPlayerTurn().getCanPickFromTop()) {
+                            int effectDraw = 1;
+                            effectDraw = drawCardTopRow();
+                        }
+                    }
+                    else {
+                        System.out.println(BLUE + "Current player turn: " + game.getPlayerTurn().getName());
                     }
                     break;
                 case StateDTO.ENDGAME:
@@ -393,22 +400,23 @@ public class TUI implements UIObserver {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    private int drawCardBottomRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+    private int drawCardBottomRow() throws Exception {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
-        do{
+
+        do {
             System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
             card = readInt(); // fixes index and pos mismatch
-        }while(card <= 0 || card > size);
-        if(!getGameClosed()){
-                try{
-                    client.executeAction(new DrawCardFromBottomAction(card-1));
-                }catch(Exception e){
-                    //e.printStackTrace();
-                    System.out.println(e.getMessage());
-                    return 0;
-                }
+        } while (card <= 0 || card > size);
+        if (!getGameClosed()) {
+            try {
+                client.executeAction(new DrawCardFromBottomAction(card - 1));
+            } catch (Exception e) {
+                //e.printStackTrace();
+                System.out.println(e.getMessage());
+                return 0;
+            }
             return -1;
         }
         return -10;
@@ -422,23 +430,24 @@ public class TUI implements UIObserver {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    private int drawCardTopRow() throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+    private int drawCardTopRow() throws Exception {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-        do{
-            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+        do {
+            System.out.println("Choose which card to draw from the Top Row (write its number): ");
             card = readInt(); // fixes index and pos mismatch
-        }while(card <= 0 || card > size);
-        if(!getGameClosed()){
+        } while (card <= 0 || card > size);
+        if (!getGameClosed()) {
             try {
-                client.executeAction(new DrawCardFromTopAction(card-1));
+                client.executeAction(new DrawCardFromTopAction(card - 1));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return 0;
             }
             return -1;
         }
+
         return -10;
     }
 
@@ -504,8 +513,9 @@ public class TUI implements UIObserver {
      */
     public void printScoreBoard() throws RemoteException {
         List<LeaderboardDTO> scoreBoard = client.getLeaderboard();
+        System.out.println("Which");
         for(LeaderboardDTO player : scoreBoard){
-            System.out.println(String.format("|%-25s|" + player.getNickname() + player.getTotalScore() + player.getNumPlayers()));
+            System.out.println(player.getNickname() + player.getTotalScore() + player.getNumPlayers());
         }
     }
 
@@ -704,6 +714,7 @@ public class TUI implements UIObserver {
                 GREEN + "exit/quit: let's you exit the game when you want\n" +
                 "board: prints the board when you want to see it\n" +
                 "info: prints this info card\n" +
+                "skip: lets you skip the draw turn when there are only building to draw\n" +
                 ORANGE + "Event Rules:\n" +
                 BLUE + "During Shamanic Ritual if you are the one with most stars you win N1 PPs, the losers loose N2 PPs.\n" +
                 "During Hunt for every hunter you get one food and N PPs.\n" +
@@ -744,6 +755,7 @@ public class TUI implements UIObserver {
     }
 
     // --------------------------- Helper functions ----------------------------------------------------------
+
     public void printLine(StringBuilder[] lines){
         for(StringBuilder line : lines){
             System.out.println(line);
@@ -777,7 +789,7 @@ public class TUI implements UIObserver {
             case "exit":
             case "quit":
                 if(gameClosed){
-                    client.leaveGame();
+                    //client.leaveGame();
                     System.exit(0);
                 }
                 client.stopGame(client.getNickname());
@@ -788,6 +800,14 @@ public class TUI implements UIObserver {
             case "info":
                 printInfo();
                 return true;
+            case "skip":
+                try {
+                    client.executeAction(new SkipDrawAction());
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                    System.out.println(e.getMessage());
+                    return true;
+                }
             default:
                 return false;
         }

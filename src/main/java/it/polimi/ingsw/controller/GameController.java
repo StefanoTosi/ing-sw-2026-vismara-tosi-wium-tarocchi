@@ -37,7 +37,7 @@ public class GameController {
     public List<Game> getGames() {
         return games;
     }
-
+    
     /**
      * Searches for a player by nickname among all active games.
      *
