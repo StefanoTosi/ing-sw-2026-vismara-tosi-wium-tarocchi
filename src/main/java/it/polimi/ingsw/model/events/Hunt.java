@@ -21,8 +21,8 @@ public class Hunt extends Event {
      * @param pp the amount of prestige points players are awarded for each {@code Hunter} in their tribe
      * @param era the {@code Era} the card belongs to
      */
-    public Hunt(int pp, Era era){
-        super(era);
+    public Hunt(int pp, Era era, int id){
+        super(era, id);
         this.pp = pp;
         this.name = "Hunt";
     }

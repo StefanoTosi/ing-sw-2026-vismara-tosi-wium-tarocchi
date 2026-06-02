@@ -42,6 +42,6 @@ public class ArtistDTO extends CardDTO implements Serializable {
     }
 
     public Artist fromDTO() {
-        return new Artist(Era.valueOf(this.getEra()));
+        return new Artist(Era.valueOf(this.getEra()), getId());
     }
 }

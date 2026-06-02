@@ -16,8 +16,8 @@ public class Artist extends Character {
      * Generates an {@code Artist} object, belonging to the specified era.
      * @param era the {@code Era} the card belongs to
      */
-    public Artist(Era era) {
-        super(era);
+    public Artist(Era era, int id) {
+        super(era, id);
         this.name = "Artist";
     }
 

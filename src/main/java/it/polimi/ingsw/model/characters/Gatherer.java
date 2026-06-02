@@ -14,8 +14,8 @@ public class Gatherer extends Character {
      * Generates a {@code Gatherer} object, belonging to the specified era.
      * @param era the {@code Era} the card belongs to
      */
-    public Gatherer(Era era) {
-        super(era);
+    public Gatherer(Era era, int id) {
+        super(era, id);
         this.name = "Gatherer";
     }
 

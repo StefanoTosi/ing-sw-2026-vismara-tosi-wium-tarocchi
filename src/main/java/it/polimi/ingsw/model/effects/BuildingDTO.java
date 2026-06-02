@@ -69,6 +69,6 @@ public class BuildingDTO extends CardDTO implements Serializable {
     }
 
     public Building fromDTO() {
-        return new Building(Era.valueOf(this.getEra()), this.cost, this.pp, this.effectPp, null /*TODO*/, this.effectCharacter, Effect.valueOf(this.effect));
+        return new Building(Era.valueOf(this.getEra()), this.cost, this.pp, this.effectPp, null /*TODO*/, this.effectCharacter, Effect.valueOf(this.effect), getId());
     }
 }

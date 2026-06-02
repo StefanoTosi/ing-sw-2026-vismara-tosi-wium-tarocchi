@@ -17,8 +17,8 @@ public class Hunter extends Character {
      * @param icon {@code true} if the {@code Hunter} awards food when drawn, {@code false} otherwise
      * @param era the {@code Era} the card belongs to
      */
-    public Hunter(boolean icon, Era era) {
-        super(era);
+    public Hunter(boolean icon, Era era, int id) {
+        super(era, id);
         this.name = "Hunter";
         this.icon = icon;
     }

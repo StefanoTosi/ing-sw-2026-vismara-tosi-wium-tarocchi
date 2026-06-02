@@ -17,8 +17,8 @@ public class Inventor extends Character {
      * @param inventionIcon
      * @param era the {@code Era} the card belongs to
      */
-    public Inventor(Icon inventionIcon, Era era) {
-        super(era);
+    public Inventor(Icon inventionIcon, Era era, int id) {
+        super(era, id);
         this.inventionIcon = inventionIcon;
         this.name = "Inventor";
     }

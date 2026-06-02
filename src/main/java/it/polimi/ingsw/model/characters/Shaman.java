@@ -17,8 +17,8 @@ public class Shaman extends Character {
      * @param stars the number of star icons stated on the {@code Card}
      * @param era the {@code Era} the card belongs to
      */
-    public Shaman(int stars, Era era) {
-        super(era);
+    public Shaman(int stars, Era era, int id) {
+        super(era, id);
         this.stars = stars;
         this.name = "Shaman";
     }

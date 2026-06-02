@@ -26,8 +26,8 @@ public class CavePaintings extends Event {
      * @param topPp the amount of prestige points players are deducted if they do not own enough {@code Artists}. This parameter is required to be positive.
      * @param bottomPp the amount of prestige point awarded to players who own enough {@code Artists}
      */
-    public CavePaintings(int minArtist, Era era, int topPp, int bottomPp){
-        super(era);
+    public CavePaintings(int minArtist, Era era, int topPp, int bottomPp, int id){
+        super(era, id);
         this.minArtist = minArtist;
         this.topPp = topPp;
         this.bottomPp = bottomPp;

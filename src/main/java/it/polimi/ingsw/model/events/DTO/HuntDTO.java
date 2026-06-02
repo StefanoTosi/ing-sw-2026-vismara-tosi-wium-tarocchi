@@ -49,6 +49,6 @@ public class HuntDTO extends CardDTO implements Serializable {
     }
 
     public Hunt fromDTO() {
-        return new Hunt(this.pp, Era.valueOf(this.getEra()));
+        return new Hunt(this.pp, Era.valueOf(this.getEra()), getId());
     }
 }

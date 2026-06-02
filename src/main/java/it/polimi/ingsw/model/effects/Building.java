@@ -34,8 +34,8 @@ public class Building extends Card {
      * @param getNumCharacter
      * @param effect
      */
-    public Building(Era era, int cost, int pp, int effectPp, Function<Player, Integer> getNumCharacter, String effectCharacter, Effect effect) {
-        super(era);
+    public Building(Era era, int cost, int pp, int effectPp, Function<Player, Integer> getNumCharacter, String effectCharacter, Effect effect, int id) {
+        super(era, id);
         this.cost = cost;
         this.pp = pp;
         this.effectPp = effectPp;

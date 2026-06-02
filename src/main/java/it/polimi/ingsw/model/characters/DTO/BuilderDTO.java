@@ -58,6 +58,6 @@ public class BuilderDTO extends CardDTO implements Serializable {
     }
 
     public Builder fromDTO() {
-        return new Builder(this.foodDiscount, this.pp, Era.valueOf(this.getEra()));
+        return new Builder(this.foodDiscount, this.pp, Era.valueOf(this.getEra()), getId());
     }
 }

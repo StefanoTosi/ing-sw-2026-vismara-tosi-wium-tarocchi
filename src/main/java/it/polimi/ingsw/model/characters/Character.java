@@ -14,8 +14,8 @@ public abstract class Character extends Card {
      * Generates a {@code Character} card belonging to the specified era.
      * @param era the era the card belongs to
      */
-    public Character(Era era) {
-        super(era);
+    public Character(Era era, int id) {
+        super(era, id);
         this.TYPE = "Character";
     }
 
@@ -24,8 +24,8 @@ public abstract class Character extends Card {
      * @param era the era the card belongs to
      * @param name the name identifying the {@code Character}'s subtype
      */
-    public Character(Era era, String name) {
-        super(era);
+    public Character(Era era, String name,int id) {
+        super(era, id);
         this.TYPE = "Character";
         this.name = name;
     }

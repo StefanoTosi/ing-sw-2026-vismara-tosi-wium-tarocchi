@@ -23,8 +23,8 @@ public class ShamanicRitual extends Event {
      * @param loserPp the amount of prestige points deducted from the event losers. This parameter is required to be negative.
      * @param era the {@code Era} the card belongs to
      */
-    public ShamanicRitual(int winnerPp, int loserPp, Era era){
-        super(era);
+    public ShamanicRitual(int winnerPp, int loserPp, Era era, int id){
+        super(era, id);
         this.winnerPp = winnerPp;
         this.loserPp = loserPp;
         this.name = "ShamanicRitual";

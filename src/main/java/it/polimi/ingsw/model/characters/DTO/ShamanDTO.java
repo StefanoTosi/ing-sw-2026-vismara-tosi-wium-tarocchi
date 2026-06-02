@@ -47,6 +47,6 @@ public class ShamanDTO extends CardDTO implements Serializable {
     }
 
     public Shaman fromDTO() {
-        return new Shaman(this.stars, Era.valueOf(this.getEra()));
+        return new Shaman(this.stars, Era.valueOf(this.getEra()), getId());
     }
 }

@@ -51,6 +51,6 @@ public class InventorDTO extends CardDTO implements Serializable {
     }
 
     public Inventor fromDTO() {
-        return new Inventor(getInventionIcon(), Era.valueOf(this.getEra()));
+        return new Inventor(getInventionIcon(), Era.valueOf(this.getEra()), getId());
     }
 }
