@@ -8,8 +8,8 @@
 
 <AnchorPane fx:id="anchor" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(&quot;/background.png&quot;); -fx-background-position: center center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.UI.GUI.FieldController">
    <children>
-       <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+       <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <Label fx:id="debugLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="499.0" text="Label" textFill="WHITE">
                    <font>
                        <Font name="System Italic" size="16.0" />
@@ -99,10 +99,10 @@
                    </HBox>
 
                    <StackPane>
-                       <GridPane fx:id="rankingGrid" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1">
+                       <GridPane fx:id="rankingGrid" hgap="10" vgap="10" visible="false" xmlns:fx="http://javafx.com/fxml/1">
                            <columnConstraints>
-                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="200.0" minWidth="176.0" prefWidth="195.0" />
-                               <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="214.0" minWidth="190.0" prefWidth="195.0" />
+                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="379.0" minWidth="176.0" prefWidth="285.0" />
+                               <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="339.0" minWidth="107.0" prefWidth="281.0" />
                            </columnConstraints>
                            <rowConstraints>
                                <RowConstraints />
@@ -118,9 +118,10 @@
                                    </font></Label>
                            </children>
                        </GridPane>
-                       <GridPane fx:id="leaderboardGrid" hgap="10" vgap="10" visible="false" xmlns:fx="http://javafx.com/fxml/1">
+                       <GridPane fx:id="leaderboardGrid" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1">
                            <columnConstraints>
-                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="200.0" minWidth="176.0" prefWidth="195.0" />
+                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="273.0" minWidth="176.0" prefWidth="273.0" />
+                               <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="214.0" minWidth="93.0" prefWidth="93.0" />
                                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="214.0" minWidth="190.0" prefWidth="195.0" />
                            </columnConstraints>
                            <rowConstraints>
@@ -132,6 +133,10 @@
                                        <Font name="System Bold" size="12.0" />
                                    </font></Label>
                                <Label styleClass="ranking-label" text="Prestige Points" textFill="WHITE" GridPane.columnIndex="1">
+                                   <font>
+                                       <Font name="System Bold" size="12.0" />
+                                   </font></Label>
+                               <Label styleClass="ranking-label" text="Participants" textFill="WHITE" GridPane.columnIndex="2">
                                    <font>
                                        <Font name="System Bold" size="12.0" />
                                    </font></Label>
