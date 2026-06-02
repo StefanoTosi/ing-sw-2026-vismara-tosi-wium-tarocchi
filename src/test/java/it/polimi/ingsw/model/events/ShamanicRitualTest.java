@@ -24,14 +24,14 @@ class ShamanicRitualTest {
         //2 max e 2 min
         //tutti con stesse stelle, prima tutti guad e poi tutti perdono
         //TODO: testare effetti (dontLosePp, doublePp, anche con pareggi) e pareggio di tutti i giocatori
-        ShamanicRitual sr = new ShamanicRitual(5,-3, Era.I);
+        ShamanicRitual sr = new ShamanicRitual(5,-3, Era.I, 0);
 
         Player p1 = new Player("Elisa");
         Player p2 = new Player("Lisa");
         Player p3 = new Player("Gilles");
-        Shaman s1 = new Shaman(5, Era.I);
-        Shaman s2 = new Shaman(2, Era.I);
-        Shaman s3 = new Shaman(1, Era.I);
+        Shaman s1 = new Shaman(5, Era.I, 0);
+        Shaman s2 = new Shaman(2, Era.I,0);
+        Shaman s3 = new Shaman(1, Era.I, 0);
 
         try {
             p1.addCard(s1);
@@ -121,19 +121,19 @@ class ShamanicRitualTest {
 
     @Test
     void getEra() {
-        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I);
+        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I, 0);
         assertEquals(Era.I,sr.getEra());
     }
 
     @Test
     void getName() {
-        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I);
+        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I, 0);
         assertEquals("ShamanicRitual",sr.getName());
     }
 
     @Test
     void toDTO(){
-        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I);
+        ShamanicRitual sr = new ShamanicRitual(5,3, Era.I, 0);
 
         //check manually
         for(StringBuilder line : sr.toDTO().printCard()){

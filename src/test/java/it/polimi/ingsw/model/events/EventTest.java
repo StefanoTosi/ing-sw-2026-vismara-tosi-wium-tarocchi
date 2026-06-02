@@ -12,7 +12,7 @@ public class EventTest {
 
     @Test
     void addToPlayer() {
-        Event ef = new CavePaintings(2, Era.I, 4, 5);
+        Event ef = new CavePaintings(2, Era.I, 4, 5, 0);
         Player p1 = new Player("Lisa");
 
         IllegalActionException ex = assertThrows(IllegalActionException.class, () -> {

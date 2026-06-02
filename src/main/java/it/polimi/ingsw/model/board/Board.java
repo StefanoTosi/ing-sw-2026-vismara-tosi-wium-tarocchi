@@ -492,7 +492,7 @@ public class Board {
 
     /**
      * Calculates available cards the specified player is allowed to draw from the top row, subtracting events and unaffordable buildings.
-     * @param player
+     * @param player the player attempting to draw cards
      * @return the number of available cards
      */
     public int drawableCardsFromTop(Player player) {
@@ -518,7 +518,7 @@ public class Board {
 
     /**
      * Calculates available cards the specified player is allowed to draw from the bottom row, subtracting events and unaffordable buildings.
-     * @param player
+     * @param player the player attempting to draw cards
      * @return the number of available cards
      */
     public int drawableCardsFromBottom(Player player) {
@@ -545,7 +545,7 @@ public class Board {
     /**
      * Verifies if the player can draw at least one available card,
      * considering the offer tile where their totem is placed and the available cards on the board.
-     * @param player
+     * @param player the player attempting to draw cards
      * @param drawnTop number of cards the player has already drawn from the top row in the current turn
      * @param drawnBottom number of cards the player has already drawn from the bottom row in the current turn
      * @return {@code true} if the player can draw at least one card,

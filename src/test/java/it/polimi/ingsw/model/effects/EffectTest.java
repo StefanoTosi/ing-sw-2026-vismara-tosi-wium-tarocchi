@@ -20,11 +20,11 @@ class EffectTest {
      */
     @Test
     void applyEffectEventCavePaintings() {
-        Building b = new Building(Era.I, 5, 5, 5, null, null, Effect.ECP);
+        Building b = new Building(Era.I, 5, 5, 5, null, null, Effect.ECP, 0);
         Player player = new Player("Elisa");
-        Artist a1 = new Artist(Era.I);
-        Artist a2 = new Artist(Era.I);
-        Artist a3 = new Artist(Era.I);
+        Artist a1 = new Artist(Era.I, 0);
+        Artist a2 = new Artist(Era.I, 0);
+        Artist a3 = new Artist(Era.I, 0);
 
         // Without any artists, the food bonus is 0
         b.getEffect().applyEffectEventCavePaintings(player, b);
@@ -44,11 +44,11 @@ class EffectTest {
      */
     @Test
     void applyEffectEventHunt() {
-        Building b = new Building(Era.I, 5, 5, 5, null, null, Effect.EH);
+        Building b = new Building(Era.I, 5, 5, 5, null, null, Effect.EH, 0);
         Player player = new Player("Elisa");
-        Hunter h1 = new Hunter(false,Era.I);
-        Hunter h2 = new Hunter(false,Era.I);
-        Hunter h3 = new Hunter(false,Era.I);
+        Hunter h1 = new Hunter(false,Era.I, 0);
+        Hunter h2 = new Hunter(false,Era.I, 0);
+        Hunter h3 = new Hunter(false,Era.I, 0);
 
         // A player without hunters gets no food bonus
         b.getEffect().applyEffectEventHunt(player, b);
@@ -77,7 +77,7 @@ class EffectTest {
      */
     @Test
     void applyEffectEventShamanicRitual1() {
-        Building b1 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC1);
+        Building b1 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC1, 0);
         Player p3 = new Player("Elisa");
         Player p4 = new Player("Lisa");
 
@@ -86,9 +86,9 @@ class EffectTest {
         p3.setGame(game);
         p4.setGame(game);
 
-        Shaman s1 = new Shaman(3, Era.I);
-        Shaman s2 = new Shaman(3, Era.I);
-        Shaman s3 = new Shaman(3, Era.I);
+        Shaman s1 = new Shaman(3, Era.I, 0);
+        Shaman s2 = new Shaman(3, Era.I, 0);
+        Shaman s3 = new Shaman(3, Era.I, 0);
 
         try {
             p3.addCard(s1);
@@ -108,7 +108,7 @@ class EffectTest {
      */
     @Test
     void applyEffectEventShamanicRitual3() {
-        Building b = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC3);
+        Building b = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC3, 0);
         Player p1 = new Player("Elisa");
         Player p2 = new Player("Lisa");
 
@@ -117,9 +117,9 @@ class EffectTest {
         p1.setGame(game);
         p2.setGame(game);
 
-        Shaman s1 = new Shaman(3, Era.I);
-        Shaman s2 = new Shaman(3, Era.I);
-        Shaman s3 = new Shaman(3, Era.I);
+        Shaman s1 = new Shaman(3, Era.I, 0);
+        Shaman s2 = new Shaman(3, Era.I, 0);
+        Shaman s3 = new Shaman(3, Era.I, 0);
 
         // A player with the most shamans gets double pp
         try {
@@ -140,15 +140,15 @@ class EffectTest {
     @Test
     void applyEffectEventSustenance1() {
         Player p1 = new Player("Elisa");
-        Building b1 = new Building(Era.I, 5, 5, 5, Player::getNumGatherers, "Gatherer", Effect.ES1);
+        Building b1 = new Building(Era.I, 5, 5, 5, Player::getNumGatherers, "Gatherer", Effect.ES1, 0);
 
         // A player with no gatherers gets no food discount
         b1.getEffect().applyEffectEventSustenance(p1, b1);
         assertEquals(0, p1.getFoodDiscount());
 
-        Gatherer g1 = new Gatherer(Era.I);
-        Gatherer g2 = new Gatherer(Era.I);
-        Gatherer g3 = new Gatherer(Era.I);
+        Gatherer g1 = new Gatherer(Era.I, 0);
+        Gatherer g2 = new Gatherer(Era.I, 0);
+        Gatherer g3 = new Gatherer(Era.I, 0);
 
         // A player with 3 gatherers gets 3 food discount
         g1.addToPlayer(p1);
@@ -161,7 +161,7 @@ class EffectTest {
         p1.setFoodDiscount(0);
 
         // A player with 3 gatherers and 2 buildings with ES1 gets 6 food discount
-        Building b2 = new Building(Era.I, 5, 5, 5, Player::getNumGatherers, "Gatherer", Effect.ES1);
+        Building b2 = new Building(Era.I, 5, 5, 5, Player::getNumGatherers, "Gatherer", Effect.ES1, 0);
         b1.getEffect().applyEffectEventSustenance(p1, b1);
         b2.getEffect().applyEffectEventSustenance(p1, b1);
         assertEquals(6, p1.getFoodDiscount());
@@ -173,21 +173,21 @@ class EffectTest {
     @Test
     void applyEffectDraw1() {
         Player player = new Player("Elisa");
-        Artist a1 = new Artist(Era.I);
-        Builder b1 = new Builder(2,2,Era.I);
-        Gatherer g1 = new Gatherer(Era.I);
-        Hunter h1 = new Hunter(false, Era.I);
-        Inventor inv1 = new Inventor(Icon.ARROW, Era.I);
-        Shaman s1 = new Shaman(2, Era.I);
+        Artist a1 = new Artist(Era.I, 0);
+        Builder b1 = new Builder(2,2, Era.I, 0);
+        Gatherer g1 = new Gatherer(Era.I, 0);
+        Hunter h1 = new Hunter(false, Era.I, 0);
+        Inventor inv1 = new Inventor(Icon.ARROW, Era.I, 0);
+        Shaman s1 = new Shaman(2, Era.I, 0);
 
-        Artist a2 = new Artist(Era.I);
-        Builder b2 = new Builder(2,2,Era.I);
-        Gatherer g2 = new Gatherer(Era.I);
-        Hunter h2 = new Hunter(false, Era.I);
-        Inventor inv2 = new Inventor(Icon.ARROW, Era.I);
-        Shaman s2 = new Shaman(2, Era.I);
+        Artist a2 = new Artist(Era.I, 0);
+        Builder b2 = new Builder(2,2, Era.I, 0);
+        Gatherer g2 = new Gatherer(Era.I, 0);
+        Hunter h2 = new Hunter(false, Era.I, 0);
+        Inventor inv2 = new Inventor(Icon.ARROW, Era.I, 0);
+        Shaman s2 = new Shaman(2, Era.I, 0);
 
-        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.D1);
+        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.D1, 0);
 
         // A player without any sets does not get any food
         assertEquals(0, player.getFood());
@@ -233,12 +233,12 @@ class EffectTest {
     @Test
     void applyEffectDraw2() {
         Player player = new Player("Elisa");
-        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.D2);
-        Inventor inv1 = new Inventor(Icon.HOOK, Era.I);
-        Inventor inv2 = new Inventor(Icon.SOUP, Era.I);
-        Inventor inv3 = new Inventor(Icon.LEATHER, Era.I);
-        Inventor inv4 = new Inventor(Icon.LEATHER, Era.I);
-        Inventor inv5 = new Inventor(Icon.SOUP, Era.I);
+        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.D2, 0);
+        Inventor inv1 = new Inventor(Icon.HOOK, Era.I, 0);
+        Inventor inv2 = new Inventor(Icon.SOUP, Era.I, 0);
+        Inventor inv3 = new Inventor(Icon.LEATHER, Era.I, 0);
+        Inventor inv4 = new Inventor(Icon.LEATHER, Era.I, 0);
+        Inventor inv5 = new Inventor(Icon.SOUP, Era.I, 0);
         try {
             player.addCard(inv3);
             player.addCard(inv5);
@@ -276,7 +276,7 @@ class EffectTest {
     @Test
     void applyEffectEndGame1() {
         Player player3 = new Player("Gilles");
-        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.EG1);
+        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.EG1, 0);
         building.addToPlayer(player3);
 
         // A player without any builders should not see any effect
@@ -285,7 +285,7 @@ class EffectTest {
 
         // A player with builders should see double the number of pp the builder gives
         // We test only half of it, since the other half is granted by the EndGameState
-        Builder b3 = new Builder(2,4,Era.I);
+        Builder b3 = new Builder(2,4,Era.I, 0);
         try {
             player3.addCard(b3);
         } catch (IllegalActionException e) {
@@ -303,7 +303,7 @@ class EffectTest {
     @Test
     void applyEffectEndGame2() {
         Player player = new Player("Elisa");
-        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.EG2);
+        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.EG2, 0);
         building.addToPlayer(player);
 
         // Without any cards, player2 shouldn't gain any pp
@@ -311,12 +311,12 @@ class EffectTest {
         assertEquals(0, player.getPp());
 
         // With 1 set, the player should gain 6 pp
-        Artist a = new Artist(Era.I);
-        Builder b = new Builder(2,2,Era.I);
-        Gatherer g = new Gatherer(Era.I);
-        Hunter h = new Hunter(true, Era.I);
-        Inventor inv = new Inventor(Icon.ARROW, Era.I);
-        Shaman s = new Shaman(2, Era.I);
+        Artist a = new Artist(Era.I, 0);
+        Builder b = new Builder(2,2,Era.I, 0);
+        Gatherer g = new Gatherer(Era.I, 0);
+        Hunter h = new Hunter(true, Era.I, 0);
+        Inventor inv = new Inventor(Icon.ARROW, Era.I, 0);
+        Shaman s = new Shaman(2, Era.I, 0);
 
         try {
             player.addCard(a);
@@ -333,12 +333,12 @@ class EffectTest {
         assertEquals(6, player.getPp());
 
         // With 2 set, the player should gain 12 pp
-        Artist a1 = new Artist(Era.I);
-        Builder b1 = new Builder(2,2,Era.I);
-        Gatherer g1 = new Gatherer(Era.I);
-        Hunter h1 = new Hunter(true, Era.I);
-        Inventor inv1 = new Inventor(Icon.ARROW, Era.I);
-        Shaman s1 = new Shaman(2, Era.I);
+        Artist a1 = new Artist(Era.I, 0);
+        Builder b1 = new Builder(2,2,Era.I, 0);
+        Gatherer g1 = new Gatherer(Era.I, 0);
+        Hunter h1 = new Hunter(true, Era.I, 0);
+        Inventor inv1 = new Inventor(Icon.ARROW, Era.I, 0);
+        Shaman s1 = new Shaman(2, Era.I, 0);
 
         try {
             player.addCard(a1);
@@ -355,12 +355,12 @@ class EffectTest {
         assertEquals( 6 + 12, player.getPp());
 
         // With 3 set, the player should gain 18 pp
-        Artist a2 = new Artist(Era.I);
-        Builder b2 = new Builder(2,2,Era.I);
-        Gatherer g2 = new Gatherer(Era.I);
-        Hunter h2 = new Hunter(true, Era.I);
-        Inventor inv2 = new Inventor(Icon.ARROW, Era.I);
-        Shaman s2 = new Shaman(2, Era.I);
+        Artist a2 = new Artist(Era.I, 0);
+        Builder b2 = new Builder(2,2,Era.I, 0);
+        Gatherer g2 = new Gatherer(Era.I, 0);
+        Hunter h2 = new Hunter(true, Era.I, 0);
+        Inventor inv2 = new Inventor(Icon.ARROW, Era.I, 0);
+        Shaman s2 = new Shaman(2, Era.I, 0);
 
         try {
             player.addCard(a2);
@@ -383,7 +383,7 @@ class EffectTest {
     @Test
     void applyEffectEndGame3() {
         Player player = new Player("Elisa");
-        Building building = new Building(Era.I, 5, 5, 5, Player::getNumHunters, "Hunter", Effect.EG3);
+        Building building = new Building(Era.I, 5, 5, 5, Player::getNumHunters, "Hunter", Effect.EG3, 0);
         building.addToPlayer(player);
 
         // Without any hunters, the player receives no bonus
@@ -391,8 +391,8 @@ class EffectTest {
         assertEquals(0, player.getPp());
 
         // With 2 hunters, the player receives 10 pp
-        Hunter h1 = new Hunter(true, Era.I);
-        Hunter h2 = new Hunter(true, Era.I);
+        Hunter h1 = new Hunter(true, Era.I, 0);
+        Hunter h2 = new Hunter(true, Era.I, 0);
         h1.addToPlayer(player);
         h2.addToPlayer(player);
 
@@ -406,7 +406,7 @@ class EffectTest {
     @Test
     void applyEffectEndGame4() {
         Player player = new Player("Elisa");
-        Building building = new Building(Era.I, 5, 5, 25, null, null, Effect.EG4);
+        Building building = new Building(Era.I, 5, 5, 25, null, null, Effect.EG4, 0);
 
         // A player with this building gains 25 pp
         building.getEffect().applyEffectEndGame(player, building);
@@ -420,7 +420,7 @@ class EffectTest {
     void applyEffectTileBonus() {
         Player p1 = new Player("Elisa");
         Player p2 = new Player("Gilles");
-        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.ET1);
+        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.ET1, 0);
         Game game = new Game(Arrays.asList(p1, p2), new Random(42));
         game.getBoard().initialize(2);
 
@@ -444,7 +444,7 @@ class EffectTest {
      */
     @Test
     void applyEffectEndTurn() {
-        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.ET2);
+        Building building = new Building(Era.I, 5, 5, 5, null, null, Effect.ET2, 0);
         Player player = new Player("Elisa");
 
         assertFalse(player.getCanPickFromTop());
@@ -459,12 +459,12 @@ class EffectTest {
     void whenDrawn() {
         Player p1 = new Player("Elisa");
         Player p2 = new Player("Lisa");
-        Building b1 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC2);
+        Building b1 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC2, 0);
         b1.getEffect().whenDrawn(p1);
 
-        Shaman s1 = new Shaman(3, Era.I);
-        Shaman s2 = new Shaman(3, Era.I);
-        Shaman s3 = new Shaman(3, Era.I);
+        Shaman s1 = new Shaman(3, Era.I, 0);
+        Shaman s2 = new Shaman(3, Era.I, 0);
+        Shaman s3 = new Shaman(3, Era.I, 0);
 
         try {
             p1.addCard(s1);
@@ -476,8 +476,8 @@ class EffectTest {
 
         assertEquals(3, p1.getAdditionalStars());
 
-        Building b3 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC2);
-        Building b4 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC2);
+        Building b3 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC2, 0);
+        Building b4 = new Building(Era.I, 5, 5, 5, null, null, Effect.ESC2, 0);
         b3.getEffect().whenDrawn(p1);
         b4.getEffect().whenDrawn(p1);
 
@@ -509,5 +509,33 @@ class EffectTest {
         for (Effect e : Effect.values()) {
             assertNotNull(e);
         }
+    }
+
+    @Test
+    void testPrimitiveMethods() {
+        Player p1 = new Player("Elisa");
+        Building b1 = new Building(Era.I, 0, 5, 5, null, null, Effect.ESC2, 0);
+
+        b1.getEffect().applyEffectEventSustenance(p1, b1);
+        b1.getEffect().applyEffectEventHunt(p1, b1);
+        b1.getEffect().applyEffectEventCavePaintings(p1, b1);
+        b1.getEffect().applyEffectEventShamanicRitual(p1, b1);
+        b1.getEffect().applyEffectEndTurn(p1);
+        b1.getEffect().applyEffectTileBonus(p1, b1);
+        b1.getEffect().applyEffectDraw(p1, 0, null);
+        b1.getEffect().applyEffectEndGame(p1, b1);
+
+        assertEquals(0, p1.getFood());
+        assertEquals(0, p1.getPp());
+        assertEquals(0, p1.getFoodDiscount());
+        assertEquals(0, p1.getAdditionalStars());
+        assertFalse(p1.getCanPickFromTop());
+        assertFalse(p1.getDoublePp());
+        assertFalse(p1.getDontLosePp());
+
+        Building b2 = new Building(Era.I, 0, 5, 5, null, null, Effect.ET1, 0);
+        p1.setAdditionalStars(0);
+        b2.getEffect().whenDrawn(p1);
+        assertEquals(0, p1.getAdditionalStars());
     }
 }

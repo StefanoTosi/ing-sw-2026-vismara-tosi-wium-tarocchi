@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -18,7 +19,7 @@ public class StateTest{
     }
 
     @Test
-    void chooseOfferState() {
+    void chooseOfferState() throws IllegalActionException, IOException {
         Game game = createGame();
 
         GameState state = StateDTO.CHOOSEOFFER.getNewState(game);
@@ -28,7 +29,7 @@ public class StateTest{
     }
 
     @Test
-    void chooseTotemState() {
+    void chooseTotemState() throws IllegalActionException, IOException {
         Game game = createGame();
 
         GameState state = StateDTO.CHOOSETOTEM.getNewState(game);
@@ -48,7 +49,7 @@ public class StateTest{
     }*/
 
     @Test
-    void endGameState() {
+    void endGameState() throws IllegalActionException, IOException {
         Game game = createGame();
 
         GameState state = StateDTO.ENDGAME.getNewState(game);
@@ -68,7 +69,7 @@ public class StateTest{
     }*/
 
     @Test
-    void fillBoardState() {
+    void fillBoardState() throws IllegalActionException, IOException {
         Game game = createGame();
 
         GameState state = StateDTO.FILLBOARD.getNewState(game);
@@ -78,7 +79,7 @@ public class StateTest{
     }
 
     @Test
-    void resolveEventState() {
+    void resolveEventState() throws IllegalActionException, IOException {
         Game game = createGame();
 
         GameState state = StateDTO.RESOLVEEVENT.getNewState(game);
@@ -88,7 +89,7 @@ public class StateTest{
     }
 
     @Test
-    void setupGameState() {
+    void setupGameState() throws IllegalActionException, IOException {
         Game game = createGame();
 
         GameState state = StateDTO.SETUPGAME.getNewState(game);

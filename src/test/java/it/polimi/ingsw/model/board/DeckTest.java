@@ -5,10 +5,7 @@ import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.characters.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,16 +13,20 @@ class DeckTest {
 
     @Test
     void Deck() {
-        Deck deck = new Deck(new ArrayList<>(), null);
+        Artist a = new Artist(Era.I, 0);
+        Deck deck = new Deck(List.of(a), null);
+        assertEquals(List.of(a), deck.getDeck());
+
         assertThrows(IllegalArgumentException.class, () -> new Deck(null, null));
+        assertThrows(IllegalArgumentException.class, () -> new Deck(null));
     }
 
     @Test
     void shuffle() {
-        Card card1 = new Hunter(true, Era.II);
-        Card card2 = new Builder(1, 2, Era.I);
-        Card card3 = new Inventor(Icon.ARROW, Era.III);
-        Card card4 = new Artist(Era.II);
+        Card card1 = new Hunter(true, Era.II, 0);
+        Card card2 = new Builder(1, 2, Era.I, 0);
+        Card card3 = new Inventor(Icon.ARROW, Era.III, 0);
+        Card card4 = new Artist(Era.II, 0);
         Random rng = new Random(42);
         Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)), rng);
         ArrayList<Card> originalDeck = new ArrayList<>(new ArrayList<>(Arrays.asList(card1, card2, card3, card4)));
@@ -46,9 +47,9 @@ class DeckTest {
 
     @Test
     void draw() {
-        Card card1 = new Hunter(true, Era.II);
-        Card card2 = new Builder(1, 2, Era.I);
-        Card card3 = new Hunter(true, Era.II);
+        Card card1 = new Hunter(true, Era.II, 0);
+        Card card2 = new Builder(1, 2, Era.I, 0);
+        Card card3 = new Hunter(true, Era.II, 0);
         Deck deck = new Deck(new ArrayList<>(Arrays.asList(card1, card2, card3)), null);
         assertEquals(card1, deck.draw());
         assertEquals(card2, deck.draw());
@@ -58,12 +59,12 @@ class DeckTest {
 
     @Test
     void stack() {
-        Card card1 = new Hunter(true, Era.II);
-        Card card2 = new Builder(1, 2, Era.I);
+        Card card1 = new Hunter(true, Era.II, 0);
+        Card card2 = new Builder(1, 2, Era.I, 0);
         Deck deck1 = new Deck(new ArrayList<>(Arrays.asList(card1, card2)), null);
 
-        Card card3 = new Inventor(Icon.ARROW, Era.III);
-        Card card4 = new Artist(Era.II);
+        Card card3 = new Inventor(Icon.ARROW, Era.III, 0);
+        Card card4 = new Artist(Era.II, 0);
         Deck deck2 = new Deck(new ArrayList<>(Arrays.asList(card3, card4)), null);
 
         deck2 = deck2.stack(deck1);
@@ -80,5 +81,7 @@ class DeckTest {
             deck3.draw();
         });
 
+        //Top deck is null
+        assertThrows(IllegalArgumentException.class, ()->{deck1.stack(null);});
     }
 }

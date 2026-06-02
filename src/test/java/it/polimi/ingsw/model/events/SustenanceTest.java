@@ -19,12 +19,12 @@ class SustenanceTest {
 
     @Test
     void applyEffect() {
-        Sustenance s = new Sustenance(5, Era.I);
-        Gatherer g = new Gatherer(Era.I);
-        Artist a1 = new Artist(Era.I);
-        Artist a2 = new Artist(Era.I);
-        Artist a3 = new Artist(Era.I);
-        Artist a4 = new Artist(Era.I);
+        Sustenance s = new Sustenance(5, Era.I, 0);
+        Gatherer g = new Gatherer(Era.I, 0);
+        Artist a1 = new Artist(Era.I, 0);
+        Artist a2 = new Artist(Era.I, 0);
+        Artist a3 = new Artist(Era.I, 0);
+        Artist a4 = new Artist(Era.I, 0);
 
         // P1 is able to pay all the food
         Player p1 = new Player("Elisa");
@@ -77,7 +77,7 @@ class SustenanceTest {
         Player p5 = new Player("Tomasulo");
         p5.setFood(0);
         p5.setPp(10);
-        Building b = new Building(Era.I, 1, 1, 0, (_) -> 4, null, Effect.ES1);
+        Building b = new Building(Era.I, 1, 1, 0, (_) -> 4, null, Effect.ES1, 0);
         try {
             p5.addCard(a1);
             p5.addCard(a2);
@@ -109,19 +109,19 @@ class SustenanceTest {
 
     @Test
     void getPp() {
-        Sustenance s = new Sustenance(5, Era.I);
+        Sustenance s = new Sustenance(5, Era.I, 0);
         assertEquals(5, s.getPp());
     }
 
     @Test
     void getName() {
-        Sustenance s = new Sustenance(5, Era.I);
+        Sustenance s = new Sustenance(5, Era.I, 0);
         assertEquals("Sustenance", s.getName());
     }
 
     @Test
     void toDTO(){
-        Sustenance s = new Sustenance(5, Era.I);
+        Sustenance s = new Sustenance(5, Era.I, 0);
 
         //check manually
         for(StringBuilder line : s.toDTO().printCard()){

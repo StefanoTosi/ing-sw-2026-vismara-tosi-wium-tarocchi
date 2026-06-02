@@ -23,11 +23,11 @@ class CavePaintingsTest {
         p1.setPp(20);
         p1.setFood(0);
 
-        Event ef = new CavePaintings(2, Era.I, 4, 5);
+        Event ef = new CavePaintings(2, Era.I, 4, 5, 0);
 
-        Artist a1 = new Artist(Era.I);
-        Artist a2 = new Artist(Era.I);
-        Artist a3 = new Artist(Era.I);
+        Artist a1 = new Artist(Era.I, 0);
+        Artist a2 = new Artist(Era.I, 0);
+        Artist a3 = new Artist(Era.I, 0);
 
         ef.applyEffect(players);
         assertEquals(16, p1.getPp());
@@ -60,7 +60,7 @@ class CavePaintingsTest {
         assertEquals(37, p1.getPp());
 
         //Test building effect
-        Building building = new Building(Era.I, 2, 3, 0, null, null, Effect.ECP);
+        Building building = new Building(Era.I, 2, 3, 0, null, null, Effect.ECP, 0);
         try {
             p1.addCard(building);
         } catch (IllegalActionException e) {
@@ -79,13 +79,13 @@ class CavePaintingsTest {
 
     @Test
     void getName() {
-        CavePaintings ef = new CavePaintings(2, Era.I, 5, 4);
+        CavePaintings ef = new CavePaintings(2, Era.I, 5, 4, 0);
         assertEquals("CavePaintings", ef.getName());
     }
 
     @Test
     void toDTO(){
-        CavePaintings ef = new CavePaintings(2, Era.I, 5, 4);
+        CavePaintings ef = new CavePaintings(2, Era.I, 5, 4, 0);
 
         //check manually
         for(StringBuilder line : ef.toDTO().printCard()){

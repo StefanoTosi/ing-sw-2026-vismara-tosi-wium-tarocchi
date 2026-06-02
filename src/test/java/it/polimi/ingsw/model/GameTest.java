@@ -64,9 +64,9 @@ class GameTest {
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), new Random(42));
         Board board = new Board(new Random(42));
         board.initialize(3);
-        Card card = new Artist(Era.II);
-        Card card2 = new Artist(Era.II);
-        Card card3 = new Artist(Era.II);
+        Card card = new Artist(Era.II, 0);
+        Card card2 = new Artist(Era.II, 0);
+        Card card3 = new Artist(Era.II, 0);
         ArrayList<Card> topRowTribe = new ArrayList<Card>(Arrays.asList(card, card2, card3));
         board.setTopRowTribe(topRowTribe);
         game.getBoard().setTopRowTribe(topRowTribe);
