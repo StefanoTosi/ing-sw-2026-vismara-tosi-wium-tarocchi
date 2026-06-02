@@ -9,11 +9,52 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
+    @Test
+    void Player() {
+        String name = "A";
+        List<Artist> artists = List.of(new Artist(Era.I, 0));
+        List<Gatherer> gatherers = List.of(new Gatherer(Era.I, 0));
+        List<Hunter> hunters = List.of(new Hunter(false, Era.I, 0));
+        List<Inventor> inventors = List.of(new Inventor(Icon.ARROW, Era.I, 0));
+        List<Shaman> shamans = List.of(new Shaman(3, Era.I, 0));
+        List<Builder> builders = List.of(new Builder(3, 3, Era.I, 0));
+        List<Building> buildings = List.of(new Building(Era.I, 0, 0, 0, null, null, null, 0));
+        int pp = 10;
+        int food = 9;
+        int order = 'f';
+        char offer = 'g';
+        Totem totem = Totem.ORANGE;
+
+        Player p = new Player(name, artists, gatherers, hunters, inventors, shamans, builders, buildings, pp, food, order, offer, totem);
+
+        assertEquals(name, p.getName());
+        assertEquals(artists, p.getArtists());
+        assertEquals(gatherers, p.getGatherers());
+        assertEquals(hunters, p.getHunters());
+        assertEquals(inventors, p.getInventors());
+        assertEquals(shamans, p.getShamans());
+        assertEquals(builders, p.getBuilders());
+        assertEquals(buildings, p.getBuildings());
+        assertEquals(pp, p.getPp());
+        assertEquals(food, p.getFood());
+        assertEquals(order, p.getOrder());
+        assertEquals(offer, p.getOffer());
+        assertEquals(totem, p.getTotem());
+        assertEquals(0, p.getFoodDiscount());
+        assertEquals(0, p.getAdditionalStars());
+        assertFalse(p.getDontLosePp());
+        assertFalse(p.getDoublePp());
+        assertFalse(p.getCanPickFromTop());
+        assertNull(p.getGame());
+    }
+
+    //TODO
     // per tutti gli add controlla che non venga passato un null
 
     @Test
@@ -93,7 +134,7 @@ class PlayerTest {
         assertThrows(IllegalArgumentException.class, ()->player.addFood(-43));
     }
 
-    // prova a mettere una carta di ciascun tipo e provi a vedere se viene aggiunta alla lista,
+    //TODO prova a mettere una carta di ciascun tipo e provi a vedere se viene aggiunta alla lista,
     // se viene passato un puntatore nullo
     // ad addCard non andrebbe mai passato un Evento
     @Test
@@ -207,7 +248,7 @@ class PlayerTest {
         assertEquals(1, player.getNumBuilders());
     }
 
-    // verifica aggiungendo set che il numero si modifichi - prima 0 - poi di tutte almeno 2 e di una 1, e viceversa
+    //TODO verifica aggiungendo set che il numero si modifichi - prima 0 - poi di tutte almeno 2 e di una 1, e viceversa
     @Test
     void countSets() {
         Player player = new Player("Elisa");
@@ -244,7 +285,7 @@ class PlayerTest {
         assertEquals(2, player.countSets());
     }
 
-    // verifica che non prenda altre carte
+    //TODO verifica che non prenda altre carte
     // verifica che aggiunga
     // aggiungere un building con ogni effetto
     @Test
@@ -423,6 +464,13 @@ class PlayerTest {
 
     @Test
     void getGame() {
-        //help non lo so
+        //TODO help non lo so
+    }
+
+    @Test
+    void addFoodDiscount() {
+        Player player = new Player("Elisa");
+        player.addFoodDiscount(3);
+        assertEquals(3, player.getFoodDiscount());
     }
 }
