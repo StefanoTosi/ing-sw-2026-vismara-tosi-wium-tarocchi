@@ -17,8 +17,8 @@ public abstract class Event extends Card {
      * Generates an {@code Event} card, belonging to the specified {@code Era}.
      * @param era the {@code Era} the card belongs to
      */
-    public Event(Era era) {
-        super(era);
+    public Event(Era era, int id) {
+        super(era, id);
         this.TYPE = "Event";
     }
 

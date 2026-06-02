@@ -49,6 +49,6 @@ public class SustenanceDTO extends CardDTO implements Serializable {
     }
 
     public Sustenance fromDTO() {
-        return new Sustenance(this.pp, Era.valueOf(this.getEra()));
+        return new Sustenance(this.pp, Era.valueOf(this.getEra()), getId());
     }
 }

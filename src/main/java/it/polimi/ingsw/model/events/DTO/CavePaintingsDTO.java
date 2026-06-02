@@ -51,7 +51,7 @@ public class CavePaintingsDTO extends CardDTO implements Serializable {
     }
 
     public CavePaintings fromDTO() {
-        return new CavePaintings(this.minArtist, Era.valueOf(this.getEra()), this.topPp, this.bottomPp);
+        return new CavePaintings(this.minArtist, Era.valueOf(this.getEra()), this.topPp, this.bottomPp, getId());
     }
 
     public int getMinArtist() {

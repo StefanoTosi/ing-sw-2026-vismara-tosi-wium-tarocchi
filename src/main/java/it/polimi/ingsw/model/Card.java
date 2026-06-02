@@ -15,8 +15,9 @@ public abstract class Card {
      * Generates a {@code Card} object belonging to the specified era.
      * @param era the era the card belongs to
      */
-    public Card(Era era) {
+    public Card(Era era, int id) {
         this.era = era;
+        this.id = id;
     }
 
     /**

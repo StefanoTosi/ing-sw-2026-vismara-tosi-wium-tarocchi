@@ -23,8 +23,8 @@ public class Sustenance extends Event {
      * @param pp the amount of prestige points players are deducted for each unfed {@code Character}
      * @param era the {@code Era} the card belongs to
      */
-    public Sustenance(int pp, Era era){
-        super(era);
+    public Sustenance(int pp, Era era, int id){
+        super(era, id);
         this.pp = pp;
         this.name = "Sustenance";
     }

@@ -50,6 +50,6 @@ public class HunterDTO extends CardDTO implements Serializable {
     }
 
     public Hunter fromDTO() {
-        return new Hunter(this.icon, Era.valueOf(this.getEra()));
+        return new Hunter(this.icon, Era.valueOf(this.getEra()), getId());
     }
 }

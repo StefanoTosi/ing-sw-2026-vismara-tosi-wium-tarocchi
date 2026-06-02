@@ -56,6 +56,6 @@ public class ShamanicRitualDTO extends CardDTO implements Serializable {
     }
 
     public ShamanicRitual fromDTO() {
-        return new ShamanicRitual(this.winnerPp, this.loserPp, Era.valueOf(this.getEra()));
+        return new ShamanicRitual(this.winnerPp, this.loserPp, Era.valueOf(this.getEra()), getId());
     }
 }

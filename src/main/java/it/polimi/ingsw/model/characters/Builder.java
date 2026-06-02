@@ -18,8 +18,8 @@ public class Builder extends Character {
      * @param pp the amount of prestige points awarded at the end of the game
      * @param era the {@code Era} the card belongs to
      */
-    public Builder(int foodDiscount, int pp, Era era) {
-        super(era);
+    public Builder(int foodDiscount, int pp, Era era, int id) {
+        super(era, id);
         this.foodDiscount = foodDiscount;
         this.pp = pp;
         this.name = "Builder";

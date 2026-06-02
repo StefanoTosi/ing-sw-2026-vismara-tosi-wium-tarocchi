@@ -41,6 +41,6 @@ public class GathererDTO extends CardDTO implements Serializable {
     }
 
     public Gatherer fromDTO() {
-        return new Gatherer(Era.valueOf(this.getEra()));
+        return new Gatherer(Era.valueOf(this.getEra()), getId());
     }
 }

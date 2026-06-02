@@ -126,29 +126,27 @@ public class Board {
                         if (node.get("minNumPlayers").asInt() <= numPlayers) {
                             switch (node.get("type").asText()) {
                                 case "Artist":
-                                    character = new Artist(era);
+                                    character = new Artist(era, id);
                                     break;
                                 case "Builder":
-                                    character = new Builder(node.get("discount").asInt(), node.get("pp").asInt(), era);
+                                    character = new Builder(node.get("discount").asInt(), node.get("pp").asInt(), era, id);
                                     break;
                                 case "Gatherer":
-                                    character = new Gatherer(era);
+                                    character = new Gatherer(era, id);
                                     break;
                                 case "Hunter":
-                                    character = new Hunter(node.get("foodIcon").asBoolean(), era);
+                                    character = new Hunter(node.get("foodIcon").asBoolean(), era, id);
                                     break;
                                 case "Inventor":
-                                    character = new Inventor(Icon.valueOf((node.get("icon").asText().toUpperCase())), era);
+                                    character = new Inventor(Icon.valueOf((node.get("icon").asText().toUpperCase())), era, id);
                                     break;
                                 case "Shaman":
-                                    character = new Shaman(node.get("stars").asInt(), era);
+                                    character = new Shaman(node.get("stars").asInt(), era, id);
                                     break;
                                 default:
                                     throw new DataFormatException("Unrecognized character '" + node.get("type").asText() + "' while parsing cards.json");
                             }
 
-                            // Insert character in the correct tribe deck
-                            character.setId(id);
                             switch (era) {
                                 case I:
                                     tribeI.add(character);
@@ -167,21 +165,20 @@ public class Board {
                         Event event;
                         switch (node.get("type").asText()) {
                             case "CavePaintings":
-                                event = new CavePaintings(node.get("minNumArtists").asInt(), era, node.get("topPp").asInt(), node.get("bottomPp").asInt());
+                                event = new CavePaintings(node.get("minNumArtists").asInt(), era, node.get("topPp").asInt(), node.get("bottomPp").asInt(), id);
                                 break;
                             case "ShamanicRitual":
-                                event = new ShamanicRitual(node.get("winnerPp").asInt(), node.get("loserPp").asInt(), era);
+                                event = new ShamanicRitual(node.get("winnerPp").asInt(), node.get("loserPp").asInt(), era, id);
                                 break;
                             case "Hunt":
-                                event = new Hunt(node.get("pp").asInt(), era);
+                                event = new Hunt(node.get("pp").asInt(), era, id);
                                 break;
                             case "Sustenance":
-                                event = new Sustenance(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()));
+                                event = new Sustenance(node.get("pp").asInt(), Era.valueOf(node.get("era").asText()), id);
                                 break;
                             default:
                                 throw new DataFormatException("Unrecognized event '" + node.get("type").asText() + "' while parsing cards.json");
                         }
-                        event.setId(id);
 
                         if (node.get("final").asBoolean()) {
                             finalEvents.add(event);
@@ -244,8 +241,7 @@ public class Board {
                             }
                         }
 
-                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, getNumCharacter, effectCharacter, effect);
-                        building.setId(id);
+                        Building building = new Building(Era.valueOf(node.get("era").asText()), node.get("cost").asInt(), node.get("pp").asInt(), effectPp, getNumCharacter, effectCharacter, effect, id);
 
                         switch (era) {
                             case I:
