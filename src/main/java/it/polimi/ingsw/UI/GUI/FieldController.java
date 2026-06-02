@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.actions.DrawCardFromTopAction;
 import it.polimi.ingsw.controller.states.StateDTO;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.BoardDTO;
+import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
@@ -207,6 +208,19 @@ public class FieldController implements UIObserver {
                 }
                 System.exit(0);
             });
+
+            // If the game has already started, call an updete
+            Platform.runLater(() -> {
+                try {
+                    update(game);
+                } catch (IOException e) {
+                    // Should never enter here
+                    throw new RuntimeException(e);
+                } catch (IllegalActionException e) {
+                    // Should never enter here
+                    throw new RuntimeException(e);
+                }
+            });
         });
     }
 
@@ -236,6 +250,7 @@ public class FieldController implements UIObserver {
             }
             debugLabel.setText(instructions);
         });
+
     }
 
     /**
@@ -295,6 +310,12 @@ public class FieldController implements UIObserver {
                         leaderboardGrid.getChildren().add(pp);
                         GridPane.setColumnIndex(pp, 1);
                         GridPane.setRowIndex(pp, i + 1);
+
+                        Label n = new Label("" + l.getNumPlayers());
+                        n.getStyleClass().add("ranking-lab");
+                        leaderboardGrid.getChildren().add(n);
+                        GridPane.setColumnIndex(n, 2);
+                        GridPane.setRowIndex(n, i + 1);
 
                         i += 1;
                     }
@@ -374,8 +395,8 @@ public class FieldController implements UIObserver {
         int ei = 0;
         Transition last = null;
         if (game.getEventResults() != null && !game.getEventResults().isEmpty()) {
-            for (String ev : game.getEventResults().keySet()) {
-                int id = game.getEventResults().get(ev).get(0).cardId();
+            for (List<EventResult> ev : game.getEventResults()) {
+                int id = ev.get(0).cardId();
                 idRegistry.get(id).getMesh().setTranslateZ(-10);
                 ScaleTransition s = new ScaleTransition(Duration.seconds(1), idRegistry.get(id).getMesh());
                 s.setFromX(1);
@@ -582,7 +603,7 @@ public class FieldController implements UIObserver {
      * @param c the card that is being drawn
      */
     private void drawCard(AnimatedCard c) {
-        // Put card in the tab
+        //  Change the hover animation and remove from cardsContainer
         Platform.runLater(() -> {
             cardsContainer.getChildren().remove(c.getMesh());
             c.getMesh().setOnMouseClicked(null);
@@ -757,8 +778,9 @@ public class FieldController implements UIObserver {
                         StackPane stackPane = new StackPane();
                         hand.getChildren().add(stackPane);
 
-                        int i = stack.size() - 1;
+                        int i = stack.size() - 5;
                         for (CardDTO c : stack) {
+                            drawCard(idRegistry.get(c.getId()));
                             Group m = idRegistry.get(c.getId()).getMesh();
                             stackPane.getChildren().add(m);
                             StackPane.setMargin(m, new Insets(0, 0, 70 * i, 0));
@@ -768,6 +790,7 @@ public class FieldController implements UIObserver {
 
                     // Add buildings unstacked
                     for (CardDTO c : p.getBuildings()) {
+                        drawCard(idRegistry.get(c.getId()));
                         Group m = idRegistry.get(c.getId()).getMesh();
                         hand.getChildren().add(m);
                     }
