@@ -95,8 +95,6 @@ public class EndTurnState extends GameState {
      * @throws IllegalActionException
      */
     public void drawCardFromTop(Player player, int pos) throws IllegalActionException, IOException {
-        Game game = player.getGame();
-
         if (player.equals(game.getPlayerTurn())) {
             int index = game.getBoard().getTopRowTribe().size();
             if (pos < index) {

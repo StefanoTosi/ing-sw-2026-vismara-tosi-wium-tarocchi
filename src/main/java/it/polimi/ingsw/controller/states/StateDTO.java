@@ -77,7 +77,5 @@ public enum StateDTO {
      * @throws IllegalActionException if state construction fails (rare)
      * @throws IOException if IO-related initialization fails
      */
-    public GameState getNewState(Game game) throws IllegalActionException, IOException {
-        return null;
-    }
+    public abstract GameState getNewState(Game game) throws IllegalActionException, IOException;
 }

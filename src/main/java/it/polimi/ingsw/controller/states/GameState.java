@@ -57,15 +57,6 @@ public abstract class GameState {
     }
 
     /**
-     * Moves all players back to the order tile (FillBoardState).
-     *
-     * @throws IllegalActionException if the action is not valid in this state
-     */
-    public void movePlayersBackToOrder() throws IllegalActionException {
-        throw new IllegalActionException("Illegal action");
-    }
-
-    /**
      * Refills the board for a new round (FillBoardState).
      *
      * @throws IllegalActionException if the action is not valid in this state

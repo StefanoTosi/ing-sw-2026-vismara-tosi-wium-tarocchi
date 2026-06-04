@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class UIMain {
     static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
+        JsonNode root = mapper.readTree(UIMain.class.getResource("/it/polimi/ingsw/config.json"));
 
         try {
             UISession.setPortRMI(root.get("port_rmi").asInt());

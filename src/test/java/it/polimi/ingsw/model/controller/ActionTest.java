@@ -104,4 +104,46 @@ public class ActionTest {
 
         assertTrue(g.getState() instanceof ChooseTotemState);
     }
+
+    @Test
+    void SkipDraw() throws IllegalActionException, IOException {
+        Action a = new SkipDrawAction();
+        Player p1 = new Player("A");
+        Player p2 = new Player("A");
+        Player p3 = new Player("A");
+        Game g = new Game(new ArrayList<Player>(Arrays.asList(p1, p2, p3)), new Random(42));
+        g.setNumPlayers(3);
+        p1.setGame(g);
+        p2.setGame(g);
+        p3.setGame(g);
+
+        new StartGameAction().execute(p1);
+
+        new ChooseTotemAction(Totem.BLUE).execute(p1);
+        new ChooseTotemAction(Totem.ORANGE).execute(p2);
+        new ChooseTotemAction(Totem.PURPLE).execute(p3);
+
+        new ChooseOfferAction('C').execute(p2);
+        new ChooseOfferAction('D').execute(p3);
+        new ChooseOfferAction('B').execute(p1);
+
+        assertThrows(IllegalActionException.class, () -> {
+            a.execute(p1);
+        });
+
+        assertThrows(IllegalActionException.class, () -> {
+            a.execute(p2);
+        });
+
+        assertThrows(IllegalActionException.class, () -> {
+            a.execute(p3);
+        });
+
+        // Remove all valid cards
+        g.getBoard().getBottomRowTribe().clear();
+        a.execute(p1);
+
+        // Check the player turn has advanced
+        assertEquals(p2, g.getPlayerTurn());
+    }
 }
