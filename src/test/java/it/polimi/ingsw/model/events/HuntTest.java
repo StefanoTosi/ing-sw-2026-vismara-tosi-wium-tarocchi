@@ -17,16 +17,16 @@ class HuntTest {
 
     @Test
     void applyEffect() {
-        Hunt h = new Hunt(1, Era.I);
+        Hunt h = new Hunt(1, Era.I, 0);
         Player p1 = new Player("Elisa");
         p1.setFood(0);
         p1.setPp(0);
-        List<Player> players = new ArrayList<Player>();
+        List<Player> players = new ArrayList<>();
         players.add(p1);
-        Hunter h1 = new Hunter(false, Era.I);
-        Hunter h2 = new Hunter(false, Era.I);
-        Hunter h3 = new Hunter(false, Era.I);
-        Hunter h4 = new Hunter(false, Era.I);
+        Hunter h1 = new Hunter(false, Era.I, 0);
+        Hunter h2 = new Hunter(false, Era.I, 0);
+        Hunter h3 = new Hunter(false, Era.I, 0);
+        Hunter h4 = new Hunter(false, Era.I, 0);
 
         //No hunters in the tribe
         h.applyEffect(players);
@@ -60,7 +60,7 @@ class HuntTest {
         //With building effect
         p1.setPp(0);
         try {
-            p1.addCard(new Building(Era.I, 2, 2, 0, null, null, Effect.EH));
+            p1.addCard(new Building(Era.I, 2, 2, 0, null, null, Effect.EH, 0));
         } catch (IllegalActionException e) {
             throw new RuntimeException(e);
         }
@@ -71,19 +71,19 @@ class HuntTest {
 
     @Test
     void getPp() {
-        Hunt h = new Hunt(5, Era.I);
+        Hunt h = new Hunt(5, Era.I, 0);
         assertEquals(5, h.getPp());
     }
 
     @Test
     void getName() {
-        Hunt h = new Hunt(5, Era.I);
+        Hunt h = new Hunt(5, Era.I, 0);
         assertEquals("Hunt", h.getName());
     }
 
     @Test
     void toDTO(){
-        Hunt h = new Hunt(5, Era.I);
+        Hunt h = new Hunt(5, Era.I, 0);
 
         //check manually
         for(StringBuilder line : h.toDTO().printCard()){

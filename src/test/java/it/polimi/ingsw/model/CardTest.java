@@ -10,7 +10,7 @@ public class CardTest {
 
     @Test
     void testCard(){
-        Card c = new Artist(Era.I);
+        Card c = new Artist(Era.I, 0);
         assertEquals(Era.I, c.getEra());
         assertEquals("Artist", c.getName());
         assertEquals("Character", c.getType());

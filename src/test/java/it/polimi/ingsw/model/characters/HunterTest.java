@@ -10,16 +10,16 @@ class HunterTest {
 
     @Test
     void getIcon() {
-        Hunter h = new Hunter(true, Era.I);
+        Hunter h = new Hunter(true, Era.I, 0);
 
-        assertEquals(true, h.getIcon());
+        assertTrue(h.getIcon());
     }
 
     @Test
     void addToPlayer() {
         // Instantiate a player and a card
         Player p = new Player("Gilles");
-        Hunter h = new Hunter(true, Era.I);
+        Hunter h = new Hunter(true, Era.I, 0);
 
         // Check it gets added correctly
         assertEquals(0, p.getHunters().size());
@@ -32,8 +32,8 @@ class HunterTest {
 
     @Test
     void toDTO(){
-        Hunter h = new Hunter(true, Era.I);
-        //needed to check manualy if the print is correct
+        Hunter h = new Hunter(true, Era.I, 0);
+        //needed to check manually if the print is correct
         for(StringBuilder line : h.toDTO().printCard()){
             System.out.println(line);
         }

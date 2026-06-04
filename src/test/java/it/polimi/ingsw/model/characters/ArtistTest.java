@@ -14,7 +14,7 @@ class ArtistTest {
     void addToPlayer() throws IllegalActionException {
         // Instantiate a player and a card
         Player p = new Player("Gilles");
-        Card a = new Artist(Era.I);
+        Card a = new Artist(Era.I, 0);
 
         // Check it gets added correctly
         assertEquals(0, p.getArtists().size());
@@ -27,8 +27,8 @@ class ArtistTest {
 
     @Test
     void toDTO(){
-        Artist a = new Artist(Era.I);
-        //needed to check manualy if the print is correct
+        Artist a = new Artist(Era.I, 0);
+        //needed to check manually if the print is correct
         for(StringBuilder line : a.toDTO().printCard()){
             System.out.println(line);
         }

@@ -12,7 +12,7 @@ class GathererTest {
     void addToPlayer() {
         // Instantiate a player and a card
         Player p = new Player("Gilles");
-        Gatherer g = new Gatherer(Era.I);
+        Gatherer g = new Gatherer(Era.I, 0);
 
         // Check it gets added correctly
         assertEquals(0, p.getGatherers().size());
@@ -25,7 +25,7 @@ class GathererTest {
 
     @Test
     void toDTO(){
-        Gatherer g = new Gatherer(Era.I);
+        Gatherer g = new Gatherer(Era.I, 0);
         //needed to check manualy if the print is correct
         for(StringBuilder line : g.toDTO().printCard()){
             System.out.println(line);

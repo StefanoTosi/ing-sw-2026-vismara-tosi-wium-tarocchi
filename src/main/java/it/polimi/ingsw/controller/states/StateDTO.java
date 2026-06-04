@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
 /**
  * Enumeration of all possible game states in DTO form.

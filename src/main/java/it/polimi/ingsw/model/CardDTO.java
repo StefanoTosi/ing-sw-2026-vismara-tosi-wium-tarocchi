@@ -7,6 +7,10 @@ import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.events.DTO.*;
 import java.io.Serializable;
 
+
+/**
+ * Holds information about a {@code Card} in DTO format.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 @JsonTypeInfo(
@@ -29,10 +33,6 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = ShamanicRitualDTO.class, name = "ShamanicRitual"),
         @JsonSubTypes.Type(value = SustenanceDTO.class, name = "Sustenance")
 })
-
-/**
- * Holds information about a {@code Card} in DTO format.
- */
 public class CardDTO implements Serializable {
     private final String era;
     private final String type;

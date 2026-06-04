@@ -62,9 +62,9 @@ public class Building extends Card {
         return effectPp;
     }
 
-    public Function<Player, Integer> getGetNumCharacter() {
+    /*public Function<Player, Integer> getGetNumCharacter() {
         return getNumCharacter;
-    }
+    }*/
 
     public Effect getEffect() {
         return effect;

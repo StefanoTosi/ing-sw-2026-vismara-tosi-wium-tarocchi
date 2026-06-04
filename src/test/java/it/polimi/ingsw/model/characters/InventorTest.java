@@ -10,7 +10,7 @@ class InventorTest {
 
     @Test
     void getInventionIcon() {
-        Inventor i = new Inventor(Icon.HOOK, Era.I);
+        Inventor i = new Inventor(Icon.HOOK, Era.I, 0);
 
         assertEquals(Icon.HOOK, i.getInventionIcon());
     }
@@ -19,7 +19,7 @@ class InventorTest {
     void addToPlayer() {
         // Instantiate a player and a card
         Player p = new Player("Gilles");
-        Inventor i = new Inventor(Icon.HOOK, Era.I);
+        Inventor i = new Inventor(Icon.HOOK, Era.I, 0);
 
         // Check it gets added correctly
         assertEquals(0, p.getInventors().size());
@@ -32,8 +32,8 @@ class InventorTest {
 
     @Test
     void toDTO(){
-        Inventor i = new Inventor(Icon.HOOK, Era.I);
-        //needed to check manualy if the print is correct
+        Inventor i = new Inventor(Icon.HOOK, Era.I, 0);
+        //needed to check manually if the print is correct
         for(StringBuilder line : i.toDTO().printCard()){
             System.out.println(line);
         }

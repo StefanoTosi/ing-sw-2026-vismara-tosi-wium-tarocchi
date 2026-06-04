@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.FakeRMIObserver;
 import it.polimi.ingsw.model.FakeTCPObserver;
+import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,29 @@ import static javax.management.Query.times;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
+    @Test
+    void Game () throws IllegalArgumentException {
+        Player p = new Player("A");
+        List<Player> players = List.of(p);
+        int numPlayers = 1;
+        Board board = new Board(new Random(42));
+        List<Player> rankings = List.of(p);
+        Player playerTurn = p;
+        String errorFlag = "test error";
+        int turnNumber = 5;
+        List<List<EventResult>> eventResults = null;
+
+        Game g = new Game(players, numPlayers, board, rankings, playerTurn, errorFlag, turnNumber, eventResults);
+
+        assertEquals(players,  g.getPlayers());
+        assertEquals(numPlayers, g.getNumPlayers());
+        assertEquals(board, g.getBoard());
+        assertEquals(rankings, g.getRankings());
+        assertEquals(playerTurn, g.getPlayerTurn());
+        assertEquals(errorFlag, g.getErrorFlag());
+        assertEquals(turnNumber, g.getTurnNumber());
+        assertEquals(eventResults, g.getEventResults());
+    }
 
     @Test
     void getNumPlayers() throws IllegalArgumentException {
@@ -64,9 +88,9 @@ class GameTest {
         Game game = new Game(new ArrayList<Player>(Arrays.asList(player1, player2, player3)), new Random(42));
         Board board = new Board(new Random(42));
         board.initialize(3);
-        Card card = new Artist(Era.II);
-        Card card2 = new Artist(Era.II);
-        Card card3 = new Artist(Era.II);
+        Card card = new Artist(Era.II, 0);
+        Card card2 = new Artist(Era.II, 0);
+        Card card3 = new Artist(Era.II, 0);
         ArrayList<Card> topRowTribe = new ArrayList<Card>(Arrays.asList(card, card2, card3));
         board.setTopRowTribe(topRowTribe);
         game.getBoard().setTopRowTribe(topRowTribe);
@@ -235,4 +259,12 @@ class GameTest {
         assertEquals(1, tcp.updateCalls);
     }
 
+    @Test
+    void newTurn() {
+        Player p1 = new Player("A");
+        Game game = new Game(List.of(p1), new Random(1));
+
+        game.newTurn();
+        assertEquals(2, game.getTurnNumber());
+    }
 }
