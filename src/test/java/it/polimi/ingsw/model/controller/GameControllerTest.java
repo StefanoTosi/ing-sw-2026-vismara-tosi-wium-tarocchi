@@ -70,7 +70,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void createGameRMI() throws IllegalActionException, IOException {
+    void createGameRMI() throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         GameController gameController = new GameController();
         Player p1 = new Player("A");
         FakeRMIObserver o1 = new FakeRMIObserver();

@@ -264,7 +264,7 @@ public class ServerThread implements Runnable, ObserverTCP {
      * @throws IllegalActionException
      * @throws RemoteException
      */
-    private void createGame(int num, String name) throws IllegalActionException, RemoteException {
+    private void createGame(int num, String name) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         User user;
         synchronized (lock){
             user = users.get(name);

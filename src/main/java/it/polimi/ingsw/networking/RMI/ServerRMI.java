@@ -144,7 +144,7 @@ public class ServerRMI extends UnicastRemoteObject implements Controller {
 
 
     @Override
-    public void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException {
+    public void createGame(String name, int numPlayers) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
         ClientCallBack client;
         synchronized (lock) {
             User user = users.get(name);

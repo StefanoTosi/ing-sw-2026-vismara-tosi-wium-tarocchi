@@ -43,7 +43,7 @@ public interface Controller extends Remote{
      * @param name creator username
      * @param numPlayers number of players required to start the game
      */
-    void createGame(String name, int numPlayers) throws RemoteException, IllegalActionException;
+    void createGame(String name, int numPlayers) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException;
 
     /**
      * Removes a user from the lobby or pre-game state.

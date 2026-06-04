@@ -119,7 +119,8 @@ public class GameController {
      * @throws RemoteException if an RMI communication error occurs
      * @throws IllegalActionException if player registration fails
      */
-    public void createGameRMI(Player player, int num, ClientCallBack client) throws RemoteException, IllegalActionException {
+    public void createGameRMI(Player player, int num, ClientCallBack client) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+        removeGame(player.getName());
         Game newGame = new Game(new ArrayList<Player>(), new Random(System.currentTimeMillis()));
         addGame(newGame);
         newGame.setNumPlayers(num);
@@ -160,7 +161,8 @@ public class GameController {
      * @throws RemoteException if a communication error occurs
      * @throws IllegalActionException if player registration fails
      */
-    public void createGameTCP(Player player, int num, ObserverTCP client) throws RemoteException, IllegalActionException {
+    public void createGameTCP(Player player, int num, ObserverTCP client) throws IOException, IllegalActionException, ClassNotFoundException, InterruptedException {
+        removeGame(player.getName());
         Game newGame = new Game(new ArrayList<Player>(), new Random(System.currentTimeMillis()));
         addGame(newGame);
         newGame.setNumPlayers(num);

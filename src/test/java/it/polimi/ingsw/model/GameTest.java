@@ -1,15 +1,27 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.SaveGames;
+import it.polimi.ingsw.controller.states.ChooseTotemState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.characters.Artist;
 import it.polimi.ingsw.model.FakeRMIObserver;
 import it.polimi.ingsw.model.FakeTCPObserver;
+import it.polimi.ingsw.model.characters.Builder;
+import it.polimi.ingsw.model.characters.Hunter;
+import it.polimi.ingsw.model.effects.Building;
+import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.events.EventResult;
+import it.polimi.ingsw.model.events.ShamanicRitual;
+import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.RMI.ClientCallBack;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
+import it.polimi.ingsw.networking.User;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -40,6 +52,63 @@ class GameTest {
         assertEquals(errorFlag, g.getErrorFlag());
         assertEquals(turnNumber, g.getTurnNumber());
         assertEquals(eventResults, g.getEventResults());
+    }
+
+    @Test
+    void saveGame () throws IllegalArgumentException, IOException, IllegalActionException {
+        Player p = new Player("A");
+        List<Player> players = List.of(p);
+        int numPlayers = 1;
+        Board board = new Board(new Random(42));
+        board.initialize(5);
+        Card card1 = new Hunter(true, Era.II, 0);
+        Card card2 = new Builder(1, 2, Era.I, 0);
+        Card card3 = new ShamanicRitual(1, 3, Era.II, 0);
+        ArrayList<Card> row = new ArrayList<>(Arrays.asList(card1, card2, card3));
+        board.setTopRowTribe(row);
+        board.setBottomRowTribe(row);
+        Building b1 = new Building(Era.I, 1, 2, 3, null, null, Effect.ECP, 0);
+        board.setTopRowBuilding(List.of(b1));
+        board.setBottomRowBuilding(List.of(b1));
+        List<Player> rankings = List.of(p);
+        Player playerTurn = p;
+        String errorFlag = "test error";
+        int turnNumber = 5;
+        List<List<EventResult>> eventResults = null;
+
+        Game g = new Game(players, numPlayers, board, rankings, playerTurn, errorFlag, turnNumber, eventResults);
+        g.setState(new ChooseTotemState(g));
+
+        new SaveGames();
+
+        //Create and free the file
+        File file = new File("src/main/resources/it/polimi/ingsw/saves.json");
+
+        if(file.exists()) {
+            Files.writeString(file.toPath(), "");
+        }
+
+        //Save the game
+        SaveGames.saveGame(g.toDTO());
+        assertTrue(file.length() != 0);
+
+        //gameController and users map
+        GameController gameController = new GameController();
+        Map<String, User > users = new HashMap<>();
+
+        SaveGames.loadSaves(gameController, users);
+        assertNotNull(users.get("A"));
+        assertEquals(1,gameController.getGames().size());
+
+        //reset the game controller and user map
+        gameController = new GameController();
+        users = new HashMap<>();
+
+        //remove the game
+        SaveGames.removeGame(g.toDTO());
+        SaveGames.loadSaves(gameController, users);
+        assertNull(users.get("A"));
+        assertEquals(0,gameController.getGames().size());
     }
 
     @Test

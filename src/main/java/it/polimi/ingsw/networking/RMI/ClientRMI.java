@@ -134,7 +134,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientCallBack, Cl
     }
 
     @Override
-    public void createGame(int num) throws IllegalActionException, RemoteException {
+    public void createGame(int num) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException {
         controller.createGame(getNickname(), num);
     }
 

@@ -59,7 +59,7 @@ public interface Client {
      * @throws IllegalActionException if the action is not allowed
      * @throws IOException if a communication error occurs
      */
-    void createGame(int num) throws IllegalActionException, IOException;
+    void createGame(int num) throws IllegalActionException, IOException, ClassNotFoundException, InterruptedException;
 
     /**
      * Executes a game action on the server.
