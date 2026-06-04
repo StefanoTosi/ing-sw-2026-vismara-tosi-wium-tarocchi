@@ -179,6 +179,22 @@ public class FieldController implements UIObserver {
             players.getChildren().addAll(GUIBuilder.createPlayerCard(p, this::playerClicked));
         }
 
+        // If the game has already started, call an updete
+        if (game.getState() != StateDTO.CHOOSETOTEM) {
+            // Reconcile playing field
+            reconcileTotems(game);
+            reconcileSelectedHand(game);
+
+            // Update toasts
+            updateInstructionLabel();
+            updateErrorToast();
+
+            // Update misc
+            updateRanking();
+            updatePlayerInfo();
+            updateUI();
+        }
+
         // Update the layout
         Platform.runLater(() -> {
             updateInstructionLabel();
@@ -207,19 +223,6 @@ public class FieldController implements UIObserver {
                     throw new RuntimeException(e);
                 }
                 System.exit(0);
-            });
-
-            // If the game has already started, call an updete
-            Platform.runLater(() -> {
-                try {
-                    update(game);
-                } catch (IOException e) {
-                    // Should never enter here
-                    throw new RuntimeException(e);
-                } catch (IllegalActionException e) {
-                    // Should never enter here
-                    throw new RuntimeException(e);
-                }
             });
         });
     }
@@ -340,6 +343,43 @@ public class FieldController implements UIObserver {
         });
     }
 
+    private void updateUI() {
+        GameDTO game = UISession.getGame();
+        Platform.runLater(() -> {
+            // Update chosen totems
+            game.getPlayers().stream()
+                    .map(p -> p.getTotem())
+                    .filter(t -> t != null)
+                    .forEach(t -> {
+                        totemList.getChildren().remove(cardsContainer.getScene().lookup("#" + t.getId() + "totemButton"));
+                    });
+
+            for (int i = 0; i < game.getPlayers().size(); i++) {
+                PlayerDTO p = game.getPlayers().get(i);
+                if (p.getTotem() != null) {
+                    totems.get(i).setImgae(new Image(getClass().getResource("/totems/" + p.getTotem().getId() + ".png").toExternalForm()));
+                }
+            }
+
+            // Hide totem selection
+            if (game.getState() != StateDTO.CHOOSETOTEM) {
+                totemSelect.setVisible(false);
+            }
+
+            // Round
+            if (game.getState() != StateDTO.ENDGAME) {
+                round.setText("Round " + game.getTurnNumber());
+            }
+
+            // Skip button
+            if ((game.getState() == StateDTO.DRAWCARD || game.getState() == StateDTO.ENDTURN) && UISession.getClient().getNickname().equals(game.getPlayerTurn().getName())){
+                skip.setVisible(true);
+            } else {
+                skip.setVisible(false);
+            }
+        });
+    }
+
     /**
      * Corrects the 3D camera's position to be at the center of the playing field and far enough for
      * the whole field to fit in the screen
@@ -447,39 +487,7 @@ public class FieldController implements UIObserver {
             // Update misc
             updateRanking();
             updatePlayerInfo();
-            Platform.runLater(() -> {
-                // Update chosen totems
-                game.getPlayers().stream()
-                        .map(p -> p.getTotem())
-                        .filter(t -> t != null)
-                        .forEach(t -> {
-                            totemList.getChildren().remove(cardsContainer.getScene().lookup("#" + t.getId() + "totemButton"));
-                        });
-
-                for (int i = 0; i < game.getPlayers().size(); i++) {
-                    PlayerDTO p = game.getPlayers().get(i);
-                    if (p.getTotem() != null) {
-                        totems.get(i).setImgae(new Image(getClass().getResource("/totems/" + p.getTotem().getId() + ".png").toExternalForm()));
-                    }
-                }
-
-                // Hide totem selection
-                if (game.getState() != StateDTO.CHOOSETOTEM) {
-                    totemSelect.setVisible(false);
-                }
-
-                // Round
-                if (game.getState() != StateDTO.ENDGAME) {
-                    round.setText("Round " + game.getTurnNumber());
-                }
-
-                // Skip button
-                if ((game.getState() == StateDTO.DRAWCARD || game.getState() == StateDTO.ENDTURN) && UISession.getClient().getNickname().equals(game.getPlayerTurn().getName())){
-                    skip.setVisible(true);
-                } else {
-                    skip.setVisible(false);
-                }
-            });
+            updateUI();
         });
     }
 
@@ -767,7 +775,6 @@ public class FieldController implements UIObserver {
                 if (p.getName().equals(selectedPlayer)) {
                     List<List<CardDTO>> stacks = new ArrayList<List<CardDTO>>();
                     stacks.add(p.getArtists().stream().map(c -> (CardDTO) c).toList());
-                    // stacks.add(p.getBuildings().stream().map(c -> (CardDTO) c).toList());
                     stacks.add(p.getBuilders().stream().map(c -> (CardDTO) c).toList());
                     stacks.add(p.getGatherers().stream().map(c -> (CardDTO) c).toList());
                     stacks.add(p.getHunters().stream().map(c -> (CardDTO) c).toList());
@@ -778,10 +785,23 @@ public class FieldController implements UIObserver {
                         StackPane stackPane = new StackPane();
                         hand.getChildren().add(stackPane);
 
-                        int i = stack.size() - 5;
+                        int i = stack.size() - 1;
                         for (CardDTO c : stack) {
-                            drawCard(idRegistry.get(c.getId()));
-                            Group m = idRegistry.get(c.getId()).getMesh();
+                            AnimatedCard anim = idRegistry.get(c.getId());
+
+                            // Chech if card exists
+                            if (anim == null) {
+                                // If not, create a new card
+                                anim = new AnimatedCard(c, this::cardClicked, deck.localToScene(0, 0).getX(), deck.localToScene(0, 0).getY());
+                                anim.getMesh().setRotate(0);
+                                meshRegistry.put(anim.getMesh(), anim);
+                                refRegistry.put(anim.getReference(), anim);
+                                idRegistry.put(anim.getCard().getId(), anim);
+                            }
+
+                            // Put card in hand
+                            drawCard(anim);
+                            Group m = anim.getMesh();
                             stackPane.getChildren().add(m);
                             StackPane.setMargin(m, new Insets(0, 0, 70 * i, 0));
                             i -= 1;
