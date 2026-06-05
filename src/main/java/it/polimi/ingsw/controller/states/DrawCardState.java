@@ -253,11 +253,10 @@ public class DrawCardState extends GameState {
         }
 
         Offer offer = player.getGame().getBoard().getOfferPath().stream().filter(o -> o.getOrder() == player.getOffer()).findFirst().get();
-        boolean canSkipTop = offer.getDrawTop() > drawTopCount && checkRow(game.getBoard().getTopRowTribe());
-        boolean canSkipBottom = offer.getDrawBottom() > drawBottomCount && checkRow(game.getBoard().getBottomRowTribe());
-        boolean noDrawsLeft = !game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount);
+        boolean canSkipTop = offer.getDrawTop() == drawTopCount || checkRow(game.getBoard().getTopRowTribe());
+        boolean canSkipBottom = offer.getDrawBottom() == drawBottomCount || checkRow(game.getBoard().getBottomRowTribe());
 
-        if ((canSkipBottom && canSkipTop) || noDrawsLeft) {
+        if (canSkipBottom && canSkipTop) {
             drawTopCount = 25;
             drawBottomCount = 25;
             transitionIfNeeded(game.getPlayerTurn());

@@ -431,6 +431,11 @@ public class FieldController implements UIObserver {
     public void update(GameDTO game) throws IOException, IllegalActionException {
         System.out.println(game.getState());
 
+        if (!game.getErrorFlag().equals("")) {
+            updateErrorToast();
+            return;
+        }
+
         // Handle events
         int ei = 0;
         Transition last = null;
@@ -480,7 +485,6 @@ public class FieldController implements UIObserver {
 
             // Update toasts
             updateInstructionLabel();
-            updateErrorToast();
 
             // Update misc
             updateRanking();
