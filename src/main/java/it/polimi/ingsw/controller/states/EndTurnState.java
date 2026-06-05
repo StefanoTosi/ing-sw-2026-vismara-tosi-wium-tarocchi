@@ -62,7 +62,6 @@ public class EndTurnState extends GameState {
                 .filter(Player::getCanPickFromTop)
                 .toList());
 
-        game.setTurnNumber(game.getTurnNumber() + 1);
         if (!drawOrder.isEmpty()) {
             System.out.println("Resolving end turn phase");
             if(game.getBoard().drawableCardsFromTop(drawOrder.getFirst()) > 0) {
@@ -88,7 +87,7 @@ public class EndTurnState extends GameState {
         return StateDTO.ENDTURN;
     }
 
-    /**
+    /** TODO da completare
      * Draw a card from the top row, not the Event one
      * @param player
      * @param pos
@@ -118,7 +117,6 @@ public class EndTurnState extends GameState {
                 // When all players have drawn, transition to ResolveEventsState
                 System.out.println("Finished end turn phase");
                 game.setPlayerTurn(null);
-                game.newTurn();
 
                 ResolveEventsState r = new ResolveEventsState(game);
                 SaveGames.saveGame(game.toDTO());

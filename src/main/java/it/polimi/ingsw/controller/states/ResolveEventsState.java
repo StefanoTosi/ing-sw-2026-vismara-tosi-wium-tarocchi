@@ -74,6 +74,7 @@ public class ResolveEventsState extends GameState {
 
         // Transition to FillBoardState
         System.out.println("Finished resolving events");
+        game.newTurn();
         FillBoardState f = new FillBoardState(game);
         f.refillBoard();
         if(game.getTurnNumber() != 11){
