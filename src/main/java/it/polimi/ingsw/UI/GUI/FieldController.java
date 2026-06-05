@@ -234,7 +234,7 @@ public class FieldController implements UIObserver {
     private void updateInstructionLabel() {
         Platform.runLater(() -> {
             GameDTO game = UISession.getGame();
-            String instructions = "Its " + UISession.getGame().getPlayerTurn().getName() + "'s turn to ";
+            String instructions = "It's " + UISession.getGame().getPlayerTurn().getName() + "'s turn to ";
             switch (game.getState()) {
                 case CHOOSETOTEM:
                     instructions += "choose a totem";
@@ -460,7 +460,6 @@ public class FieldController implements UIObserver {
         }
 
         if (last == null) {
-            System.out.println("null last");
             ScaleTransition s = new ScaleTransition(Duration.seconds(0.01), deck);
             s.setFromX(1);
             s.setToX(1);
@@ -473,7 +472,6 @@ public class FieldController implements UIObserver {
         }
 
         last.setOnFinished((e) -> {
-            System.out.println("last done");
             // Reconcile the playing field with the new GameDTO
             UISession.setGame(game);
             reconcileTotems(game);

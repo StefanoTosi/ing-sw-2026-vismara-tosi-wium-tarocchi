@@ -76,29 +76,6 @@ public class AnimatedObject {
         trans.play();
     }
 
-    /*public void animatePosition(Duration d, double x, double y) {
-        TranslateTransition trans = new TranslateTransition(d, mesh);
-        trans.setInterpolator(Interpolator.EASE_BOTH);
-
-        trans.setFromX(0);
-        trans.setToX(x - mesh.getLayoutX());
-
-        trans.setFromY(0);
-        trans.setToY(y - mesh.getLayoutY());
-
-        trans.setOnFinished(event -> {
-            double newLayoutX = mesh.getLayoutX() + mesh.getTranslateX();
-            double newLayoutY = mesh.getLayoutY() + mesh.getTranslateY();
-
-            mesh.setLayoutX(newLayoutX);
-            mesh.setLayoutY(newLayoutY);
-
-            mesh.setTranslateX(0);
-            mesh.setTranslateY(0);
-        });
-        trans.play();
-    }*/
-
     /**
      * Animates the mesh with a 3D vertical spin
      */
