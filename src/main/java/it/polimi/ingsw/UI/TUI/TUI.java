@@ -463,7 +463,9 @@ public class TUI implements UIObserver {
 
     // -------------------------------- Render functions ---------------------------------------------------------------
 
-    //TODO : what if li uniamo?
+    /**
+     * Prints First Menu
+     */
     public void renderStartMenu(){
         System.out.println(GREEN + BOLD + "MENU:");
         System.out.println("1. Login");
@@ -471,6 +473,9 @@ public class TUI implements UIObserver {
         System.out.println("3. Exit");
     }
 
+    /**
+     * Prints Restart Menu
+     */
     public void renderMenu(){
         System.out.println(GREEN + BOLD + "MENU:");
         System.out.println("1. Play again");
@@ -720,6 +725,9 @@ public class TUI implements UIObserver {
         }
     }
 
+    /**
+     * Prints the Info for the game
+     */
     public void printInfo(){
         System.out.println(
                 ORANGE + "Inline Commands\n" +
@@ -768,18 +776,33 @@ public class TUI implements UIObserver {
 
     // --------------------------- Helper functions ----------------------------------------------------------
 
+    /**
+     * Helper function to print
+     * @param lines
+     */
     public void printLine(StringBuilder[] lines){
         for(StringBuilder line : lines){
             System.out.println(line);
         }
     }
 
+    /**
+     * Helper function to unite two lines
+     * @param first
+     * @param second
+     */
     public void appendLines(StringBuilder[] first, StringBuilder[] second){
         for(int i = 0; i < first.length; i++){
             first[i].append(second[i]);
         }
     }
 
+    /**
+     * Helper function to check if a char is contained in a string
+     * @param array
+     * @param s
+     * @return
+     */
     private boolean contains(char[] array, char s){
         for(char c : array){
             if(c == s){
