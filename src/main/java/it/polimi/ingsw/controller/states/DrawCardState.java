@@ -233,12 +233,7 @@ public class DrawCardState extends GameState {
         if (canSkipBottom || canSkipTop || noDrawsLeft) {
             drawTopCount = 0;
             drawBottomCount = 0;
-            if (!drawOrder.isEmpty()) {
-                startDrawingTurn();
-            } else {
-                game.setPlayerTurn(null);
-                EndTurnState e = new EndTurnState(game);
-            }
+            startDrawingTurn();
         } else {
             throw new IllegalActionException("Player tried to skip draw but valid cards are available");
         }
