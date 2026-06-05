@@ -257,7 +257,7 @@ public class DrawCardState extends GameState {
         boolean canSkipBottom = offer.getDrawBottom() > drawBottomCount && checkRow(game.getBoard().getBottomRowTribe());
         boolean noDrawsLeft = !game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount);
 
-        if (canSkipBottom && canSkipTop && noDrawsLeft) {
+        if ((canSkipBottom && canSkipTop) || noDrawsLeft) {
             drawTopCount = 25;
             drawBottomCount = 25;
             transitionIfNeeded(game.getPlayerTurn());
