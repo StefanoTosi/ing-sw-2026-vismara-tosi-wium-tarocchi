@@ -36,6 +36,17 @@ public class DrawCardState extends GameState {
     private List<Player> drawOrder;
 
 
+    /**
+     * Creates a new DrawCardState and initializes the drawing phase.
+     * <p>
+     * Players are ordered according to the offer tile they selected,
+     * and the first eligible player immediately starts the card-drawing turn.
+     * </p>
+     *
+     * @param game the current game instance
+     * @throws IllegalActionException if an invalid game action occurs while starting the phase
+     * @throws IOException if an error occurs while handling game persistence
+     */
     public DrawCardState(Game game) throws IllegalActionException, IOException {
         this.game = game;
         this.drawTopCount = 0;
@@ -154,6 +165,22 @@ public class DrawCardState extends GameState {
         }
     }
 
+    /**
+     * Starts the drawing turn for the next eligible player.
+     * <p>
+     * The player with the highest-priority available offer tile is selected.
+     * Players who cannot draw any cards are automatically skipped, receive
+     * any applicable bonuses, and return their totem to the order track.
+     * </p>
+     *
+     * <p>
+     * If no player can draw cards, the game transitions to
+     * {@link EndTurnState}.
+     * </p>
+     *
+     * @throws IllegalActionException if an invalid action is detected
+     * @throws IOException if an error occurs during state transition or persistence
+     */
     private void startDrawingTurn() throws IllegalActionException, IOException {
         game.setPlayerTurn(drawOrder.removeFirst());
 
@@ -245,10 +272,34 @@ public class DrawCardState extends GameState {
 
     }
 
+    /**
+     * Checks whether all cards in a row are {@link Event} cards.
+     * <p>
+     * Event cards cannot be drawn during this phase, therefore a row
+     * containing only events is considered unavailable for drawing.
+     * </p>
+     *
+     * @param row the row of cards to inspect
+     * @return {@code true} if every card in the row is an event,
+     *         {@code false} otherwise
+     */
     private boolean checkRow(List<Card> row){
         return row.stream().allMatch(card -> card instanceof Event);
     }
 
+    /**
+     * Verifies whether the current player can continue drawing cards.
+     * <p>
+     * If no further draws are possible, the player's draw counters are reset,
+     * the totem is moved back to the order track, and control is passed to the
+     * next player. When all players have completed the drawing phase, the game
+     * is saved and transitions to {@link EndTurnState}.
+     * </p>
+     *
+     * @param player the player whose draw availability is being checked
+     * @throws IllegalActionException if an invalid action occurs during the transition
+     * @throws IOException if an error occurs while saving the game or changing state
+     */
     private void transitionIfNeeded(Player player) throws IllegalActionException, IOException {
         if (!game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount)) {
             drawTopCount = 0;
