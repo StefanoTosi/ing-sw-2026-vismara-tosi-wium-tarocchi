@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.characters.DTO.*;
 import it.polimi.ingsw.model.effects.BuildingDTO;
 import it.polimi.ingsw.model.events.Event;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.exceptions.SkipActionException;
 import it.polimi.ingsw.networking.Client;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.RMI.ClientRMI;
@@ -372,8 +373,12 @@ public class TUI implements UIObserver {
                         drawInitialiazed = false;
                         // Check if the player has the building with the EndTurn effect
                         if (game.getPlayerTurn().getCanPickFromTop()) {
-                            int effectDraw = 1;
-                            effectDraw = drawCardTopRow();
+                            try{
+                                int effectDraw = 1;
+                                effectDraw = drawCardTopRow();
+                            }catch (SkipActionException e){
+                                System.out.println("Skip executed, wait for update");
+                            }
                         }
                     }
                     else {
@@ -385,6 +390,7 @@ public class TUI implements UIObserver {
                     printRankings();
                     client.leaveMatch();
                     anotherGame();
+                    break;
                 default:
                     System.out.println("Unhandled state id " + game.getState());
             }
@@ -433,10 +439,14 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getTopRowTribe(), game.getBoard().getTopRowBuilding());
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
-        do {
-            System.out.println("Choose which card to draw from the Top Row (write its number): ");
-            card = readInt();
-        } while (card <= 0 || card > size);
+        try {
+            do {
+                System.out.println("Choose which card to draw from the Top Row (write its number): ");
+                card = readInt();
+            } while (card <= 0 || card > size);
+        }catch (SkipActionException e){
+            return -1;
+        }
         if (!getGameClosed()) {
             try {
                 client.executeAction(new DrawCardFromTopAction(card - 1));
@@ -798,6 +808,7 @@ public class TUI implements UIObserver {
                     client.stopGame(client.getNickname());
                     anotherGame();
                 }
+                return true;
             case "board":
                 printBoard();
                 return true;
@@ -808,10 +819,9 @@ public class TUI implements UIObserver {
                 try {
                     client.executeAction(new SkipDrawAction());
                 } catch (Exception e) {
-                    //e.printStackTrace();
                     System.out.println(e.getMessage());
                     return true;
-                }
+                } throw new SkipActionException();
             default:
                 return false;
         }
@@ -846,7 +856,9 @@ public class TUI implements UIObserver {
                 return Integer.parseInt(readLine());
             } catch (NumberFormatException e) {
                 System.out.println(RED + "Please enter a valid number!");
-            } catch (Exception e) {
+            }catch (SkipActionException e){
+                throw e;
+            }catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
