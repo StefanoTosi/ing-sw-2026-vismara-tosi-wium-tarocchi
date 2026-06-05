@@ -65,7 +65,7 @@ public class GameDTO implements Serializable {
                 this.rankings.stream()
                         .map(PlayerDTO::fromDTO)
                         .collect(Collectors.toCollection(ArrayList::new)),
-                this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber, this.eventResults);
+                this.playerTurn.fromDTO(), this.errorFlag, this.turnNumber, new ArrayList<>());
     }
 
     public List<PlayerDTO> getPlayers() {

@@ -117,6 +117,7 @@ public class TUI implements UIObserver {
                 start();
                 break;
             case 3:
+                client.leaveGame();
                 System.exit(0);
             default:
                 System.out.println("Invalid input");
@@ -435,7 +436,7 @@ public class TUI implements UIObserver {
         int size = game.getBoard().getTopRowTribe().size() + game.getBoard().getTopRowBuilding().size();
         do {
             System.out.println("Choose which card to draw from the Top Row (write its number): ");
-            card = readInt();
+            card = readInt(); // fixes index and pos mismatch
         } while (card <= 0 || card > size);
         if (!getGameClosed()) {
             try {
@@ -510,14 +511,11 @@ public class TUI implements UIObserver {
      * Prints the otherall scores of all games played available in the database
      * @throws RemoteException
      */
-    public void printScoreBoard() throws IOException, IllegalActionException, InterruptedException, ClassNotFoundException {
+    public void printScoreBoard() throws RemoteException {
         List<LeaderboardDTO> scoreBoard = client.getLeaderboard();
-        System.out.println("Which ranking would you like to view? Number of players from 2 to 5:");
-        int in = readInt();
+        System.out.println("Which");
         for(LeaderboardDTO player : scoreBoard){
-            if(player.getNumPlayers() == in){
-                System.out.println(player.getNickname() + " | " + player.getTotalScore() + " | " + player.getNumPlayers());
-            }
+            System.out.println(player.getNickname() + player.getTotalScore() + player.getNumPlayers());
         }
     }
 
@@ -791,13 +789,11 @@ public class TUI implements UIObserver {
             case "exit":
             case "quit":
                 if(gameClosed){
-                    client.leaveGame();
+                    //client.leaveGame();
                     System.exit(0);
-                } else {
-                    client.leaveMatch();
-                    client.stopGame(client.getNickname());
-                    anotherGame();
                 }
+                client.stopGame(client.getNickname());
+                anotherGame();
             case "board":
                 printBoard();
                 return true;
