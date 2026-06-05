@@ -409,11 +409,14 @@ public class TUI implements UIObserver {
         int card;
         printRowTribe(game.getBoard().getBottomRowTribe(), game.getBoard().getBottomRowBuilding());
         int size = game.getBoard().getBottomRowTribe().size() + game.getBoard().getBottomRowBuilding().size();
-
-        do {
-            System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
-            card = readInt(); // fixes index and pos mismatch
-        } while (card <= 0 || card > size);
+        try {
+            do {
+                System.out.println("Choose which card to draw from the Bottom Row (write its number): ");
+                card = readInt();
+            } while (card <= 0 || card > size);
+        }catch (SkipActionException e){
+            return -1;
+        }
         if (!getGameClosed()) {
             try {
                 client.executeAction(new DrawCardFromBottomAction(card - 1));
