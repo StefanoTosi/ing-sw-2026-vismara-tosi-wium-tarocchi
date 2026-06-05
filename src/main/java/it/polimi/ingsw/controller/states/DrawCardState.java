@@ -258,9 +258,9 @@ public class DrawCardState extends GameState {
         boolean noDrawsLeft = !game.getBoard().playerCanDraw(player, drawTopCount, drawBottomCount);
 
         if (canSkipBottom || canSkipTop || noDrawsLeft) {
-            drawTopCount = 0;
-            drawBottomCount = 0;
-            startDrawingTurn();
+            drawTopCount = 25;
+            drawBottomCount = 25;
+            transitionIfNeeded(game.getPlayerTurn());
         } else {
             throw new IllegalActionException("Player tried to skip draw but valid cards are available");
         }
