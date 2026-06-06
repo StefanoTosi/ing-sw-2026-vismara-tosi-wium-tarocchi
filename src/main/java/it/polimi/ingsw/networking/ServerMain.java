@@ -1,6 +1,7 @@
 package it.polimi.ingsw.networking;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.UI.UIMain;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -45,17 +47,21 @@ public class ServerMain {
      */
      static void main(String[] args) throws IOException, AlreadyBoundException, IllegalActionException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(new File("src/main/resources/it/polimi/ingsw/config.json"));
+         JsonNode root = mapper.readTree(UIMain.class.getResource("/it/polimi/ingsw/config.json"));
 
         try{
             portRMI = root.get("port_rmi").asInt();
             portTCP = root.get("port_tcp").asInt();
-            host = root.get("host").asText();
+            //host = root.get("host").asText();
         }catch(Exception e){
             portRMI = 1099;
             portTCP = 1234;
             e.printStackTrace();
         }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Write the server Address");
+        host = scanner.nextLine();
 
         GameController gameController = new GameController();
         Map<String,User> users = new ConcurrentHashMap<>();

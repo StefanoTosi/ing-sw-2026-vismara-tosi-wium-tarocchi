@@ -20,7 +20,7 @@ public class UIMain {
         try {
             UISession.setPortRMI(root.get("port_rmi").asInt());
             UISession.setPortTCP(root.get("port_tcp").asInt());
-            UISession.setAddr(root.get("host").asText());
+            //UISession.setAddr(root.get("host").asText());
         } catch(Exception e) {
             // Fallback to local test values
             UISession.setPortRMI(1099);
@@ -30,6 +30,8 @@ public class UIMain {
         }
 
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Write the server Address");
+        UISession.setAddr(scanner.nextLine());
         while (true) {
             System.out.print("Would you like to use the TUI [1] or GUI [2]: ");
             String in = scanner.nextLine();
