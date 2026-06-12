@@ -73,6 +73,7 @@ public class FieldController implements UIObserver {
     private Rectangle deck;
     private AnimatedCard topDeck;
     private AnimatedObject order;
+    private AnimatedCard summary = new AnimatedCard();
     private List<AnimatedTile> offerPathAnim;
     private List<AnimatedCard> bottomRowAnim;
 
@@ -343,6 +344,9 @@ public class FieldController implements UIObserver {
         });
     }
 
+    /**
+     * Updates UI elements such as the round counter, the totem selection box and the skip button
+     */
     private void updateUI() {
         GameDTO game = UISession.getGame();
         Platform.runLater(() -> {
@@ -443,6 +447,8 @@ public class FieldController implements UIObserver {
             for (List<EventResult> ev : game.getEventResults()) {
                 int id = ev.get(0).cardId();
                 idRegistry.get(id).getMesh().setTranslateZ(-10);
+                idRegistry.get(id).getMesh().setOnMouseEntered(null);
+                idRegistry.get(id).getMesh().setOnMouseExited(null);
                 ScaleTransition s = new ScaleTransition(Duration.seconds(1), idRegistry.get(id).getMesh());
                 s.setFromX(1);
                 s.setToX(2);
@@ -773,6 +779,7 @@ public class FieldController implements UIObserver {
     private void reconcileSelectedHand(GameDTO game) {
         Platform.runLater(() -> {
             hand.getChildren().clear();
+            hand.getChildren().add(summary.getMesh()); // Add summary card
             for (PlayerDTO p : game.getPlayers()) {
                 if (p.getName().equals(selectedPlayer)) {
                     List<List<CardDTO>> stacks = new ArrayList<List<CardDTO>>();
@@ -865,5 +872,28 @@ public class FieldController implements UIObserver {
     void seeLeaderboard(MouseEvent e) {
         rankingGrid.setVisible(false);
         leaderboardGrid.setVisible(true);
+    }
+
+    /**
+     * Enrers a new game
+     * @param e
+     */
+    @FXML
+    void playAgain(MouseEvent e) throws IllegalActionException, IOException, InterruptedException, ClassNotFoundException {
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("start-game.fxml"));
+        Parent startRoot = null;
+        UISession.getClient().leaveMatch();
+
+        try {
+            startRoot = fxmlLoader.load();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        startRoot.lookup("#playAgain").setVisible(true);
+        startRoot.lookup("#clientSelect").setVisible(false);
+
+        cardsContainer.getScene().setRoot(startRoot);
+        UISession.setObserver(fxmlLoader.getController());
     }
 }

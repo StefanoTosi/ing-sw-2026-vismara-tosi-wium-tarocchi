@@ -2,6 +2,7 @@ package it.polimi.ingsw.UI.GUI;
 
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -92,7 +93,7 @@ public class AnimatedObject {
      * Animates the mesh with a 3D vertical half flip
      * @param delay the delay of the animation
      */
-    public void flip(Duration delay) {
+    public Transition flip(Duration delay) {
         RotateTransition rotator = new RotateTransition(Duration.seconds(0.5), mesh);
         rotator.setAxis(Rotate.Y_AXIS);
         rotator.setFromAngle(mesh.getRotate());
@@ -100,6 +101,7 @@ public class AnimatedObject {
         rotator.setInterpolator(Interpolator.EASE_BOTH);
         rotator.setDelay(delay);
         rotator.play();
+        return rotator;
     }
 
     /**

@@ -3,8 +3,10 @@ package it.polimi.ingsw.UI.GUI;
 import it.polimi.ingsw.model.CardDTO;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
+import javafx.animation.Transition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.chart.Axis;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -55,6 +57,36 @@ public class AnimatedCard extends AnimatedObject {
         mesh.setRotationAxis(Rotate.Y_AXIS);
         mesh.setRotate(180);
         mesh.setTranslateZ(-0.2);
+        setMesh(mesh);
+    }
+
+    /**
+     * Constructor for summary card
+     */
+    public AnimatedCard() {
+        super(null, null);
+        this.card = null;
+
+        // Load images
+        // System.out.println("/front/" + card.getId() + ".png");
+        Image front = new Image(getClass().getResource("/front/118.png").toExternalForm());
+        Image back = new Image(getClass().getResource("/back/summary.png").toExternalForm());
+
+        // Create reference
+        Rectangle reference = new Rectangle(cardW, cardH);
+        reference.setFill(Color.TRANSPARENT);
+        setReference(reference);
+
+        Group mesh = createCardMesh(front, back, cardW, cardH);
+        mesh.setOnMouseEntered((e) -> {
+            mesh.setRotationAxis(Rotate.Y_AXIS);
+            mesh.setRotate(180);
+        });
+
+        mesh.setOnMouseExited((e) -> {
+            mesh.setRotationAxis(Rotate.Y_AXIS);
+            mesh.setRotate(0);
+        });
         setMesh(mesh);
     }
 

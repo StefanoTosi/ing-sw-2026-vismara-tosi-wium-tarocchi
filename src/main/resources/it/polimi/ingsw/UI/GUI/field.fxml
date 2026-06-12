@@ -143,6 +143,11 @@
                            </children>
                        </GridPane>
                    </StackPane>
+               <Button mnemonicParsing="false" onMouseClicked="#playAgain" styleClass="big-button" text="Home">
+                  <VBox.margin>
+                     <Insets top="20.0" />
+                  </VBox.margin>
+               </Button>
 
                </children>
 
