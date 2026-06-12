@@ -30,9 +30,9 @@ public class Sustenance extends Event {
     }
 
     /**
-     * Resolves the {@code Event} effect. Each player in the specified list is required 1 food for each one of their {@Characters}, otherwise they lose pps.
+     * Resolves the {@code Event} effect. Each player in the specified list is required 1 food for each one of their {@code Characters}, otherwise they lose pps.
      * @param players the list of {@code Players} involved in the {@code Event}
-     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     * @return the list of {@code EventResults}, containing the food and pps deltas for each player
      */
     @Override
     public List<EventResult> applyEffect(List<Player> players){

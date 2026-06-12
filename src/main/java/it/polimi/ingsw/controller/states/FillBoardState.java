@@ -23,7 +23,6 @@ import java.util.List;
  *     <li>Resetting player positions on the order tile</li>
  *     <li>Transition to {@link ChooseOfferState}</li>
  * </ul>
- * </p>
  */
 public class FillBoardState extends GameState {
     private final Game game;

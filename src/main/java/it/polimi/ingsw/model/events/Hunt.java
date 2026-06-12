@@ -30,7 +30,7 @@ public class Hunt extends Event {
     /**
      * Resolves the {@code Event} effect. Each player receives 1 food token and the specified amount of prestige points for every {@code Hunter} in their tribe.
      * @param players the list of {@code Players} involved in the {@code Event}
-     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     * @return the list of {@code EventResults}, containing the food and pps deltas for each player
      */
     @Override
     public List<EventResult> applyEffect(List<Player> players){

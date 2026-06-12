@@ -42,7 +42,6 @@ public class ResolveEventsState extends GameState {
      *     <li>Removes resolved events from the board</li>
      *     <li>Transitions to {@link FillBoardState}</li>
      * </ul>
-     * </p>
      *
      * @throws IllegalActionException if event resolution violates game rules
      * @throws IOException if persistence or state saving fails

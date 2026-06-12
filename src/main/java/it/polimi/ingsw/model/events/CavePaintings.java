@@ -37,7 +37,7 @@ public class CavePaintings extends Event {
     /**
      * Resolves the {@code Event} effect. Each player in the specified list wins pps if they have enough {@code Artists}, otherwise they lose pps.
      * @param players the list of {@code Players} involved in the {@code Event}
-     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     * @return the list of {@code EventResults}, containing the food and pps deltas for each player
      */
     @Override
     public List<EventResult> applyEffect(List<Player> players){

@@ -14,12 +14,10 @@ import java.rmi.RemoteException;
  * Each concrete subclass defines which actions are valid in that state.
  * By default, all operations throw {@link IllegalActionException} to
  * prevent invalid transitions or actions.
- * </p>
  *
  * <p>
- * This class implements a form of the State design pattern<,
+ * This class implements a form of the State design pattern,
  * where behavior is delegated to the current state object inside the game.
- * </p>
  */
 public abstract class GameState {
     /**

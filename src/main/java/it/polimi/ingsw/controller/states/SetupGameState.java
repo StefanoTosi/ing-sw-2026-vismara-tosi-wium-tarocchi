@@ -47,7 +47,6 @@ public class SetupGameState extends GameState {
      *     <li>Board initialization</li>
      *     <li>Transition to {@link ChooseTotemState}</li>
      * </ul>
-     * </p>
      *
      * @param game the game to start
      */

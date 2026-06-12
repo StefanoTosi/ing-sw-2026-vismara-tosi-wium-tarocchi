@@ -41,7 +41,7 @@ public class ShamanicRitual extends Event {
     /**
      * Resolves the {@code Event} effect. The player with the most stars wins the event, the player with the least stars loses.
      * @param players the list of {@code Players} involved in the {@code Event}
-     * @return the list of {@code EventResults}, containing the food & pps deltas for each player
+     * @return the list of {@code EventResults}, containing the food and pps deltas for each player
      */
     @Override
     public List<EventResult> applyEffect(List<Player> players){
