@@ -47,7 +47,7 @@ public class ServerMain {
      */
      static void main(String[] args) throws IOException, AlreadyBoundException, IllegalActionException {
         ObjectMapper mapper = new ObjectMapper();
-         JsonNode root = mapper.readTree(UIMain.class.getResource("/it/polimi/ingsw/config.json"));
+         JsonNode root = mapper.readTree(ServerMain.class.getResource("/it/polimi/ingsw/config.json"));
 
         try{
             portRMI = root.get("port_rmi").asInt();
