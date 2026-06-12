@@ -78,7 +78,12 @@ public class TUI implements UIObserver {
         int choice = 0;
         do{
             System.out.println(BLUE + BOLD + "Choose between RMI[1] or TCP[2] connection");
-            choice = readInt();
+            String input = in.nextLine();
+            try{
+                choice = Integer.parseInt(input.trim());
+            } catch (NumberFormatException e){
+                choice = 0;
+            }
         }while(choice != 1 && choice != 2);
         if(choice == 1) {
             this.client = new ClientRMI(this, portRMI, serverAddress);
@@ -522,7 +527,6 @@ public class TUI implements UIObserver {
             System.out.printf(YELLOW + "%d. %-15s (%d PP, %d food)%n",displayedPos, p.getName(), p.getPp(), p.getFood());
         }
     }
-    //TODO: add che se il player non è tra i primi stampi cmq il suo standing in generale
 
     /**
      * Prints the otherall scores of all games played available in the database
@@ -530,13 +534,18 @@ public class TUI implements UIObserver {
      */
     public void printScoreBoard() throws IOException, IllegalActionException, InterruptedException, ClassNotFoundException {
         List<LeaderboardDTO> scoreBoard = client.getLeaderboard();
-        System.out.println("Which ranking would you like to view? Number of players from 2 to 5:");
+        System.out.println(GREEN + "Which ranking would you like to view? Number of players from 2 to 5:");
         int in = readInt();
         for(LeaderboardDTO player : scoreBoard){
             if(player.getNumPlayers() == in){
-                System.out.println(player.getNickname() + " | " + player.getTotalScore() + " | " + player.getNumPlayers());
+                if(player.getNickname().equals(client.getNickname())){
+                    System.out.println(ORANGE + player.getNickname() + " | " + player.getTotalScore() + " | " + player.getNumPlayers()+ GREEN);
+                }else {
+                    System.out.println(GREEN + player.getNickname() + " | " + player.getTotalScore() + " | " + player.getNumPlayers());
+                }
             }
         }
+
     }
 
     /**
