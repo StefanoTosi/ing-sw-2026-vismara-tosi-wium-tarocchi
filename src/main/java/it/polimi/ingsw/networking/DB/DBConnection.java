@@ -3,6 +3,7 @@ package it.polimi.ingsw.networking.DB;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Scanner;
 
 /**
  * Utility class responsible for managing the database connection
@@ -13,11 +14,26 @@ import java.sql.Statement;
  */
 
 public class DBConnection {
-    private static final String HOST = "jdbc:mysql://localhost:3306/";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
-    private static final String DB_NAME = "gc13_mesos_db";
-    private static final String DB_URL = HOST + DB_NAME;
+    private static String HOST;
+    private static String USER = "root";
+    private static String PASSWORD = "";
+    private static String DB_NAME = "gc13_mesos_db";
+
+    public static void setHOST(String HOST) {
+        if(HOST.isEmpty()){
+            DBConnection.HOST = "jdbc:mysql://localhost:3306/";
+        }else{
+            DBConnection.HOST = HOST;
+        }
+    }
+
+    public static void setUSER(String USER){
+        DBConnection.USER = USER;
+    }
+
+    public static void setPASSWORD(String PASSWORD){
+        DBConnection.PASSWORD = PASSWORD;
+    }
 
     /**
      * Initializes the database structure.
@@ -62,7 +78,7 @@ public class DBConnection {
     public static Connection getConnection(){
         try{
             System.out.println("Connected to the database");
-            return DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            return DriverManager.getConnection(HOST + DB_NAME, USER, PASSWORD);
         }catch (Exception e){
             System.out.println("Connection Failed!");
             return null;

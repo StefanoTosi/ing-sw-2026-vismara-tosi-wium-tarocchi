@@ -63,6 +63,13 @@ public class ServerMain {
         System.out.println("Write the server Address");
         host = scanner.nextLine();
 
+         System.out.println("Enter the host path of the DB (press enter for setting default localhost:3306)");
+         DBConnection.setHOST(scanner.nextLine());
+         System.out.println("Enter the user:");
+         DBConnection.setUSER(scanner.nextLine());
+         System.out.println("Enter the password:");
+         DBConnection.setPASSWORD(scanner.nextLine());
+
         GameController gameController = new GameController();
         Map<String,User> users = new ConcurrentHashMap<>();
         Object lock = new Object();
