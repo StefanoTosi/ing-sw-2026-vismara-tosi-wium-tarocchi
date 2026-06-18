@@ -71,7 +71,7 @@ public class Player {
     }
 
     /**
-     * Generates a {@code Player} and inizializes their tribe and variables with given parameters.
+     * Generates a {@code Player} and initializes their tribe and variables with given parameters.
      * @param name the player's name
      * @param artists the list of {@code Artists} in the player's tribe
      * @param gatherers the list of {@code Gatherers} in the player's tribe
@@ -390,6 +390,7 @@ public class Player {
                 for(Icon icon : seenIcons){
                     if (currIcon == icon){
                         found = true;
+                        break;
                     }
                 }
 

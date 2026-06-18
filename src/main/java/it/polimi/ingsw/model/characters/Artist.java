@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.Era;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.DTO.ArtistDTO;
-import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 /**
  * Represents the {@code Artist} character.<br>

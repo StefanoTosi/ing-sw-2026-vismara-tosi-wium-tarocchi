@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
 /**
  * Abstract base class representing a state in the game state machine.
@@ -26,9 +25,8 @@ public abstract class GameState {
      * @param game the game instance
      * @param player the player to register
      * @throws IllegalActionException if the action is not valid in this state
-     * @throws RemoteException if a remote communication error occurs
      */
-    public void registerPlayer(Game game, Player player) throws IllegalActionException, RemoteException {
+    public void registerPlayer(Game game, Player player) throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 
@@ -51,15 +49,6 @@ public abstract class GameState {
      * @throws IOException if an I/O error occurs
      */
     public void chooseTotem(Player player, Totem totem) throws IllegalActionException, IOException {
-        throw new IllegalActionException("Illegal action");
-    }
-
-    /**
-     * Moves all players back to the order tile (FillBoardState).
-     *
-     * @throws IllegalActionException if the action is not valid in this state
-     */
-    public void movePlayersBackToOrder() throws IllegalActionException {
         throw new IllegalActionException("Illegal action");
     }
 

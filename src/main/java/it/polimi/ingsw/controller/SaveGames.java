@@ -11,7 +11,6 @@ import it.polimi.ingsw.networking.User;
 
 import java.io.File;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import java.util.Map;
  * Games are stored as {@link GameDTO} objects serialized through Jackson.
  */
 public class SaveGames {
-    private static Map<String, GameDTO> saves = new HashMap<String, GameDTO>();
+    private static final Map<String, GameDTO> saves = new HashMap<String, GameDTO>();
 
     /**
      * Default constructor.

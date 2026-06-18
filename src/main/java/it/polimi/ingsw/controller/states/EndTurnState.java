@@ -4,13 +4,11 @@ import it.polimi.ingsw.controller.SaveGames;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.board.Offer;
 import it.polimi.ingsw.model.effects.Building;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.characters.Character;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +85,8 @@ public class EndTurnState extends GameState {
         return StateDTO.ENDTURN;
     }
 
-    /** TODO da completare
-     * Draw a card from the top row, not the Event one
+    /**
+     * Draw a card from the top row, not an Event one.
      * @param player
      * @param pos
      * @throws IllegalActionException
@@ -156,7 +154,6 @@ public class EndTurnState extends GameState {
      * @param character
      */
     private void afterDrawn(Player player, Card character) throws IllegalActionException {
-        //TODO: serve davvero questo controllo eventi?
         if (!character.getType().equals("Event")) {
             int tmp_numSets = player.countSets();
             player.addCard(character);

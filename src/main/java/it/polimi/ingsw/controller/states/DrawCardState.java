@@ -99,8 +99,6 @@ public class DrawCardState extends GameState {
 
             drawTopCount++;
 
-            //TODO: throw an exception/print when no cards are available
-
             // When all cards have been drawn or there are no more cards available, go to the next player
             transitionIfNeeded(player);
 
@@ -185,9 +183,8 @@ public class DrawCardState extends GameState {
         game.setPlayerTurn(drawOrder.removeFirst());
 
         // Tile A does not allow you to draw any cards
-        //TODO: può essere eliminato se compreso nel controllo successivo?
         if (game.getPlayerTurn().getOffer() == 'A') {
-            game.getPlayerTurn().addFood(game.getBoard().getOfferPath().get(0).getFoodBonus());
+            game.getPlayerTurn().addFood(game.getBoard().getOfferPath().getFirst().getFoodBonus());
             moveBackToOrderTile();
             game.setPlayerTurn(drawOrder.removeFirst());
         }

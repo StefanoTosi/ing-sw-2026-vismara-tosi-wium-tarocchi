@@ -4,8 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 
-import java.rmi.RemoteException;
-
 /**
  * Initial game state responsible for player registration and game initialization.
  * <p>

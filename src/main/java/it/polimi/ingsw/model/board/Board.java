@@ -499,7 +499,6 @@ public class Board {
         int topRowSize = topRowTribe.size() + topRowBuilding.size();
 
         // Subtract event cards
-        //TODO: si può sostituire l'instance of?
         for (Card card : this.topRowTribe) {
             if (card instanceof Event) {
                 topRowSize--;
@@ -525,7 +524,6 @@ public class Board {
         int bottomRowSize = bottomRowTribe.size() + bottomRowBuilding.size();
 
         // Subtract event cards
-        //TODO: si può sostituire l'instance of?
         for(Card card : this.bottomRowTribe) {
             if(card instanceof Event) {
                 bottomRowSize--;
