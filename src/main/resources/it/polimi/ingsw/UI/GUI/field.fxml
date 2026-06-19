@@ -18,25 +18,37 @@
                        <Insets bottom="5.0" top="5.0" />
                    </padding>
                </Label>
-               <VBox fx:id="invisibleLayout" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                   <children>
-                       <HBox fx:id="topRow" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" style="-fx-background-image: url(&quot;/brush.png&quot;); -fx-background-position: center center; -fx-background-size: contain;">
-                           <children>
-                           </children>
-                       </HBox>
-                       <HBox fx:id="offerPath" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                           </children>
-                       </HBox>
-                       <HBox fx:id="bottomRow" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" style="-fx-background-image: url(&quot;/brush.png&quot;); -fx-background-position: center center; -fx-background-size: contain;">
-                           <children>
-                           </children>
-                       </HBox>
-                   </children>
-                   <VBox.margin>
-                       <Insets bottom="20.0" />
-                   </VBox.margin>
-               </VBox>
+            <ScrollPane fx:id="sp" prefHeight="${invisibleLayout.height}" minHeight="${invisibleLayout.height}" maxHeight="${invisibleLayout.height}" style="-fx-background: transparent; -fx-background-color: transparent; -fx-viewport-background: transparent;" vbarPolicy="NEVER">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+                    <VBox fx:id="invisibleLayout" alignment="CENTER" prefHeight="400.0" minWidth="${sp.width}" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <children>
+                            <HBox fx:id="topRow" alignment="CENTER" prefHeight="100.0" minWidth="${sp.width}" spacing="10.0" style="-fx-background-image: url(&quot;/brush.png&quot;); -fx-background-position: center center; -fx-background-size: contain;">
+                                <children>
+                                </children>
+                            </HBox>
+                            <HBox fx:id="offerPath" alignment="CENTER" prefHeight="100.0" minWidth="${sp.width}">
+                                <children>
+                                </children>
+                            </HBox>
+                            <HBox fx:id="bottomRow" alignment="CENTER" prefHeight="100.0" minWidth="${sp.width}" spacing="10.0" style="-fx-background-image: url(&quot;/brush.png&quot;); -fx-background-position: center center; -fx-background-size: contain;">
+                                <children>
+                                </children>
+                              <VBox.margin>
+                                 <Insets bottom="10.0" />
+                              </VBox.margin>
+                            </HBox>
+                        </children>
+                        <VBox.margin>
+                            <Insets bottom="20.0" />
+                        </VBox.margin>
+                        <padding>
+                           <Insets bottom="10.0" />
+                        </padding>
+                    </VBox>
+                </AnchorPane>
+              </content>
+            </ScrollPane>
                <HBox fx:id="hand" alignment="CENTER" prefHeight="300.0" prefWidth="200.0" spacing="5" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                </HBox>
            </VBox>

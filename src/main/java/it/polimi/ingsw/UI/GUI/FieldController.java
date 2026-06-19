@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.events.EventResult;
 import it.polimi.ingsw.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.networking.DB.LeaderboardDTO;
 import it.polimi.ingsw.networking.UIObserver;
+import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
@@ -23,9 +24,11 @@ import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -64,6 +67,7 @@ public class FieldController implements UIObserver {
     @FXML GridPane leaderboardGrid;
     @FXML Text round;
     @FXML Button skip;
+    @FXML ScrollPane sp;
 
     private Map<Group, AnimatedCard> meshRegistry;
     private Map<Rectangle, AnimatedCard> refRegistry;
@@ -224,6 +228,10 @@ public class FieldController implements UIObserver {
                     throw new RuntimeException(e);
                 }
                 System.exit(0);
+            });
+
+            sp.hvalueProperty().addListener((observable, oldValue, newValue) -> {
+                resetAll();
             });
         });
     }
@@ -405,6 +413,7 @@ public class FieldController implements UIObserver {
     /**
      * Instantly resets the position of all animated objects in the window
      */
+    @FXML
     private void resetAll() {
         for (AnimatedCard a : topRowAnim) {
             a.resetPosition();
@@ -441,7 +450,6 @@ public class FieldController implements UIObserver {
         }
 
         // Handle events
-        int ei = 0;
         Transition last = null;
         if (game.getEventResults() != null && !game.getEventResults().isEmpty()) {
             for (List<EventResult> ev : game.getEventResults()) {
@@ -449,6 +457,7 @@ public class FieldController implements UIObserver {
                 idRegistry.get(id).getMesh().setTranslateZ(-10);
                 idRegistry.get(id).getMesh().setOnMouseEntered(null);
                 idRegistry.get(id).getMesh().setOnMouseExited(null);
+                idRegistry.get(id).getMesh().setOnMouseClicked(null);
                 ScaleTransition s = new ScaleTransition(Duration.seconds(1), idRegistry.get(id).getMesh());
                 s.setFromX(1);
                 s.setToX(2);
@@ -466,7 +475,7 @@ public class FieldController implements UIObserver {
                     });
                     last = s;
                 }
-                ei += 0;
+
             }
         }
 
