@@ -11,6 +11,8 @@ import it.polimi.ingsw.networking.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +45,11 @@ public class SaveGames {
             // Add or overwrite the save in memory
             saves.put(id, game);
 
+            //get the path of directory containing the jar
+            Path savePath = Paths.get("saves.json");
             ObjectMapper mapper = new ObjectMapper();
             // Serialize the entire save map into the JSON file
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("src/main/resources/it/polimi/ingsw/saves.json"), saves);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(savePath.toFile(), saves);
         }
     }
 
@@ -59,9 +63,11 @@ public class SaveGames {
         synchronized (saves) {
             String id = game.getPlayers().getFirst().getName();
             saves.remove(id);
+            //get the path of directory containing the jar
+            Path savePath = Paths.get("saves.json");
             ObjectMapper mapper = new ObjectMapper();
             //create or override a file
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("src/main/resources/it/polimi/ingsw/saves.json"), saves);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(savePath.toFile(), saves);
         }
     }
 
@@ -76,7 +82,8 @@ public class SaveGames {
      */
     public static void loadSaves(GameController gameController, Map<String, User> users) throws IOException, IllegalActionException {
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File("src/main/resources/it/polimi/ingsw/saves.json");
+        Path savePath = Paths.get("saves.json");
+        File file = savePath.toFile();
         //TypeReference used to not lose generics at run time
         // Check that the file exists and is not empty
         if(file.exists() && file.length() != 0) {
