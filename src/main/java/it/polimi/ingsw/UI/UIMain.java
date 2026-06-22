@@ -32,6 +32,7 @@ public class UIMain {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Write the server Address");
         UISession.setAddr(scanner.nextLine());
+        System.setProperty("java.rmi.server.hostname", UISession.getAddr());
         while (true) {
             System.out.print("Would you like to use the TUI [1] or GUI [2]: ");
             String in = scanner.nextLine();
