@@ -6,8 +6,7 @@ The project follows the full requirements set for grade 30L, including **three a
 
 
 ## Prerequisites
-- **Required:** Java 25
-
+The only requirement is Java 25+.
 If you have another version of Java as your default follow the steps at the end of the Usage section.
 
 
@@ -29,6 +28,7 @@ java --module-path /usr/share/openjfx/lib \
 ```
 
 Once the server starts, you'll be prompted to enter the IP of the server and the IP, port, username and password of the DB.
+>**Note:** by deafault username is root and password is empty.
 
 ### Client:
 The client JAR is located in `/deliverables/MesosClient_jar`.
@@ -52,7 +52,7 @@ You'll be prompted to enter the IP of the server you want to connect to and to c
 
 1. Download and install Java 25 if you don't already have it.
 
-2. Find the folder where Java 25 was installed (e.g. on Windows this is typically C:\Program Files\Java\jdk-25)
+2. Find the folder where Java 25 was installed
 
 3. Inside that folder, locate the bin subfolder - this contains the java.exe (Windows) or java (Linux) executable.
 
