@@ -2,7 +2,7 @@
 
 University project for the Software Engineering course. Mesos is a Java implementation of the Mesos board game by Cranio Creations. It is built with a Client/Server architecture (TCP Socket or RMI, selectable by the user), a TUI and a GUI for the user to interact with and a DB, server side, to keep track of the info of the users who finished a game and their scores.
 
-The project follows the full requirements set for grade 30L, including **three advanced features(FA)**: match leaderboard stored on a DB, support for multiple concurrent matches, and persistence.
+The project follows the full requirements set for grade 30L, including **three advanced features(FA)**: match leaderboard stored on a DB, support for multiple concurrent matches, and persistence of memory to server crashing.
 
 
 ## Prerequisites
@@ -44,7 +44,7 @@ java --module-path /usr/share/openjfx/lib \
      -jar Mesos.jar
 ```
 
-You'll be prompted to enter the IP of the server you want to connect to.
+You'll be prompted to enter the IP of the server you want to connect to and to choose between TUI and GUI.
 
 >**Note:** make sure the Server is running and you have its IP before starting the Client.
 
