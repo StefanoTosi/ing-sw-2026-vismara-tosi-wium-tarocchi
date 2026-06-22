@@ -9,6 +9,8 @@ import javafx.application.Application;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.rmi.NotBoundException;
 import java.util.Scanner;
 
@@ -32,6 +34,19 @@ public class UIMain {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Write the server Address");
         UISession.setAddr(scanner.nextLine());
+
+        // Set client IP
+        try (DatagramSocket socket = new DatagramSocket()) {
+            socket.connect(InetAddress.getByName(UISession.getAddr()), UISession.getPortRMI());
+            String myRealIp = socket.getLocalAddress().getHostAddress();
+            System.setProperty("java.rmi.server.hostname", myRealIp);
+            System.out.println("RMI callback IP dynamically set to: " + myRealIp);
+
+        } catch (Exception e) {
+            System.err.println("Could not resolve local IP address.");
+            e.printStackTrace();
+        }
+
         while (true) {
             System.out.print("Would you like to use the TUI [1] or GUI [2]: ");
             String in = scanner.nextLine();

@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="MesoServer:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/MesoServer_jar</output-path>
+  <artifact type="jar" name="MesosServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MesosServer_jar</output-path>
     <root id="archive" name="Mesos.jar">
       <element id="module-output" name="Mesos" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/21.0.6/javafx-graphics-21.0.6-win.jar" path-in-jar="/" />
