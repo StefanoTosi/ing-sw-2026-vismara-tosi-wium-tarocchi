@@ -93,13 +93,14 @@ public class SaveGames {
                     new TypeReference<Map<String, GameDTO>>(){}
             );
             // Iterate over every saved game
+            boolean flag = users.isEmpty();
             for (Map.Entry<String, GameDTO> entry : saves.entrySet()) {
                 StateDTO state = entry.getValue().getState();
                 Game game = entry.getValue().fromDTO();
                 // Restore the correct runtime state object
                 game.setState(state.getNewState(game));
                 gameController.addGame(game);
-                boolean flag = users.isEmpty();
+                System.out.println("flag: " + flag);
                 // Restore all players as "in game"
                 for(PlayerDTO player : entry.getValue().getPlayers()){
                     if(!flag){
