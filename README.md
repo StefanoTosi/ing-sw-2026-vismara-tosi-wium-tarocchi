@@ -1,6 +1,6 @@
 # Software Engineering Project - Mesos
 
-University project for the Software Engineering course. Mesos is a Java implementation of the Mesos card game by Cranio Creations. It is built with a Client/Server architecture (TCP Socket or RMI, selectable by the user), a TUI and a GUI for the user to interact with and a DB, server side, to keep trace of the info of the users who finished a game and their scores.
+University project for the Software Engineering course. Mesos is a Java implementation of the Mesos board game by Cranio Creations. It is built with a Client/Server architecture (TCP Socket or RMI, selectable by the user), a TUI and a GUI for the user to interact with and a DB, server side, to keep track of the info of the users who finished a game and their scores.
 
 The project follows the full requirements set for grade 30L, including **three advanced features(FA)**: match leaderboard stored on a DB, support for multiple concurrent matches, and persistence.
 
@@ -17,24 +17,36 @@ Open the JAR files from the `deliverables` folder.
 ### Server:
 The server JAR is located in `/deliverables/MesosServer_jar`.
 
-**Run from your terminal (Linux/macOS/Windows):**
+**Run from your terminal:**
 ```bash
+# Windows
 java -jar Mesos.jar 
+
+# Linux
+java --module-path /usr/share/openjfx/lib \
+     --add-modules javafx.controls,javafx.fxml \
+     -jar Mesos.jar
 ```
 
-You'll be prompted to choose a port ID once the server starts.
+Once the server starts, you'll be prompted to enter the IP of the server and the IP, port, username and password of the DB.
 
 ### Client:
 The client JAR is located in `/deliverables/MesosClient_jar`.
 
-**Run from your terminal (Linux/macOS/Windows):**
+**Run from your terminal:**
 ```bash
+# Windows
 java -jar Mesos.jar 
+
+# Linux
+java --module-path /usr/share/openjfx/lib \
+     --add-modules javafx.controls,javafx.fxml \
+     -jar Mesos.jar
 ```
 
-You'll be prompted to enter the port ID of the server you want to connect to.
+You'll be prompted to enter the IP of the server you want to connect to.
 
->**Note:** make sure the Server is running and you have its port ID before starting the Client.
+>**Note:** make sure the Server is running and you have its IP before starting the Client.
 
 ### If your default Java version is lower than 25:
 
@@ -42,7 +54,7 @@ You'll be prompted to enter the port ID of the server you want to connect to.
 
 2. Find the folder where Java 25 was installed (e.g. on Windows this is typically C:\Program Files\Java\jdk-25)
 
-3. Inside that folder, locate the bin subfolder - this contains the java.exe (Windows) or java (Linux/macOS) executable.
+3. Inside that folder, locate the bin subfolder - this contains the java.exe (Windows) or java (Linux) executable.
 
 4. Use the full path to that executable instead of java when running the JAR. 
 

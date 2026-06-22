@@ -26,7 +26,7 @@ public class GUIBuilder {
     public static VBox createPlayerCard(PlayerDTO p, EventHandler<MouseEvent> playerClicked) {
         VBox v = new VBox();
         v.setPadding(new Insets(5, 5, 5, 5));
-        v.setMinWidth(200);
+        // v.setMinWidth(200);
         v.getStyleClass().add("player-card");
         v.setAlignment(Pos.CENTER);
         v.setMouseTransparent(false);
@@ -49,12 +49,12 @@ public class GUIBuilder {
         pp.setStroke(Color.BLACK);        // The border color
         pp.setStrokeWidth(3);             // Border thickness
         pp.setStrokeType(StrokeType.OUTSIDE);
-        pp.setStyle("-fx-font-size: 40;");
+        pp.setStyle("-fx-font-size: 30;");
         pp.setId(p.getName() + "Pp");
         ImageView ppi = new ImageView();
         ppi.setImage(new Image(GUIBuilder.class.getResource("/pp.png").toExternalForm()));
-        ppi.setFitWidth(100);
-        ppi.setFitHeight(100);
+        ppi.setFitWidth(70);
+        ppi.setFitHeight(70);
         sppp.getChildren().add(ppi);
         sppp.getChildren().add(pp);
 
@@ -68,11 +68,11 @@ public class GUIBuilder {
         food.setStrokeWidth(3);             // Border thickness
         food.setStrokeType(StrokeType.OUTSIDE);
         food.setId(p.getName() + "Food");
-        food.setStyle("-fx-font-size: 40;");
+        food.setStyle("-fx-font-size: 30;");
         ImageView foodi = new ImageView();
         foodi.setImage(new Image(GUIBuilder.class.getResource("/food.png").toExternalForm()));
-        foodi.setFitWidth(100);
-        foodi.setFitHeight(100);
+        foodi.setFitWidth(70);
+        foodi.setFitHeight(70);
         spfood.getChildren().add(foodi);
         spfood.getChildren().add(food);
 

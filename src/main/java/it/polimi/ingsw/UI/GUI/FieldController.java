@@ -494,9 +494,9 @@ public class FieldController implements UIObserver {
         last.setOnFinished((e) -> {
             // Reconcile the playing field with the new GameDTO
             UISession.setGame(game);
-            reconcileTotems(game);
             reconcileCards(game);
             reconcileSelectedHand(game);
+            reconcileTotems(game);
 
             // Update toasts
             updateInstructionLabel();
@@ -803,7 +803,7 @@ public class FieldController implements UIObserver {
                         StackPane stackPane = new StackPane();
                         hand.getChildren().add(stackPane);
 
-                        int i = stack.size() - 1;
+                        int i = 0;
                         for (CardDTO c : stack) {
                             AnimatedCard anim = idRegistry.get(c.getId());
 
@@ -821,8 +821,8 @@ public class FieldController implements UIObserver {
                             drawCard(anim);
                             Group m = anim.getMesh();
                             stackPane.getChildren().add(m);
-                            StackPane.setMargin(m, new Insets(0, 0, 70 * i, 0));
-                            i -= 1;
+                            StackPane.setMargin(m, new Insets(0, 0, -70 * i, 0));
+                            i += 1;
                         }
                     }
 

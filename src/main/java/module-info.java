@@ -11,7 +11,6 @@ module com.example.mesos {
     requires java.sql;
     requires net.bytebuddy;
 
-    exports it.polimi.ingsw;
     exports it.polimi.ingsw.model;
     exports it.polimi.ingsw.model.characters.DTO;
     exports it.polimi.ingsw.model.events.DTO;

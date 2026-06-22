@@ -37,6 +37,8 @@ public class AnimatedObject {
     public void resetPosition() {
         mesh.setLayoutX(getRefX());
         mesh.setLayoutY(getRefY());
+        mesh.setTranslateX(0);
+        mesh.setTranslateY(0);
     }
 
     /**
