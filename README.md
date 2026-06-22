@@ -28,7 +28,7 @@ java --module-path /usr/share/openjfx/lib \
 ```
 
 Once the server starts, you'll be prompted to enter the IP of the server and the IP, port, username and password of the DB.
->**Note:** by deafault username is root and password is empty.
+>**Note:** by default username is root and password is empty.
 
 ### Client:
 The client JAR is located in `/deliverables/MesosClient_jar`.
