@@ -36,6 +36,9 @@ public class TUI implements UIObserver {
     private int drawBottom;
     private int drawTop;
 
+    // Card stats
+    private static final int CARD_HEADER_WIDTH = 12;
+
     // TUI design colors
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[33m";
@@ -44,7 +47,6 @@ public class TUI implements UIObserver {
     public static final String ORANGE ="\u001B[38;5;208m";
     public static final String RESET ="\u001B[0m";
     public static final String BOLD = "\u001B[1m";
-    public static final String UNDERLINE = "\u001B[4m";
 
     // NOTIFY QUEUE
     private final LinkedBlockingQueue<GameDTO> updates = new LinkedBlockingQueue<>();
@@ -570,7 +572,7 @@ public class TUI implements UIObserver {
         //------------- Adding the buildings
         for(BuildingDTO building : buildings){
             build = building.printCard();
-            build[0] = new StringBuilder().append(String.format("+----%d-----+", numCard++));
+            build[0] = new StringBuilder(cardHeader(numCard++));
             for(int i=0; i<7; i++){
                 lines[i].append(build[i]);
             }
@@ -598,7 +600,7 @@ public class TUI implements UIObserver {
 
         for(CardDTO card : cards){
             printed = card.printCard();
-            printed[0] = new StringBuilder().append(String.format("+----%d-----+", num_card++));
+            printed[0] = new StringBuilder(cardHeader(num_card++));
             for(int i=0; i<7; i++){
                 lines[i].append(printed[i]);
             }
@@ -787,6 +789,12 @@ public class TUI implements UIObserver {
     }
 
     // --------------------------- Helper functions ----------------------------------------------------------
+
+    private String cardHeader(int number){
+        String num = String.valueOf(number);
+        int dashesAfter = Math.max(1, CARD_HEADER_WIDTH - 6 - num.length());
+        return "+----" + num + "-".repeat(dashesAfter) + "+";
+    }
 
     /**
      * Helper function to print
