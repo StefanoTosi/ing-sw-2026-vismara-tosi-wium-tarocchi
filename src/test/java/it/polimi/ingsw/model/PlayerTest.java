@@ -54,9 +54,6 @@ class PlayerTest {
         assertNull(p.getGame());
     }
 
-    //TODO
-    // per tutti gli add controlla che non venga passato un null
-
     @Test
     void getName() {
         Player player1 = new Player("Elisa");
@@ -134,9 +131,7 @@ class PlayerTest {
         assertThrows(IllegalArgumentException.class, ()->player.addFood(-43));
     }
 
-    //TODO prova a mettere una carta di ciascun tipo e provi a vedere se viene aggiunta alla lista,
-    // se viene passato un puntatore nullo
-    // ad addCard non andrebbe mai passato un Evento
+
     @Test
     void addCard() {
         Player player = new Player("Elisa");
@@ -248,7 +243,6 @@ class PlayerTest {
         assertEquals(1, player.getNumBuilders());
     }
 
-    //TODO verifica aggiungendo set che il numero si modifichi - prima 0 - poi di tutte almeno 2 e di una 1, e viceversa
     @Test
     void countSets() {
         Player player = new Player("Elisa");
@@ -285,9 +279,7 @@ class PlayerTest {
         assertEquals(2, player.countSets());
     }
 
-    //TODO verifica che non prenda altre carte
-    // verifica che aggiunga
-    // aggiungere un building con ogni effetto
+
     @Test
     void addBuilding() {
         Player player = new Player("Elisa");
@@ -462,10 +454,6 @@ class PlayerTest {
         assertEquals(15, player.countTribePp());
     }
 
-    @Test
-    void getGame() {
-        //TODO help non lo so
-    }
 
     @Test
     void addFoodDiscount() {

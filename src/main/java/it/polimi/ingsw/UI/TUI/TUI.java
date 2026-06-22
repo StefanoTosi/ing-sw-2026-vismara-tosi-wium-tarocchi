@@ -686,7 +686,7 @@ public class TUI implements UIObserver {
             for(PlayerDTO player : game.getPlayers()){
                 if(player.getOffer() == offerTile.getOrder()){
                     playerOnTile = player;
-                    break; // TODO: metodo bruttino da cambiare
+                    break;
                 }
             }
             lines[0].append(String.format("+----%s-----+", offerTile.getOrder()));
