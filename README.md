@@ -4,6 +4,15 @@ University project for the Software Engineering course. Mesos is a Java implemen
 
 The project follows the full requirements set for grade 30L, including **three advanced features(FA)**: match leaderboard stored on a DB, support for multiple concurrent matches, and persistence of memory to server crashing.
 
+## Disclaimer
+
+Mesos is a board game developed and published by [Cranio Creations Srl](https://craniocreations.it/).
+
+All graphical content of this project that are associated with the official board game have been used under Cranio Creations Srl. approval and only for educational purposes.
+
+Distribution, copying or reproduction of these contents and images out of this project is forbidden, as well as publishing these contents for other purposes.
+
+Commercial use of the aforementioned content is as well forbidden.
 
 ## Prerequisites
 The only requirement is Java 25+.
